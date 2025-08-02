@@ -59,9 +59,10 @@ dependencies:
   equatable: ^2.0.5
   get_it: ^7.6.7
   injectable: ^2.3.2
-  shared_preferences: ^2.2.2
-  path_provider: ^2.1.2
+  shared_preferences: ^2.5.3
+  path_provider: ^2.1.5
   dartz: ^0.10.1
+  persistent_bottom_nav_bar: ^6.2.1
 
 dev_dependencies:
   flutter_test:

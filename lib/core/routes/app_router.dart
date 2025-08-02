@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../shared/widgets/main_navigation.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -8,6 +9,11 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
+        name: 'home',
+        builder: (context, state) => const MainNavigation(),
+      ),
+      GoRoute(
+        path: '/tasks',
         name: 'tasks',
         builder: (context, state) => const TasksPage(),
       ),
