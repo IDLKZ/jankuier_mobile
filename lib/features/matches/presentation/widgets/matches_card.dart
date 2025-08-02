@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
 
 class ActiveMatchCard extends StatelessWidget {
-  const ActiveMatchCard({super.key});
+  final String title;
+  final String team1Name;
+  final String team2Name;
+  final String team1LogoUrl;
+  final String team2LogoUrl;
+  final String score;
+  final String timer;
+  final bool isLive;
+  final String? team1Subtitle;
+  final String? team2Subtitle;
+
+  const ActiveMatchCard({
+    super.key,
+    required this.title,
+    required this.team1Name,
+    required this.team2Name,
+    required this.team1LogoUrl,
+    required this.team2LogoUrl,
+    required this.score,
+    required this.timer,
+    this.isLive = false,
+    this.team1Subtitle,
+    this.team2Subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +45,9 @@ class ActiveMatchCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            'Чемпионат мира 2025',
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -33,33 +56,41 @@ class ActiveMatchCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Казахстан
+              // Team 1
               Column(
                 children: [
                   SizedBox(
                     height: 38,
                     width: 38,
                     child: Image.network(
-                      'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
+                      team1LogoUrl,
                       fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    'Казахстан',
-                    style: TextStyle(
+                  Text(
+                    team1Name,
+                    style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  if (team1Subtitle != null)
+                    Text(
+                      team1Subtitle!,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                      ),
+                    ),
                 ],
               ),
-              // Счет
+              // Счет и таймер
               Column(
                 children: [
-                  const Text(
-                    '0:0',
-                    style: TextStyle(
+                  Text(
+                    score,
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
@@ -71,12 +102,12 @@ class ActiveMatchCard extends StatelessWidget {
                       horizontal: 14,
                     ),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF0F6FF),
+                      color: const Color(0xFFF0F6FF),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text(
-                      '47:00',
-                      style: TextStyle(
+                    child: Text(
+                      timer,
+                      style: const TextStyle(
                         color: Color(0xFF0057A0),
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -86,45 +117,54 @@ class ActiveMatchCard extends StatelessWidget {
                   ),
                 ],
               ),
-              // Уэльс
+              // Team 2
               Column(
                 children: [
                   SizedBox(
                     height: 38,
                     width: 38,
                     child: Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
+                      team2LogoUrl,
                       fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    'Уэльс',
-                    style: TextStyle(
+                  Text(
+                    team2Name,
+                    style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  if (team2Subtitle != null)
+                    Text(
+                      team2Subtitle!,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                      ),
+                    ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.fiber_manual_record, color: Colors.red, size: 14),
-              SizedBox(width: 5),
-              Text(
-                'Прямо эфир',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+          if (isLive)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.fiber_manual_record, color: Colors.red, size: 14),
+                SizedBox(width: 5),
+                Text(
+                  'Прямо эфир',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

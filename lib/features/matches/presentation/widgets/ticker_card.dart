@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
 
 class TicketCard extends StatelessWidget {
-  const TicketCard({super.key});
+  final String league;
+  final String dateTime;
+  final String team1Name;
+  final String team2Name;
+  final String team1LogoUrl;
+  final String team2LogoUrl;
+  final VoidCallback? onBuyPressed;
+  final VoidCallback? onMyTicketPressed;
+
+  const TicketCard({
+    super.key,
+    required this.league,
+    required this.dateTime,
+    required this.team1Name,
+    required this.team2Name,
+    required this.team1LogoUrl,
+    required this.team2LogoUrl,
+    this.onBuyPressed,
+    this.onMyTicketPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +42,9 @@ class TicketCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Заголовок
-          const Text(
-            "Лига чемпионов",
-            style: TextStyle(
+          Text(
+            league,
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
@@ -41,9 +60,9 @@ class TicketCard extends StatelessWidget {
                   color: const Color(0xFFF0F6FF),
                   borderRadius: BorderRadius.circular(11),
                 ),
-                child: const Text(
-                  "29 июля | 23:30",
-                  style: TextStyle(
+                child: Text(
+                  dateTime,
+                  style: const TextStyle(
                     fontSize: 13,
                     color: Color(0xFF8CA4C7),
                     fontWeight: FontWeight.w600,
@@ -57,22 +76,21 @@ class TicketCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Елимай
+              // Team 1
               Column(
                 children: [
                   SizedBox(
                     height: 40,
                     width: 40,
                     child: Image.network(
-                      // Сюда подставь свой url или Image.asset(...)
-                      "https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png",
+                      team1LogoUrl,
                       fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "Елимай",
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  Text(
+                    team1Name,
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -85,22 +103,21 @@ class TicketCard extends StatelessWidget {
                   color: Color(0xFF263238),
                 ),
               ),
-              // Arsenal
+              // Team 2
               Column(
                 children: [
                   SizedBox(
                     height: 40,
                     width: 40,
                     child: Image.network(
-                      // Сюда подставь свой url или Image.asset(...)
-                      "https://upload.wikimedia.org/wikipedia/ru/thumb/5/53/Arsenal_FC.svg/250px-Arsenal_FC.svg.png",
+                      team2LogoUrl,
                       fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "Арсенал",
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  Text(
+                    team2Name,
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -112,7 +129,7 @@ class TicketCard extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: onBuyPressed,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xFF166CFF),
@@ -134,7 +151,7 @@ class TicketCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: onMyTicketPressed,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF166CFF),
                     side: const BorderSide(color: Color(0xFF166CFF), width: 1.5),
