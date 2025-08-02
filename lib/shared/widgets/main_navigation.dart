@@ -1,79 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+import 'custom_navbar.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/matches/presentation/pages/matches_page.dart';
 import '../../features/services/presentation/pages/services_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 
-class MainNavigation extends StatelessWidget {
-  const MainNavigation({super.key});
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({Key? key}) : super(key: key);
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0); // "Матчи" по дефолту
+
+  List<CustomNavBarScreen> _buildScreens() => [
+    CustomNavBarScreen(screen: HomePage()),
+    CustomNavBarScreen(screen: MatchesPage()),
+    CustomNavBarScreen(screen: ServicesPage()),
+    CustomNavBarScreen(screen: ActivityPage()),
+    CustomNavBarScreen(screen: ProfilePage()),
+  ];
+
+  List<PersistentBottomNavBarItem> _navBarsItems() => [
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.home),
+      title: "Главная",
+      activeColorPrimary: Colors.black,
+      inactiveColorPrimary: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.sports_soccer),
+      title: "Матчи",
+      activeColorPrimary: Colors.black,
+      inactiveColorPrimary: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.dashboard_outlined),
+      title: "Сервисы",
+      activeColorPrimary: Colors.black,
+      inactiveColorPrimary: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.local_fire_department_outlined),
+      title: "Активность",
+      activeColorPrimary: Colors.black,
+      inactiveColorPrimary: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+      icon: const Icon(Icons.person),
+      title: "Профиль",
+      activeColorPrimary: Colors.black,
+      inactiveColorPrimary: Colors.grey,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    PersistentTabController controller = PersistentTabController(initialIndex: 0);
-
-    return PersistentTabView(
+    return PersistentTabView.custom(
       context,
-      controller: controller,
+      controller: _controller,
+      itemCount: _navBarsItems().length,
       screens: _buildScreens(),
-      items: _navBarsItems(),
       confineToSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
+      backgroundColor: const Color(0xFFF6F7F9), // <-- светлый!
       hideNavigationBarWhenKeyboardAppears: true,
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: Colors.white,
+      customWidget: CustomNavBarWidget(
+        selectedIndex: _controller.index,
+        items: _navBarsItems(),
+        onItemSelected: (index) {
+          setState(() {
+            _controller.index = index;
+          });
+        },
       ),
-      navBarStyle: NavBarStyle.style6,
     );
-  }
-
-  List<Widget> _buildScreens() {
-    return [
-      const HomePage(),
-      const MatchesPage(),
-      const ServicesPage(),
-      const ActivityPage(),
-      const ProfilePage(),
-    ];
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: "Главная",
-        activeColorPrimary: Colors.blue,
-        inactiveColorPrimary: Colors.grey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.sports_soccer),
-        title: "Матчи",
-        activeColorPrimary: Colors.green,
-        inactiveColorPrimary: Colors.grey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.dashboard_outlined),
-        title: "Сервисы",
-        activeColorPrimary: Colors.orange,
-        inactiveColorPrimary: Colors.grey
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.local_fire_department_outlined),
-        title: "Активность",
-        activeColorPrimary: Colors.purple,
-        inactiveColorPrimary: Colors.grey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person),
-        title: "Профиль",
-        activeColorPrimary: Colors.red,
-        inactiveColorPrimary: Colors.grey,
-      ),
-    ];
   }
 }
