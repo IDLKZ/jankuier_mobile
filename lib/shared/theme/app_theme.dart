@@ -16,7 +16,7 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.bgColor,
         foregroundColor: Colors.black87,
       ),
       cardTheme: CardThemeData(
@@ -59,7 +59,7 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.bgColor,
         foregroundColor: Colors.white,
       ),
       cardTheme: CardThemeData(
