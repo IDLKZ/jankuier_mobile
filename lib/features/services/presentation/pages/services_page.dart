@@ -7,7 +7,11 @@ class ServicesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PagesCommonAppBar(),
+      appBar: PagesCommonAppBar(
+        title: "Сервисы",
+        actionIcon: Icons.notifications_none,
+        onActionTap: () {},
+      ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
