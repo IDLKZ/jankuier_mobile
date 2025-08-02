@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/features/home/presentation/widgets/best_moments_widget.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_route_constants.dart';
+import '../../../blog/presentation/widgets/blog_card_widget.dart';
+import '../../../matches/presentation/widgets/match_result_card.dart';
 import '../../../matches/presentation/widgets/matches_card.dart';
+import '../../../matches/presentation/widgets/qr_display_dialog.dart';
+import '../../../matches/presentation/widgets/ticker_card.dart';
 import '../../../services/presentation/widgets/product_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -118,7 +124,7 @@ class HomePage extends StatelessWidget {
                   enableInfiniteScroll: true,
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   viewportFraction:
-                      0.85, // Slightly increased for better visibility
+                      0.95, // Slightly increased for better visibility
                 ),
                 items: _buildCarouselItems(),
               ),
@@ -133,42 +139,60 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 30.h),
+                    const MainTitleWidget(title: 'Ближайшие матчи', secondTitle: 'Все билеты', secondFontSize: 12,),
+                    TicketCard(
+                      horizontalMargin: 2,
+                      league: "Лига чемпионов",
+                      dateTime: "29 июля | 23:30",
+                      team1Name: "Елимай",
+                      team2Name: "Арсенал",
+                      team1LogoUrl: "https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png",
+                      team2LogoUrl: "https://upload.wikimedia.org/wikipedia/ru/thumb/5/53/Arsenal_FC.svg/250px-Arsenal_FC.svg.png",
+                      onBuyPressed: () {},
+                      onMyTicketPressed: () {
+                        showModalBottomSheet<void>(
+                          useRootNavigator: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 400,
+                              color: Colors.white,
+                              child: QrDisplayDialog(
+                                qrData: "https://example.com/your-ticket-id",
+                                onClose: () => Navigator.of(context).pop(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                     MainTitleWidget(
-                      title: 'Последние новости',
-                      secondTitle: 'Все новости',
+                      title: 'Прошедшие матчи',
+                      secondTitle: 'Все матчи',
                       secondColor: Colors.black.withOpacity(0.6),
-                      secondFontSize: 14,
+                      secondFontSize: 12,
                     ),
-                    SizedBox(height: 15.h),
-                    _buildNewsCard(
-                      'Чемпионат мира 2025',
-                      'Казахстан готовится к важному матчу против Уэльса',
-                      'assets/images/news1.jpg',
-                      'news_1',
-                    ),
-                    SizedBox(height: 10.h),
-                    _buildNewsCard(
-                      'Трансферы',
-                      'Новые игроки присоединились к национальной сборной',
-                      'assets/images/news2.jpg',
-                      'news_2',
-                    ),
-                    SizedBox(height: 10.h),
-                    _buildNewsCard(
-                      'Рейтинг FIFA',
-                      'Обновленный рейтинг команд на июль 2025',
-                      'assets/images/news3.jpg',
-                      'news_3',
+                    const MatchResultCard(
+                      horizontalPadding: 6,
+                      horizontalMargin: 2,
+                      verticalMargin: 12,
+                      title: 'Лига чемпионов',
+                      team1: 'Елимай',
+                      team2: 'Интер',
+                      team1LogoUrl: 'https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png',
+                      team2LogoUrl: 'https://upload.wikimedia.org/wikipedia/ru/thumb/9/93/Inter_Miami_CF_logo.png/250px-Inter_Miami_CF_logo.png',
+                      score: '4:3',
+                      date: '29 июля',
                     ),
                     SizedBox(height: 15.h),
                     MainTitleWidget(
                       title: 'Лучшие моменты',
                       secondTitle: 'Все моменты',
                       secondColor: Colors.black.withOpacity(0.6),
-                      secondFontSize: 14,
+                      secondFontSize: 12,
                     ),
                     SizedBox(height: 15.h),
-                    BestMomentsWidget(images: [
+                    const BestMomentsWidget(images: [
                       "assets/images/best_moments_1.png",
                       "assets/images/best_moments_2.jpg",
                       "assets/images/best_moments_3.png",
@@ -178,11 +202,41 @@ class HomePage extends StatelessWidget {
                       title: 'Популярные товары',
                       secondTitle: 'Все товары',
                       secondColor: Colors.black.withOpacity(0.6),
-                      secondFontSize: 14,
+                      secondFontSize: 12,
                     ),
-                    ProductGridCards(
+                    const ProductGridCards(
                       itemsCount: 2,
                     ),
+                    MainTitleWidget(
+                      title: 'Обсуждение',
+                      secondTitle: 'Все новости',
+                      secondColor: Colors.black.withOpacity(0.6),
+                      secondFontSize: 12,
+                      onTap: () {context.push(AppRouteConstants.BlogListPagePath);},
+                    ),
+                    SizedBox(height: 15.h),
+                    NewsCard(
+                      imageUrl: 'https://media.istockphoto.com/id/578275372/photo/two-boys-soccer-fans-with-flag-of-kazakhstan-on-t-shirt.webp?s=2048x2048&w=is&k=20&c=CRcBuI4G8LNsj525IWn63NQbuwGaqSKFZeTxaRatH-k=',
+                      tag: 'Новости',
+                      title: 'МАРАТ ОМАРОВ: «МЫ ОФИЦИАЛЬНО ПОДАЛИ ЗАЯВКУ НА ПРОВЕДЕНИЕ ФИНАЛА ЛИГИ КОНФЕРЕНЦИЙ ИЛИ СУПЕРКУБКА»',
+                      date: '14 июля 2025, 15:30',
+                      likes: 234,
+                      onTap: () {
+                        // обработка нажатия
+                      },
+                    ),
+                    SizedBox(height: 10.h),
+                    NewsCard(
+                      imageUrl: 'https://media.istockphoto.com/id/2200302460/photo/symbolic-soccer-ball-100-kzt-coins-and-100-us-dollar-bills.webp?s=2048x2048&w=is&k=20&c=l52GJbD3waqatHmYwpl6_visKXheUPMNifWr_oo_h8M=',
+                      tag: 'Новости',
+                      title: 'МАРАТ ОМАРОВ: «МЫ ОФИЦИАЛЬНО ПОДАЛИ ЗАЯВКУ НА ПРОВЕДЕНИЕ ФИНАЛА ЛИГИ КОНФЕРЕНЦИЙ ИЛИ СУПЕРКУБКА»',
+                      date: '14 июля 2025, 15:30',
+                      likes: 234,
+                      onTap: () {
+                        // обработка нажатия
+                      },
+                    ),
+                    SizedBox(height: 15.h),
                   ],
                 ),
               ),
@@ -260,65 +314,4 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
-  Widget _buildNewsCard(
-      String title, String subtitle, String imagePath, String keyId) {
-    return Container(
-      key: ValueKey(keyId),
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadowLight,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 60.w,
-            height: 60.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: AppColors.grey200,
-            ),
-            child: const Icon(
-              Icons.image,
-              color: AppColors.grey400,
-              size: 30,
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textSecondary,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

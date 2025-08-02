@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/profile/presentation/pages/edit_account_page.dart';
 import '../../features/profile/presentation/pages/edit_password_page.dart';
 import '../../features/services/presentation/pages/service_product_page.dart';
@@ -41,6 +42,11 @@ class AppRouter {
         path: AppRouteConstants.EditPasswordPagePath,
         name: AppRouteConstants.EditPasswordPageName,
         builder: (context, state) => const EditPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.BlogListPagePath,
+        name: AppRouteConstants.BlogListPageName,
+        builder: (context, state) => const BlogListPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

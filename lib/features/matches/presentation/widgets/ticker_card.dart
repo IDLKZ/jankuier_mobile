@@ -9,6 +9,9 @@ class TicketCard extends StatelessWidget {
   final String team2LogoUrl;
   final VoidCallback? onBuyPressed;
   final VoidCallback? onMyTicketPressed;
+  final double horizontalMargin;
+  final double verticalMargin;
+  final double padding;
 
   const TicketCard({
     super.key,
@@ -18,15 +21,18 @@ class TicketCard extends StatelessWidget {
     required this.team2Name,
     required this.team1LogoUrl,
     required this.team2LogoUrl,
+    this.horizontalMargin = 10,
+    this.verticalMargin = 10,
+    this.padding = 16,
     this.onBuyPressed,
-    this.onMyTicketPressed,
+    this.onMyTicketPressed
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: verticalMargin),
+      padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),

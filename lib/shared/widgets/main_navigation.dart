@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
+import '../../features/activity/presentation/pages/activity_page.dart';
 import 'custom_navbar.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/matches/presentation/pages/matches_page.dart';
 import '../../features/services/presentation/pages/services_page.dart';
-import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 
 class MainNavigation extends StatefulWidget {

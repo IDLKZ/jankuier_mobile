@@ -14,35 +14,38 @@ class BestMomentsWidget extends StatelessWidget {
         CarouselSlider.builder(
           itemCount: images.length,
           itemBuilder: (context, index, _) {
-            return Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 150.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: AssetImage(images[index]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  child: Container(
+            return Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150.h,
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(8.r),
+                      image: DecorationImage(
+                        image: AssetImage(images[index]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Center(
-                  child: Icon(
-                    Icons.play_arrow,
-                    size: 50.sp,
-                    color: Colors.white,
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
                   ),
-                )
-              ],
+                  Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 50.sp,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
             );
           },
           options: CarouselOptions(

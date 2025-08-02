@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../widgets/fifa_rating.dart';
@@ -50,14 +51,8 @@ class _MatchesPageState extends State<MatchesPage> {
             child: ListView(
               children: [
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Ваши билеты',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: MainTitleWidget(title: 'Ваши билеты'),
                 ),
                 TicketCard(
                   league: "Лига чемпионов",
