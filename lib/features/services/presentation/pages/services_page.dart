@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class ServicesPage extends StatelessWidget {
   const ServicesPage({super.key});
 
@@ -8,7 +10,7 @@ class ServicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PagesCommonAppBar(
-        title: "Сервисы",
+        title: AppLocalizations.of(context)!.services,
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
       ),

@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
+import 'l10n/app_localizations.dart';
 import 'shared/theme/app_theme.dart';
 
 void main() async {
@@ -46,13 +47,16 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         routerConfig: AppRouter.router,
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        locale: Locale("ru"),
         supportedLocales: const [
           Locale('en', 'US'),
           Locale('ru', 'RU'),
+          Locale('kk', 'KZ'),
         ],
       ),
     );
