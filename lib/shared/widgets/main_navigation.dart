@@ -19,11 +19,11 @@ class _MainNavigationState extends State<MainNavigation> {
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0); // "Матчи" по дефолту
 
   List<CustomNavBarScreen> _buildScreens() => [
-    CustomNavBarScreen(screen: HomePage()),
-    CustomNavBarScreen(screen: MatchesPage()),
-    CustomNavBarScreen(screen: ServicesPage()),
-    CustomNavBarScreen(screen: ActivityPage()),
-    CustomNavBarScreen(screen: ProfilePage()),
+    const CustomNavBarScreen(screen: HomePage()),
+    const CustomNavBarScreen(screen: MatchesPage()),
+    const CustomNavBarScreen(screen: ServicesPage()),
+    const CustomNavBarScreen(screen: ActivityPage()),
+    const CustomNavBarScreen(screen: ProfilePage()),
   ];
 
   List<PersistentBottomNavBarItem> _navBarsItems() => [

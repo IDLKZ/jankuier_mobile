@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/constants/app_colors.dart';
 import '../../features/tasks/domain/entities/task.dart';
 
 class AppTheme {
-  static const Color _primaryColor = Color(0xFF2196F3);
-  static const Color _secondaryColor = Color(0xFF03DAC6);
-  static const Color _errorColor = Color(0xFFB00020);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -12,7 +10,7 @@ class AppTheme {
       brightness: Brightness.light,
       fontFamily: 'Inter',
       colorScheme: ColorScheme.fromSeed(
-        seedColor: _primaryColor,
+        seedColor: AppColors.primary,
         brightness: Brightness.light,
       ),
       appBarTheme: const AppBarTheme(
@@ -40,11 +38,11 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
         ),
         filled: true,
-        fillColor: Colors.grey.shade50,
+        fillColor: AppColors.grey50,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: _primaryColor,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
       ),
     );
   }
@@ -55,7 +53,7 @@ class AppTheme {
       brightness: Brightness.dark,
       fontFamily: 'Inter',
       colorScheme: ColorScheme.fromSeed(
-        seedColor: _primaryColor,
+        seedColor: AppColors.primary,
         brightness: Brightness.dark,
       ),
       appBarTheme: const AppBarTheme(
@@ -83,11 +81,11 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
         ),
         filled: true,
-        fillColor: Colors.grey.shade900,
+        fillColor: AppColors.grey900,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: _primaryColor,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
       ),
     );
   }
@@ -95,13 +93,13 @@ class AppTheme {
   static Color getPriorityColor(TaskPriority priority) {
     switch (priority) {
       case TaskPriority.low:
-        return Colors.green;
+        return AppColors.success;
       case TaskPriority.medium:
-        return Colors.orange;
+        return AppColors.warning;
       case TaskPriority.high:
-        return Colors.red;
+        return AppColors.error;
       case TaskPriority.urgent:
-        return Colors.purple;
+        return const Color(0xFF9C27B0); // Purple
     }
   }
 }
