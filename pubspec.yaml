@@ -63,6 +63,7 @@ dependencies:
   path_provider: ^2.1.5
   dartz: ^0.10.1
   persistent_bottom_nav_bar: ^6.2.1
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,7 @@ dev_dependencies:
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   injectable_generator: ^2.4.1
+  flutter_screenutil: ^5.9.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -108,14 +110,54 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-    # - family: Roboto
-    #   fonts:
-    #     - asset: assets/fonts/Roboto-Regular.ttf
-    #     - asset: assets/fonts/Roboto-Bold.ttf
-    #       weight: 700
-    #     - asset: assets/fonts/Roboto-Light.ttf
-    #       weight: 300
+  fonts:
+      - family: Inter
+        fonts:
+          - asset: assets/fonts/Inter/Inter-Thin.otf
+            weight: 100
+          - asset: assets/fonts/Inter/Inter-ThinItalic.otf
+            weight: 100
+            style: italic
+          - asset: assets/fonts/Inter/Inter-ExtraLight.otf
+            weight: 200
+          - asset: assets/fonts/Inter/Inter-ExtraLightItalic.otf
+            weight: 200
+            style: italic
+          - asset: assets/fonts/Inter/Inter-Light.otf
+            weight: 300
+          - asset: assets/fonts/Inter/Inter-LightItalic.otf
+            weight: 300
+            style: italic
+          - asset: assets/fonts/Inter/Inter-Regular.otf
+            weight: 400
+          - asset: assets/fonts/Inter/Inter-Italic.otf
+            weight: 400
+            style: italic
+          - asset: assets/fonts/Inter/Inter-Medium.otf
+            weight: 500
+          - asset: assets/fonts/Inter/Inter-MediumItalic.otf
+            weight: 500
+            style: italic
+          - asset: assets/fonts/Inter/Inter-SemiBold.otf
+            weight: 600
+          - asset: assets/fonts/Inter/Inter-SemiBoldItalic.otf
+            weight: 600
+            style: italic
+          - asset: assets/fonts/Inter/Inter-Bold.otf
+            weight: 700
+          - asset: assets/fonts/Inter/Inter-BoldItalic.otf
+            weight: 700
+            style: italic
+          - asset: assets/fonts/Inter/Inter-ExtraBold.otf
+            weight: 800
+          - asset: assets/fonts/Inter/Inter-ExtraBoldItalic.otf
+            weight: 800
+            style: italic
+          - asset: assets/fonts/Inter/Inter-Black.otf
+            weight: 900
+          - asset: assets/fonts/Inter/Inter-BlackItalic.otf
+            weight: 900
+            style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

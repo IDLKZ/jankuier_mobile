@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
 class ServicesPage extends StatelessWidget {
   const ServicesPage({super.key});
@@ -6,10 +7,7 @@ class ServicesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Сервисы'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: PagesCommonAppBar(),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
