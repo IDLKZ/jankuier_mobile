@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double commonHeight;
   final String title;
   final IconData actionIcon;
   final VoidCallback onActionTap;
+  final IconData? leadingIcon;
 
   const PagesCommonAppBar({
     super.key,
     this.commonHeight = 100,
+    this.leadingIcon,
     required this.title,
     required this.actionIcon,
     required this.onActionTap,
@@ -56,14 +59,28 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // 🏷️ Заголовок
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        if (leadingIcon != null) ...[
+                          GestureDetector(
+                            child: Icon(leadingIcon,
+                                size: 20.sp, color: Colors.white),
+                            onTap: () {
+                              context.pop();
+                            },
+                          ),
+                          SizedBox(width: 8.w),
+                        ],
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
 
                     // 🔧 Действие или пустой SizedBox

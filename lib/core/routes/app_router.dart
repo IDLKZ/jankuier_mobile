@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/profile/presentation/pages/edit_account_page.dart';
+import '../../features/profile/presentation/pages/edit_password_page.dart';
+import '../../features/services/presentation/pages/service_product_page.dart';
+import '../../features/services/presentation/pages/service_section_page.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
 import '../../shared/widgets/main_navigation.dart';
+import '../constants/app_route_constants.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -16,6 +21,26 @@ class AppRouter {
         path: '/tasks',
         name: 'tasks',
         builder: (context, state) => const TasksPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.SingleProductPagePath,
+        name: AppRouteConstants.SingleProductPageName,
+        builder: (context, state) => const ServiceProductPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.ServiceSectionSinglePagePath,
+        name: AppRouteConstants.ServiceSectionSinglePageName,
+        builder: (context, state) => const ServiceSectionSinglePage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.EditAccountPagePath,
+        name: AppRouteConstants.EditAccountPageName,
+        builder: (context, state) => const EditAccountPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.EditPasswordPagePath,
+        name: AppRouteConstants.EditPasswordPageName,
+        builder: (context, state) => const EditPasswordPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
@@ -51,4 +76,4 @@ class AppRouter {
       ),
     ),
   );
-} 
+}

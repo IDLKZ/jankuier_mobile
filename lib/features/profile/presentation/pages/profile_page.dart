@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_route_constants.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../widgets/edit_profile_widget.dart';
 
@@ -20,16 +22,15 @@ class ProfilePage extends StatelessWidget {
           // Открыть выбор аватара
         },
         onPersonalDataTap: () {
-          // Навигация к личным данным
+          context.push(AppRouteConstants.EditAccountPagePath);
         },
         onSecurityTap: () {
-          // Навигация к безопасности
+          context.push(AppRouteConstants.EditPasswordPagePath);
         },
         onLogout: () {
           // Логаут
         },
-      )
-      ,
+      ),
     );
   }
 }

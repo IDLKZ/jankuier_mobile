@@ -35,7 +35,7 @@ class ShopBannerProduct extends StatelessWidget {
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                 ),
               ),
             ),
@@ -62,6 +62,7 @@ class ShopBannerProduct extends StatelessWidget {
                       Text(
                         subtitle,
                         style: TextStyle(
+                          fontFamily: "Inter",
                           fontSize: 12.sp,
                           color: Colors.white,
                         ),

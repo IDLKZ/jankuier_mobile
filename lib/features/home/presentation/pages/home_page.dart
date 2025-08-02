@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:jankuier_mobile/features/home/presentation/widgets/best_moments_widget.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../matches/presentation/widgets/matches_card.dart';
+import '../../../services/presentation/widgets/product_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -44,8 +46,9 @@ class HomePage extends StatelessWidget {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 40.h)
-                          .copyWith(bottom: 20.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 40.h)
+                              .copyWith(bottom: 20.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -58,10 +61,9 @@ class HomePage extends StatelessWidget {
                                 height: 50,
                                 decoration: const BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage('assets/images/logo_white.png'),
-                                        fit: BoxFit.fill
-                                    )
-                                ),
+                                        image: AssetImage(
+                                            'assets/images/logo_white.png'),
+                                        fit: BoxFit.fill)),
                               ),
                               const SizedBox(width: 10),
                               Text(
@@ -88,7 +90,8 @@ class HomePage extends StatelessWidget {
                                 child: IconButton(
                                   icon: Icon(Icons.notifications_none,
                                       size: 30,
-                                      color: Colors.white.withValues(alpha: 0.7)),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.7)),
                                   onPressed: () {
                                     // notification action
                                   },
@@ -101,24 +104,26 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Carousel Slider - positioned to overlap header
             Transform.translate(
               offset: Offset(0, -80.h), // Move up to overlap header
               child: CarouselSlider(
-              options: CarouselOptions(
-                height: 180.h, // Increased height to accommodate ActiveMatchCard
-                enlargeCenterPage: true,
-                autoPlay: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                viewportFraction: 0.85, // Slightly increased for better visibility
-              ),
-              items: _buildCarouselItems(),
+                options: CarouselOptions(
+                  height:
+                      180.h, // Increased height to accommodate ActiveMatchCard
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: true,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  viewportFraction:
+                      0.85, // Slightly increased for better visibility
+                ),
+                items: _buildCarouselItems(),
               ),
             ),
-            
+
             // Additional content for scrolling (moved up to compensate for carousel overlap)
             Transform.translate(
               offset: Offset(0, -120.h),
@@ -155,7 +160,29 @@ class HomePage extends StatelessWidget {
                       'assets/images/news3.jpg',
                       'news_3',
                     ),
-                    SizedBox(height: 100.h), // Extra space for bottom navigation
+                    SizedBox(height: 15.h),
+                    MainTitleWidget(
+                      title: 'Лучшие моменты',
+                      secondTitle: 'Все моменты',
+                      secondColor: Colors.black.withOpacity(0.6),
+                      secondFontSize: 14,
+                    ),
+                    SizedBox(height: 15.h),
+                    BestMomentsWidget(images: [
+                      "assets/images/best_moments_1.png",
+                      "assets/images/best_moments_2.jpg",
+                      "assets/images/best_moments_3.png",
+                    ]),
+                    SizedBox(height: 30.h),
+                    MainTitleWidget(
+                      title: 'Популярные товары',
+                      secondTitle: 'Все товары',
+                      secondColor: Colors.black.withOpacity(0.6),
+                      secondFontSize: 14,
+                    ),
+                    ProductGridCards(
+                      itemsCount: 2,
+                    ),
                   ],
                 ),
               ),
@@ -172,8 +199,10 @@ class HomePage extends StatelessWidget {
         'title': 'Чемпионат мира 2025',
         'team1Name': 'Казахстан',
         'team2Name': 'Уэльс',
-        'team1LogoUrl': 'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
-        'team2LogoUrl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
+        'team1LogoUrl':
+            'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
+        'team2LogoUrl':
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
         'score': '0:0',
         'timer': '47:00',
         'isLive': true
@@ -182,8 +211,10 @@ class HomePage extends StatelessWidget {
         'title': 'Чемпионат мира 2025',
         'team1Name': 'Аргентина',
         'team2Name': 'Бразилия',
-        'team1LogoUrl': 'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
-        'team2LogoUrl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
+        'team1LogoUrl':
+            'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
+        'team2LogoUrl':
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
         'score': '1:0',
         'timer': '54:23',
         'isLive': true
@@ -192,8 +223,10 @@ class HomePage extends StatelessWidget {
         'title': 'Чемпионат мира 2025',
         'team1Name': 'Польша',
         'team2Name': 'Австрия',
-        'team1LogoUrl': 'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
-        'team2LogoUrl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
+        'team1LogoUrl':
+            'https://kff.kz/uploads/images/2018/07/09/5b43518120706_avatar.png',
+        'team2LogoUrl':
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Wales.svg/800px-Flag_of_Wales.svg.png',
         'score': '2:2',
         'timer': '77:15',
         'isLive': true
@@ -227,7 +260,8 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
-  Widget _buildNewsCard(String title, String subtitle, String imagePath, String keyId) {
+  Widget _buildNewsCard(
+      String title, String subtitle, String imagePath, String keyId) {
     return Container(
       key: ValueKey(keyId),
       padding: EdgeInsets.all(12.w),

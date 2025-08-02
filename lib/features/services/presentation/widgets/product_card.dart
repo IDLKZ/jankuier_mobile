@@ -1,14 +1,18 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/constants/app_route_constants.dart';
 
 class ProductGridCards extends StatelessWidget {
-  const ProductGridCards({super.key});
+  final int itemsCount;
+  const ProductGridCards({super.key, this.itemsCount = 16});
 
   @override
   Widget build(BuildContext context) {
     return DynamicHeightGridView(
-        itemCount: 16,
+        itemCount: itemsCount,
         crossAxisCount: 2,
         crossAxisSpacing: 10.w,
         mainAxisSpacing: 10.h,
@@ -22,7 +26,7 @@ class ProductGridCards extends StatelessWidget {
               price: '4900.00 ₸',
               buttonText: 'Добавить в корзину',
               onPressed: () {
-                // Обработка нажатия
+                context.push(AppRouteConstants.SingleProductPagePath);
               },
             );
           } else {
@@ -32,7 +36,7 @@ class ProductGridCards extends StatelessWidget {
               price: '9900.00 ₸',
               buttonText: 'Добавить в корзину',
               onPressed: () {
-                // Обработка нажатия
+                context.push(AppRouteConstants.SingleProductPagePath);
               },
             );
           }
