@@ -24,10 +24,10 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       flexibleSpace: Container(
         height: commonHeight.h,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(12),
-              bottomRight: Radius.circular(12)),
+              bottomLeft: Radius.circular(12.r),
+              bottomRight: Radius.circular(12.r)),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -50,7 +50,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.w)
+                padding: EdgeInsets.symmetric(horizontal: 20.w)
                     .copyWith(bottom: 20.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

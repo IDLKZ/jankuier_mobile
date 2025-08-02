@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../widgets/shop/shop_main.dart';
+import '../widgets/tob_tabs.dart';
 
-class ServicesPage extends StatelessWidget {
+class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
+
+  @override
+  State<ServicesPage> createState() => _ServicesPageState();
+}
+
+class _ServicesPageState extends State<ServicesPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,28 +37,20 @@ class ServicesPage extends StatelessWidget {
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
       ),
-      body: const Center(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.h),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.settings,
-              size: 64,
-              color: Colors.orange,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Сервисы',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            ServiceTopTabs(controller: _tabController),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  ShopMainWidget(),
+                  const Center(child: Text('Поля')),
+                  const Center(child: Text('Секции')),
+                ],
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Дополнительные сервисы приложения',
-              style: TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
