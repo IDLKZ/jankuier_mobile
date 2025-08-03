@@ -23,18 +23,18 @@ class EditAccountForm extends StatelessWidget {
               ? _SectionContainer(
                   title: 'Поменять пароль',
                   children: [
-                    _LabeledTextField(
+                    const _LabeledTextField(
                         label: 'Старый пароль', hint: 'Введите старый пароль'),
-                    _LabeledTextField(
+                    const _LabeledTextField(
                         label: 'Новый пароль', hint: 'Введите новый пароль'),
-                    _LabeledTextField(
+                    const _LabeledTextField(
                         label: 'Повторите новый пароль',
                         hint: 'Введите новый пароль'),
                     SizedBox(height: 12.h),
                     _PrimaryButton(title: 'Сменить пароль', onPressed: () {}),
                   ],
                 )
-              : SizedBox(),
+              : const SizedBox(),
 
           SizedBox(height: 16.h),
 
@@ -43,12 +43,12 @@ class EditAccountForm extends StatelessWidget {
               ? _SectionContainer(
                   title: 'Поменять почту',
                   children: [
-                    _LabeledTextField(label: 'Почта', hint: 'example@mail.com'),
+                    const _LabeledTextField(label: 'Почта', hint: 'example@mail.com'),
                     SizedBox(height: 12.h),
                     _PrimaryButton(title: 'Сменить почту', onPressed: () {}),
                   ],
                 )
-              : SizedBox(),
+              : const SizedBox(),
 
           SizedBox(height: 16.h),
 
@@ -65,9 +65,9 @@ class EditAccountForm extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.person_outline, color: Colors.red),
+                        const Icon(Icons.person_outline, color: Colors.red),
                         SizedBox(width: 8.w),
-                        Text(
+                        const Text(
                           'Удалить аккаунт',
                           style: TextStyle(color: Colors.red),
                         ),
@@ -75,7 +75,7 @@ class EditAccountForm extends StatelessWidget {
                     ),
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
     );
@@ -132,6 +132,7 @@ class _LabeledTextField extends StatelessWidget {
           SizedBox(height: 4.h),
           TextField(
             decoration: InputDecoration(
+              fillColor: Colors.white,
               hintText: hint,
               isDense: true,
               contentPadding:

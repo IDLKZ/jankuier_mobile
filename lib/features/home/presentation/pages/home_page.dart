@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
           children: [
             // Header with logo, slogan and notification
             SizedBox(
-              height: 210.h,
+              height: 240.h,
               child: Stack(
                 children: [
                   Container(
@@ -116,7 +116,7 @@ class HomePage extends StatelessWidget {
                   ),
                   // Carousel Slider - positioned to overlap header
                   Transform.translate(
-                    offset: Offset(0, 70.h),
+                    offset: Offset(0, 90.h),
                     child: CarouselSlider(
                       options: CarouselOptions(
                         height:
@@ -126,8 +126,7 @@ class HomePage extends StatelessWidget {
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enableInfiniteScroll: true,
                         autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                        viewportFraction:
-                        0.95, // Slightly increased for better visibility
+                        viewportFraction: 1, // Slightly increased for better visibility
                       ),
                       items: _buildCarouselItems(),
                     ),
@@ -142,7 +141,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 30.h),
-                  const MainTitleWidget(title: 'Ближайшие матчи', secondTitle: 'Все билеты', secondFontSize: 12,),
+                  MainTitleWidget(title: 'Ближайшие матчи', secondTitle: 'Все билеты', secondFontSize: 12, secondColor: Colors.black.withValues(alpha: 0.5),),
                   TicketCard(
                     horizontalMargin: 2,
                     league: "Лига чемпионов",
@@ -169,10 +168,11 @@ class HomePage extends StatelessWidget {
                       );
                     },
                   ),
+                  
                   MainTitleWidget(
                     title: 'Прошедшие матчи',
                     secondTitle: 'Все матчи',
-                    secondColor: Colors.black.withOpacity(0.6),
+                    secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
                   ),
                   const MatchResultCard(
@@ -191,7 +191,7 @@ class HomePage extends StatelessWidget {
                   MainTitleWidget(
                     title: 'Лучшие моменты',
                     secondTitle: 'Все моменты',
-                    secondColor: Colors.black.withOpacity(0.6),
+                    secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
                   ),
                   SizedBox(height: 15.h),
@@ -200,20 +200,21 @@ class HomePage extends StatelessWidget {
                     "assets/images/best_moments_2.jpg",
                     "assets/images/best_moments_3.png",
                   ]),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 15.h),
                   MainTitleWidget(
                     title: 'Популярные товары',
                     secondTitle: 'Все товары',
-                    secondColor: Colors.black.withOpacity(0.6),
+                    secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
                   ),
                   const ProductGridCards(
                     itemsCount: 2,
                   ),
+                  SizedBox(height: 15.h),
                   MainTitleWidget(
                     title: 'Обсуждение',
                     secondTitle: 'Все новости',
-                    secondColor: Colors.black.withOpacity(0.6),
+                    secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
                     onTap: () {context.push(AppRouteConstants.BlogListPagePath);},
                   ),

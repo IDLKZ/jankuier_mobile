@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
 class EditProfilePage extends StatelessWidget {
   final String userName;
@@ -27,21 +29,15 @@ class EditProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Редактировать профиль",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                const MainTitleWidget(title: 'Редактировать профиль'),
                 const SizedBox(height: 20),
                 // Avatar + Name Card
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 26),
+                  padding: EdgeInsets.symmetric(vertical: 26.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(18.r),
                   ),
                   child: Column(
                     children: [
@@ -50,8 +46,8 @@ class EditProfilePage extends StatelessWidget {
                         child: Container(
                           width: 70,
                           height: 70,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF6F7F9),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF6F7F9),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -64,29 +60,30 @@ class EditProfilePage extends StatelessWidget {
                       const SizedBox(height: 12),
                       Text(
                         userName,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
+                          color: Colors.black
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 // Личные данные
                 _ProfileTile(
                   icon: Icons.description_outlined,
                   text: "Личные данные",
                   onTap: onPersonalDataTap,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 // Безопасность
                 _ProfileTile(
                   icon: Icons.lock_outline,
                   text: "Безопасность",
                   onTap: onSecurityTap,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 // Выход
                 GestureDetector(
                   onTap: onLogout,
@@ -98,14 +95,14 @@ class EditProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
-                      children: const [
-                        Icon(Icons.logout, color: Color(0xFFFF4C4C)),
-                        SizedBox(width: 12),
+                      children: [
+                        const Icon(Icons.logout, color: Color(0xFFFF4C4C)),
+                        SizedBox(width: 12.w),
                         Text(
                           "Выход",
                           style: TextStyle(
-                            color: Color(0xFFFF4C4C),
-                            fontSize: 16,
+                            color: const Color(0xFFFF4C4C),
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                           ),
                         )

@@ -28,6 +28,7 @@ class QrDisplayDialog extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 17,
+                color: Colors.black
               ),
               textAlign: TextAlign.center,
             ),

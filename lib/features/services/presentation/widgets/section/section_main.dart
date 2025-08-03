@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_route_constants.dart';
 import '../section_card.dart';
 
@@ -18,7 +19,7 @@ class SectionMain extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(
+              const Expanded(
                 child: MainTitleWidget(title: "Запись в секцию"),
               ),
               SizedBox(
@@ -30,7 +31,7 @@ class SectionMain extends StatelessWidget {
                   child: Icon(
                     Icons.filter_list,
                     size: 20.w,
-                    color: Color(0xFF0148CA),
+                    color: AppColors.primary,
                   ),
                 ),
               ),

@@ -44,6 +44,7 @@ class MatchResultCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
+              color: Colors.black
             ),
           ),
           const SizedBox(height: 14),
@@ -58,6 +59,7 @@ class MatchResultCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -80,6 +82,7 @@ class MatchResultCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -87,7 +90,7 @@ class MatchResultCard extends StatelessWidget {
                     date,
                     style: const TextStyle(
                       fontSize: 13,
-                      color: Colors.grey,
+                      color: Colors.black,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -102,6 +105,7 @@ class MatchResultCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black
                     ),
                   ),
                   const SizedBox(height: 4),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../core/constants/app_colors.dart';
+
 class FieldCard extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -50,6 +52,7 @@ class FieldCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
+              color: Colors.black
             ),
           ),
           SizedBox(height: 2.h),
@@ -113,14 +116,14 @@ class FieldCard extends StatelessWidget {
                                   size: size,
                                   duration: duration,
                                   capacity: capacity,
-                                  times: [
+                                  times: const [
                                     '17:00',
                                     '18:30',
                                     '20:00',
                                     '21:30',
                                     '23:00'
                                   ],
-                                  prices: [
+                                  prices: const [
                                     [
                                       'Занято',
                                       'Занято',
@@ -154,7 +157,7 @@ class FieldCard extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0247C3),
+                    backgroundColor: AppColors.primary,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.r),
@@ -256,7 +259,7 @@ class FieldBookingCard extends StatelessWidget {
                 // 📋 Заголовок
                 Text(title,
                     style: TextStyle(
-                        fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                        fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black)),
                 SizedBox(height: 2.h),
                 Text(subtitle,
                     style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
@@ -277,7 +280,7 @@ class FieldBookingCard extends StatelessWidget {
                 // 🕒 Таблица времени
                 Text('Выберите время',
                     style: TextStyle(
-                        fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                        fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black)),
                 SizedBox(height: 8.h),
                 Container(
                   width: double.infinity,

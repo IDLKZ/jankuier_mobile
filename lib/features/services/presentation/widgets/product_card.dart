@@ -68,7 +68,7 @@ class ProductCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
       ),
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(8.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -87,6 +87,7 @@ class ProductCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
+              color: Colors.black
             ),
           ),
           SizedBox(height: 4.h),

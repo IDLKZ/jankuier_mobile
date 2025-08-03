@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
 import '../../domain/entities/Achievement.dart';
 import '../../domain/entities/Leader.dart';
@@ -17,27 +19,23 @@ class ActivityPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: const Color(0xFFF6F7F9),
+    return SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
             const Padding(
               padding: EdgeInsets.only(top: 0, left: 16, right: 16),
-              child: Text(
-                'Активность',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
+              child: MainTitleWidget(title: 'Активность'),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             // Card: Посещенных матчей
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(18.r),
                 gradient: const LinearGradient(
                   colors: [
                     Color(0xFF166CFF),
@@ -48,7 +46,7 @@ class ActivityPageWidget extends StatelessWidget {
                 ),
               ),
               child: SizedBox(
-                height: 180,
+                height: 180.h,
                 width: double.infinity,
                 child: Stack(
                   children: [
@@ -73,19 +71,19 @@ class ActivityPageWidget extends StatelessWidget {
                             width: 100,
                             height: 100,
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4.h),
                           Text(
                             '$visitedMatches',
-                            style: const TextStyle(
-                              fontSize: 32,
+                            style: TextStyle(
+                              fontSize: 32.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          const Text(
+                          Text(
                             'посещённых матчей',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: Colors.white,
                             ),
                           ),
@@ -96,21 +94,15 @@ class ActivityPageWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: 18.h),
             // Мои достижения
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Мои достижения',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: const MainTitleWidget(title: 'Мои достижения'),
+            ),
+            SizedBox(height: 10.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
                 children: List.generate(achievements.length, (i) {
                   final a = achievements[i];
@@ -122,10 +114,10 @@ class ActivityPageWidget extends StatelessWidget {
                           width: 42,
                           height: 42,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           a.title,
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12.sp, color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -134,63 +126,61 @@ class ActivityPageWidget extends StatelessWidget {
                 }),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             // Список лидеров
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Список лидеров',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                children: leaders
-                    .map(
-                      (e) => Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(11),
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          e.position.toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            e.name,
-                            style: const TextStyle(
-                              fontSize: 14,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: const MainTitleWidget(title: 'Список лидеров'),
+            ),
+            SizedBox(height: 10.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: ListView.builder(
+                  itemCount: leaders.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final e = leaders[index];
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 4.h),
+                      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            e.position.toString(),
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              color: Colors.black
                             ),
                           ),
-                        ),
-                        Image.asset(
-                          e.iconAsset,
-                          width: 28,
-                          height: 28,
-                        ),
-                      ],
-                    ),
-                  ),
+                          SizedBox(width: 16.w),
+                          Expanded(
+                            child: Text(
+                              e.name,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black
+                              ),
+                            ),
+                          ),
+                          Image.asset(
+                            e.iconAsset,
+                            width: 28,
+                            height: 28,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 )
-                    .toList(),
-              ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
           ],
         ),
       ),

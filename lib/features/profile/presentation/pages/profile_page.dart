@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/app_colors.dart';
 
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
@@ -11,6 +12,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: "Профиль",
         actionIcon: Icons.notifications_none,

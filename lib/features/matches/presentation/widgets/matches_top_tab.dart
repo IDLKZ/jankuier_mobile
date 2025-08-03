@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 
 class TopTabBar extends StatelessWidget {
@@ -17,8 +18,8 @@ class TopTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      padding: const EdgeInsets.all(6.0),
+      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+      padding: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
         color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(8),
@@ -39,8 +40,8 @@ class TopTabBar extends StatelessWidget {
                 child: Text(
                   tabs[i],
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
                     color: isActive ? Colors.white : AppColors.primary,
                   ),
                 ),

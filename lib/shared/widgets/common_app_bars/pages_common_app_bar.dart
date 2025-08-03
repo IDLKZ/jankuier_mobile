@@ -31,7 +31,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(12.r),
               bottomRight: Radius.circular(12.r)),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [

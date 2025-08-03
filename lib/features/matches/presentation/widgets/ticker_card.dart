@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TicketCard extends StatelessWidget {
   final String league;
@@ -47,33 +48,38 @@ class TicketCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Заголовок
-          Text(
-            league,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 7),
-          // Дата и время
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF0F6FF),
-                  borderRadius: BorderRadius.circular(11),
+              // Заголовок
+              Text(
+                league,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black
                 ),
-                child: Text(
-                  dateTime,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF8CA4C7),
-                    fontWeight: FontWeight.w600,
+              ),
+              // Дата и время
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0F6FF),
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+                    child: Text(
+                      dateTime,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF8CA4C7),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -96,7 +102,7 @@ class TicketCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     team1Name,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black),
                   ),
                 ],
               ),
@@ -123,7 +129,7 @@ class TicketCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     team2Name,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black),
                   ),
                 ],
               ),
@@ -145,10 +151,10 @@ class TicketCard extends StatelessWidget {
                     minimumSize: const Size(0, 44),
                     elevation: 0,
                   ),
-                  child: const Text(
+                  child: Text(
                     "Купить еще",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -166,10 +172,10 @@ class TicketCard extends StatelessWidget {
                     ),
                     minimumSize: const Size(0, 44),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Мой билет",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/services/presentation/widgets/fields/fields_main.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/section/section_main.dart';
 import '../widgets/shop/shop_main.dart';
@@ -34,6 +35,7 @@ class _ServicesPageState extends State<ServicesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.services,
         actionIcon: Icons.notifications_none,
@@ -47,10 +49,10 @@ class _ServicesPageState extends State<ServicesPage>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: [
-                  const ShopMain(),
-                  const FieldsMain(),
-                  const SectionMain(),
+                children: const [
+                  ShopMain(),
+                  FieldsMain(),
+                  SectionMain(),
                 ],
               ),
             ),

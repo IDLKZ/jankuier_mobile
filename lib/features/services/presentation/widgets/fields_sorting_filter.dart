@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/core/constants/app_colors.dart';
 
 class FieldsSortingFilter extends StatelessWidget {
   const FieldsSortingFilter({super.key});
@@ -20,6 +21,7 @@ class FieldsSortingFilter extends StatelessWidget {
         style: TextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
+          color: Colors.black
         ),
       ),
       SizedBox(height: 12.h),
@@ -28,8 +30,8 @@ class FieldsSortingFilter extends StatelessWidget {
           Expanded(
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Color(0xFF0247C3)),
-                foregroundColor: const Color(0xFF0247C3),
+                side: const BorderSide(color: AppColors.primaryLight),
+                foregroundColor: AppColors.primaryLight,
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(3.r),
@@ -76,6 +78,7 @@ class FieldsSortingFilter extends StatelessWidget {
         style: TextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
+          color: Colors.black
         ),
       ),
       SizedBox(height: 12.h),

@@ -14,11 +14,11 @@ class FieldsMain extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FieldsSortingFilter(),
+          const FieldsSortingFilter(),
           SizedBox(
             height: 12.h,
           ),
-          FieldCard(
+          const FieldCard(
             title: "Академия им. С. Квочкина",
             subtitle: "(верхнее поле)",
             imagePath: 'assets/images/fields_1.jpg',
@@ -27,7 +27,7 @@ class FieldsMain extends StatelessWidget {
             capacity: "до 18 человек",
             price: "15 000тг",
           ),
-          FieldCard(
+          const FieldCard(
             title: "Академия им. Льва Яшина",
             subtitle: "(верхнее-правое поле)",
             imagePath: 'assets/images/fields_2.jpg',

@@ -50,6 +50,7 @@ class ActiveMatchCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
+              color: Colors.black
             ),
           ),
           const SizedBox(height: 8),
@@ -73,6 +74,7 @@ class ActiveMatchCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black
                     ),
                   ),
                   if (team1Subtitle != null)
@@ -93,6 +95,7 @@ class ActiveMatchCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -134,6 +137,7 @@ class ActiveMatchCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black
                     ),
                   ),
                   if (team2Subtitle != null)
@@ -150,9 +154,9 @@ class ActiveMatchCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           if (isLive)
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.fiber_manual_record, color: Colors.red, size: 14),
                 SizedBox(width: 5),
                 Text(

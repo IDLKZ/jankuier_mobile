@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class CustomNavBarWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class CustomNavBarWidget extends StatelessWidget {
 
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected) {
     return SizedBox(
-      height: 60,
+      height: 60.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -28,11 +29,11 @@ class CustomNavBarWidget extends StatelessWidget {
             ),
             child: item.icon,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(
             item.title ?? "",
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 10.sp,
               color: isSelected
                   ? (item.activeColorPrimary ?? Colors.black)
                   : (item.inactiveColorPrimary ?? Colors.grey),
@@ -47,7 +48,7 @@ class CustomNavBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65,
+      height: 65.h,
       decoration: const BoxDecoration(
         color: Color(0xFFF6F7F9),
         borderRadius: BorderRadius.only(

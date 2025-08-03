@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../widgets/fifa_rating.dart';
 import '../widgets/matches_card.dart';
@@ -23,12 +25,12 @@ class _MatchesPageState extends State<MatchesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: "Матчи",
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
       ),
-      backgroundColor: const Color(0xFFF6F7F9),
       body: Column(
         children: [
           TopTabBar(
@@ -52,7 +54,7 @@ class _MatchesPageState extends State<MatchesPage> {
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: MainTitleWidget(title: 'Ваши билеты'),
+                  child: MainTitleWidget(title: 'Ваши билеты', fontSize: 18,),
                 ),
                 TicketCard(
                   league: "Лига чемпионов",
@@ -81,13 +83,7 @@ class _MatchesPageState extends State<MatchesPage> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Доступные билеты',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: MainTitleWidget(title: 'Доступные билеты', fontSize: 18,),
                 ),
                 TicketCard(
                   league: "Лига чемпионов",

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
 class ServiceSectionSinglePage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEDF0F9),
+      backgroundColor: AppColors.background,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -32,7 +33,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 400.h,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assets/images/section_1.jpg"),
                       fit: BoxFit.cover,
@@ -60,14 +61,14 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.1),
                                 blurRadius: 0.2,
-                                offset: Offset(1, 2), // Shadow position
+                                offset: const Offset(1, 2), // Shadow position
                               ),
                             ],
                           ),
                           child: Center(
                             child: Icon(
                               Icons.arrow_back_ios_new,
-                              color: Color(0xFF0444B7),
+                              color: const Color(0xFF0444B7),
                               size: 20.sp,
                             ),
                           ),
@@ -98,7 +99,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                               isFavorite == true
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              color: Color(0xFFEE120B),
+                              color: const Color(0xFFEE120B),
                               size: 20.sp,
                             ),
                           ),
@@ -119,8 +120,8 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                   price: 15000,
                   duration: '90 минут',
                   ageRange: 'до 11–14 лет',
-                  times: ['17:00', '18:30', '20:00', '21:30', '23:00'],
-                  prices: [
+                  times: const ['17:00', '18:30', '20:00', '21:30', '23:00'],
+                  prices: const [
                     ['Нет мест', 'Нет мест', 'Нет мест', '15000', '15000'],
                     ['Нет мест', '10/13', '12/13', '10/13', '11/13'],
                     ['Нет мест', 'Нет мест', '12/13', '10/13', '11/13'],
@@ -187,7 +188,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
             widget.description,
             style: TextStyle(
               fontSize: 12.sp,
-              color: Color(0xFF7D7D7E),
+              color: const Color(0xFF7D7D7E),
             ),
           ),
           SizedBox(height: 12.h),
@@ -207,7 +208,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
           SizedBox(height: 12.h),
           // 🕒 Таблица времени
           Text('Выберите время',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black)),
           SizedBox(height: 8.h),
           Container(
             width: double.infinity,
@@ -284,7 +285,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
           SizedBox(height: 12.h),
 
           /// Colors
-          MainTitleWidget(title: "Стоимость"),
+          const MainTitleWidget(title: "Стоимость"),
           SizedBox(height: 6.h),
 
           /// Description
@@ -292,7 +293,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
             '${widget.price} тг/месяц',
             style: TextStyle(
               fontSize: 12.sp,
-              color: Color(0xFF7D7D7E),
+              color: const Color(0xFF7D7D7E),
             ),
           ),
           SizedBox(height: 24.h),
@@ -304,7 +305,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
                 child: ElevatedButton(
                   onPressed: widget.onAddToCart,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0247C3),
+                    backgroundColor: AppColors.primary,
                     padding: EdgeInsets.symmetric(vertical: 10.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.r),

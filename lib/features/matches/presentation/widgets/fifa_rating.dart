@@ -36,6 +36,7 @@ class FifaRankingList extends StatelessWidget {
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 17,
+              color: Colors.black
             ),
           ),
           const SizedBox(height: 10),
@@ -69,6 +70,7 @@ class _RankingRow extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
+                color: Colors.black
               ),
               textAlign: TextAlign.center,
             ),
@@ -90,6 +92,7 @@ class _RankingRow extends StatelessWidget {
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
+              color: Colors.black
             ),
           ),
         ],

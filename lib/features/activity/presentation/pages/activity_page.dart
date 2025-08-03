@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../../domain/entities/Achievement.dart';
 import '../../domain/entities/Leader.dart';
@@ -11,6 +12,7 @@ class ActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: "Активность",
         actionIcon: Icons.notifications_none,
@@ -22,7 +24,7 @@ class ActivityPage extends StatelessWidget {
           Achievement(title: 'Легионер', iconAsset: 'assets/icons/legioner.png'),
           Achievement(title: 'Фанат', iconAsset: 'assets/icons/fan.png'),
           Achievement(title: 'Чемпион', iconAsset: 'assets/icons/cup.png'),
-          Achievement(title: 'Test', iconAsset: 'assets/icons/cup.png'), // для пустого
+          Achievement(title: 'Test', iconAsset: 'assets/icons/cup.png'),
         ],
         leaders: [
           LeaderEntry(position: 1, name: 'Айжан Нурсултанова', iconAsset: 'assets/icons/medal_blue.png'),
