@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
+import '../../features/countries/presentation/pages/countries_page.dart';
 import '../../features/profile/presentation/pages/edit_account_page.dart';
 import '../../features/profile/presentation/pages/edit_password_page.dart';
 import '../../features/services/presentation/pages/service_product_page.dart';
 import '../../features/services/presentation/pages/service_section_page.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../features/tournament/presentation/pages/tournament_selection_page.dart';
 import '../../shared/widgets/main_navigation.dart';
 import '../constants/app_route_constants.dart';
 
@@ -16,7 +18,7 @@ class AppRouter {
       GoRoute(
         path: '/',
         name: 'home',
-        builder: (context, state) => const MainNavigation(),
+        builder: (context, state) => const TournamentSelectionPage(),
       ),
       GoRoute(
         path: '/tasks',
@@ -47,6 +49,11 @@ class AppRouter {
         path: AppRouteConstants.BlogListPagePath,
         name: AppRouteConstants.BlogListPageName,
         builder: (context, state) => const BlogListPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.CountryListPagePath,
+        name: AppRouteConstants.CountryListPageName,
+        builder: (context, state) => const CountriesPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

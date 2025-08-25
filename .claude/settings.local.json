@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter run:*)",
+      "Read(/E:\\Projects/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

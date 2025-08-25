@@ -35,7 +35,15 @@ class DioClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // Add auth token if available
+          // Добавляем язык
+          try {
+            const language = "ru";
+            options.headers['Accept-Language'] = language;
+          } catch (e) {
+            // Ignore
+          }
+
+          // Add auth token if available for main API
           // options.headers['Authorization'] = 'Bearer $token';
           handler.next(options);
         },
@@ -50,4 +58,4 @@ class DioClient {
   }
 
   Dio get dio => _dio;
-} 
+}

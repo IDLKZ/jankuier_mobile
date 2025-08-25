@@ -9,4 +9,6 @@ class AppRouteConstants {
   static const String EditPasswordPageName = "Edit Password";
   static const String BlogListPagePath = "/blog";
   static const String BlogListPageName = "Blog list";
+  static const String CountryListPagePath = "/countries";
+  static const String CountryListPageName = "Country list";
 }

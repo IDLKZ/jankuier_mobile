@@ -42,7 +42,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     final result = await _getTasks(const NoParams());
     
     result.fold(
-      (failure) => emit(TaskError(failure.message)),
+      (failure) => emit(TaskError(failure.message ?? 'Unknown error')),
       (tasks) => emit(TasksLoaded(
         tasks: tasks,
         filteredTasks: tasks,
@@ -63,7 +63,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     final result = await _createTask(params);
     
     result.fold(
-      (failure) => emit(TaskError(failure.message)),
+      (failure) => emit(TaskError(failure.message ?? 'Unknown error')),
       (task) {
         emit(TaskCreated(task));
         add(const LoadTasks());
@@ -77,7 +77,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     final result = await _updateTask(event.task);
     
     result.fold(
-      (failure) => emit(TaskError(failure.message)),
+      (failure) => emit(TaskError(failure.message ?? 'Unknown error')),
       (task) {
         emit(TaskUpdated(task));
         add(const LoadTasks());
@@ -91,7 +91,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     final result = await _deleteTask(event.taskId);
     
     result.fold(
-      (failure) => emit(TaskError(failure.message)),
+      (failure) => emit(TaskError(failure.message ?? 'Unknown error')),
       (_) {
         emit(TaskDeleted(event.taskId));
         add(const LoadTasks());
