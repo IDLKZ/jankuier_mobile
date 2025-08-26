@@ -18,4 +18,16 @@ class SotaApiConstant {
   static String GetScoreTableUrl(int seasonId) {
     return "${BaseURL}public/v1/seasons/$seasonId/score_table/";
   }
+
+  static String GetTeamStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}public/v1/games/$gameId/teams/";
+  }
+
+  static String GetPlayerStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}public/v1/games/$gameId/players/";
+  }
+
+  static String GetMatchLineUpStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}public/v1/games/$gameId/pre_game_lineup/";
+  }
 }

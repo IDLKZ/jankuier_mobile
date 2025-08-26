@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:jankuier_mobile/core/constants/hive_constants.dart';
 import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
@@ -19,9 +20,13 @@ class StandingDSImpl implements StandingDSInterface {
   @override
   Future<List<ScoreTableTeamEntity>> getStandingsTableFromSota() async {
     try {
-      final response = await httpUtils
-          .get(SotaApiConstant.GetScoreTableUrl(SotaApiConstant.SeasonId));
-      final result = ScoreTableTeamListEntity.fromJsonList(response);
+      int? activeSeasonId =
+          await hiveUtils.get<int>(HiveConstant.activeSeasonIdKey);
+      int seasonId = activeSeasonId ?? SotaApiConstant.SeasonId;
+      final response =
+          await httpUtils.get(SotaApiConstant.GetScoreTableUrl(seasonId));
+      final result_raw = ScoreTableResponseEntity.fromJson(response);
+      final result = result_raw.data.table;
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

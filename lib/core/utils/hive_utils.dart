@@ -1,8 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 
 import '../constants/hive_constants.dart';
 import '../di/injection.dart';
 
+@injectable
 class HiveUtils {
   final HiveInterface hive = getIt<HiveInterface>();
 

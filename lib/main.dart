@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
+import 'features/tournament/data/entities/tournament_entity.dart';
 import 'l10n/app_localizations.dart';
 import 'shared/theme/app_theme.dart';
 
@@ -23,6 +24,10 @@ void main() async {
     final directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
   }
+
+  // Register Hive Adapters
+  Hive.registerAdapter(TournamentEntityAdapter());
+  Hive.registerAdapter(SeasonEntityAdapter());
 
   // Initialize HydratedBloc
   if (kIsWeb) {

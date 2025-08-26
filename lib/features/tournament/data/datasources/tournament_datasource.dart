@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:jankuier_mobile/core/common/entities/sota_pagination_entity.dart';
+import 'package:jankuier_mobile/core/constants/hive_constants.dart';
 import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
@@ -20,8 +21,14 @@ class TournamentDSImpl implements TournamentDSInterface {
   Future<SotaPaginationResponse<TournamentEntity>> getCountriesFromSota(
       GetTournamentParameter parameter) async {
     try {
+      DataMap query = parameter.toMap();
+      int? selectedCountryId =
+          await this.hiveUtils.get<int>(HiveConstant.mainCountryIdKey);
+      if (selectedCountryId != null) {
+        query["country"] = selectedCountryId.toString();
+      }
       final response = await httpUtils.get(SotaApiConstant.GetTournamentURL,
-          queryParameters: parameter.toMap());
+          queryParameters: query);
       final result = SotaPaginationResponse<TournamentEntity>.fromJson(
           response, TournamentEntity.fromJson);
       return result;

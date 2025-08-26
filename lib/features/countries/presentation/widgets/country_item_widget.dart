@@ -6,24 +6,28 @@ import '../../data/entities/country_entity.dart';
 
 class CountryItemWidget extends StatelessWidget {
   final CountryEntity country;
+  final VoidCallback? onTap;
 
   const CountryItemWidget({
     super.key,
     required this.country,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(
-          color: Colors.grey[200]!,
-          width: 1,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(
+            color: Colors.grey[200]!,
+            width: 1,
+          ),
         ),
-      ),
       child: Row(
         children: [
           // Флаг страны
@@ -71,6 +75,7 @@ class CountryItemWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

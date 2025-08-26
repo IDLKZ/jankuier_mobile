@@ -13,9 +13,9 @@ class TeamEntity extends Equatable {
 
   factory TeamEntity.fromJson(Map<String, dynamic> json) {
     return TeamEntity(
-      id: json['id'],
-      name: json['name'],
-      score: json['score'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      score: json['score'] ?? 0,
     );
   }
 
@@ -58,16 +58,16 @@ class MatchEntity extends Equatable {
 
   factory MatchEntity.fromJson(Map<String, dynamic> json) {
     return MatchEntity(
-      id: json['id'],
-      date: json['date'],
-      tournamentId: json['tournament_id'],
-      homeTeam: TeamEntity.fromJson(json['home_team']),
-      awayTeam: TeamEntity.fromJson(json['away_team']),
-      tour: json['tour'],
-      hasStats: json['has_stats'],
-      seasonId: json['season_id'],
-      seasonName: json['season_name'],
-      visitors: json['visitors'],
+      id: json['id'] ?? '',
+      date: json['date'] ?? '',
+      tournamentId: json['tournament_id'] ?? 0,
+      homeTeam: TeamEntity.fromJson(json['home_team'] ?? {}),
+      awayTeam: TeamEntity.fromJson(json['away_team'] ?? {}),
+      tour: json['tour'] ?? 0,
+      hasStats: json['has_stats'] ?? false,
+      seasonId: json['season_id'] ?? 0,
+      seasonName: json['season_name'] ?? '',
+      visitors: json['visitors'] ?? 0,
     );
   }
 

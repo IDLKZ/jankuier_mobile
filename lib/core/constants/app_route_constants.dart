@@ -13,4 +13,8 @@ class AppRouteConstants {
   static const String CountryListPageName = "Country list";
   static const String TournamentSelectionPagePath = "/tournament-selection";
   static const String TournamentSelectionPageName = "Tournament Selection Page";
+  static const String StandingsPagePath = "/standings";
+  static const String StandingsPageName = "Standings Page";
+  static const String GameStatPagePath = "/game-stat/";
+  static const String GameStatPageName = "Game Statistics Page";
 }

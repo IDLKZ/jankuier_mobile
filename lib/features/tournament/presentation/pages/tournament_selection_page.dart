@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/main_selection_service.dart';
 import '../../domain/parameters/get_tournament_parameter.dart';
+import '../../data/entities/tournament_entity.dart';
 import '../bloc/get_tournaments/get_tournament_bloc.dart';
 import '../bloc/get_tournaments/get_tournament_event.dart';
 import '../bloc/get_tournaments/get_tournament_state.dart';
@@ -30,12 +34,71 @@ class TournamentSelectionPage extends StatefulWidget {
 class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
   late GetTournamentBloc _bloc;
   GetTournamentParameter _currentParams = const GetTournamentParameter();
+  bool _hasMainCountry = false;
 
   @override
   void initState() {
     super.initState();
     _bloc = getIt<GetTournamentBloc>();
+    _checkMainCountry();
+  }
+
+  Future<void> _checkMainCountry() async {
+    final mainSelectionService = getIt<MainSelectionService>();
+    final hasCountry = await mainSelectionService.hasMainCountry();
+    
+    if (!hasCountry) {
+      if (mounted) {
+        Fluttertoast.showToast(
+          msg: 'Сначала выберите страну',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        context.pop();
+      }
+      return;
+    }
+    
+    setState(() {
+      _hasMainCountry = true;
+    });
     _loadTournaments();
+  }
+
+  Future<void> _onTournamentSelected(TournamentEntity tournament) async {
+    try {
+      final mainSelectionService = getIt<MainSelectionService>();
+      await mainSelectionService.saveMainTournament(tournament);
+      
+      if (!mounted) return;
+      
+      // Get the selected season info for the toast
+      final activeSeason = await mainSelectionService.getActiveSeason();
+      final seasonInfo = activeSeason != null ? ' (Сезон: ${activeSeason.name})' : '';
+      
+      Fluttertoast.showToast(
+        msg: 'Выбран турнир: ${tournament.name}$seasonInfo',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+      );
+      
+      // If there's an external callback, call it
+      if (widget.onTournamentSelected != null) {
+        widget.onTournamentSelected!(tournament.id, tournament.name);
+        context.pop();
+      } else {
+        // Navigate to standings page when no external callback
+        context.go('/standings');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      
+      Fluttertoast.showToast(
+        msg: 'Ошибка сохранения турнира',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
   }
 
   void _loadTournaments() {
@@ -92,25 +155,27 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
 
             // Содержимое
             Expanded(
-              child: BlocBuilder<GetTournamentBloc, GetTournamentStateState>(
-                builder: (context, state) {
-                  if (state is GetTournamentStateLoadingState) {
-                    return const TournamentLoadingGrid();
-                  } else if (state is GetTournamentStateSuccessState) {
+              child: _hasMainCountry 
+                ? BlocBuilder<GetTournamentBloc, GetTournamentStateState>(
+                    builder: (context, state) {
+                      if (state is GetTournamentStateLoadingState) {
+                        return const TournamentLoadingGrid();
+                      } else if (state is GetTournamentStateSuccessState) {
                     return TournamentSelectionGrid(
                       tournaments: state.tournaments,
                       selectedTournamentId: widget.selectedTournamentId,
-                      onTournamentSelected: widget.onTournamentSelected,
+                      onTournamentSelected: _onTournamentSelected,
                     );
                   } else if (state is GetTournamentStateFailedState) {
                     return TournamentErrorWidget(
                       error: state.failureData.message ?? 'Unknown error',
                       onRetry: _loadTournaments,
                     );
-                  }
-                  return const SizedBox();
-                },
-              ),
+                      }
+                      return const SizedBox();
+                    },
+                  )
+                : const TournamentLoadingGrid(),
             ),
           ],
         ),

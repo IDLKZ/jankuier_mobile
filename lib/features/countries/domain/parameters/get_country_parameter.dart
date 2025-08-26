@@ -4,7 +4,7 @@ class GetCountryParameter {
   final int page;
   final int perPage;
 
-  const GetCountryParameter({this.page = 1, this.perPage = 250});
+  const GetCountryParameter({this.page = 112, this.perPage = 1});
 
   DataMap toMap() {
     return {

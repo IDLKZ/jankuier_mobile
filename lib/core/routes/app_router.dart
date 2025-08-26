@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
+import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/countries/presentation/pages/countries_page.dart';
 import '../../features/profile/presentation/pages/edit_account_page.dart';
 import '../../features/profile/presentation/pages/edit_password_page.dart';
 import '../../features/services/presentation/pages/service_product_page.dart';
 import '../../features/services/presentation/pages/service_section_page.dart';
+import '../../features/standings/data/entities/match_entity.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
 import '../../features/tournament/presentation/pages/tournament_selection_page.dart';
 import '../../shared/widgets/main_navigation.dart';
 import '../constants/app_route_constants.dart';
+import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
-        path: '/',
-        name: 'home',
-        builder: (context, state) => const MainNavigation(),
-      ),
+          path: '/',
+          name: 'home',
+          builder: (context, state) => const CountriesPage(),
+          redirect: (BuildContext context, GoRouterState state) async {
+            return await AppRouteMiddleware().mainMiddleware(context, state);
+          }),
       GoRoute(
         path: '/tasks',
         name: 'tasks',
@@ -59,6 +65,27 @@ class AppRouter {
         path: AppRouteConstants.TournamentSelectionPagePath,
         name: AppRouteConstants.TournamentSelectionPageName,
         builder: (context, state) => const TournamentSelectionPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .tournamentMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.StandingsPagePath,
+        name: AppRouteConstants.StandingsPageName,
+        builder: (context, state) => const StandingsPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware().standingMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: "${AppRouteConstants.GameStatPagePath}:gameId",
+        name: AppRouteConstants.GameStatPageName,
+        builder: (context, state) {
+          final match = state.extra as MatchEntity;
+          String gameId = state.pathParameters['gameId'] ?? "0";
+          return GamePage(gameId: gameId, match: match);
+        },
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

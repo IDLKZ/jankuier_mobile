@@ -9,7 +9,7 @@ import 'tournament_card_widget.dart';
 class TournamentSelectionGrid extends StatelessWidget {
   final SotaPaginationResponse<TournamentEntity> tournaments;
   final int? selectedTournamentId;
-  final Function(int tournamentId, String tournamentName)? onTournamentSelected;
+  final Function(TournamentEntity tournament)? onTournamentSelected;
 
   const TournamentSelectionGrid({
     super.key,
@@ -73,7 +73,7 @@ class TournamentSelectionGrid extends StatelessWidget {
             tournament: tournament,
             isSelected: isSelected,
             onTap: () {
-              onTournamentSelected?.call(tournament.id, tournament.name);
+              onTournamentSelected?.call(tournament);
             },
           );
         },

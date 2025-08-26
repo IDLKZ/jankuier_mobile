@@ -1,16 +1,31 @@
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
+part 'tournament_entity.g.dart';
+
+@HiveType(typeId: 1)
 class TournamentEntity extends Equatable {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String createdAt;
+  @HiveField(3)
   final String updatedAt;
+  @HiveField(4)
   final bool isInternational;
+  @HiveField(5)
   final String? image;
+  @HiveField(6)
   final bool showInStats;
+  @HiveField(7)
   final String? lastFullCalculatedAt;
+  @HiveField(8)
   final bool isMale;
+  @HiveField(9)
   final int? sport;
+  @HiveField(10)
   final List<SeasonEntity> seasons;
 
   const TournamentEntity({
@@ -40,7 +55,7 @@ class TournamentEntity extends Equatable {
       isMale: json['is_male'],
       sport: json['sport'],
       seasons: (json['seasons'] as List<dynamic>?)
-              ?.map((e) => SeasonEntity.fromJson(e))
+              ?.map((e) => SeasonEntity.fromJson(Map<String, dynamic>.from(e)))
               .toList() ??
           [],
     );
@@ -78,11 +93,17 @@ class TournamentEntity extends Equatable {
       ];
 }
 
+@HiveType(typeId: 2)
 class SeasonEntity extends Equatable {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final DateTime startDate;
+  @HiveField(3)
   final DateTime endDate;
+  @HiveField(4)
   final List<int> teams;
 
   const SeasonEntity({

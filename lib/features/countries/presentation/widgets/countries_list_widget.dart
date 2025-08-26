@@ -7,10 +7,12 @@ import 'country_item_widget.dart';
 
 class CountriesListWidget extends StatelessWidget {
   final SotaPaginationResponse<CountryEntity> countries;
+  final Function(CountryEntity)? onCountrySelected;
 
   const CountriesListWidget({
     super.key,
     required this.countries,
+    this.onCountrySelected,
   });
 
   @override
@@ -33,7 +35,12 @@ class CountriesListWidget extends StatelessWidget {
       separatorBuilder: (context, index) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         final country = countries.results[index];
-        return CountryItemWidget(country: country);
+        return CountryItemWidget(
+          country: country,
+          onTap: onCountrySelected != null 
+              ? () => onCountrySelected!(country)
+              : null,
+        );
       },
     );
   }
