@@ -9,6 +9,13 @@ class SotaApiConstant {
   // Get Countries
   static const int KZCountryId = 112;
   static const int FootballID = 1;
+  static const int SeasonId = 61;
+  static const int TournamentId = 7;
   static const String GetCountryURL = "${BaseURL}registers/countries/";
   static const String GetTournamentURL = "${BaseURL}registers/tournaments/";
+  static const String GetGamesURL = "${BaseURL}public/v1/games/";
+
+  static String GetScoreTableUrl(int seasonId) {
+    return "${BaseURL}public/v1/seasons/$seasonId/score_table/";
+  }
 }

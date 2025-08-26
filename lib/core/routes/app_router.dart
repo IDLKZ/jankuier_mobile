@@ -18,7 +18,7 @@ class AppRouter {
       GoRoute(
         path: '/',
         name: 'home',
-        builder: (context, state) => const TournamentSelectionPage(),
+        builder: (context, state) => const MainNavigation(),
       ),
       GoRoute(
         path: '/tasks',
@@ -54,6 +54,11 @@ class AppRouter {
         path: AppRouteConstants.CountryListPagePath,
         name: AppRouteConstants.CountryListPageName,
         builder: (context, state) => const CountriesPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.TournamentSelectionPagePath,
+        name: AppRouteConstants.TournamentSelectionPageName,
+        builder: (context, state) => const TournamentSelectionPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

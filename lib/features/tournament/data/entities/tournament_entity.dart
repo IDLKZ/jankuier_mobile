@@ -11,6 +11,7 @@ class TournamentEntity extends Equatable {
   final String? lastFullCalculatedAt;
   final bool isMale;
   final int? sport;
+  final List<SeasonEntity> seasons;
 
   const TournamentEntity({
     required this.id,
@@ -23,20 +24,25 @@ class TournamentEntity extends Equatable {
     this.lastFullCalculatedAt,
     required this.isMale,
     this.sport,
+    required this.seasons,
   });
 
   factory TournamentEntity.fromJson(Map<String, dynamic> json) {
     return TournamentEntity(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
-      isInternational: json['is_international'] as bool,
-      image: json['image'] as String?,
-      showInStats: json['show_in_stats'] as bool,
-      lastFullCalculatedAt: json['last_full_calculated_at'] as String?,
-      isMale: json['is_male'] as bool,
-      sport: json['sport'] as int?,
+      id: json['id'],
+      name: json['name'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      isInternational: json['is_international'],
+      image: json['image'],
+      showInStats: json['show_in_stats'],
+      lastFullCalculatedAt: json['last_full_calculated_at'],
+      isMale: json['is_male'],
+      sport: json['sport'],
+      seasons: (json['seasons'] as List<dynamic>?)
+              ?.map((e) => SeasonEntity.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 
@@ -52,6 +58,7 @@ class TournamentEntity extends Equatable {
       'last_full_calculated_at': lastFullCalculatedAt,
       'is_male': isMale,
       'sport': sport,
+      'seasons': seasons.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -67,5 +74,45 @@ class TournamentEntity extends Equatable {
         lastFullCalculatedAt,
         isMale,
         sport,
+        seasons,
       ];
+}
+
+class SeasonEntity extends Equatable {
+  final int id;
+  final String name;
+  final DateTime startDate;
+  final DateTime endDate;
+  final List<int> teams;
+
+  const SeasonEntity({
+    required this.id,
+    required this.name,
+    required this.startDate,
+    required this.endDate,
+    required this.teams,
+  });
+
+  factory SeasonEntity.fromJson(Map<String, dynamic> json) {
+    return SeasonEntity(
+      id: json['id'],
+      name: json['name'],
+      startDate: DateTime.parse(json['start_date']),
+      endDate: DateTime.parse(json['end_date']),
+      teams: List<int>.from(json['teams']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'start_date': startDate.toIso8601String(),
+      'end_date': endDate.toIso8601String(),
+      'teams': teams,
+    };
+  }
+
+  @override
+  List<Object?> get props => [id, name, startDate, endDate, teams];
 }

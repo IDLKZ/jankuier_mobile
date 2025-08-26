@@ -11,4 +11,6 @@ class AppRouteConstants {
   static const String BlogListPageName = "Blog list";
   static const String CountryListPagePath = "/countries";
   static const String CountryListPageName = "Country list";
+  static const String TournamentSelectionPagePath = "/tournament-selection";
+  static const String TournamentSelectionPageName = "Tournament Selection Page";
 }
