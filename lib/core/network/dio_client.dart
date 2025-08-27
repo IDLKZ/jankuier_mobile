@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:injectable/injectable.dart';
 import '../constants/app_constants.dart';
@@ -10,7 +11,7 @@ class DioClient {
   DioClient() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: AppConstants.baseUrl + AppConstants.apiVersion,
+        baseUrl: ApiConstant.BaseURL,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
