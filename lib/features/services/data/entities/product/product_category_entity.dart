@@ -20,7 +20,7 @@ class ProductCategoryEntity extends Equatable {
 
   const ProductCategoryEntity({
     required this.id,
-    required this.imageId,
+    this.imageId,
     required this.titleRu,
     this.titleKk,
     this.titleEn,
@@ -92,4 +92,12 @@ class ProductCategoryEntity extends Equatable {
         deletedAt,
         image,
       ];
+}
+
+class ProductCategoryListEntity {
+  static List<ProductCategoryEntity> fromJsonList(List<dynamic> jsonList) {
+    return jsonList
+        .map((json) => ProductCategoryEntity.fromJson(json))
+        .toList();
+  }
 }

@@ -10,6 +10,9 @@
       "Bash(flutter pub:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "E:\\c\\Users\\misti\\AppData\\Local\\Pub\\Cache\\hosted"
+    ]
   }
 }

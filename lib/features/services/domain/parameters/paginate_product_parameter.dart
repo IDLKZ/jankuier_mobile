@@ -16,9 +16,9 @@ class PaginateProductParameter {
   final bool? isActive;
   final bool? isShowDeleted;
 
-  const PaginateProductParameter(
-    this.orderBy,
-    this.orderDirection,
+  const PaginateProductParameter({
+    this.orderBy = "updated_at",
+    this.orderDirection = "desc",
     this.categoryIds,
     this.cityIds,
     this.minPrice,
@@ -28,10 +28,10 @@ class PaginateProductParameter {
     this.isRecommended,
     this.isActive,
     this.isShowDeleted,
-    this.perPage,
-    this.page,
+    this.perPage = 12,
+    this.page = 1,
     this.search,
-  );
+  });
 
   /// Используется, если нужна простая сериализация:
   Map<String, String> toFlatMap() {
@@ -92,5 +92,39 @@ class PaginateProductParameter {
     putList("city_ids", cityIds);
 
     return map;
+  }
+
+  PaginateProductParameter copyWith({
+    int? perPage,
+    int? page,
+    String? search,
+    String? orderBy,
+    String? orderDirection,
+    List<int>? categoryIds,
+    List<int>? cityIds,
+    int? minPrice,
+    int? maxPrice,
+    int? gender,
+    bool? isForChildren,
+    bool? isRecommended,
+    bool? isActive,
+    bool? isShowDeleted,
+  }) {
+    return PaginateProductParameter(
+      perPage: perPage ?? this.perPage,
+      page: page ?? this.page,
+      search: search ?? this.search,
+      orderBy: orderBy ?? this.orderBy,
+      orderDirection: orderDirection ?? this.orderDirection,
+      categoryIds: categoryIds ?? this.categoryIds,
+      cityIds: cityIds ?? this.cityIds,
+      minPrice: minPrice ?? this.minPrice,
+      maxPrice: maxPrice ?? this.maxPrice,
+      gender: gender ?? this.gender,
+      isForChildren: isForChildren ?? this.isForChildren,
+      isRecommended: isRecommended ?? this.isRecommended,
+      isActive: isActive ?? this.isActive,
+      isShowDeleted: isShowDeleted ?? this.isShowDeleted,
+    );
   }
 }

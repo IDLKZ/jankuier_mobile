@@ -14,9 +14,9 @@ class AllProductParameter {
   final bool? isActive;
   final bool? isShowDeleted;
 
-  const AllProductParameter(
-    this.orderBy,
-    this.orderDirection,
+  const AllProductParameter({
+    this.orderBy = "updated_at",
+    this.orderDirection = "desc",
     this.categoryIds,
     this.cityIds,
     this.minPrice,
@@ -24,10 +24,10 @@ class AllProductParameter {
     this.gender,
     this.isForChildren,
     this.isRecommended,
-    this.isActive,
-    this.isShowDeleted,
+    this.isActive = true,
+    this.isShowDeleted = false,
     this.search,
-  );
+  });
 
   /// Используется, если нужна простая сериализация:
   Map<String, String> toFlatMap() {

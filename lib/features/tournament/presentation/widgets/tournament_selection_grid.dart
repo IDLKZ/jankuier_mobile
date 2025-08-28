@@ -21,7 +21,9 @@ class TournamentSelectionGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final footballTournaments = tournaments.results
-        .where((tournament) => tournament.sport == SotaApiConstant.FootballID)
+        .where((tournament) =>
+            tournament.sport == SotaApiConstant.FootballID &&
+            tournament.seasons.isNotEmpty)
         .toList();
     if (footballTournaments.isEmpty) {
       return Center(

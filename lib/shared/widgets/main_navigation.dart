@@ -1,91 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-
-import '../../features/activity/presentation/pages/activity_page.dart';
+import 'package:go_router/go_router.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'custom_navbar.dart';
-import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/matches/presentation/pages/matches_page.dart';
-import '../../features/services/presentation/pages/services_page.dart';
-import '../../features/profile/presentation/pages/profile_page.dart';
 
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({Key? key}) : super(key: key);
+class MainNavigation extends StatelessWidget {
+  final Widget child;
 
-  @override
-  State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0); // "Матчи" по дефолту
-
-  List<CustomNavBarScreen> _buildScreens() => [
-        const CustomNavBarScreen(screen: HomePage()),
-        const CustomNavBarScreen(screen: MatchesPage()),
-        const CustomNavBarScreen(screen: ServicesPage()),
-        const CustomNavBarScreen(screen: ActivityPage()),
-        const CustomNavBarScreen(screen: ProfilePage()),
-        const CustomNavBarScreen(screen: StandingsPage()),
-      ];
-
-  List<PersistentBottomNavBarItem> _navBarsItems() => [
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
-          title: "Главная",
-          activeColorPrimary: Colors.black,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.sports_soccer),
-          title: "Матчи",
-          activeColorPrimary: Colors.black,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.dashboard_outlined),
-          title: "Сервисы",
-          activeColorPrimary: Colors.black,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.local_fire_department_outlined),
-          title: "Активность",
-          activeColorPrimary: Colors.black,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.person),
-          title: "Профиль",
-          activeColorPrimary: Colors.black,
-          inactiveColorPrimary: Colors.grey,
-        ),
-      ];
+  const MainNavigation({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView.custom(
-      context,
-      controller: _controller,
-      itemCount: _navBarsItems().length,
-      screens: _buildScreens(),
-      confineToSafeArea: true,
-      backgroundColor: const Color(0xFFF6F7F9), // <-- светлый!
-      hideNavigationBarWhenKeyboardAppears: true,
-      customWidget: CustomNavBarWidget(
-        selectedIndex: _controller.index,
-        items: _navBarsItems(),
-        onItemSelected: (index) {
-          setState(() {
-            _controller.index = index;
-          });
-        },
+    final currentRoute = GoRouterState.of(context).uri.toString();
+    final currentIndex = _getIndexFromRoute(currentRoute);
+    
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: CustomNavBarWidgetV2(
+        navBarConfig: NavBarConfig(
+          selectedIndex: currentIndex,
+          onItemSelected: (index) {
+            // Navigation handled in CustomNavBarWidgetV2
+          },
+          items: _buildNavItems(),
+        ),
       ),
     );
+  }
+
+  int _getIndexFromRoute(String route) {
+    switch (route) {
+      case '/':
+        return 0;
+      case '/matches':
+        return 1;
+      case '/services':
+        return 2;
+      case '/activity':
+        return 3;
+      case '/profile':
+        return 4;
+      default:
+        return 0;
+    }
+  }
+
+  List<ItemConfig> _buildNavItems() {
+    return [
+      ItemConfig(
+        icon: const Icon(Icons.home),
+        title: "Главная",
+        activeColorSecondary: Colors.black,
+      ),
+      ItemConfig(
+        icon: const Icon(Icons.sports_soccer),
+        title: "Матчи",
+        activeColorSecondary: Colors.black,
+      ),
+      ItemConfig(
+        icon: const Icon(Icons.dashboard_outlined),
+        title: "Сервисы",
+        activeColorSecondary: Colors.black,
+      ),
+      ItemConfig(
+        icon: const Icon(Icons.local_fire_department_outlined),
+        title: "Активность",
+        activeColorSecondary: Colors.black,
+      ),
+      ItemConfig(
+        icon: const Icon(Icons.person),
+        title: "Профиль",
+        activeColorSecondary: Colors.black,
+      ),
+    ];
   }
 }

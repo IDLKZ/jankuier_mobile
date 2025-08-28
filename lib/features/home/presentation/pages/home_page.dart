@@ -56,8 +56,8 @@ class HomePage extends StatelessWidget {
                         Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 25.w, vertical: 40.h)
+                            padding: EdgeInsets.symmetric(
+                                    horizontal: 25.w, vertical: 40.h)
                                 .copyWith(bottom: 20.h),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,12 +96,13 @@ class HomePage extends StatelessWidget {
                                       height: 50,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white.withValues(alpha: 0.2)),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.2)),
                                       child: IconButton(
                                         icon: Icon(Icons.notifications_none,
                                             size: 30,
-                                            color:
-                                            Colors.white.withValues(alpha: 0.7)),
+                                            color: Colors.white
+                                                .withValues(alpha: 0.7)),
                                         onPressed: () {
                                           // notification action
                                         },
@@ -119,14 +120,16 @@ class HomePage extends StatelessWidget {
                     offset: Offset(0, 90.h),
                     child: CarouselSlider(
                       options: CarouselOptions(
-                        height:
-                        180.h, // Increased height to accommodate ActiveMatchCard
+                        height: 180
+                            .h, // Increased height to accommodate ActiveMatchCard
                         enlargeCenterPage: true,
                         autoPlay: true,
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enableInfiniteScroll: true,
-                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                        viewportFraction: 1, // Slightly increased for better visibility
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        viewportFraction:
+                            1, // Slightly increased for better visibility
                       ),
                       items: _buildCarouselItems(),
                     ),
@@ -141,15 +144,22 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 30.h),
-                  MainTitleWidget(title: 'Ближайшие матчи', secondTitle: 'Все билеты', secondFontSize: 12, secondColor: Colors.black.withValues(alpha: 0.5),),
+                  MainTitleWidget(
+                    title: 'Ближайшие матчи',
+                    secondTitle: 'Все билеты',
+                    secondFontSize: 12,
+                    secondColor: Colors.black.withValues(alpha: 0.5),
+                  ),
                   TicketCard(
                     horizontalMargin: 2,
                     league: "Лига чемпионов",
                     dateTime: "29 июля | 23:30",
                     team1Name: "Елимай",
                     team2Name: "Арсенал",
-                    team1LogoUrl: "https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png",
-                    team2LogoUrl: "https://upload.wikimedia.org/wikipedia/ru/thumb/5/53/Arsenal_FC.svg/250px-Arsenal_FC.svg.png",
+                    team1LogoUrl:
+                        "https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png",
+                    team2LogoUrl:
+                        "https://upload.wikimedia.org/wikipedia/ru/thumb/5/53/Arsenal_FC.svg/250px-Arsenal_FC.svg.png",
                     onBuyPressed: () {},
                     onMyTicketPressed: () {
                       showModalBottomSheet<void>(
@@ -168,7 +178,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                   ),
-                  
+
                   MainTitleWidget(
                     title: 'Прошедшие матчи',
                     secondTitle: 'Все матчи',
@@ -182,8 +192,10 @@ class HomePage extends StatelessWidget {
                     title: 'Лига чемпионов',
                     team1: 'Елимай',
                     team2: 'Интер',
-                    team1LogoUrl: 'https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png',
-                    team2LogoUrl: 'https://upload.wikimedia.org/wikipedia/ru/thumb/9/93/Inter_Miami_CF_logo.png/250px-Inter_Miami_CF_logo.png',
+                    team1LogoUrl:
+                        'https://upload.wikimedia.org/wikipedia/ru/thumb/4/40/FC_Elimay_Logo.svg/250px-FC_Elimay_Logo.svg.png',
+                    team2LogoUrl:
+                        'https://upload.wikimedia.org/wikipedia/ru/thumb/9/93/Inter_Miami_CF_logo.png/250px-Inter_Miami_CF_logo.png',
                     score: '4:3',
                     date: '29 июля',
                   ),
@@ -207,22 +219,26 @@ class HomePage extends StatelessWidget {
                     secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
                   ),
-                  const ProductGridCards(
-                    itemsCount: 2,
-                  ),
+                  // const ProductGridCards(
+                  //   itemsCount: 2,
+                  // ),
                   SizedBox(height: 15.h),
                   MainTitleWidget(
                     title: 'Обсуждение',
                     secondTitle: 'Все новости',
                     secondColor: Colors.black.withValues(alpha: 0.5),
                     secondFontSize: 12,
-                    onTap: () {context.push(AppRouteConstants.BlogListPagePath);},
+                    onTap: () {
+                      context.push(AppRouteConstants.BlogListPagePath);
+                    },
                   ),
                   SizedBox(height: 15.h),
                   NewsCard(
-                    imageUrl: 'https://media.istockphoto.com/id/578275372/photo/two-boys-soccer-fans-with-flag-of-kazakhstan-on-t-shirt.webp?s=2048x2048&w=is&k=20&c=CRcBuI4G8LNsj525IWn63NQbuwGaqSKFZeTxaRatH-k=',
+                    imageUrl:
+                        'https://media.istockphoto.com/id/578275372/photo/two-boys-soccer-fans-with-flag-of-kazakhstan-on-t-shirt.webp?s=2048x2048&w=is&k=20&c=CRcBuI4G8LNsj525IWn63NQbuwGaqSKFZeTxaRatH-k=',
                     tag: 'Новости',
-                    title: 'МАРАТ ОМАРОВ: «МЫ ОФИЦИАЛЬНО ПОДАЛИ ЗАЯВКУ НА ПРОВЕДЕНИЕ ФИНАЛА ЛИГИ КОНФЕРЕНЦИЙ ИЛИ СУПЕРКУБКА»',
+                    title:
+                        'МАРАТ ОМАРОВ: «МЫ ОФИЦИАЛЬНО ПОДАЛИ ЗАЯВКУ НА ПРОВЕДЕНИЕ ФИНАЛА ЛИГИ КОНФЕРЕНЦИЙ ИЛИ СУПЕРКУБКА»',
                     date: '14 июля 2025, 15:30',
                     likes: 234,
                     onTap: () {
@@ -304,5 +320,4 @@ class HomePage extends StatelessWidget {
       );
     }).toList();
   }
-
 }

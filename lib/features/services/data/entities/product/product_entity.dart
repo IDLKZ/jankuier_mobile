@@ -72,9 +72,9 @@ class ProductEntity extends Equatable {
       descriptionEn: json['description_en'],
       value: json['value'],
       sku: json['sku'],
-      basePrice: (json['base_price'] as num).toDouble(),
+      basePrice: double.parse(json['base_price'].toString()),
       oldPrice: json['old_price'] != null
-          ? (json['old_price'] as num).toDouble()
+          ? double.parse(json['old_price'].toString())
           : null,
       gender: json['gender'],
       isForChildren: json['is_for_children'],
@@ -149,4 +149,10 @@ class ProductEntity extends Equatable {
         city,
         category,
       ];
+}
+
+class ProductListEntity {
+  static List<ProductEntity> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => ProductEntity.fromJson(json)).toList();
+  }
 }

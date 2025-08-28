@@ -15,6 +15,14 @@ class Pagination<T> {
     required this.items,
   });
 
+  // Полезные геттеры
+  bool get isFirstPage => currentPage == 1;
+  bool get isLastPage => currentPage == lastPage;
+  bool get hasNextPage => currentPage < lastPage;
+  bool get hasPreviousPage => currentPage > 1;
+  int get nextPage => hasNextPage ? currentPage + 1 : currentPage;
+  int get previousPage => hasPreviousPage ? currentPage - 1 : currentPage;
+
   factory Pagination.fromJson(
     Map<String, dynamic> json,
     T Function(Map<String, dynamic>) fromJsonT,

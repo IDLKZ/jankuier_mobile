@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:go_router/go_router.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-class CustomNavBarWidget extends StatelessWidget {
-  final int selectedIndex;
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
+class CustomNavBarWidgetV2 extends StatelessWidget {
+  final NavBarConfig navBarConfig;
 
-  const CustomNavBarWidget({
+  const CustomNavBarWidgetV2({
     Key? key,
-    required this.selectedIndex,
-    required this.items,
-    required this.onItemSelected,
+    required this.navBarConfig,
   }) : super(key: key);
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected) {
+  Widget _buildItem(ItemConfig item, bool isSelected) {
     return SizedBox(
       height: 60.h,
       child: Column(
@@ -23,9 +20,7 @@ class CustomNavBarWidget extends StatelessWidget {
           IconTheme(
             data: IconThemeData(
               size: 24,
-              color: isSelected
-                  ? (item.activeColorPrimary ?? Colors.black)
-                  : (item.inactiveColorPrimary ?? Colors.grey),
+              color: isSelected ? (Colors.black) : (Colors.grey),
             ),
             child: item.icon,
           ),
@@ -34,9 +29,7 @@ class CustomNavBarWidget extends StatelessWidget {
             item.title ?? "",
             style: TextStyle(
               fontSize: 10.sp,
-              color: isSelected
-                  ? (item.activeColorPrimary ?? Colors.black)
-                  : (item.inactiveColorPrimary ?? Colors.grey),
+              color: isSelected ? (Colors.black) : (Colors.grey),
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
@@ -50,29 +43,42 @@ class CustomNavBarWidget extends StatelessWidget {
     return Container(
       height: 65.h,
       decoration: const BoxDecoration(
-        color: Color(0xFFF6F7F9),
+        color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: items.asMap().entries.map((entry) {
-          final idx = entry.key;
-          final item = entry.value;
-          return Expanded(
-            child: Material(
-              color: Colors.transparent,
-              child: GestureDetector(
-                onTap: () => onItemSelected(idx),
-                behavior: HitTestBehavior.opaque,
-                child: _buildItem(item, selectedIndex == idx),
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: navBarConfig.items.asMap().entries.map((entry) {
+            final idx = entry.key;
+            final item = entry.value;
+            final isSelected = idx == navBarConfig.selectedIndex;
+
+            return Expanded(
+              child: Material(
+                color: Colors.transparent,
+                child: GestureDetector(
+                  onTap: () {
+                    _navigateToTab(context, idx);
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: _buildItem(item, isSelected),
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
+  }
+
+  void _navigateToTab(BuildContext context, int index) {
+    final routes = ['/', '/matches', '/services', '/activity', '/profile'];
+    if (index < routes.length) {
+      context.go(routes[index]);
+    }
   }
 }
