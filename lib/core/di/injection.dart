@@ -8,6 +8,7 @@ import 'package:jankuier_mobile/features/countries/domain/interface/country_inte
 import 'package:jankuier_mobile/features/services/data/repositories/product_repository.dart';
 import 'package:jankuier_mobile/features/services/domain/interface/product_interface.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_bloc.dart';
 import 'package:talker/talker.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import '../../features/countries/domain/use_cases/get_countries_from_sota_case.dart';
@@ -125,6 +126,12 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<RecommendedProductBloc>(
     () => RecommendedProductBloc(
       paginateProductCase: getIt<PaginateProductCase>(),
+    ),
+  );
+
+  getIt.registerFactory<AllProductCategoryBloc>(
+    () => AllProductCategoryBloc(
+      allProductCategoryCase: getIt<AllProductCategoryCase>(),
     ),
   );
 }

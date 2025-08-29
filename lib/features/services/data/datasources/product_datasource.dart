@@ -72,7 +72,8 @@ class ProductDSImpl implements ProductDSInterface {
   Future<List<ProductCategoryEntity>> allProductCategory(
       AllProductCategoryParameter parameter) async {
     try {
-      final response = await httpUtils.get(ApiConstant.GetAllProductsUrl,
+      final response = await httpUtils.get(
+          ApiConstant.GetAllProductCategoriesUrl,
           queryParameters: parameter.toMap());
       final result = ProductCategoryListEntity.fromJsonList(response);
       return result;

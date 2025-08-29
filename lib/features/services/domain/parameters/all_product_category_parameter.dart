@@ -16,12 +16,24 @@ class AllProductCategoryParameter {
   });
 
   DataMap toMap() {
-    return {
-      "search": search,
-      "order_by": orderBy ?? "updated_at",
-      "order_direction": orderDirection ?? "desc",
-      "is_active": isActive ?? true,
-      "isShowDeleted": isActive ?? false,
-    };
+    final map = <String, dynamic>{};
+
+    if (search != null) map["search"] = search;
+    if (orderBy != null) {
+      map["order_by"] = orderBy;
+    } else {
+      map["order_by"] = "updated_at";
+    }
+
+    if (orderDirection != null) {
+      map["order_direction"] = orderDirection;
+    } else {
+      map["order_direction"] = "desc";
+    }
+
+    map["is_active"] = isActive;
+    map["is_show_deleted"] = isShowDeleted;
+
+    return map;
   }
 }
