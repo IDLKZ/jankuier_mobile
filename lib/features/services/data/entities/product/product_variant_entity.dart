@@ -60,7 +60,7 @@ class ProductVariantEntity extends Equatable {
       value: json['value'],
       sku: json['sku'],
       priceDelta: json['price_delta'] != null
-          ? (json['price_delta'] as num).toDouble()
+          ? double.tryParse(json['price_delta'].toString())
           : null,
       stock: json['stock'],
       isActive: json['is_active'],

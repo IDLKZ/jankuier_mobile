@@ -1,5 +1,5 @@
 class AppRouteConstants {
-  static const String SingleProductPagePath = "/product-page";
+  static const String SingleProductPagePath = "/product-page/";
   static const String SingleProductPageName = "Product Page";
   static const String ServiceSectionSinglePagePath = "/section-single-page";
   static const String ServiceSectionSinglePageName = "Single Section Page";

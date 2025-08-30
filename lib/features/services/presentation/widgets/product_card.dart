@@ -35,7 +35,8 @@ class ProductGridCards extends StatelessWidget {
                   price: '${state.products[index].basePrice} ₸',
                   buttonText: 'Добавить в корзину',
                   onPressed: () {
-                    context.push(AppRouteConstants.SingleProductPagePath);
+                    context.push(
+                        "${AppRouteConstants.SingleProductPagePath}${state.products[index].id}");
                   },
                 );
               });

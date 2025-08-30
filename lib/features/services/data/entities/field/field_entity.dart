@@ -1,42 +1,51 @@
 import 'package:equatable/equatable.dart';
-import 'package:jankuier_mobile/features/services/data/entities/product/product_category_entity.dart';
-
 import '../../../../../core/common/entities/city_entity.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 
-class ProductEntity extends Equatable {
+class FieldEntity extends Equatable {
   final int id;
   final int? imageId;
   final int? cityId;
-  final int? categoryId;
+
   final String titleRu;
   final String? titleKk;
   final String? titleEn;
+
   final String? descriptionRu;
   final String? descriptionKk;
   final String? descriptionEn;
+
   final String value;
-  final String sku;
-  final double basePrice;
-  final double? oldPrice;
-  final int stock;
-  final int gender;
-  final bool isForChildren;
-  final bool isRecommended;
+
+  final String? addressRu;
+  final String? addressEn;
+  final String? addressKk;
+
+  final String? latitude;
+  final String? longitude;
+
   final bool isActive;
+  final bool hasCover;
+
+  final String? phone;
+  final String? additionalPhone;
+  final String? email;
+  final String? whatsapp;
+  final String? telegram;
+  final String? instagram;
+  final String? tiktok;
+
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
 
   final FileEntity? image;
   final CityEntity? city;
-  final ProductCategoryEntity? category;
 
-  const ProductEntity({
+  const FieldEntity({
     required this.id,
     this.imageId,
     this.cityId,
-    this.categoryId,
     required this.titleRu,
     this.titleKk,
     this.titleEn,
@@ -44,28 +53,32 @@ class ProductEntity extends Equatable {
     this.descriptionKk,
     this.descriptionEn,
     required this.value,
-    required this.sku,
-    required this.basePrice,
-    this.oldPrice,
-    required this.stock,
-    required this.gender,
-    required this.isForChildren,
-    required this.isRecommended,
-    required this.isActive,
+    this.addressRu,
+    this.addressEn,
+    this.addressKk,
+    this.latitude,
+    this.longitude,
+    this.isActive = true,
+    this.hasCover = false,
+    this.phone,
+    this.additionalPhone,
+    this.email,
+    this.whatsapp,
+    this.telegram,
+    this.instagram,
+    this.tiktok,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
     this.image,
     this.city,
-    this.category,
   });
 
-  factory ProductEntity.fromJson(Map<String, dynamic> json) {
-    return ProductEntity(
+  factory FieldEntity.fromJson(Map<String, dynamic> json) {
+    return FieldEntity(
       id: json['id'],
       imageId: json['image_id'],
       cityId: json['city_id'],
-      categoryId: json['category_id'],
       titleRu: json['title_ru'],
       titleKk: json['title_kk'],
       titleEn: json['title_en'],
@@ -73,16 +86,20 @@ class ProductEntity extends Equatable {
       descriptionKk: json['description_kk'],
       descriptionEn: json['description_en'],
       value: json['value'],
-      sku: json['sku'],
-      basePrice: double.parse(json['base_price'].toString()),
-      oldPrice: json['old_price'] != null
-          ? double.parse(json['old_price'].toString())
-          : null,
-      stock: json['stock'],
-      gender: json['gender'],
-      isForChildren: json['is_for_children'],
-      isRecommended: json['is_recommended'],
-      isActive: json['is_active'],
+      addressRu: json['address_ru'],
+      addressEn: json['address_en'],
+      addressKk: json['address_kk'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      isActive: json['is_active'] ?? true,
+      hasCover: json['has_cover'] ?? false,
+      phone: json['phone'],
+      additionalPhone: json['additional_phone'],
+      email: json['email'],
+      whatsapp: json['whatsapp'],
+      telegram: json['telegram'],
+      instagram: json['instagram'],
+      tiktok: json['tiktok'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       deletedAt: json['deleted_at'] != null
@@ -90,9 +107,6 @@ class ProductEntity extends Equatable {
           : null,
       image: json['image'] != null ? FileEntity.fromJson(json['image']) : null,
       city: json['city'] != null ? CityEntity.fromJson(json['city']) : null,
-      category: json['category'] != null
-          ? ProductCategoryEntity.fromJson(json['category'])
-          : null,
     );
   }
 
@@ -101,7 +115,6 @@ class ProductEntity extends Equatable {
       'id': id,
       'image_id': imageId,
       'city_id': cityId,
-      'category_id': categoryId,
       'title_ru': titleRu,
       'title_kk': titleKk,
       'title_en': titleEn,
@@ -109,19 +122,25 @@ class ProductEntity extends Equatable {
       'description_kk': descriptionKk,
       'description_en': descriptionEn,
       'value': value,
-      'sku': sku,
-      'base_price': basePrice,
-      'old_price': oldPrice,
-      'gender': gender,
-      'is_for_children': isForChildren,
-      'is_recommended': isRecommended,
+      'address_ru': addressRu,
+      'address_en': addressEn,
+      'address_kk': addressKk,
+      'latitude': latitude,
+      'longitude': longitude,
       'is_active': isActive,
+      'has_cover': hasCover,
+      'phone': phone,
+      'additional_phone': additionalPhone,
+      'email': email,
+      'whatsapp': whatsapp,
+      'telegram': telegram,
+      'instagram': instagram,
+      'tiktok': tiktok,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'deleted_at': deletedAt?.toIso8601String(),
       'image': image?.toJson(),
       'city': city?.toJson(),
-      'category': category?.toJson(),
     };
   }
 
@@ -130,7 +149,6 @@ class ProductEntity extends Equatable {
         id,
         imageId,
         cityId,
-        categoryId,
         titleRu,
         titleKk,
         titleEn,
@@ -138,24 +156,30 @@ class ProductEntity extends Equatable {
         descriptionKk,
         descriptionEn,
         value,
-        sku,
-        basePrice,
-        oldPrice,
-        gender,
-        isForChildren,
-        isRecommended,
+        addressRu,
+        addressEn,
+        addressKk,
+        latitude,
+        longitude,
         isActive,
+        hasCover,
+        phone,
+        additionalPhone,
+        email,
+        whatsapp,
+        telegram,
+        instagram,
+        tiktok,
         createdAt,
         updatedAt,
         deletedAt,
         image,
         city,
-        category,
       ];
 }
 
-class ProductListEntity {
-  static List<ProductEntity> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((json) => ProductEntity.fromJson(json)).toList();
+class FieldListEntity {
+  static List<FieldEntity> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => FieldEntity.fromJson(json)).toList();
   }
 }

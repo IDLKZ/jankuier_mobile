@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/product/prod
 import 'package:jankuier_mobile/features/services/presentation/bloc/recommended_product/recommended_product_bloc.dart';
 
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/constants/app_route_constants.dart';
 import '../bloc/recommended_product/recommended_product_state.dart';
 
 class ShopBannerProduct extends StatelessWidget {
@@ -87,7 +89,10 @@ class ShopBannerProduct extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(
+                                  "${AppRouteConstants.SingleProductPagePath}${productEntity.id}");
+                            },
                             child: Text("Купить"),
                           ),
                         ],

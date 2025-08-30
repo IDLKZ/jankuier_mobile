@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/di/injection.dart';
 import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_event.dart';
 import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
@@ -32,7 +37,7 @@ class AppRouter {
             GoRoute(
               path: '/',
               name: 'home',
-              builder: (context, state) => const HomePage(),
+              builder: (context, state) => const CountriesPage(),
               // redirect: (BuildContext context, GoRouterState state) async {
               //   return await AppRouteMiddleware().mainMiddleware(context, state);
               // }
@@ -63,9 +68,19 @@ class AppRouter {
               builder: (context, state) => const ProfilePage(),
             ),
             GoRoute(
-              path: AppRouteConstants.SingleProductPagePath,
+              path: "${AppRouteConstants.SingleProductPagePath}:productId",
               name: AppRouteConstants.SingleProductPageName,
-              builder: (context, state) => const ServiceProductPage(),
+              builder: (context, state) {
+                int productId =
+                    int.tryParse(state.pathParameters['productId'] ?? "0") ?? 0;
+                return BlocProvider(
+                  create: (BuildContext context) {
+                    return getIt<FullProductBloc>()
+                      ..add(GetFullProductEvent(productId));
+                  },
+                  child: ServiceProductPage(productId: productId),
+                );
+              },
             ),
             GoRoute(
               path: AppRouteConstants.ServiceSectionSinglePagePath,

@@ -7,6 +7,7 @@ import 'package:jankuier_mobile/features/countries/data/repositories/country_rep
 import 'package:jankuier_mobile/features/countries/domain/interface/country_interface.dart';
 import 'package:jankuier_mobile/features/services/data/repositories/product_repository.dart';
 import 'package:jankuier_mobile/features/services/domain/interface/product_interface.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_bloc.dart';
 import 'package:talker/talker.dart';
@@ -132,6 +133,12 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<AllProductCategoryBloc>(
     () => AllProductCategoryBloc(
       allProductCategoryCase: getIt<AllProductCategoryCase>(),
+    ),
+  );
+
+  getIt.registerFactory<FullProductBloc>(
+    () => FullProductBloc(
+      getFullProductDetailCase: getIt<GetFullProductDetailCase>(),
     ),
   );
 }
