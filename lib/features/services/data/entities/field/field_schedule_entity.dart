@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'field_party_entity.dart';
-import 'field_party_schedule_settings_entity.dart';
 
 class FieldPartyScheduleEntity extends Equatable {
   final int id;
@@ -21,7 +20,6 @@ class FieldPartyScheduleEntity extends Equatable {
   final DateTime? deletedAt;
 
   final FieldPartyEntity? party;
-  final FieldPartyScheduleSettingsEntity? setting;
 
   const FieldPartyScheduleEntity({
     required this.id,
@@ -37,7 +35,6 @@ class FieldPartyScheduleEntity extends Equatable {
     required this.updatedAt,
     this.deletedAt,
     this.party,
-    this.setting,
   });
 
   factory FieldPartyScheduleEntity.fromJson(Map<String, dynamic> json) {
@@ -59,9 +56,6 @@ class FieldPartyScheduleEntity extends Equatable {
       party: json['party'] != null
           ? FieldPartyEntity.fromJson(json['party'])
           : null,
-      setting: json['setting'] != null
-          ? FieldPartyScheduleSettingsEntity.fromJson(json['setting'])
-          : null,
     );
   }
 
@@ -80,7 +74,6 @@ class FieldPartyScheduleEntity extends Equatable {
       'updated_at': updatedAt.toIso8601String(),
       'deleted_at': deletedAt?.toIso8601String(),
       'party': party?.toJson(),
-      'setting': setting?.toJson(),
     };
   }
 
@@ -99,7 +92,6 @@ class FieldPartyScheduleEntity extends Equatable {
         updatedAt,
         deletedAt,
         party,
-        setting,
       ];
 }
 

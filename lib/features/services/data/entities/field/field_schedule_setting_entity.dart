@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'field_party_entity.dart';
-import 'field_party_schedule_settings_entity.dart';
 
 class FieldPartyScheduleEntity extends Equatable {
   final int id;
