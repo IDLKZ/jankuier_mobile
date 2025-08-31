@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/core/constants/api_constants.dart';
+import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/features/services/data/entities/academy/academy_entity.dart';
 
 class SectionCardWidget extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String subtitle;
-  final String duration;
-  final String ageRange;
-  final String price;
-  final String address;
+  final AcademyEntity entity;
   final VoidCallback onTap;
 
   const SectionCardWidget({
     super.key,
-    required this.imagePath,
-    required this.title,
-    required this.subtitle,
-    required this.duration,
-    required this.ageRange,
-    required this.price,
-    required this.address,
+    required this.entity,
     required this.onTap,
   });
 
@@ -38,18 +29,25 @@ class SectionCardWidget extends StatelessWidget {
           // 🖼 Картинка
           ClipRRect(
             borderRadius: BorderRadius.circular(8.r),
-            child: Image.asset(
-              imagePath,
-              height: 140.h,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: entity.image != null
+                ? Image.network(
+                    ApiConstant.GetImageUrl(entity.image?.filename ?? ""),
+                    height: 140.h,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    FileUtils.LocalProductImage,
+                    height: 140.h,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
           ),
           SizedBox(height: 12.h),
 
           // 🏷 Название и описание
           Text(
-            title,
+            "${entity.titleRu}",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -58,7 +56,7 @@ class SectionCardWidget extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
           Text(
-            subtitle,
+            "${entity.descriptionRu}",
             style: TextStyle(
               fontSize: 12.sp,
               color: Colors.black,
@@ -72,12 +70,12 @@ class SectionCardWidget extends StatelessWidget {
             children: [
               Icon(Icons.access_time, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
-              Text(duration,
+              Text("${entity.averageTrainingTimeInMinute}",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
               SizedBox(width: 12.w),
               Icon(Icons.person, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
-              Text(ageRange,
+              Text("${entity.minAge}-${entity.maxAge} лет",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
             ],
           ),
@@ -89,7 +87,7 @@ class SectionCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                price,
+                "${entity.averagePrice}KZT/месяц",
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
@@ -127,7 +125,7 @@ class SectionCardWidget extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    address,
+                    "${entity.addressRu}",
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: Color(0xFF838383),

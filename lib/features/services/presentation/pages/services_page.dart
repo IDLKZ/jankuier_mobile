@@ -50,9 +50,9 @@ class _ServicesPageState extends State<ServicesPage>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  ShopMain(),
-                  FieldsMain(),
-                  SectionMain(),
+                  ShopMain(key: PageStorageKey('shop')),
+                  FieldsMain(key: PageStorageKey('fields')),
+                  SectionMain(key: PageStorageKey('sections')),
                 ],
               ),
             ),

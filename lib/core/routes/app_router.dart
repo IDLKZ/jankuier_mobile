@@ -7,6 +7,8 @@ import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart'
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_event.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_event.dart';
 import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
@@ -83,9 +85,20 @@ class AppRouter {
               },
             ),
             GoRoute(
-              path: AppRouteConstants.ServiceSectionSinglePagePath,
+              path:
+                  "${AppRouteConstants.ServiceSectionSinglePagePath}:academyId",
               name: AppRouteConstants.ServiceSectionSinglePageName,
-              builder: (context, state) => const ServiceSectionSinglePage(),
+              builder: (context, state) {
+                int academyId =
+                    int.tryParse(state.pathParameters['academyId'] ?? "0") ?? 0;
+                return BlocProvider(
+                  create: (BuildContext context) {
+                    return getIt<GetFullAcademyDetailBloc>()
+                      ..add(GetFullAcademyEvent(academyId));
+                  },
+                  child: ServiceSectionSinglePage(academyId: academyId),
+                );
+              },
             ),
             GoRoute(
               path: AppRouteConstants.EditAccountPagePath,

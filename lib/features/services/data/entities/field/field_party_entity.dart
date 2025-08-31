@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 import 'field_entity.dart';
+import 'field_party_schedule_settings_entity.dart';
 
 class FieldPartyEntity extends Equatable {
   final int id;
@@ -33,6 +34,7 @@ class FieldPartyEntity extends Equatable {
 
   final FileEntity? image;
   final FieldEntity? field;
+  final FieldPartyScheduleSettingsEntity? activeScheduleSetting;
 
   const FieldPartyEntity({
     required this.id,
@@ -57,6 +59,7 @@ class FieldPartyEntity extends Equatable {
     this.deletedAt,
     this.image,
     this.field,
+    this.activeScheduleSetting,
   });
 
   factory FieldPartyEntity.fromJson(Map<String, dynamic> json) {
@@ -85,6 +88,10 @@ class FieldPartyEntity extends Equatable {
           : null,
       image: json['image'] != null ? FileEntity.fromJson(json['image']) : null,
       field: json['field'] != null ? FieldEntity.fromJson(json['field']) : null,
+      activeScheduleSetting: json['active_schedule_setting'] != null
+          ? FieldPartyScheduleSettingsEntity.fromJson(
+              json['active_schedule_setting'])
+          : null,
     );
   }
 
@@ -112,6 +119,7 @@ class FieldPartyEntity extends Equatable {
       'deleted_at': deletedAt?.toIso8601String(),
       'image': image?.toJson(),
       'field': field?.toJson(),
+      'active_schedule_setting': activeScheduleSetting?.toJson(),
     };
   }
 
@@ -139,6 +147,7 @@ class FieldPartyEntity extends Equatable {
         deletedAt,
         image,
         field,
+        activeScheduleSetting,
       ];
 }
 

@@ -14,7 +14,10 @@ class MainTitleWidget extends StatelessWidget {
     this.mainColor = Colors.black,
     this.fontSize = 16,
     this.secondFontSize = 16,
-    required this.title, this.secondTitle, this.secondColor, this.onTap,
+    required this.title,
+    this.secondTitle,
+    this.secondColor,
+    this.onTap,
   });
 
   @override
@@ -23,29 +26,35 @@ class MainTitleWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title,
+            softWrap: true,
             style: TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w700,
               fontSize: fontSize.sp,
               color: mainColor,
             )),
-        if (secondTitle != null) GestureDetector(
-          onTap: onTap,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(secondTitle!,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                    fontSize: secondFontSize.sp,
-                    color: secondColor,
-                  )),
-              Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.black.withOpacity(0.6),)
-            ],
-          ),
-        )
+        if (secondTitle != null)
+          GestureDetector(
+            onTap: onTap,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(secondTitle!,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                      fontSize: secondFontSize.sp,
+                      color: secondColor,
+                    )),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 14,
+                  color: Colors.black.withOpacity(0.6),
+                )
+              ],
+            ),
+          )
       ],
     );
   }

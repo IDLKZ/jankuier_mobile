@@ -32,7 +32,8 @@ class ShopMain extends StatefulWidget {
   State<ShopMain> createState() => _ShopMainState();
 }
 
-class _ShopMainState extends State<ShopMain> {
+class _ShopMainState extends State<ShopMain>
+    with AutomaticKeepAliveClientMixin {
   AllProductCategoryParameter allProductCategoryParameter =
       AllProductCategoryParameter(isActive: true, isShowDeleted: false);
   PaginateProductParameter paginateProductParameter =
@@ -40,9 +41,11 @@ class _ShopMainState extends State<ShopMain> {
   PaginateProductParameter recomendedProductParameter =
       PaginateProductParameter(
           perPage: 1, page: 1, isActive: true, isRecommended: true);
-
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProductBloc>(

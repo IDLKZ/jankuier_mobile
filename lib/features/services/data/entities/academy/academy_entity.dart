@@ -2,6 +2,37 @@ import 'package:equatable/equatable.dart';
 import '../../../../../core/common/entities/city_entity.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 
+class WorkingTimeEntity extends Equatable {
+  final int day;
+  final String start;
+  final String end;
+
+  const WorkingTimeEntity({
+    required this.day,
+    required this.start,
+    required this.end,
+  });
+
+  factory WorkingTimeEntity.fromJson(Map<String, dynamic> json) {
+    return WorkingTimeEntity(
+      day: json['day'],
+      start: json['start'],
+      end: json['end'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'day': day,
+      'start': start,
+      'end': end,
+    };
+  }
+
+  @override
+  List<Object?> get props => [day, start, end];
+}
+
 class AcademyEntity extends Equatable {
   final int id;
   final int? imageId;
@@ -21,7 +52,7 @@ class AcademyEntity extends Equatable {
   final String? addressKk;
   final String? addressEn;
 
-  final List<dynamic> workingTime; // JSON → List<Map<String, dynamic>>
+  final List<WorkingTimeEntity> workingTime;
 
   final bool isActive;
   final int gender; // 0 - оба, 1 - мужской, 2 - женский
@@ -62,7 +93,7 @@ class AcademyEntity extends Equatable {
     this.addressRu,
     this.addressKk,
     this.addressEn,
-    required this.workingTime,
+    this.workingTime = const [],
     this.isActive = true,
     required this.gender,
     required this.minAge,
@@ -99,7 +130,9 @@ class AcademyEntity extends Equatable {
       addressRu: json['address_ru'],
       addressKk: json['address_kk'],
       addressEn: json['address_en'],
-      workingTime: json['working_time'] ?? [],
+      workingTime: (json['working_time'] as List<dynamic>? ?? [])
+          .map((e) => WorkingTimeEntity.fromJson(e))
+          .toList(),
       isActive: json['is_active'] ?? true,
       gender: json['gender'],
       minAge: json['min_age'],
@@ -141,7 +174,7 @@ class AcademyEntity extends Equatable {
       'address_ru': addressRu,
       'address_kk': addressKk,
       'address_en': addressEn,
-      'working_time': workingTime,
+      'working_time': workingTime.map((e) => e.toJson()).toList(),
       'is_active': isActive,
       'gender': gender,
       'min_age': minAge,
