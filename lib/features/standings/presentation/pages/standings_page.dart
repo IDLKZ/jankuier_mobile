@@ -173,7 +173,7 @@ class _StandingsPageState extends State<_StandingsPageView>
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
                 SizedBox(
-                    width: 30.w,
+                    width: 50.w,
                     child: Text("Г",
                         textAlign: TextAlign.center,
                         style: TextStyle(

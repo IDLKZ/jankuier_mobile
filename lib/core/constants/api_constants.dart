@@ -1,7 +1,7 @@
 class ApiConstant {
   //Base URL to Sota
-  static const String BaseURL = "http://10.0.2.2:5000/api/";
-  static const String ImageURL = "http://10.0.2.2:5000/";
+  static const String BaseURL = "http://10.0.2.2:8000/api/";
+  static const String ImageURL = "http://10.0.2.2:8000/";
   //Get Product URL
   static const String PaginateAllProductsUrl = "${BaseURL}product/";
   static const String GetAllProductsUrl = "${BaseURL}product/all/";

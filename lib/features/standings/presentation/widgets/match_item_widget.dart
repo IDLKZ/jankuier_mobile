@@ -63,25 +63,58 @@ class MatchItemWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  width: 25.w,
+                  height: 25.w,
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                   decoration: BoxDecoration(
                     color: _getScoreColor(
                         match.homeTeam.score, match.awayTeam.score),
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(100.r),
                   ),
-                  child: Text(
-                    "${match.homeTeam.score}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
+                  child: Center(
+                    child: Text(
+                      "${match.homeTeam.score}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(width: 16.w),
+                Container(
+                  width: 25.w,
+                  height: 25.w,
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                  decoration: BoxDecoration(
+                    color: _getScoreColor(
+                        match.awayTeam.score, match.homeTeam.score),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${match.awayTeam.score}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: Row(
                     children: [
+                      Expanded(
+                        child: Text(
+                          textAlign: TextAlign.right,
+                          match.awayTeam.name,
+                          style: TextStyle(fontSize: 14.sp),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
                       Container(
                         width: 24.w,
                         height: 24.w,
@@ -95,31 +128,7 @@ class MatchItemWidget extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                       ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: Text(
-                          match.awayTeam.name,
-                          style: TextStyle(fontSize: 14.sp),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
                     ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: _getScoreColor(
-                        match.awayTeam.score, match.homeTeam.score),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Text(
-                    "${match.awayTeam.score}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
                   ),
                 ),
               ],

@@ -72,7 +72,7 @@ class TeamTableItemWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 30.w,
+            width: 50.w,
             child: Text(
               team.goals,
               textAlign: TextAlign.center,
