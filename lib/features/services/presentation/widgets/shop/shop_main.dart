@@ -41,6 +41,8 @@ class _ShopMainState extends State<ShopMain>
   PaginateProductParameter recomendedProductParameter =
       PaginateProductParameter(
           perPage: 1, page: 1, isActive: true, isRecommended: true);
+  final ScrollController scrollController = ScrollController();
+
   @override
   bool get wantKeepAlive => true;
   @override
@@ -61,20 +63,23 @@ class _ShopMainState extends State<ShopMain>
             ..add(GetAllProductCategoryEvent(allProductCategoryParameter)),
         ),
       ],
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
-              child: MainTitleWidget(title: "Магазин"),
-            ),
-            ShopBannerProduct(),
-            ProductCategoryBottomScheet(),
-            ProductGridCards(),
-          ],
-        ),
-      ),
+      child: Builder(builder: (scopedCtx) {
+        return SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: MainTitleWidget(title: "Магазин"),
+              ),
+              ShopBannerProduct(),
+              ProductCategoryBottomScheet(),
+              ProductGridCards(),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

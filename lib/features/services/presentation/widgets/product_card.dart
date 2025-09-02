@@ -3,45 +3,93 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
+import 'package:jankuier_mobile/features/services/domain/parameters/paginate_product_parameter.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
+import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_event.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_state.dart';
 
 import '../../../../core/constants/app_route_constants.dart';
 
-class ProductGridCards extends StatelessWidget {
-  const ProductGridCards({super.key});
+class ProductGridCards extends StatefulWidget {
+  const ProductGridCards({
+    super.key,
+  });
+
+  @override
+  State<ProductGridCards> createState() => _ProductGridCardsState();
+}
+
+class _ProductGridCardsState extends State<ProductGridCards> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductBloc, ProductState>(
+    return BlocConsumer<ProductBloc, ProductState>(
+      listener: (context, state) {},
       builder: (context, state) {
-        if (state is PaginateProductLoadingState) {
-          return CircularProgressIndicator();
-        }
+        // Достаём данные, если они есть
+        List<ProductEntity> items = const [];
+        int totalItems = 0;
+        int currentPage = 1;
+        int? totalPages;
+
         if (state is PaginateProductLoadedState) {
-          return DynamicHeightGridView(
-              itemCount: state.products.length,
+          items = state.products;
+          totalItems = state.pagination.totalItems;
+          currentPage = state.pagination.currentPage;
+          totalPages = state.pagination.totalPages; // если есть
+        }
+
+        // ✅ корректное определение последней страницы
+        final bool isLastPage = totalPages != null
+            ? currentPage >= totalPages!
+            : items.length >= totalItems;
+
+        // Первый лоад первой страницы
+        if (state is PaginateProductLoadingState)
+          return const Center(child: CircularProgressIndicator());
+
+        // Контент
+        return Stack(
+          children: [
+            DynamicHeightGridView(
+              itemCount: items.length,
               crossAxisCount: 2,
               crossAxisSpacing: 10.w,
               mainAxisSpacing: 10.h,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(), // скроллит внешний
               builder: (ctx, index) {
+                final p = items[index];
                 return ProductCard(
-                  imageWidget:
-                      FileUtils.getProductImage(state.products[index].image),
-                  title: "${state.products[index].titleRu}",
-                  price: '${state.products[index].basePrice} ₸',
+                  imageWidget: FileUtils.getProductImage(p.image),
+                  title: p.titleRu ?? '',
+                  price: '${p.basePrice} ₸',
                   buttonText: 'Добавить в корзину',
                   onPressed: () {
                     context.push(
-                        "${AppRouteConstants.SingleProductPagePath}${state.products[index].id}");
+                        "${AppRouteConstants.SingleProductPagePath}${p.id}");
                   },
                 );
-              });
-        }
-        return SizedBox();
+              },
+            ),
+
+            // 🔄 Индикатор "догружаем следующую страницу"
+            if (!isLastPage && state is PaginateProductLoadingState)
+              const Positioned(
+                left: 0,
+                right: 0,
+                bottom: 12,
+                child: Center(child: CircularProgressIndicator()),
+              ),
+          ],
+        );
       },
     );
   }

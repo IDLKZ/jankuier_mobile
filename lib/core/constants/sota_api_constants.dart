@@ -14,6 +14,8 @@ class SotaApiConstant {
   static const String GetCountryURL = "${BaseURL}registers/countries/";
   static const String GetTournamentURL = "${BaseURL}registers/tournaments/";
   static const String GetGamesURL = "${BaseURL}public/v1/games/";
+  static const String GetPublicTournamentURL =
+      "${BaseURL}public/v1/tournaments/";
 
   static String GetScoreTableUrl(int seasonId) {
     return "${BaseURL}public/v1/seasons/$seasonId/score_table/";
