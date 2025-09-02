@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/full_product_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/modification_type_entity.dart';
@@ -211,7 +212,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
         color: AppColors.grey100,
       ),
       child: Image.network(
-        imageUrl,
+        ApiConstant.GetImageUrl(imageUrl),
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
@@ -420,7 +421,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14.r),
                   child: Image.network(
-                    imageUrls[index],
+                    ApiConstant.GetImageUrl(imageUrls[index]),
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Container(
                       color: AppColors.grey200,

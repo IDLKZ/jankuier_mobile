@@ -31,7 +31,7 @@ class SectionCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.r),
             child: entity.image != null
                 ? Image.network(
-                    ApiConstant.GetImageUrl(entity.image?.filename ?? ""),
+                    ApiConstant.GetImageUrl(entity.image?.filePath ?? ""),
                     height: 140.h,
                     width: double.infinity,
                     fit: BoxFit.cover,

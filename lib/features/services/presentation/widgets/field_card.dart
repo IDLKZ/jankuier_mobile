@@ -44,7 +44,7 @@ class FieldCard extends StatelessWidget {
             child: fieldPartyEntity.image != null
                 ? Image.network(
                     ApiConstant.GetImageUrl(
-                        fieldPartyEntity.image?.filename ?? ""),
+                        fieldPartyEntity.image?.filePath ?? ""),
                     width: double.infinity,
                     height: 120.h,
                     fit: BoxFit.cover,
@@ -259,7 +259,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
             child: widget.fieldPartyEntity.image != null
                 ? Image.network(
                     ApiConstant.GetImageUrl(
-                      widget.fieldPartyEntity.image?.filename ?? "",
+                      widget.fieldPartyEntity.image?.filePath ?? "",
                     ),
                     width: double.infinity,
                     height: 120.h,

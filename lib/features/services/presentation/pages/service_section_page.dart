@@ -60,7 +60,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                             image: fullAcademyEntity.academy.image != null
                                 ? NetworkImage(
                                     ApiConstant.GetImageUrl(
-                                      fullAcademyEntity.academy.image!.filename,
+                                      fullAcademyEntity.academy.image!.filePath,
                                     ),
                                   ) as ImageProvider
                                 : const AssetImage(FileUtils.LocalProductImage),
