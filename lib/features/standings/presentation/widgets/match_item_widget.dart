@@ -26,7 +26,7 @@ class MatchItemWidget extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              _formatTime(match.date),
+              _formatDate(match.date),
               style: TextStyle(
                 fontSize: 12.sp,
                 color: Colors.grey[600],
@@ -148,11 +148,21 @@ class MatchItemWidget extends StatelessWidget {
     return Colors.grey;
   }
 
-  String _formatTime(String dateString) {
+  String _formatDate(String dateString) {
     try {
+      // Преобразуем строку в объект DateTime.
       final dateTime = DateTime.parse(dateString);
-      return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+
+      // Получаем день, месяц и год из объекта DateTime.
+      // padLeft(2, '0') добавляет ведущий ноль, если число состоит из одной цифры (например, 7 -> 07).
+      final day = dateTime.day.toString().padLeft(2, '0');
+      final month = dateTime.month.toString().padLeft(2, '0');
+      final year = dateTime.year;
+
+      // Собираем строку в нужном формате.
+      return "$day.$month.$year";
     } catch (e) {
+      // Если строка не соответствует формату, возвращаем её без изменений.
       return dateString;
     }
   }

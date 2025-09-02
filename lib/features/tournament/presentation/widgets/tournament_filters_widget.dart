@@ -26,7 +26,7 @@ class _TournamentFiltersWidgetState extends State<TournamentFiltersWidget> {
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.currentParams.search ?? '');
-    _isMale = widget.currentParams.is_male;
+    // _isMale = widget.currentParams.is_male;
     _showInternational = true; // Можно добавить в параметры если нужно
   }
 

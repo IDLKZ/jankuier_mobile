@@ -39,7 +39,7 @@ class AppRouter {
             GoRoute(
               path: '/',
               name: 'home',
-              builder: (context, state) => const CountriesPage(),
+              builder: (context, state) => const HomePage(),
               // redirect: (BuildContext context, GoRouterState state) async {
               //   return await AppRouteMiddleware().mainMiddleware(context, state);
               // }

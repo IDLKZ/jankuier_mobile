@@ -7,7 +7,7 @@ class GetTournamentParameter {
   final int pageSize;
   final int? id;
   final int country;
-  final bool is_male;
+  final bool? is_male;
   final String? search;
   final int? team;
 
@@ -16,7 +16,7 @@ class GetTournamentParameter {
     this.pageSize = 50,
     this.id,
     this.country = SotaApiConstant.KZCountryId,
-    this.is_male = true,
+    this.is_male,
     this.search,
     this.team,
   });
