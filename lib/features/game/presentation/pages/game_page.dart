@@ -51,6 +51,7 @@ class _GamePageViewState extends State<_GamePageView>
 
   void _onTabChanged() {
     if (_tabController.indexIsChanging) return;
+    setState(() {});
 
     switch (_tabController.index) {
       case 0:
@@ -78,68 +79,30 @@ class _GamePageViewState extends State<_GamePageView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF4B79CF),
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        title: const Text(
-          "Статистика матча",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.share,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.star_border,
-              color: Colors.white,
-            ),
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: "Статистика"),
-            Tab(text: "Состав"),
-            Tab(text: "Статистика игроков"),
-          ],
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
-          labelStyle: TextStyle(fontSize: 12.sp),
-        ),
-      ),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [
-          // Заголовок с результатом матча
-          _buildGameHeader(),
-
-          // Содержимое табов
+          // Blue header
+          _buildHeader(context),
+          // Content
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
+            child: Column(
               children: [
-                _buildTeamStatsTab(),
-                _buildLineupTab(),
-                _buildPlayerStatsTab(),
+                // Match info card
+                _buildMatchInfoCard(),
+                // Custom tabs
+                _buildCustomTabs(),
+                // Tab content
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildTeamStatsTab(),
+                      _buildLineupTab(),
+                      _buildPlayerStatsTab(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -148,88 +111,285 @@ class _GamePageViewState extends State<_GamePageView>
     );
   }
 
-  Widget _buildGameHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Container(
-      color: const Color(0xFF4B79CF),
+      height: 120.h,
+      decoration: const BoxDecoration(
+        color: Color(0xFF1E4B9B),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  width: 40.w,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: 18.sp,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'Тур ${widget.match.tour}',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(width: 40.w), // Balance the back button
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMatchInfoCard() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         children: [
+          // Tournament title
+          Text(
+            'Чемпионат мира 2025',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 16.h),
+          // Match info
           Row(
             children: [
+              // Home team
               Expanded(
                 child: Column(
                   children: [
                     Container(
-                      width: 40.w,
-                      height: 40.w,
+                      width: 50.w,
+                      height: 50.h,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.sports_soccer,
-                        color: Colors.blue,
-                        size: 24.w,
+                        color: Colors.grey,
+                        size: 30.sp,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       widget.match.homeTeam.name,
                       style: TextStyle(
-                        color: Colors.white,
+                        fontFamily: 'Inter',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
+                        color: Colors.black,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Text(
-                  "${widget.match.homeTeam.score}-${widget.match.awayTeam.score}",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
+              // Score
+              Column(
+                children: [
+                  Text(
+                    "${widget.match.homeTeam.score ?? 0}:${widget.match.awayTeam.score ?? 0}",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    _formatDate(widget.match.date),
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF1E4B9B),
+                    ),
+                  ),
+                ],
               ),
+              // Away team
               Expanded(
                 child: Column(
                   children: [
                     Container(
-                      width: 40.w,
-                      height: 40.w,
+                      width: 50.w,
+                      height: 50.h,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.sports_soccer,
-                        color: Colors.red,
-                        size: 24.w,
+                        color: Colors.grey,
+                        size: 30.sp,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       widget.match.awayTeam.name,
                       style: TextStyle(
-                        color: Colors.white,
+                        fontFamily: 'Inter',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
+                        color: Colors.black,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomTabs() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                _tabController.animateTo(0);
+                setState(() {});
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: _tabController.index == 0 
+                    ? const Color(0xFF1E4B9B) 
+                    : Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Text(
+                    'Статистика',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: _tabController.index == 0 
+                        ? Colors.white
+                        : const Color(0xFF1E4B9B),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 4.w),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                _tabController.animateTo(1);
+                setState(() {});
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: _tabController.index == 1 
+                    ? const Color(0xFF1E4B9B) 
+                    : Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Text(
+                    'Состав',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: _tabController.index == 1 
+                        ? Colors.white
+                        : const Color(0xFF1E4B9B),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 4.w),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                _tabController.animateTo(2);
+                setState(() {});
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: _tabController.index == 2 
+                    ? const Color(0xFF1E4B9B) 
+                    : Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Text(
+                    'Игроки',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: _tabController.index == 2 
+                        ? Colors.white
+                        : const Color(0xFF1E4B9B),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -260,65 +420,140 @@ class _GamePageViewState extends State<_GamePageView>
     final homeTeam = teams[0];
     final awayTeam = teams[1];
 
-    return SingleChildScrollView(
+    return Container(
+      margin: EdgeInsets.all(20.w),
       padding: EdgeInsets.all(16.w),
-      child: Column(
-        children: [
-          _buildStatRow(
-              "Владение мячом",
-              "${homeTeam.stats.possession.toInt()}%",
-              "${awayTeam.stats.possession.toInt()}%",
-              homeTeam.stats.possession,
-              awayTeam.stats.possession),
-          _buildStatRow(
-              "Удары",
-              "${homeTeam.stats.shot}",
-              "${awayTeam.stats.shot}",
-              homeTeam.stats.shot.toDouble(),
-              awayTeam.stats.shot.toDouble()),
-          _buildStatRow(
-              "Удары в створ",
-              "${homeTeam.stats.shotsOnGoal}",
-              "${awayTeam.stats.shotsOnGoal}",
-              homeTeam.stats.shotsOnGoal.toDouble(),
-              awayTeam.stats.shotsOnGoal.toDouble()),
-          _buildStatRow(
-              "Удары мимо",
-              "${homeTeam.stats.shotsOffGoal}",
-              "${awayTeam.stats.shotsOffGoal}",
-              homeTeam.stats.shotsOffGoal.toDouble(),
-              awayTeam.stats.shotsOffGoal.toDouble()),
-          _buildStatRow(
-              "Фолы",
-              "${homeTeam.stats.foul}",
-              "${awayTeam.stats.foul}",
-              homeTeam.stats.foul.toDouble(),
-              awayTeam.stats.foul.toDouble()),
-          _buildStatRow(
-              "Желтые карточки",
-              "${homeTeam.stats.yellowCards}",
-              "${awayTeam.stats.yellowCards}",
-              homeTeam.stats.yellowCards.toDouble(),
-              awayTeam.stats.yellowCards.toDouble()),
-          _buildStatRow(
-              "Передачи",
-              "${homeTeam.stats.pass}",
-              "${awayTeam.stats.pass}",
-              homeTeam.stats.pass.toDouble(),
-              awayTeam.stats.pass.toDouble()),
-          _buildStatRow(
-              "Офсайды",
-              "${homeTeam.stats.offside}",
-              "${awayTeam.stats.offside}",
-              homeTeam.stats.offside.toDouble(),
-              awayTeam.stats.offside.toDouble()),
-          _buildStatRow(
-              "Угловые",
-              "${homeTeam.stats.corner}",
-              "${awayTeam.stats.corner}",
-              homeTeam.stats.corner.toDouble(),
-              awayTeam.stats.corner.toDouble()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
         ],
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+        children: [
+          // Team names
+          Row(
+            children: [
+              // Home team logo and name
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 24.w,
+                      height: 24.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.sports_soccer,
+                        color: Colors.grey,
+                        size: 20.sp,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      widget.match.homeTeam.name,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '-',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
+              // Away team logo and name
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      widget.match.awayTeam.name,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      width: 24.w,
+                      height: 24.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.sports_soccer,
+                        color: Colors.grey,
+                        size: 20.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          // Statistics
+          Column(
+            children: [
+              _buildStatRow(
+                  "Владение мячом",
+                  "${homeTeam.stats.possession.toInt()}%",
+                  "${awayTeam.stats.possession.toInt()}%",
+                  homeTeam.stats.possession,
+                  awayTeam.stats.possession),
+              _buildStatRow(
+                  "Удары",
+                  "${homeTeam.stats.shot}",
+                  "${awayTeam.stats.shot}",
+                  homeTeam.stats.shot.toDouble(),
+                  awayTeam.stats.shot.toDouble()),
+              _buildStatRow(
+                  "Удары в створ",
+                  "${homeTeam.stats.shotsOnGoal}",
+                  "${awayTeam.stats.shotsOnGoal}",
+                  homeTeam.stats.shotsOnGoal.toDouble(),
+                  awayTeam.stats.shotsOnGoal.toDouble()),
+              _buildStatRow(
+                  "Удары мимо",
+                  "${homeTeam.stats.shotsOffGoal}",
+                  "${awayTeam.stats.shotsOffGoal}",
+                  homeTeam.stats.shotsOffGoal.toDouble(),
+                  awayTeam.stats.shotsOffGoal.toDouble()),
+              _buildStatRow(
+                  "Фолы",
+                  "${homeTeam.stats.foul}",
+                  "${awayTeam.stats.foul}",
+                  homeTeam.stats.foul.toDouble(),
+                  awayTeam.stats.foul.toDouble()),
+              _buildStatRow(
+                  "Желтые карточки",
+                  "${homeTeam.stats.yellowCards}",
+                  "${awayTeam.stats.yellowCards}",
+                  homeTeam.stats.yellowCards.toDouble(),
+                  awayTeam.stats.yellowCards.toDouble()),
+            ],
+          ),
+        ],
+        ),
       ),
     );
   }
@@ -337,13 +572,25 @@ class _GamePageViewState extends State<_GamePageView>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(leftValue,
-                  style:
-                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14.sp, 
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  )),
               Text(title,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.sp, 
+                    color: Colors.grey[600],
+                  )),
               Text(rightValue,
-                  style:
-                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14.sp, 
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  )),
             ],
           ),
           SizedBox(height: 8.h),
@@ -351,18 +598,18 @@ class _GamePageViewState extends State<_GamePageView>
             children: [
               Expanded(
                 child: Container(
-                  height: 4.h,
+                  height: 6.h,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(2.r),
+                    color: const Color(0xFFE5E5E5),
+                    borderRadius: BorderRadius.circular(3.r),
                   ),
                   child: FractionallySizedBox(
                     widthFactor: leftWidth,
                     alignment: Alignment.centerRight,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(2.r),
+                        color: const Color(0xFF1E4B9B),
+                        borderRadius: BorderRadius.circular(3.r),
                       ),
                     ),
                   ),
@@ -371,18 +618,18 @@ class _GamePageViewState extends State<_GamePageView>
               SizedBox(width: 16.w),
               Expanded(
                 child: Container(
-                  height: 4.h,
+                  height: 6.h,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(2.r),
+                    color: const Color(0xFFE5E5E5),
+                    borderRadius: BorderRadius.circular(3.r),
                   ),
                   child: FractionallySizedBox(
                     widthFactor: rightWidth,
                     alignment: Alignment.centerLeft,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(2.r),
+                        color: const Color(0xFF1E4B9B),
+                        borderRadius: BorderRadius.circular(3.r),
                       ),
                     ),
                   ),
@@ -503,10 +750,10 @@ class _GamePageViewState extends State<_GamePageView>
                   height: 24.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4.r),
-                    image: DecorationImage(
-                      image: NetworkImage(team.basLogoPath!),
-                      fit: BoxFit.cover,
-                    ),
+                    // image: DecorationImage(
+                    //   image: NetworkImage(team.basLogoPath!),
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 )
               else
@@ -804,5 +1051,33 @@ class _GamePageViewState extends State<_GamePageView>
         ),
       ),
     );
+  }
+
+  String _formatDate(String dateString) {
+    try {
+      // Преобразуем строку в объект DateTime.
+      final dateTime = DateTime.parse(dateString);
+
+      // Получаем день, месяц и год из объекта DateTime.
+      // padLeft(2, '0') добавляет ведущий ноль, если число состоит из одной цифры (например, 7 -> 07).
+      final day = dateTime.day.toString().padLeft(2, '0');
+      final month = dateTime.month.toString().padLeft(2, '0');
+      final year = dateTime.year;
+
+      // Собираем строку в нужном формате.
+      return "$day.$month.$year";
+    } catch (e) {
+      // Если строка не соответствует формату, возвращаем её без изменений.
+      return dateString;
+    }
+  }
+
+  void main() {
+    var originalDate = "2024-07-26";
+    var formattedDate = _formatDate(originalDate);
+    print(formattedDate); // Вывод: 26.07.2024
+
+    var anotherDate = "2025-01-05";
+    print(_formatDate(anotherDate)); // Вывод: 05.01.2025
   }
 }
