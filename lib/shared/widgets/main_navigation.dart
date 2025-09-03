@@ -35,7 +35,7 @@ class MainNavigation extends StatelessWidget {
     switch (route) {
       case '/':
         return 0;
-      case '/matches':
+      case '/tickets':
         return 1;
       case '/services':
         return 2;

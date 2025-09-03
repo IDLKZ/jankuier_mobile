@@ -59,16 +59,11 @@ class _HomePageState extends State<HomePage>
     final mainSelectionService = getIt<MainSelectionService>();
     final hasCountry = await mainSelectionService.hasMainCountry();
 
-    if (!hasCountry) {
-      setState(() {
-        _hasMainCountry = false;
-      });
-      return;
-    }
-
     setState(() {
-      _hasMainCountry = true;
+      _hasMainCountry = hasCountry;
     });
+    
+    // Загружаем турниры независимо от выбранной страны
     _loadTournaments();
   }
 
@@ -180,7 +175,7 @@ class _HomePageState extends State<HomePage>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Матчи',
+                'Главная',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 24.sp,
@@ -248,7 +243,7 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           SizedBox(height: 16.h),
-          _hasMainCountry ? _buildTournamentCarousel() : _buildLoadingCarousel(),
+          _buildTournamentCarousel(),
         ],
       ),
     );
@@ -343,7 +338,7 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         SizedBox(height: 16.h),
-        _hasMainCountry ? _buildTournamentCarousel() : _buildLoadingCarousel(),
+        _buildTournamentCarousel(),
       ],
     );
   }
@@ -537,26 +532,51 @@ class _HomePageState extends State<HomePage>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.sports_soccer_outlined,
-            size: 64.sp,
-            color: Colors.grey[400],
+          Container(
+            width: 80.w,
+            height: 80.h,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E4B9B).withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 60.w,
+                  height: 60.h,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      const Color(0xFF1E4B9B).withValues(alpha: 0.3),
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.sports_soccer,
+                  size: 32.sp,
+                  color: const Color(0xFF1E4B9B),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 24.h),
           Text(
-            'Выберите турнир',
+            'Загрузка турниров...',
             style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 18.sp,
               fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
+              color: const Color(0xFF1E4B9B),
             ),
           ),
           SizedBox(height: 8.h),
           Text(
-            'Нажмите на логотип лиги выше',
+            'Пожалуйста, подождите',
             style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 14.sp,
-              color: Colors.grey[500],
+              color: Colors.grey[600],
             ),
           ),
         ],
