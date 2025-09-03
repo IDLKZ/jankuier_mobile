@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'custom_navbar.dart';
 
@@ -15,7 +16,7 @@ class MainNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentRoute = GoRouterState.of(context).uri.toString();
     final currentIndex = _getIndexFromRoute(currentRoute);
-    
+
     return Scaffold(
       body: child,
       bottomNavigationBar: CustomNavBarWidgetV2(
@@ -55,8 +56,8 @@ class MainNavigation extends StatelessWidget {
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
-        icon: const Icon(Icons.sports_soccer),
-        title: "Матчи",
+        icon: const Icon(Iconsax.ticket),
+        title: "Билеты",
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(

@@ -10,6 +10,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/full_product
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_event.dart';
 import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
+import 'package:jankuier_mobile/features/ticket/presentation/pages/tickets_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/countries/presentation/pages/countries_page.dart';
@@ -137,6 +138,11 @@ class AppRouter {
               //   return await AppRouteMiddleware()
               //       .standingMiddleware(context, state);
               // },
+            ),
+            GoRoute(
+              path: AppRouteConstants.TicketPagePath,
+              name: AppRouteConstants.TicketPageName,
+              builder: (context, state) => const TicketsPage(),
             ),
             GoRoute(
               path: "${AppRouteConstants.GameStatPagePath}:gameId",

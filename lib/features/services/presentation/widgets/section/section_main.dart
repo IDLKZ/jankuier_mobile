@@ -78,22 +78,22 @@ class _SectionMainState extends State<SectionMain>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const MainTitleWidget(title: "Запись в секцию"),
-                        IconButton(
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                useRootNavigator: false,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (BuildContext context) {
-                                  return const SizedBox();
-                                },
-                              );
-                            },
-                            icon: Icon(
-                              Iconsax.filter_square_copy,
-                              size: 18.sp,
-                            ))
+                        // IconButton(
+                        //     onPressed: () {
+                        //       showModalBottomSheet<void>(
+                        //         context: context,
+                        //         useRootNavigator: false,
+                        //         isScrollControlled: true,
+                        //         backgroundColor: Colors.transparent,
+                        //         builder: (BuildContext context) {
+                        //           return const SizedBox();
+                        //         },
+                        //       );
+                        //     },
+                        //     icon: Icon(
+                        //       Iconsax.filter_square_copy,
+                        //       size: 18.sp,
+                        //     ))
                       ]),
                   SizedBox(height: 12.h),
                   Column(

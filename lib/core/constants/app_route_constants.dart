@@ -17,4 +17,6 @@ class AppRouteConstants {
   static const String StandingsPageName = "Standings Page";
   static const String GameStatPagePath = "/game-stat/";
   static const String GameStatPageName = "Game Statistics Page";
+  static const String TicketPagePath = "/tickets";
+  static const String TicketPageName = "Ticket Page";
 }

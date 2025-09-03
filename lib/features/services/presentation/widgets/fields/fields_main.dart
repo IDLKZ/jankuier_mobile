@@ -73,18 +73,18 @@ class _FieldsMainState extends State<FieldsMain>
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const MainTitleWidget(title: "Аренда полей"),
-        IconButton(
-          icon: Icon(Iconsax.filter_square_copy, size: 18.sp),
-          onPressed: () {
-            showModalBottomSheet<void>(
-              context: context,
-              useRootNavigator: false,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (_) => const SizedBox(), // TODO: фильтр
-            );
-          },
-        ),
+        // IconButton(
+        //   icon: Icon(Iconsax.filter_square_copy, size: 18.sp),
+        //   onPressed: () {
+        //     showModalBottomSheet<void>(
+        //       context: context,
+        //       useRootNavigator: false,
+        //       isScrollControlled: true,
+        //       backgroundColor: Colors.transparent,
+        //       builder: (_) => const SizedBox(), // TODO: фильтр
+        //     );
+        //   },
+        // ),
       ],
     );
   }
