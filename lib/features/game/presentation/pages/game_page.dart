@@ -179,17 +179,7 @@ class _GamePageViewState extends State<_GamePageView>
       ),
       child: Column(
         children: [
-          // Tournament title
-          Text(
-            'Чемпионат мира 2025',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 16.h),
+
           // Match info
           Row(
             children: [
@@ -230,7 +220,7 @@ class _GamePageViewState extends State<_GamePageView>
               Column(
                 children: [
                   Text(
-                    "${widget.match.homeTeam.score ?? 0}:${widget.match.awayTeam.score ?? 0}",
+                    "${widget.match.homeTeam.score}:${widget.match.awayTeam.score}",
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 32.sp,
@@ -950,82 +940,148 @@ class _GamePageViewState extends State<_GamePageView>
 
   Widget _buildTeamPlayerStats(List<PlayerEntity> players) {
     return ListView.builder(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       itemCount: players.length,
       itemBuilder: (context, index) {
         final player = players[index];
         return Container(
-          margin: EdgeInsets.only(bottom: 8.h),
-          padding: EdgeInsets.all(12.w),
+          margin: EdgeInsets.only(bottom: 16.h),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32.w,
-                    height: 32.w,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "${player.number}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
+              // Player Header
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF1E4B9B),
+                      const Color(0xFF2E5BA8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    // Player Number Circle
+                    Container(
+                      width: 48.w,
+                      height: 48.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "${player.number}",
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color: const Color(0xFF1E4B9B),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(width: 16.w),
+                    // Player Info
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            player.fullName,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.sports_soccer,
+                                size: 14.sp,
+                                color: Colors.white.withValues(alpha: 0.8),
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                player.team,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white.withValues(alpha: 0.9),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Player Statistics
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  children: [
+                    // Key Stats Row
+                    Row(
                       children: [
-                        Text(
-                          player.fullName,
-                          style: TextStyle(
-                              fontSize: 14.sp, fontWeight: FontWeight.w600),
+                        Expanded(
+                          child: _buildKeyStatItem(
+                            "⚽",
+                            "${player.stats.shot}",
+                            "Удары",
+                            const Color(0xFF4CAF50),
+                          ),
                         ),
-                        Text(
-                          player.team,
-                          style: TextStyle(
-                              fontSize: 12.sp, color: Colors.grey[600]),
+                        Expanded(
+                          child: _buildKeyStatItem(
+                            "🎯",
+                            "${player.stats.shotsOnGoal}",
+                            "В створ",
+                            const Color(0xFF2196F3),
+                          ),
+                        ),
+                        Expanded(
+                          child: _buildKeyStatItem(
+                            "📊",
+                            "${player.stats.pass}",
+                            "Передачи",
+                            const Color(0xFF9C27B0),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              Wrap(
-                spacing: 16.w,
-                runSpacing: 8.h,
-                children: [
-                  _buildPlayerStatChip(
-                      "Удары: ${player.stats.shot}", Colors.blue),
-                  _buildPlayerStatChip(
-                      "В створ: ${player.stats.shotsOnGoal}", Colors.green),
-                  _buildPlayerStatChip(
-                      "Мимо: ${player.stats.shotsOffGoal}", Colors.orange),
-                  _buildPlayerStatChip(
-                      "Фолы: ${player.stats.foul}", Colors.red),
-                  _buildPlayerStatChip("Желтые: ${player.stats.yellowCards}",
-                      Colors.yellow.shade700),
-                  _buildPlayerStatChip(
-                      "Передачи: ${player.stats.pass}", Colors.purple),
-                  _buildPlayerStatChip(
-                      "Офсайды: ${player.stats.offside}", Colors.grey),
-                  _buildPlayerStatChip(
-                      "Угловые: ${player.stats.corner}", Colors.teal),
-                ],
+                    SizedBox(height: 16.h),
+                    // Additional Stats Grid
+                    _buildAdditionalStats(player),
+                  ],
+                ),
               ),
             ],
           ),
@@ -1034,21 +1090,114 @@ class _GamePageViewState extends State<_GamePageView>
     );
   }
 
-  Widget _buildPlayerStatChip(String text, Color color) {
+  Widget _buildKeyStatItem(String emoji, String value, String label, Color color) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 10.sp,
-          color: color.withOpacity(0.8),
-          fontWeight: FontWeight.w500,
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+          width: 1,
         ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            emoji,
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdditionalStats(PlayerEntity player) {
+    final stats = [
+      {"label": "Мимо створа", "value": "${player.stats.shotsOffGoal}", "icon": "❌"},
+      {"label": "Фолы", "value": "${player.stats.foul}", "icon": "⚠️"},
+      {"label": "Желтые", "value": "${player.stats.yellowCards}", "icon": "🟨"},
+      {"label": "Офсайды", "value": "${player.stats.offside}", "icon": "🚩"},
+      {"label": "Угловые", "value": "${player.stats.corner}", "icon": "📐"},
+    ];
+
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Дополнительная статистика",
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: stats.map((stat) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.grey.withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      stat["icon"]!,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      "${stat["value"]} ${stat["label"]}",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
