@@ -23,11 +23,11 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
           ),
           child: item.icon,
         ),
-        SizedBox(height: 2.h),
+        const SizedBox(height: 2),
         Text(
           item.title ?? "",
           style: TextStyle(
-            fontSize: 9.sp,
+            fontSize: 10,
             color: isSelected ? (Colors.black) : (Colors.grey),
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
           ),
@@ -40,7 +40,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75.h,
+      height: 80,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -50,7 +50,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(top: 8.h),
+          padding: const EdgeInsets.only(top: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: navBarConfig.items.asMap().entries.map((entry) {

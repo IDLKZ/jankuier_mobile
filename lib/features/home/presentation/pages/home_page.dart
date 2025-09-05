@@ -103,11 +103,15 @@ class _HomePageState extends State<HomePage>
       _standingBloc.add(LoadStandingsTableFromSotaEvent());
     } else {
       // Load matches
+      final latestSeason = _selectedTournament!.seasons.isNotEmpty
+          ? _selectedTournament!.seasons
+              .reduce((current, next) => 
+                  current.startDate.isAfter(next.startDate) ? current : next)
+          : null;
+      
       final parameter = MatchParameter(
         tournamentId: _selectedTournament!.id,
-        seasonId: _selectedTournament!.seasons.isNotEmpty 
-          ? _selectedTournament!.seasons.first.id 
-          : 0,
+        seasonId: latestSeason?.id ?? 0,
       );
       _standingBloc.add(LoadMatchesFromSotaEvent(parameter));
     }
