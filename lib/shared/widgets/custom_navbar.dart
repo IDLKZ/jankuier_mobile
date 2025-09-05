@@ -40,7 +40,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 80 + MediaQuery.of(context).padding.bottom,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -48,11 +48,8 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
           topRight: Radius.circular(16),
         ),
       ),
-      child: SafeArea(
-        bottom: true,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-          child: Row(
+      padding: EdgeInsets.fromLTRB(0, 12, 0, MediaQuery.of(context).padding.bottom + 8),
+      child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: navBarConfig.items.asMap().entries.map((entry) {
               final idx = entry.key;
@@ -72,8 +69,6 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
                 ),
               );
             }).toList(),
-          ),
-        ),
       ),
     );
   }
