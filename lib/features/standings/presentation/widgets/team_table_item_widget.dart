@@ -48,7 +48,7 @@ class TeamTableItemWidget extends StatelessWidget {
                       ? Icon(
                           Icons.sports_soccer,
                           size: 16.w,
-                          color: Colors.grey[600],
+                          color: Colors.grey[800],
                         )
                       : null,
                 ),
@@ -94,5 +94,4 @@ class TeamTableItemWidget extends StatelessWidget {
       ),
     );
   }
-
 }

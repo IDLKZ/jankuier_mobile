@@ -50,26 +50,29 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: navBarConfig.items.asMap().entries.map((entry) {
-            final idx = entry.key;
-            final item = entry.value;
-            final isSelected = idx == navBarConfig.selectedIndex;
+        child: Padding(
+          padding: EdgeInsets.only(top: 8.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: navBarConfig.items.asMap().entries.map((entry) {
+              final idx = entry.key;
+              final item = entry.value;
+              final isSelected = idx == navBarConfig.selectedIndex;
 
-            return Expanded(
-              child: Material(
-                color: Colors.transparent,
-                child: GestureDetector(
-                  onTap: () {
-                    _navigateToTab(context, idx);
-                  },
-                  behavior: HitTestBehavior.opaque,
-                  child: _buildItem(item, isSelected),
+              return Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: GestureDetector(
+                    onTap: () {
+                      _navigateToTab(context, idx);
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: _buildItem(item, isSelected),
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
