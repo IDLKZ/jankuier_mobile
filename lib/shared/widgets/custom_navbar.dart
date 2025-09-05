@@ -12,36 +12,35 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildItem(ItemConfig item, bool isSelected) {
-    return SizedBox(
-      height: 80.h,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconTheme(
-            data: IconThemeData(
-              size: 24,
-              color: isSelected ? (Colors.black) : (Colors.grey),
-            ),
-            child: item.icon,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconTheme(
+          data: IconThemeData(
+            size: 22,
+            color: isSelected ? (Colors.black) : (Colors.grey),
           ),
-          SizedBox(height: 4.h),
-          Text(
-            item.title ?? "",
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: isSelected ? (Colors.black) : (Colors.grey),
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            ),
+          child: item.icon,
+        ),
+        SizedBox(height: 2.h),
+        Text(
+          item.title ?? "",
+          style: TextStyle(
+            fontSize: 9.sp,
+            color: isSelected ? (Colors.black) : (Colors.grey),
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
           ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65.h,
+      height: 75.h,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(

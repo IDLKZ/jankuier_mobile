@@ -24,7 +24,7 @@ class TeamTableItemWidget extends StatelessWidget {
             width: 30.w,
             child: Text(
               "$position",
-              style: TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: 14.sp, color: Colors.black),
             ),
           ),
           Expanded(
@@ -68,7 +68,7 @@ class TeamTableItemWidget extends StatelessWidget {
             child: Text(
               "${team.matches}",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: 14.sp, color: Colors.black),
             ),
           ),
           SizedBox(
@@ -76,7 +76,7 @@ class TeamTableItemWidget extends StatelessWidget {
             child: Text(
               team.goals,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: 14.sp, color: Colors.black),
             ),
           ),
           SizedBox(
@@ -85,9 +85,9 @@ class TeamTableItemWidget extends StatelessWidget {
               "${team.points}",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-              ),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
             ),
           ),
         ],
