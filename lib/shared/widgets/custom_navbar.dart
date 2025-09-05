@@ -13,7 +13,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
 
   Widget _buildItem(ItemConfig item, bool isSelected) {
     return SizedBox(
-      height: 60.h,
+      height: 80.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

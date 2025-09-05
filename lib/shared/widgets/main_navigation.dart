@@ -19,6 +19,7 @@ class MainNavigation extends StatelessWidget {
 
     return Scaffold(
       body: child,
+      backgroundColor: Colors.white,
       bottomNavigationBar: CustomNavBarWidgetV2(
         navBarConfig: NavBarConfig(
           selectedIndex: currentIndex,

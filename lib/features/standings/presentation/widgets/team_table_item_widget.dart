@@ -56,7 +56,7 @@ class TeamTableItemWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     team.name,
-                    style: TextStyle(fontSize: 14.sp),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.black),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
