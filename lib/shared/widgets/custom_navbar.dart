@@ -40,7 +40,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 90,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -49,8 +49,9 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
         ),
       ),
       child: SafeArea(
+        bottom: true,
         child: Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: navBarConfig.items.asMap().entries.map((entry) {
