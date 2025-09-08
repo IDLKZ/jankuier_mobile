@@ -10,6 +10,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/full_product
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_event.dart';
 import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
+import 'package:jankuier_mobile/features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/pages/tickets_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
@@ -23,6 +24,8 @@ import '../../features/services/presentation/pages/service_section_page.dart';
 import '../../features/services/presentation/pages/services_page.dart';
 import '../../features/standings/data/entities/match_entity.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../features/ticket/domain/parameters/ticketon_get_shows_parameter.dart';
+import '../../features/ticket/presentation/bloc/shows/ticketon_event.dart';
 import '../../features/tournament/presentation/pages/tournament_selection_page.dart';
 import '../../shared/widgets/main_navigation.dart';
 import '../constants/app_route_constants.dart';
@@ -142,7 +145,16 @@ class AppRouter {
             GoRoute(
               path: AppRouteConstants.TicketPagePath,
               name: AppRouteConstants.TicketPageName,
-              builder: (context, state) => const TicketsPage(),
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (BuildContext context) {
+                    return getIt<TicketonShowsBloc>()
+                      ..add(LoadTicketonShowsEvent(
+                          parameter: TicketonGetShowsParameter()));
+                  },
+                  child: const TicketsPage(),
+                );
+              },
             ),
             GoRoute(
               path: "${AppRouteConstants.GameStatPagePath}:gameId",

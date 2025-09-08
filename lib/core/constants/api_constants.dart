@@ -1,9 +1,9 @@
 class ApiConstant {
   //Base URL to Sota
-  // static const String BaseURL = "http://10.0.2.2:5000/api/";
-  // static const String ImageURL = "http://10.0.2.2:5000/";
-  static const String BaseURL = "https://api.jankuier.kz/api/";
-  static const String ImageURL = "https://api.jankuier.kz/";
+  static const String BaseURL = "http://10.0.2.2:5000/api/";
+  static const String ImageURL = "http://10.0.2.2:5000/";
+  // static const String BaseURL = "https://api.jankuier.kz/api/";
+  // static const String ImageURL = "https://api.jankuier.kz/";
   //Get Product URL
   static const String PaginateAllProductsUrl = "${BaseURL}product/";
   static const String GetAllProductsUrl = "${BaseURL}product/all/";
@@ -47,4 +47,7 @@ class ApiConstant {
 
   static const String GetAcademyGroupScheduleByDayAndGroupsIdUrl =
       "${BaseURL}academy-group-schedule/get-by-day-and-groups/";
+
+  //Ticketon Get Shows
+  static const String GetAllTicketonShowsUrl = "${BaseURL}ticketon/shows";
 }

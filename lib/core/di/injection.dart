@@ -67,6 +67,11 @@ import '../../features/game/domain/use_cases/get_match_line_up_stats_by_game_id_
 import '../../features/game/domain/use_cases/get_player_stats_by_game_id_case.dart';
 import '../../features/game/domain/use_cases/get_team_stats_by_game_id_case.dart';
 import '../../features/game/presentation/bloc/game_bloc.dart';
+import '../../features/ticket/datasources/ticketon_datasource.dart';
+import '../../features/ticket/data/repositories/ticketon_repository_impl.dart';
+import '../../features/ticket/domain/interface/ticketon_interface.dart';
+import '../../features/ticket/domain/use_cases/get_ticketon_shows_use_case.dart';
+import '../../features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
 import '../network/sota_dio_client.dart';
 import 'injection.config.dart';
 
@@ -131,8 +136,7 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton(() => GetFieldPartySchedulePreviewCase(getIt()));
   getIt.registerLazySingleton(() => PaginateFieldCase(getIt()));
   getIt.registerLazySingleton(() => PaginateFieldPartyCase(getIt()));
-  getIt.registerLazySingleton<FieldInterface>(
-      () => FieldRepository(getIt()));
+  getIt.registerLazySingleton<FieldInterface>(() => FieldRepository(getIt()));
   getIt.registerLazySingleton<FieldDSInterface>(() => FieldDSImpl());
 
   //Academy
@@ -142,7 +146,6 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<AcademyInterface>(
       () => AcademyRepository(getIt()));
   getIt.registerLazySingleton<AcademyDSInterface>(() => AcademyDSImpl());
-
   // BLoCs
   getIt.registerFactory<GetCountryBloc>(
     () => GetCountryBloc(
@@ -236,7 +239,8 @@ Future<void> configureDependencies() async {
 
   getIt.registerFactory<FieldPartySchedulePreviewBloc>(
     () => FieldPartySchedulePreviewBloc(
-      getFieldPartySchedulePreviewCase: getIt<GetFieldPartySchedulePreviewCase>(),
+      getFieldPartySchedulePreviewCase:
+          getIt<GetFieldPartySchedulePreviewCase>(),
     ),
   );
 

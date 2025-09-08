@@ -9,11 +9,11 @@ class SotaHttpUtil {
   final Talker talker = getIt<Talker>();
 
   Future<dynamic> post(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-        Map<String, String>? headers,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+  }) async {
     return _request(
       method: 'POST',
       path: path,
@@ -24,10 +24,10 @@ class SotaHttpUtil {
   }
 
   Future<dynamic> get(
-      String path, {
-        Map<String, dynamic>? queryParameters,
-        Map<String, String>? headers,
-      }) async {
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+  }) async {
     return _request(
       method: 'GET',
       path: path,
@@ -37,11 +37,11 @@ class SotaHttpUtil {
   }
 
   Future<dynamic> put(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-        Map<String, String>? headers,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+  }) async {
     return _request(
       method: 'PUT',
       path: path,
@@ -52,11 +52,11 @@ class SotaHttpUtil {
   }
 
   Future<dynamic> delete(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-        Map<String, String>? headers,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+  }) async {
     return _request(
       method: 'DELETE',
       path: path,
