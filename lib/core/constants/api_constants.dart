@@ -50,4 +50,20 @@ class ApiConstant {
 
   //Ticketon Get Shows
   static const String GetAllTicketonShowsUrl = "${BaseURL}ticketon/shows";
+
+  //Ticketon PaginateTicketonOrderUrl
+  static const String PaginateClientTicketOrderUrl =
+      "${BaseURL}ticketon-order/client/my-ticketon-orders";
+
+  static String GetMyTicketOrderUrl(int ticketonOrderId) {
+    return "${BaseURL}ticketon-order/client/my-ticketon-order/${ticketonOrderId}";
+  }
+
+  static String GetCheckTicketUrl(int ticketonOrderId, String ticketId) {
+    return "${BaseURL}ticketon-order/check-ticket/${ticketonOrderId}/${ticketId}";
+  }
+
+  static String GetCheckOrderUrl(int ticketonOrderId) {
+    return "${BaseURL}ticketon-order/check-order/${ticketonOrderId}";
+  }
 }
