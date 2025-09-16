@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:jankuier_mobile/core/api_client/sota_api_client.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
@@ -40,6 +41,7 @@ void main() async {
     );
   }
 
+
   // Configure dependencies
   await configureDependencies();
   await SotaApiClient().getSotaToken();
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: Locale("ru"),
+        locale: const Locale("ru"),
         supportedLocales: const [
           Locale('en', 'US'),
           Locale('ru', 'RU'),

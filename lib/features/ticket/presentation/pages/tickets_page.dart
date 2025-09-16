@@ -14,6 +14,7 @@ import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../../../../shared/widgets/main_title_widget.dart';
 import '../../../matches/presentation/widgets/qr_display_dialog.dart';
 import '../bloc/shows/ticketon_state.dart';
+import 'ticket_webview_page.dart';
 
 class TicketsPage extends StatelessWidget {
   const TicketsPage({super.key});
@@ -53,7 +54,7 @@ class TicketsPage extends StatelessWidget {
                           : null;
 
                       return TicketCard(
-                        image: event?.main,
+                        image: event?.main != "" ? event?.main : event?.cover,
                         genre: event?.genre,
                         cityName: city?.name,
                         name: event?.name,
@@ -382,7 +383,7 @@ class TicketCard extends StatelessWidget {
                                             ),
                                             SizedBox(height: 8.h),
                                             Html(
-                                              data: remark,
+                                              data: remark ?? '',
                                               style: {
                                                 "p": Style(
                                                     fontSize: FontSize(12.sp),
@@ -531,7 +532,15 @@ class TicketCard extends StatelessWidget {
                                               children: [
                                                 Expanded(
                                                   child: GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) => TicketWebViewPage(
+                                                            showId: showId.toString(),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                     child: Container(
                                                       padding:
                                                           EdgeInsets.symmetric(

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:jankuier_mobile/core/common/entities/sota_token_entity.dart';
 import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
 import 'package:jankuier_mobile/core/utils/hive_utils.dart';
-import 'package:jankuier_mobile/core/utils/http_utils.dart';
 
 import '../constants/hive_constants.dart';
 import '../errors/exception.dart';
