@@ -8,7 +8,7 @@ class TicketonGetShowsParameter {
   final String? type;
 
   const TicketonGetShowsParameter(
-      {this.place = TicketonApiConstant.PlaceId,
+      {this.place = null,
       this.withParam = "future",
       this.i18n = "ru",
       this.type = TicketonApiConstant.CategoryType});
@@ -16,7 +16,7 @@ class TicketonGetShowsParameter {
   DataMap toMap() {
     return {
       "type[]": type.toString(),
-      "place[]": place.toString(),
+      //"place[]": place.toString(),
       "with[]": withParam.toString(),
       "i18n": i18n.toString(),
     };
