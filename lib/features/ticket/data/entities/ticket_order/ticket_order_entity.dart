@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:jankuier_mobile/features/ticket/data/entities/ticket_order/payment_transaction_entity.dart';
 import 'package:jankuier_mobile/features/ticket/data/entities/ticket_order/ticket_order_status_entity.dart';
+import 'package:jankuier_mobile/features/ticket/data/entities/ticket_order/ticket_single_show_entity.dart';
 
 import '../../../../auth/data/entities/user_entity.dart';
 
@@ -51,6 +52,7 @@ class TicketonOrderEntity extends Equatable {
   final int? userId;
   final int? paymentTransactionId;
   final String show;
+  final TicketonSingleShowResponseEntity showInfo;
   final List<String>? seats;
   final String lang;
   final String? preSale;
@@ -83,6 +85,7 @@ class TicketonOrderEntity extends Equatable {
     this.userId,
     this.paymentTransactionId,
     required this.show,
+    required this.showInfo,
     this.seats,
     required this.lang,
     this.preSale,
@@ -111,23 +114,109 @@ class TicketonOrderEntity extends Equatable {
   });
 
   factory TicketonOrderEntity.fromJson(Map<String, dynamic> json) {
-    return TicketonOrderEntity(
-      id: json['id'],
-      statusId: json['status_id'],
-      userId: json['user_id'],
-      paymentTransactionId: json['payment_transaction_id'],
+    try {
+      print('🎫 Parsing TicketonOrderEntity: ${json['id']}');
+      print('📊 JSON keys: ${json.keys.toList()}');
+
+      // Parse basic fields with logging
+      final int parsedId;
+      try {
+        parsedId = json['id'] is int ? json['id'] : int.parse(json['id'].toString());
+        print('✅ ID parsed: $parsedId');
+      } catch (e) {
+        print('❌ Error parsing ID ${json['id']}: $e');
+        rethrow;
+      }
+
+      // Parse other fields with detailed logging
+      final int? statusId;
+      try {
+        statusId = json['status_id'] != null
+            ? (json['status_id'] is int
+                ? json['status_id']
+                : int.tryParse(json['status_id'].toString()))
+            : null;
+        print('✅ statusId parsed: $statusId (from ${json['status_id']})');
+      } catch (e) {
+        print('❌ Error parsing statusId ${json['status_id']}: $e');
+        rethrow;
+      }
+
+      final double? price;
+      try {
+        price = json['price'] != null
+            ? (json['price'] is num
+                ? (json['price'] as num).toDouble()
+                : double.tryParse(json['price'].toString()))
+            : null;
+        print('✅ price parsed: $price (from ${json['price']})');
+      } catch (e) {
+        print('❌ Error parsing price ${json['price']}: $e');
+        rethrow;
+      }
+
+      final double? sum;
+      try {
+        sum = json['sum'] != null
+            ? (json['sum'] is num
+                ? (json['sum'] as num).toDouble()
+                : double.tryParse(json['sum'].toString()))
+            : null;
+        print('✅ sum parsed: $sum (from ${json['sum']})');
+      } catch (e) {
+        print('❌ Error parsing sum ${json['sum']}: $e');
+        rethrow;
+      }
+
+      final int? expire;
+      try {
+        expire = json['expire'] != null
+            ? (json['expire'] is int
+                ? json['expire']
+                : int.tryParse(json['expire'].toString()))
+            : null;
+        print('✅ expire parsed: $expire (from ${json['expire']})');
+      } catch (e) {
+        print('❌ Error parsing expire ${json['expire']}: $e');
+        rethrow;
+      }
+
+      final TicketonSingleShowResponseEntity showInfo;
+      try {
+        print('🎭 Parsing showInfo...');
+        showInfo = TicketonSingleShowResponseEntity.fromJson(json['show_info']);
+        print('✅ showInfo parsed successfully');
+      } catch (e) {
+        print('❌ Error parsing showInfo: $e');
+        rethrow;
+      }
+
+      return TicketonOrderEntity(
+      id: parsedId,
+      statusId: statusId,
+      userId: json['user_id'] != null
+          ? (json['user_id'] is int
+              ? json['user_id']
+              : int.tryParse(json['user_id'].toString()))
+          : null,
+      paymentTransactionId: json['payment_transaction_id'] != null
+          ? (json['payment_transaction_id'] is int
+              ? json['payment_transaction_id']
+              : int.tryParse(json['payment_transaction_id'].toString()))
+          : null,
       show: json['show'],
+      showInfo: showInfo,
       seats: json['seats'] != null ? List<String>.from(json['seats']) : null,
       lang: json['lang'],
       preSale: json['pre_sale'],
       sale: json['sale'],
       reservationId: json['reservation_id'],
-      price: json['price'] != null ? (json['price'] as num).toDouble() : null,
-      expire: json['expire'],
+      price: price,
+      expire: expire,
       expiredAt: json['expired_at'] != null
           ? DateTime.parse(json['expired_at'])
           : null,
-      sum: json['sum'] != null ? (json['sum'] as num).toDouble() : null,
+      sum: sum,
       currency: json['currency'],
       preTickets: json['pre_tickets'] != null
           ? TicketItemListEntity.fromJsonList(json["pre_tickets"])
@@ -155,6 +244,12 @@ class TicketonOrderEntity extends Equatable {
           ? PaymentTransactionEntity.fromJson(json['payment_transaction'])
           : null,
     );
+    } catch (e, stackTrace) {
+      print('❌ CRITICAL ERROR in TicketonOrderEntity.fromJson: $e');
+      print('📚 Stack trace: $stackTrace');
+      print('🔍 JSON data: $json');
+      rethrow;
+    }
   }
 
   @override
@@ -164,6 +259,7 @@ class TicketonOrderEntity extends Equatable {
         userId,
         paymentTransactionId,
         show,
+        showInfo,
         seats,
         lang,
         preSale,

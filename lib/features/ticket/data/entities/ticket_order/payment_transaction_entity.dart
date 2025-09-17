@@ -87,7 +87,9 @@ class PaymentTransactionEntity extends Equatable {
       order: json['order'],
       nonce: json['nonce'],
       mpiOrder: json['mpi_order'],
-      amount: (json['amount'] as num).toDouble(),
+      amount: json['amount'] is num
+          ? (json['amount'] as num).toDouble()
+          : double.parse(json['amount'].toString()),
       currency: json['currency'],
       merchant: json['merchant'],
       language: json['language'],
@@ -109,7 +111,9 @@ class PaymentTransactionEntity extends Equatable {
       resDesc: json['res_desc'],
       paidPSign: json['paid_p_sign'],
       revAmount: json['rev_amount'] != null
-          ? (json['rev_amount'] as num).toDouble()
+          ? (json['rev_amount'] is num
+              ? (json['rev_amount'] as num).toDouble()
+              : double.parse(json['rev_amount'].toString()))
           : null,
       revDesc: json['rev_desc'],
       cancelPSign: json['cancel_p_sign'],

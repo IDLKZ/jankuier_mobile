@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/features/ticket/presentation/widgets/my_tickets.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
 import '../widgets/new_tickets.dart';
@@ -19,7 +21,7 @@ class _TicketsPageState extends State<TicketsPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 1, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -37,14 +39,39 @@ class _TicketsPageState extends State<TicketsPage>
         padding: EdgeInsets.symmetric(),
         child: Column(
           children: [
-            TabBar(controller: _tabController, tabs: [
-              Tab(
-                text: "Активные билеты",
-              )
-            ]),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 15.w,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.grey100, // фон для невыбранных
+                  borderRadius: BorderRadius.circular(5.r),
+                ),
+                child: TabBar(
+                    controller: _tabController,
+                    dividerColor: Colors.transparent,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicator: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(5.r),
+                    ),
+                    labelColor: AppColors.white,
+                    unselectedLabelColor: AppColors.grey500,
+                    tabs: [
+                      Tab(
+                        text: "Активные билеты",
+                      ),
+                      Tab(
+                        text: "Мои билеты",
+                      )
+                    ]),
+              ),
+            ),
             Expanded(
               child: TabBarView(controller: _tabController, children: [
                 NewTicketWidgets(),
+                MyTicketsWidget(),
               ]),
             )
           ],

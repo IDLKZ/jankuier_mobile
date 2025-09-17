@@ -48,6 +48,7 @@ import '../../features/services/domain/use_cases/academy/get_academy_group_sched
 import '../../features/services/domain/use_cases/academy/get_full_academy_detail_case.dart';
 import '../../features/services/domain/use_cases/academy/paginate_academy_case.dart';
 import '../../features/services/presentation/bloc/recommended_product/recommended_product_bloc.dart';
+import '../../features/ticket/domain/use_cases/ticketon_order_check_usecase.dart';
 import '../../features/tournament/domain/use_cases/get_tournaments_from_sota_case.dart';
 import '../../features/tournament/presentation/bloc/get_tournaments/get_tournament_bloc.dart';
 import '../../features/tournament/domain/interface/tournament_interface.dart';
@@ -68,10 +69,16 @@ import '../../features/game/domain/use_cases/get_player_stats_by_game_id_case.da
 import '../../features/game/domain/use_cases/get_team_stats_by_game_id_case.dart';
 import '../../features/game/presentation/bloc/game_bloc.dart';
 import '../../features/ticket/datasources/ticketon_datasource.dart';
+import '../../features/ticket/datasources/ticketon_order_datasource.dart';
 import '../../features/ticket/data/repositories/ticketon_repository_impl.dart';
+import '../../features/ticket/data/repositories/ticketon_order_repository_impl.dart';
 import '../../features/ticket/domain/interface/ticketon_interface.dart';
+import '../../features/ticket/domain/interface/ticketon_order_repository.dart';
 import '../../features/ticket/domain/use_cases/get_ticketon_shows_use_case.dart';
+import '../../features/ticket/domain/use_cases/paginate_ticket_order_usecase.dart';
 import '../../features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
+import '../../features/ticket/presentation/bloc/paginate_ticket_order/paginate_ticket_order_bloc.dart';
+import '../../features/ticket/presentation/bloc/ticketon_order_check/ticketon_order_check_bloc.dart';
 import '../network/sota_dio_client.dart';
 import 'injection.config.dart';
 
@@ -146,6 +153,7 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<AcademyInterface>(
       () => AcademyRepository(getIt()));
   getIt.registerLazySingleton<AcademyDSInterface>(() => AcademyDSImpl());
+
   // BLoCs
   getIt.registerFactory<GetCountryBloc>(
     () => GetCountryBloc(
@@ -260,6 +268,19 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<AcademyGroupScheduleBloc>(
     () => AcademyGroupScheduleBloc(
       getAcademyGroupScheduleCase: getIt<GetAcademyGroupScheduleCase>(),
+    ),
+  );
+
+  // Ticket Order BLoCs
+  getIt.registerFactory<PaginateTicketOrderBloc>(
+    () => PaginateTicketOrderBloc(
+      paginateTicketOrderUseCase: getIt<PaginateTicketOrderUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<TicketonOrderCheckBloc>(
+    () => TicketonOrderCheckBloc(
+      ticketonOrderCheckUseCase: getIt<TicketonOrderCheckUseCase>(),
     ),
   );
 }

@@ -15,21 +15,45 @@ class PaginateTicketOrderBloc extends Bloc<PaginateTicketOrderBaseEvent, Paginat
     PaginateTicketOrderEvent event,
     Emitter<PaginateTicketOrderState> emit,
   ) async {
-    if (state is! PaginateTicketOrderLoadedState) {
-      emit(PaginateTicketOrderLoadingState());
+    try {
+      print('🎫 PaginateTicketOrderBloc: Starting to paginate ticket orders');
+
+      if (state is! PaginateTicketOrderLoadedState) {
+        emit(PaginateTicketOrderLoadingState());
+      }
+
+      final currentOrders = state is PaginateTicketOrderLoadedState
+          ? (state as PaginateTicketOrderLoadedState).orders
+          : <TicketonOrderEntity>[];
+
+      print('🎫 Current orders count: ${currentOrders.length}');
+
+      final result = await this.paginateTicketOrderUseCase.call(event.parameter);
+
+      result.fold(
+        (failure) {
+          print('❌ PaginateTicketOrderBloc: Failed to fetch orders - ${failure.message}');
+          emit(PaginateTicketOrderFailedState(failure));
+        },
+        (data) {
+          try {
+            print('✅ PaginateTicketOrderBloc: Received ${data.items.length} new orders');
+            final updatedOrders = [...currentOrders, ...data.items];
+            print('🎫 Total orders after update: ${updatedOrders.length}');
+            emit(PaginateTicketOrderLoadedState(data, updatedOrders));
+            print('✅ PaginateTicketOrderBloc: State emitted successfully');
+          } catch (e, stackTrace) {
+            print('❌ PaginateTicketOrderBloc: Error processing orders: $e');
+            print('📚 Stack trace: $stackTrace');
+            print('🔍 Data items count: ${data.items.length}');
+            rethrow;
+          }
+        },
+      );
+    } catch (e, stackTrace) {
+      print('❌ CRITICAL ERROR in PaginateTicketOrderBloc: $e');
+      print('📚 Stack trace: $stackTrace');
+      rethrow;
     }
-
-    final currentOrders = state is PaginateTicketOrderLoadedState
-        ? (state as PaginateTicketOrderLoadedState).orders
-        : <TicketonOrderEntity>[];
-    final result = await this.paginateTicketOrderUseCase.call(event.parameter);
-
-    result.fold(
-      (failure) => emit(PaginateTicketOrderFailedState(failure)),
-      (data) {
-        final updatedOrders = [...currentOrders, ...data.items];
-        emit(PaginateTicketOrderLoadedState(data, updatedOrders));
-      },
-    );
   }
 }
