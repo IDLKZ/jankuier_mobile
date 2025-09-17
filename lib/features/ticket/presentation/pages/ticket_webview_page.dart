@@ -292,22 +292,8 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
               print('HTTP Error: ${errorResponse.statusCode} - ${errorResponse.reasonPhrase}');
               print('Failed URL: ${request.url}');
 
-              // Игнорируем 404 ошибки для ресурсов (CSS, JS, изображения)
-              final url = request.url?.toString() ?? '';
-              final isResource = url.contains('.css') ||
-                                url.contains('.js') ||
-                                url.contains('.svg') ||
-                                url.contains('.png') ||
-                                url.contains('.jpg') ||
-                                url.contains('.ico');
-
-              // Показываем ошибку только для основных страниц, не для ресурсов
-              if (!isResource || errorResponse.statusCode != 404) {
-                setState(() {
-                  isLoading = false;
-                  errorMessage = 'HTTP ошибка ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
-                });
-              }
+              // Позволяем сайту самому обрабатывать HTTP ошибки через фронтенд
+              // Не показываем собственные сообщения об ошибках
             },
             onConsoleMessage: (controller, consoleMessage) {
               print('Console ${consoleMessage.messageLevel}: ${consoleMessage.message}');
