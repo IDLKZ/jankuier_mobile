@@ -19,7 +19,7 @@ class _TicketsPageState extends State<TicketsPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
   }
 
   @override
@@ -34,17 +34,19 @@ class _TicketsPageState extends State<TicketsPage>
       appBar: PagesCommonAppBar(
           title: "Билеты", actionIcon: Iconsax.ticket, onActionTap: () {}),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.h),
+        padding: EdgeInsets.symmetric(),
         child: Column(
           children: [
-            TabBar(tabs: [
+            TabBar(controller: _tabController, tabs: [
               Tab(
                 text: "Активные билеты",
               )
             ]),
-            TabBarView(children: [
-              NewTicketWidgets(),
-            ])
+            Expanded(
+              child: TabBarView(controller: _tabController, children: [
+                NewTicketWidgets(),
+              ]),
+            )
           ],
         ),
       ),
