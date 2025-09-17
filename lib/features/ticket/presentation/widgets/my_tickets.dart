@@ -12,6 +12,7 @@ import 'package:jankuier_mobile/features/ticket/presentation/bloc/ticketon_order
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../pages/repayment_webview_page.dart';
 import '../../../../core/di/injection.dart';
 import '../../data/entities/ticket_order/ticket_order_entity.dart';
 import '../bloc/paginate_ticket_order/paginate_ticket_order_event.dart';
@@ -26,12 +27,12 @@ class MyTicketsWidget extends StatefulWidget {
 
 class _MyTicketsWidgetState extends State<MyTicketsWidget> {
   PaginateTicketonOrderParameter myTicketParameter =
-      PaginateTicketonOrderParameter(
-    perPage: 20,
-    page: 1,
-    orderBy: "id",
-    orderDirection: "desc",
-  );
+      const PaginateTicketonOrderParameter(
+        perPage: 20,
+        page: 1,
+        orderBy: "id",
+        orderDirection: "desc",
+      );
 
   void _showOrderDetailsBottomSheet(
       BuildContext context, TicketonOrderEntity order) {
@@ -354,7 +355,7 @@ class TicketOrderCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: _getCompactAction(order, onTap),
+                  child: _getCompactAction(context, order, onTap),
                 ),
               ],
             ),
@@ -378,12 +379,21 @@ class TicketOrderCard extends StatelessWidget {
     return 'НЕАКТИВЕН';
   }
 
-  Widget _getCompactAction(
+  Widget _getCompactAction(BuildContext context,
       TicketonOrderEntity order, VoidCallback onShowDetails) {
     switch (order.statusId) {
       case (OrderStatusConstants.created || OrderStatusConstants.paidAwaiting):
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RepaymentWebViewPage(
+                  orderId: order.id.toString(),
+                ),
+              ),
+            );
+          },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
             decoration: BoxDecoration(

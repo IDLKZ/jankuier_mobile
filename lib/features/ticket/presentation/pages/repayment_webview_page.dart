@@ -5,19 +5,19 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../../core/constants/api_constants.dart';
 
-class TicketWebViewPage extends StatefulWidget {
-  final String showId;
+class RepaymentWebViewPage extends StatefulWidget {
+  final String orderId;
 
-  const TicketWebViewPage({
+  const RepaymentWebViewPage({
     super.key,
-    required this.showId,
+    required this.orderId,
   });
 
   @override
-  State<TicketWebViewPage> createState() => _TicketWebViewPageState();
+  State<RepaymentWebViewPage> createState() => _RepaymentWebViewPageState();
 }
 
-class _TicketWebViewPageState extends State<TicketWebViewPage> {
+class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
   InAppWebViewController? webViewController;
   double progress = 0;
   bool isLoading = true;
@@ -27,7 +27,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
   @override
   void initState() {
     super.initState();
-    initialUrl = ApiConstant.WebFrameGetShowURL + widget.showId;
+    initialUrl = ApiConstant.WebFrameRecreateOrderURL + widget.orderId;
     _initializeWebView();
   }
 
@@ -41,7 +41,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Купить билеты'),
+        title: const Text('Повторная оплата'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -134,12 +134,11 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
               final uri = navigationAction.request.url;
 
               if (uri != null) {
-                print('🔄 Navigation request: ${uri.toString()}');
+                print('🔄 Repayment navigation: ${uri.toString()}');
                 print('📋 Navigation type: ${navigationAction.navigationType}');
                 print('🎯 Is main frame: ${navigationAction.isForMainFrame}');
 
                 // Разрешаем все навигации для правильной работы редиректов
-                // Особенно важно для платежных систем
                 return NavigationActionPolicy.ALLOW;
               }
 
@@ -150,13 +149,14 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
                 isLoading = true;
                 errorMessage = null;
               });
-              print('🚀 Loading started: ${url?.toString()}');
+              print('🚀 Repayment loading started: ${url?.toString()}');
             },
             onUpdateVisitedHistory: (controller, url, androidIsReload) {
-              print('📍 Visited: ${url?.toString()} (reload: $androidIsReload)');
+              print('📍 Repayment visited: ${url?.toString()} (reload: $androidIsReload)');
             },
             onLoadStop: (controller, url) async {
-              print('✅ Loading finished: ${url?.toString()}');
+              print('✅ Repayment loading finished: ${url?.toString()}');
+
               setState(() {
                 isLoading = false;
               });
@@ -222,55 +222,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
 `;
                 document.head.appendChild(style);
 
-                // Принудительно включаем все touch события
-                var touchEvents = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
-                touchEvents.forEach(function(eventType) {
-                  document.addEventListener(eventType, function(e) {
-                    // Не блокируем события, позволяем браузеру обрабатывать их нативно
-                  }, {
-                    passive: true,
-                    capture: false
-                  });
-                });
-
-                // Дополнительная настройка для Android эмулятора
-                if (navigator.userAgent.includes('Android')) {
-                  // Принудительно включаем все pointer events
-                  var pointerEvents = ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'];
-                  pointerEvents.forEach(function(eventType) {
-                    document.addEventListener(eventType, function(e) {
-                      // Позволяем нативную обработку
-                    }, { passive: true });
-                  });
-
-                  // Включаем wheel события для zoom через scroll
-                  document.addEventListener('wheel', function(e) {
-                    if (e.ctrlKey) {
-                      // Позволяем zoom через Ctrl+wheel
-                    }
-                  }, { passive: true });
-                }
-
-                // Добавляем обработчик для gesturestart/gesturechange (iOS/Android)
-                if (typeof document.ontouchstart !== 'undefined') {
-                  document.addEventListener('gesturestart', function(e) {
-                    e.preventDefault();
-                  });
-
-                  document.addEventListener('gesturechange', function(e) {
-                    e.preventDefault();
-                  });
-
-                  document.addEventListener('gestureend', function(e) {
-                    e.preventDefault();
-                  });
-                }
-
-                // Принудительно включаем zoom для всех элементов
-                document.documentElement.style.zoom = 'normal';
-                document.body.style.zoom = 'normal';
-
-                console.log('Enhanced WebView support initialized for redirects and touch');
+                console.log('Enhanced WebView support initialized for repayment');
                 console.log('User agent:', navigator.userAgent);
                 console.log('Touch support:', 'ontouchstart' in window);
                 console.log('Pointer support:', 'onpointerdown' in window);
@@ -292,22 +244,8 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
               print('HTTP Error: ${errorResponse.statusCode} - ${errorResponse.reasonPhrase}');
               print('Failed URL: ${request.url}');
 
-              // Игнорируем 404 ошибки для ресурсов (CSS, JS, изображения)
-              final url = request.url?.toString() ?? '';
-              final isResource = url.contains('.css') ||
-                                url.contains('.js') ||
-                                url.contains('.svg') ||
-                                url.contains('.png') ||
-                                url.contains('.jpg') ||
-                                url.contains('.ico');
-
-              // Показываем ошибку только для основных страниц, не для ресурсов
-              if (!isResource || errorResponse.statusCode != 404) {
-                setState(() {
-                  isLoading = false;
-                  errorMessage = 'HTTP ошибка ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
-                });
-              }
+              // Позволяем сайту самому обрабатывать HTTP ошибки через фронтенд
+              // Не показываем собственные сообщения об ошибках
             },
             onConsoleMessage: (controller, consoleMessage) {
               print('Console ${consoleMessage.messageLevel}: ${consoleMessage.message}');
@@ -323,7 +261,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
                     const CircularProgressIndicator(),
                     SizedBox(height: 16.h),
                     Text(
-                      'Загрузка...',
+                      'Загрузка оплаты...',
                       style: TextStyle(fontSize: 16.sp),
                     ),
                     if (progress > 0)
@@ -368,4 +306,5 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
       ),
     );
   }
+
 }
