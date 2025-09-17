@@ -244,8 +244,26 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
               print('HTTP Error: ${errorResponse.statusCode} - ${errorResponse.reasonPhrase}');
               print('Failed URL: ${request.url}');
 
-              // Позволяем сайту самому обрабатывать HTTP ошибки через фронтенд
-              // Не показываем собственные сообщения об ошибках
+              // Игнорируем 404 ошибки для ресурсов (CSS, JS, изображения)
+              final url = request.url?.toString() ?? '';
+              final isResource = url.contains('.css') ||
+                                url.contains('.js') ||
+                                url.contains('.svg') ||
+                                url.contains('.png') ||
+                                url.contains('.jpg') ||
+                                url.contains('.ico');
+
+              // Игнорируем 404 ошибки для ресурсов и 400 ошибки (пусть сайт сам обрабатывает)
+              if ((isResource && errorResponse.statusCode == 404) ||
+                  errorResponse.statusCode == 400) {
+                return; // Не показываем ошибку
+              }
+
+              // Показываем ошибку только для критических случаев
+              setState(() {
+                isLoading = false;
+                errorMessage = 'HTTP ошибка ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
+              });
             },
             onConsoleMessage: (controller, consoleMessage) {
               print('Console ${consoleMessage.messageLevel}: ${consoleMessage.message}');
