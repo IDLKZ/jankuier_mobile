@@ -33,6 +33,7 @@ class _TicketsPageState extends State<TicketsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: PagesCommonAppBar(
           title: "Билеты", actionIcon: Iconsax.ticket, onActionTap: () {}),
       body: Padding(
