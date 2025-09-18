@@ -56,4 +56,34 @@ class HiveUtils {
     final b = await _getBox(box);
     await b.clear();
   }
+
+  // Auth token methods
+  Future<void> setAccessToken(String token) async {
+    await put(HiveConstant.accessTokenKey, token);
+  }
+
+  Future<String?> getAccessToken() async {
+    return await get<String>(HiveConstant.accessTokenKey);
+  }
+
+  Future<void> clearAccessToken() async {
+    await delete(HiveConstant.accessTokenKey);
+  }
+
+  Future<void> setRefreshToken(String token) async {
+    await put(HiveConstant.refreshTokenKey, token);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await get<String>(HiveConstant.refreshTokenKey);
+  }
+
+  Future<void> clearRefreshToken() async {
+    await delete(HiveConstant.refreshTokenKey);
+  }
+
+  Future<void> clearAllTokens() async {
+    await clearAccessToken();
+    await clearRefreshToken();
+  }
 }

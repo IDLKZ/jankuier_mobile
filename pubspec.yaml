@@ -73,6 +73,7 @@ dependencies:
   flutter_html: ^3.0.0
   auto_size_text: ^3.0.0
   slide_countdown: ^2.0.2
+  flutter_carousel_widget: ^3.1.0
 
   #Local Storage
   hive: ^2.2.3

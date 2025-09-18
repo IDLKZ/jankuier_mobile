@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
@@ -33,8 +35,18 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: AppRouteConstants.SignInPagePath,
     routes: [
+      GoRoute(
+        path: AppRouteConstants.SignInPagePath,
+        name: AppRouteConstants.SignInPageName,
+        builder: (context, state) => const SignInPage(),
+      ),
+      GoRoute(
+        path: AppRouteConstants.SignUpPagePath,
+        name: AppRouteConstants.SignUpPageName,
+        builder: (context, state) => const SignUpPage(),
+      ),
       ShellRoute(
           builder: (context, state, child) {
             return MainNavigation(child: child);

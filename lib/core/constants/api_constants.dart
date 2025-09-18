@@ -2,8 +2,10 @@ class ApiConstant {
   //Base URL to Sota
   // static const String BaseURL = "http://10.0.2.2:8000/api/";
   // static const String ImageURL = "http://10.0.2.2:8000/";
-  static const String WebFrameGetShowURL = "https://jankuier.kz/web-frame-ticket/get-show/";
-  static const String WebFrameRecreateOrderURL = "https://jankuier.kz/web-frame-ticket/get-widget/";
+  static const String WebFrameGetShowURL =
+      "https://jankuier.kz/web-frame-ticket/get-show/";
+  static const String WebFrameRecreateOrderURL =
+      "https://jankuier.kz/web-frame-ticket/get-widget/";
   static const String BaseURL = "https://api.jankuier.kz/api/";
   static const String ImageURL = "https://api.jankuier.kz/";
   //Get Product URL
@@ -68,4 +70,15 @@ class ApiConstant {
   static String GetCheckOrderUrl(int ticketonOrderId) {
     return "${BaseURL}ticketon-order/check-order/${ticketonOrderId}";
   }
+
+  //Auth Me, Login, Register
+  static const String GetMeUrl = "${BaseURL}auth/me";
+  static const String RegisterUrl = "${BaseURL}auth/register";
+  static const String LoginUrl = "${BaseURL}auth/register";
+
+  //User Update Profile, Password, Avatar
+  static const String UpdateProfileUrl = "${BaseURL}auth/update-profile";
+  static const String UpdatePasswordUrl = "${BaseURL}auth/update-password";
+  static const String UpdateProfilePhoto =
+      "${BaseURL}auth/update-profile-photo";
 }
