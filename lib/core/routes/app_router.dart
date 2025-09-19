@@ -29,14 +29,22 @@ import '../../features/tasks/presentation/pages/tasks_page.dart';
 import '../../features/ticket/domain/parameters/ticketon_get_shows_parameter.dart';
 import '../../features/ticket/presentation/bloc/shows/ticketon_event.dart';
 import '../../features/tournament/presentation/pages/tournament_selection_page.dart';
+import '../../features/welcome/presentation/pages/welcome_video_page.dart';
 import '../../shared/widgets/main_navigation.dart';
 import '../constants/app_route_constants.dart';
 import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
+    initialLocation: '/welcome',
     initialLocation: AppRouteConstants.SignInPagePath,
     routes: [
+      // Welcome video page (outside shell to show fullscreen)
+      GoRoute(
+        path: '/welcome',
+        name: 'welcome',
+        builder: (context, state) => const WelcomeVideoPage(),
+      ),
       GoRoute(
         path: AppRouteConstants.SignInPagePath,
         name: AppRouteConstants.SignInPageName,

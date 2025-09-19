@@ -138,22 +138,22 @@ class _HomePageState extends State<HomePage>
           children: [
             // Blue header
             _buildHeader(),
-            // Content
+            // Content with scroll
             Expanded(
-              child: Column(
-                children: [
-                  // Tournament selection section
-                  _buildTournamentSection(),
-                  // Main tournament card
-                  if (_selectedTournament != null)
-                    _buildMainTournamentCard(),
-                  // Tabs and content
-                  Expanded(
-                    child: _selectedTournament != null
-                        ? _buildTabsSection()
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Tournament selection section
+                    _buildTournamentSection(),
+                    // Main tournament card
+                    if (_selectedTournament != null)
+                      _buildMainTournamentCard(),
+                    // Tabs and content
+                    _selectedTournament != null
+                        ? _buildTabsSectionWithScroll()
                         : _buildSelectTournamentMessage(),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -609,7 +609,7 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: _tabController.index == 0 
+                      color: _tabController.index == 0
                         ? const Color(0xFF1E4B9B)
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
@@ -621,7 +621,7 @@ class _HomePageState extends State<HomePage>
                           fontFamily: 'Inter',
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          color: _tabController.index == 0 
+                          color: _tabController.index == 0
                             ? Colors.white
                             : const Color(0xFF1E4B9B),
                         ),
@@ -640,7 +640,7 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: _tabController.index == 1 
+                      color: _tabController.index == 1
                         ? const Color(0xFF1E4B9B)
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
@@ -652,7 +652,7 @@ class _HomePageState extends State<HomePage>
                           fontFamily: 'Inter',
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          color: _tabController.index == 1 
+                          color: _tabController.index == 1
                             ? Colors.white
                             : const Color(0xFF1E4B9B),
                         ),
@@ -675,6 +675,91 @@ class _HomePageState extends State<HomePage>
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildTabsSectionWithScroll() {
+    return Column(
+      children: [
+        // Tab bar
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    _tabController.animateTo(0);
+                    setState(() {});
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: _tabController.index == 0
+                        ? const Color(0xFF1E4B9B)
+                        : Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Таблица',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: _tabController.index == 0
+                            ? Colors.white
+                            : const Color(0xFF1E4B9B),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 4.w),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    _tabController.animateTo(1);
+                    setState(() {});
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: _tabController.index == 1
+                        ? const Color(0xFF1E4B9B)
+                        : Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Результаты',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: _tabController.index == 1
+                            ? Colors.white
+                            : const Color(0xFF1E4B9B),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 10.h),
+        // Tab content without Expanded - let content take natural height
+        _tabController.index == 0
+          ? _buildTableTabWithoutExpanded()
+          : _buildResultsTabWithoutExpanded(),
       ],
     );
   }
@@ -762,6 +847,109 @@ class _HomePageState extends State<HomePage>
         }
         return const Center(
           child: Text("Выберите вкладку 'Результаты' для загрузки матчей"),
+        );
+      },
+    );
+  }
+
+  Widget _buildTableTabWithoutExpanded() {
+    return BlocBuilder<StandingBloc, GetStandingState>(
+      builder: (context, state) {
+        if (state is GetStandingsTableFromSotaLoadingState) {
+          return Container(
+            height: 200.h,
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is GetStandingsTableFromSotaLoadedState) {
+          return _buildStandingsTableWithoutExpanded(state.result);
+        } else if (state is GetStandingsTableFromSotaFailedState) {
+          return Container(
+            height: 200.h,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48.sp,
+                    color: Colors.red[300],
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Ошибка загрузки турнирной таблицы",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.red[600],
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    state.failureData.message ?? 'Неизвестная ошибка',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget _buildResultsTabWithoutExpanded() {
+    return BlocBuilder<StandingBloc, GetStandingState>(
+      builder: (context, state) {
+        if (state is GetMatchesFromSotaLoadingState) {
+          return Container(
+            height: 200.h,
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is GetMatchesFromSotaLoadedState) {
+          return _buildMatchesListWithoutExpanded(state.result);
+        } else if (state is GetMatchesFromSotaFailedState) {
+          return Container(
+            height: 200.h,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48.sp,
+                    color: Colors.red[300],
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Ошибка загрузки результатов матчей",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.red[600],
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    state.failureData.message ?? 'Неизвестная ошибка',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return Container(
+          height: 100.h,
+          child: const Center(
+            child: Text("Выберите вкладку 'Результаты' для загрузки матчей"),
+          ),
         );
       },
     );
@@ -879,6 +1067,114 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 30.w,
+                  child: Text(
+                    "№",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    "Команда",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 30.w,
+                  child: Text(
+                    "И",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 50.w,
+                  child: Text(
+                    "Г",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 30.w,
+                  child: Text(
+                    "О",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Teams list - without Expanded, let content take natural height
+          ...teams.asMap().entries.map((entry) {
+            int index = entry.key;
+            ScoreTableTeamEntity team = entry.value;
+            return TeamTableItemWidget(
+              team: team,
+              position: index + 1,
+            );
+          }).toList(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildMatchesList(List<MatchEntity> matches) {
     final groupedMatches = <int, List<MatchEntity>>{};
 
@@ -920,6 +1216,49 @@ class _HomePageState extends State<HomePage>
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildMatchesListWithoutExpanded(List<MatchEntity> matches) {
+    final groupedMatches = <int, List<MatchEntity>>{};
+
+    for (final match in matches) {
+      if (!groupedMatches.containsKey(match.tour)) {
+        groupedMatches[match.tour] = [];
+      }
+      groupedMatches[match.tour]!.add(match);
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      color: AppColors.background,
+      child: Column(
+        children: groupedMatches.keys.map((tour) {
+          final tourMatches = groupedMatches[tour]!;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Tour header
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text(
+                  "Тур $tour",
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              // Matches for this tour
+              ...tourMatches.map((match) => _buildMatchCardWithoutMargin(match)),
+              SizedBox(height: 16.h),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
@@ -1088,6 +1427,136 @@ class _HomePageState extends State<HomePage>
         Icons.sports_soccer,
         color: Colors.grey,
         size: 20.sp,
+      ),
+    );
+  }
+
+  Widget _buildMatchCardWithoutMargin(MatchEntity match) {
+    return GestureDetector(
+      onTap: () {
+        context.push('${AppRouteConstants.GameStatPagePath}${match.id}',
+            extra: match);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // Home team
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  // Home team logo
+                  Container(
+                    width: 40.w,
+                    height: 40.h,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.sports_soccer,
+                      color: Colors.grey,
+                      size: 24.sp,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  // Home team name
+                  Text(
+                    match.homeTeam.name,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            // Score and match info
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  // Score
+                  Text(
+                    "${match.homeTeam.score ?? 0} - ${match.awayTeam.score ?? 0}",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  // Date and time
+                  Text(
+                    _formatDate(match.date),
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            // Away team
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  // Away team logo
+                  Container(
+                    width: 40.w,
+                    height: 40.h,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.sports_soccer,
+                      color: Colors.grey,
+                      size: 24.sp,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  // Away team name
+                  Text(
+                    match.awayTeam.name,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

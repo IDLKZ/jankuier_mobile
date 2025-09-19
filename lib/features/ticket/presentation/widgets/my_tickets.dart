@@ -1240,7 +1240,7 @@ class QRCodeBottomSheet extends StatelessWidget {
     final tickets = orderCheck.orderCheck?.tickets;
     final show = orderCheck.orderCheck?.show;
 
-    return Padding(
+    return SingleChildScrollView(
       padding: EdgeInsets.all(20.w),
       child: Column(
         children: [
@@ -1292,94 +1292,91 @@ class QRCodeBottomSheet extends StatelessWidget {
 
           // QR Codes
           if (tickets != null && tickets.isNotEmpty) ...[
-            Expanded(
-              child: ListView.builder(
-                itemCount: tickets.length,
-                itemBuilder: (context, index) {
-                  final ticketEntry = tickets.entries.elementAt(index);
-                  final ticket = ticketEntry.value;
+            // Список QR кодов без Expanded - позволяем контенту определить свою высоту
+            ...tickets.entries.map((ticketEntry) {
+              final ticket = ticketEntry.value;
 
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(color: AppColors.grey200),
-                    ),
-                    child: Column(
+              return Container(
+                margin: EdgeInsets.only(bottom: 16.h),
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: AppColors.grey200),
+                ),
+                child: Column(
+                  children: [
+                    // Ticket Info
+                    Row(
                       children: [
-                        // Ticket Info
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (ticket.row != null && ticket.number != null)
-                                    Text(
-                                      'Ряд ${ticket.row}, Место ${ticket.number}',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                  if (ticket.level != null)
-                                    Text(
-                                      'Уровень: ${ticket.level}',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.textSecondary,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16.h),
-
-                        // QR Code
-                        if (ticket.qr != null && ticket.qr!.isNotEmpty)
-                          Container(
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8.r),
-                              border: Border.all(color: AppColors.grey200),
-                            ),
-                            child: QrImageView(
-                              data: ticket.qr!,
-                              version: QrVersions.auto,
-                              size: 200.w,
-                            ),
-                          )
-                        else
-                          Container(
-                            height: 200.w,
-                            decoration: BoxDecoration(
-                              color: AppColors.grey100,
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'QR-код недоступен',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: AppColors.textSecondary,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (ticket.row != null && ticket.number != null)
+                                Text(
+                                  'Ряд ${ticket.row}, Место ${ticket.number}',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
                                 ),
-                              ),
-                            ),
+                              if (ticket.level != null)
+                                Text(
+                                  'Уровень: ${ticket.level}',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                            ],
                           ),
+                        ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
+                    SizedBox(height: 16.h),
+
+                    // QR Code
+                    if (ticket.qr != null && ticket.qr!.isNotEmpty)
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: AppColors.grey200),
+                        ),
+                        child: QrImageView(
+                          data: ticket.qr!,
+                          version: QrVersions.auto,
+                          size: 200.w,
+                        ),
+                      )
+                    else
+                      Container(
+                        height: 200.w,
+                        decoration: BoxDecoration(
+                          color: AppColors.grey100,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'QR-код недоступен',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
           ] else ...[
-            Expanded(
+            // Сообщение о том, что QR-коды не найдены
+            Container(
+              height: 200.h,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1403,6 +1400,8 @@ class QRCodeBottomSheet extends StatelessWidget {
               ),
             ),
           ],
+
+          SizedBox(height: 20.h),
 
           // Close Button
           SizedBox(
