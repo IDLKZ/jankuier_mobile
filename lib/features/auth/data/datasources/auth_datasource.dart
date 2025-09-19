@@ -68,7 +68,7 @@ class AuthDSImpl implements AuthDSInterface {
   @override
   Future<bool> updatePassword(UpdatePasswordParameter parameter) async {
     try {
-      final response = await httpUtils.post(ApiConstant.RegisterUrl,
+      final response = await httpUtils.post(ApiConstant.UpdatePasswordUrl,
           data: parameter.toJson());
       return response;
     } on DioException catch (e) {

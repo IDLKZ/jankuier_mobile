@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/hive_constants.dart';
+import 'package:jankuier_mobile/features/auth/data/entities/user_entity.dart';
 import 'package:jankuier_mobile/features/countries/data/entities/country_entity.dart';
 import 'package:jankuier_mobile/features/tournament/data/entities/tournament_entity.dart';
 import '../constants/app_route_constants.dart';
@@ -68,5 +69,26 @@ class AppRouteMiddleware {
     }
 
     return AppRouteConstants.CountryListPagePath;
+  }
+
+  Future<String?> checkAuthMiddleware(
+      BuildContext context, GoRouterState state) async {
+    UserEntity? currentUser = await hiveUtils.getCurrentUser();
+    String? bearerToken = await hiveUtils.getAccessToken();
+    if (currentUser == null || bearerToken == null) {
+      await hiveUtils.clearAllUserData();
+      return AppRouteConstants.SignInPagePath;
+    }
+    return null;
+  }
+
+  Future<String?> checkGuestMiddleware(
+      BuildContext context, GoRouterState state) async {
+    UserEntity? currentUser = await hiveUtils.getCurrentUser();
+    String? bearerToken = await hiveUtils.getAccessToken();
+    if (currentUser != null || bearerToken != null) {
+      return "/";
+    }
+    return null;
   }
 }

@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
+import 'package:jankuier_mobile/core/routes/app_router.dart';
 import 'package:jankuier_mobile/core/utils/toasters.dart';
 import 'package:talker/talker.dart';
 import '../di/injection.dart';
@@ -88,6 +91,19 @@ class HttpUtil {
     return headers;
   }
 
+  Future<void> _handle401Error() async {
+    try {
+      // Clear user data and token from Hive
+      await _hiveUtils.clearAccessToken();
+      await _hiveUtils.clearCurrentUser();
+
+      // Navigate to SignIn page using the router
+      AppRouter.router.go(AppRouteConstants.SignInPagePath);
+    } catch (e) {
+      talker.error('Error handling 401 unauthorized', e);
+    }
+  }
+
   Future<dynamic> _request({
     required String method,
     required String path,
@@ -111,7 +127,14 @@ class HttpUtil {
       return response.data;
     } on DioException catch (e) {
       talker.error('HTTP $method $path', e);
-      AppToaster.showError("Ошибка сети: ${e.message}");
+
+      // Handle 401 Unauthorized error
+      if (e.response?.statusCode == 401) {
+        await _handle401Error();
+        AppToaster.showError("Сессия истекла. Войдите заново");
+      } else {
+        AppToaster.showError("Ошибка сети: ${e.message}");
+      }
       // throw AppException.fromDioError(e);
     } catch (e, st) {
       talker.handle(e, st);

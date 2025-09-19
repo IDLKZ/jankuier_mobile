@@ -48,11 +48,19 @@ class AppRouter {
         path: AppRouteConstants.SignInPagePath,
         name: AppRouteConstants.SignInPageName,
         builder: (context, state) => const SignInPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
       ),
       GoRoute(
         path: AppRouteConstants.SignUpPagePath,
         name: AppRouteConstants.SignUpPageName,
         builder: (context, state) => const SignUpPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
       ),
       ShellRoute(
           builder: (context, state, child) {
@@ -91,6 +99,10 @@ class AppRouter {
               path: '/profile',
               name: 'profile',
               builder: (context, state) => const ProfilePage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
             ),
             GoRoute(
               path: "${AppRouteConstants.SingleProductPagePath}:productId",
@@ -127,11 +139,19 @@ class AppRouter {
               path: AppRouteConstants.EditAccountPagePath,
               name: AppRouteConstants.EditAccountPageName,
               builder: (context, state) => const EditAccountPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
             ),
             GoRoute(
               path: AppRouteConstants.EditPasswordPagePath,
               name: AppRouteConstants.EditPasswordPageName,
               builder: (context, state) => const EditPasswordPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
             ),
             GoRoute(
               path: AppRouteConstants.BlogListPagePath,
@@ -147,19 +167,11 @@ class AppRouter {
               path: AppRouteConstants.TournamentSelectionPagePath,
               name: AppRouteConstants.TournamentSelectionPageName,
               builder: (context, state) => const TournamentSelectionPage(),
-              // redirect: (BuildContext context, GoRouterState state) async {
-              //   return await AppRouteMiddleware()
-              //       .tournamentMiddleware(context, state);
-              // },
             ),
             GoRoute(
               path: AppRouteConstants.StandingsPagePath,
               name: AppRouteConstants.StandingsPageName,
               builder: (context, state) => const StandingsPage(),
-              // redirect: (BuildContext context, GoRouterState state) async {
-              //   return await AppRouteMiddleware()
-              //       .standingMiddleware(context, state);
-              // },
             ),
             GoRoute(
               path: AppRouteConstants.TicketPagePath,

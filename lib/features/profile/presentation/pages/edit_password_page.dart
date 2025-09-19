@@ -1,11 +1,156 @@
 import 'package:flutter/material.dart';
-import 'package:jankuier_mobile/features/home/presentation/widgets/edit_account_widget.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_parameter.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_bloc.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_event.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/utils/hive_utils.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
+import '../../../auth/data/entities/user_entity.dart';
+import '../../../auth/presentation/bloc/update_password_bloc/update_password_state.dart';
 
-class EditPasswordPage extends StatelessWidget {
+class EditPasswordPage extends StatefulWidget {
   const EditPasswordPage({super.key});
+
+  @override
+  State<EditPasswordPage> createState() => _EditPasswordPageState();
+}
+
+class _EditPasswordPageState extends State<EditPasswordPage> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<UpdatePasswordBloc>(),
+      child: const _EditPasswordView(),
+    );
+  }
+}
+
+class _EditPasswordView extends StatefulWidget {
+  const _EditPasswordView();
+
+  @override
+  State<_EditPasswordView> createState() => _EditPasswordViewState();
+}
+
+class _EditPasswordViewState extends State<_EditPasswordView> {
+  final _formKey = GlobalKey<FormState>();
+  UserEntity? currentUser;
+
+  // Controllers
+  final _oldPasswordC = TextEditingController();
+  final _newPasswordC = TextEditingController();
+  final _confirmPasswordC = TextEditingController();
+
+  @override
+  void dispose() {
+    _oldPasswordC.dispose();
+    _newPasswordC.dispose();
+    _confirmPasswordC.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final user = await HiveUtils().getCurrentUser();
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
+
+  // Validation methods
+  String? _validateOldPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Введите текущий пароль';
+    }
+    return null;
+  }
+
+  String? _validateNewPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Введите новый пароль';
+    }
+    if (value.length < 6) {
+      return 'Пароль должен содержать минимум 6 символов';
+    }
+    if (value == _oldPasswordC.text) {
+      return 'Новый пароль должен отличаться от текущего';
+    }
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Повторите новый пароль';
+    }
+    if (value != _newPasswordC.text) {
+      return 'Пароли не совпадают';
+    }
+    return null;
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final updatePasswordParameter = UpdatePasswordParameter(
+        oldPassword: _oldPasswordC.text,
+        newPassword: _newPasswordC.text,
+      );
+
+      context.read<UpdatePasswordBloc>().add(PasswordUpdateSubmitted(updatePasswordParameter));
+    }
+  }
+
+  // Widget builders
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required String labelText,
+    required String? Function(String?) validator,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16.h),
+      child: TextFormField(
+        controller: controller,
+        obscureText: true,
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: TextStyle(color: AppColors.textSecondary),
+          filled: true,
+          fillColor: AppColors.background,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: BorderSide(color: AppColors.border),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: BorderSide(color: AppColors.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: BorderSide(color: AppColors.primary, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: BorderSide(color: Colors.red, width: 2),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +162,111 @@ class EditPasswordPage extends StatelessWidget {
         onActionTap: () {},
         leadingIcon: Icons.arrow_back_ios,
       ),
-      body: const EditAccountForm(showChangeEmail: false, showDeleteAccount: false),
+      body: BlocListener<UpdatePasswordBloc, UpdatePasswordState>(
+        listener: (context, state) {
+          if (state is UpdatePasswordSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Пароль успешно обновлен'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            context.go('/profile');
+          } else if (state is UpdatePasswordFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(16.w),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(5.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Изменение пароля',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+
+                  _buildPasswordField(
+                    controller: _oldPasswordC,
+                    labelText: 'Текущий пароль',
+                    validator: _validateOldPassword,
+                  ),
+
+                  _buildPasswordField(
+                    controller: _newPasswordC,
+                    labelText: 'Новый пароль',
+                    validator: _validateNewPassword,
+                  ),
+
+                  _buildPasswordField(
+                    controller: _confirmPasswordC,
+                    labelText: 'Повторите новый пароль',
+                    validator: _validateConfirmPassword,
+                  ),
+
+                  SizedBox(height: 20.h),
+
+                  // Submit button
+                  BlocBuilder<UpdatePasswordBloc, UpdatePasswordState>(
+                    builder: (context, state) {
+                      final isLoading = state is UpdatePasswordLoading;
+                      return SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
+                          onPressed: isLoading ? null : _submitForm,
+                          child: isLoading
+                              ? SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  'Обновить пароль',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
