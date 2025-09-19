@@ -7,6 +7,10 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:jankuier_mobile/core/api_client/sota_api_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'core/adapters/file_entity_adapter.dart';
+import 'core/adapters/permission_entity_adapter.dart';
+import 'core/adapters/role_entity_adapter.dart';
+import 'core/adapters/user_entity_adapter.dart';
 import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
@@ -27,8 +31,12 @@ void main() async {
   }
 
   // Register Hive Adapters
-  Hive.registerAdapter(TournamentEntityAdapter());
-  Hive.registerAdapter(SeasonEntityAdapter());
+  Hive.registerAdapter(TournamentEntityAdapter()); // typeId: 1
+  Hive.registerAdapter(SeasonEntityAdapter()); // typeId: 2
+  Hive.registerAdapter(FileEntityAdapter()); // typeId: 3
+  Hive.registerAdapter(PermissionEntityAdapter()); // typeId: 4
+  Hive.registerAdapter(RoleEntityAdapter()); // typeId: 5
+  Hive.registerAdapter(UserEntityAdapter()); // typeId: 6
 
   // Initialize HydratedBloc
   if (kIsWeb) {
@@ -40,7 +48,6 @@ void main() async {
       storageDirectory: await getTemporaryDirectory(),
     );
   }
-
 
   // Configure dependencies
   await configureDependencies();

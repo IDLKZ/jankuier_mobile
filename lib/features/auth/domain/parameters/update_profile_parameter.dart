@@ -24,7 +24,7 @@ class UpdateProfileParameter extends Equatable {
       'iin': iin,
       'first_name': firstName,
       'last_name': lastName,
-      'patronymic': patronymic,
+      'patronomic': patronymic,
     };
   }
 

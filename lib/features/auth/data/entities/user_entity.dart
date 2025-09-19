@@ -12,9 +12,9 @@ class UserEntity extends Equatable {
   final String email;
   final String phone;
   final String username;
-  final int sex;
+  final int? sex;
   final String? iin;
-  final DateTime birthdate;
+  final DateTime? birthdate;
   final bool isActive;
   final bool isVerified;
   final DateTime createdAt;
@@ -33,9 +33,9 @@ class UserEntity extends Equatable {
     required this.email,
     required this.phone,
     required this.username,
-    required this.sex,
+    this.sex,
     this.iin,
-    required this.birthdate,
+    this.birthdate,
     required this.isActive,
     required this.isVerified,
     required this.createdAt,
@@ -58,7 +58,7 @@ class UserEntity extends Equatable {
       username: json['username'],
       sex: json['sex'],
       iin: json['iin'],
-      birthdate: DateTime.parse(json['birthdate']),
+      birthdate: json['birthdate'] != null ? DateTime.parse(json['birthdate']) : null,
       isActive: json['is_active'] ?? false,
       isVerified: json['is_verified'] ?? false,
       createdAt: DateTime.parse(json['created_at']),

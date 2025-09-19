@@ -8,4 +8,5 @@ class HiveConstant {
   static const String mainTournamentKey = "main_tournament";
   static const String mainTournamentIdKey = "main_tournament_id";
   static const String activeSeasonIdKey = "active_season_id";
+  static const String currentUserKey = "current_user";
 }

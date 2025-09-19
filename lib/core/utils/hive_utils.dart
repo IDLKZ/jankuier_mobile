@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../constants/hive_constants.dart';
 import '../di/injection.dart';
+import '../../features/auth/data/entities/user_entity.dart';
 
 @injectable
 class HiveUtils {
@@ -85,5 +86,23 @@ class HiveUtils {
   Future<void> clearAllTokens() async {
     await clearAccessToken();
     await clearRefreshToken();
+  }
+
+  // User methods
+  Future<void> setCurrentUser(UserEntity user) async {
+    await put(HiveConstant.currentUserKey, user);
+  }
+
+  Future<UserEntity?> getCurrentUser() async {
+    return await get<UserEntity>(HiveConstant.currentUserKey);
+  }
+
+  Future<void> clearCurrentUser() async {
+    await delete(HiveConstant.currentUserKey);
+  }
+
+  Future<void> clearAllUserData() async {
+    await clearAllTokens();
+    await clearCurrentUser();
   }
 }

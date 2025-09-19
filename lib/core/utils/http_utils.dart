@@ -3,10 +3,12 @@ import 'package:jankuier_mobile/core/utils/toasters.dart';
 import 'package:talker/talker.dart';
 import '../di/injection.dart';
 import '../network/dio_client.dart';
+import 'hive_utils.dart';
 
 class HttpUtil {
   final Dio dio = getIt<DioClient>().dio;
   final Talker talker = getIt<Talker>();
+  final HiveUtils _hiveUtils = getIt<HiveUtils>();
 
   Future<dynamic> post(
     String path, {
@@ -66,6 +68,26 @@ class HttpUtil {
     );
   }
 
+  Future<Map<String, String>> _getHeaders(
+      Map<String, String>? additionalHeaders) async {
+    final headers = <String, String>{
+      "Content-Type": "application/json",
+    };
+
+    // Add Bearer token if available
+    final accessToken = await _hiveUtils.getAccessToken();
+    if (accessToken != null && accessToken.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $accessToken';
+    }
+
+    // Add any additional headers
+    if (additionalHeaders != null) {
+      headers.addAll(additionalHeaders);
+    }
+
+    return headers;
+  }
+
   Future<dynamic> _request({
     required String method,
     required String path,
@@ -74,16 +96,15 @@ class HttpUtil {
     Map<String, String>? headers,
   }) async {
     try {
+      final requestHeaders = await _getHeaders(headers);
+
       final response = await dio.request(
         path,
         data: data,
         queryParameters: queryParameters,
         options: Options(
           method: method,
-          headers: {
-            "Content-Type": "application/json",
-            ...?headers,
-          },
+          headers: requestHeaders,
           responseType: ResponseType.json,
         ),
       );

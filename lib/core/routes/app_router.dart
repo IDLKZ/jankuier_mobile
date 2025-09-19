@@ -36,8 +36,7 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/welcome',
-    initialLocation: AppRouteConstants.SignInPagePath,
+    initialLocation: AppRouteConstants.SignUpPagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(

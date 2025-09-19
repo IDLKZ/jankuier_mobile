@@ -18,3 +18,7 @@ class RefreshUserProfile extends GetMeEvent {
 class ResetUserProfile extends GetMeEvent {
   const ResetUserProfile();
 }
+
+class LoadUserFromCache extends GetMeEvent {
+  const LoadUserFromCache();
+}

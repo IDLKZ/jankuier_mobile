@@ -31,7 +31,7 @@ class RegisterParameter {
       'password': password,
       'first_name': firstName,
       'last_name': lastName,
-      'patronymic': patronymic,
+      'patronomic': patronymic,
     };
   }
 

@@ -8,9 +8,10 @@ import 'sign_in_state.dart';
 @injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final SignInUseCase _signInUseCase;
-  final HiveUtils _hiveUtils = HiveUtils();
+  final HiveUtils _hiveUtils;
 
-  SignInBloc(this._signInUseCase) : super(const SignInInitial()) {
+  SignInBloc(this._signInUseCase, this._hiveUtils)
+      : super(const SignInInitial()) {
     on<SignInSubmitted>(_onSignInSubmitted);
     on<SignInReset>(_onSignInReset);
   }
@@ -21,8 +22,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     final result = await _signInUseCase(event.loginParameter);
 
-    result.fold(
-      (failure) => emit(SignInFailure(failure.message ?? 'Sign in failed')),
+    await result.fold(
+      (failure) async =>
+          emit(SignInFailure(failure.message ?? 'Sign in failed')),
       (token) async {
         // Save token to secure storage
         await _hiveUtils.setAccessToken(token.accessToken);
