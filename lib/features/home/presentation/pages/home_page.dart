@@ -21,6 +21,11 @@ import '../../../tournament/domain/parameters/get_tournament_parameter.dart';
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_bloc.dart';
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_event.dart';
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_state.dart';
+import '../../../blog/data/entities/news_entity.dart';
+import '../../../blog/domain/parameters/get_news_parameter.dart';
+import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
+import '../../../blog/presentation/bloc/get_news/get_news_event.dart';
+import '../../../blog/presentation/bloc/get_news/get_news_state.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int tournamentId, String tournamentName)? onTournamentSelected;
@@ -40,6 +45,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late GetTournamentBloc _tournamentBloc;
   late StandingBloc _standingBloc;
+  late GetNewsBloc _newsBloc;
   late TabController _tabController;
   final GetTournamentParameter _params = const GetTournamentParameter();
   bool _hasMainCountry = false;
@@ -50,9 +56,11 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _tournamentBloc = getIt<GetTournamentBloc>();
     _standingBloc = getIt<StandingBloc>();
+    _newsBloc = getIt<GetNewsBloc>();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
     _checkMainCountry();
+    _loadNews();
   }
 
   Future<void> _checkMainCountry() async {
@@ -117,11 +125,20 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  void _loadNews() {
+    _newsBloc.add(GetNewsFromKffEvent(const GetNewsParameter(
+      platform: NewsPlatform.yii,
+      page: 1,
+      perPage: 3,
+    )));
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
     _tournamentBloc.close();
     _standingBloc.close();
+    _newsBloc.close();
     super.dispose();
   }
 
@@ -131,6 +148,7 @@ class _HomePageState extends State<HomePage>
       providers: [
         BlocProvider.value(value: _tournamentBloc),
         BlocProvider.value(value: _standingBloc),
+        BlocProvider.value(value: _newsBloc),
       ],
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -152,6 +170,8 @@ class _HomePageState extends State<HomePage>
                     _selectedTournament != null
                         ? _buildTabsSectionWithScroll()
                         : _buildSelectTournamentMessage(),
+                    // News section
+                    if (_selectedTournament != null) _buildNewsSection(),
                   ],
                 ),
               ),
@@ -166,7 +186,7 @@ class _HomePageState extends State<HomePage>
     return Container(
       height: 120.h,
       decoration: const BoxDecoration(
-        color: Color(0xFF1E4B9B),
+        gradient: AppColors.primaryGradient,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
@@ -258,7 +278,7 @@ class _HomePageState extends State<HomePage>
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E4B9B),
+        gradient: AppColors.primaryGradient,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -417,12 +437,12 @@ class _HomePageState extends State<HomePage>
           color: Colors.white,
           shape: BoxShape.circle,
           border: isSelected 
-            ? Border.all(color: const Color(0xFF4B79CF), width: 2)
+            ? Border.all(color: AppColors.gradientStart, width: 2)
             : null,
           boxShadow: [
             BoxShadow(
               color: isSelected 
-                ? const Color(0xFF4B79CF).withValues(alpha: 0.3)
+                ? AppColors.gradientStart.withValues(alpha: 0.3)
                 : Colors.black.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 2),
@@ -540,7 +560,7 @@ class _HomePageState extends State<HomePage>
             width: 80.w,
             height: 80.h,
             decoration: BoxDecoration(
-              color: const Color(0xFF1E4B9B).withValues(alpha: 0.1),
+              color: AppColors.gradientStart.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Stack(
@@ -552,14 +572,14 @@ class _HomePageState extends State<HomePage>
                   child: CircularProgressIndicator(
                     strokeWidth: 3,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      const Color(0xFF1E4B9B).withValues(alpha: 0.3),
+                      AppColors.gradientStart.withValues(alpha: 0.3),
                     ),
                   ),
                 ),
                 Icon(
                   Icons.sports_soccer,
                   size: 32.sp,
-                  color: const Color(0xFF1E4B9B),
+                  color: AppColors.gradientStart,
                 ),
               ],
             ),
@@ -571,7 +591,7 @@ class _HomePageState extends State<HomePage>
               fontFamily: 'Inter',
               fontSize: 18.sp,
               fontWeight: FontWeight.w500,
-              color: const Color(0xFF1E4B9B),
+              color: AppColors.gradientStart,
             ),
           ),
           SizedBox(height: 8.h),
@@ -609,8 +629,11 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
+                      gradient: _tabController.index == 0
+                        ? AppColors.primaryGradient
+                        : null,
                       color: _tabController.index == 0
-                        ? const Color(0xFF1E4B9B)
+                        ? null
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -623,7 +646,7 @@ class _HomePageState extends State<HomePage>
                           fontWeight: FontWeight.w500,
                           color: _tabController.index == 0
                             ? Colors.white
-                            : const Color(0xFF1E4B9B),
+                            : AppColors.gradientStart,
                         ),
                       ),
                     ),
@@ -640,8 +663,11 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
+                      gradient: _tabController.index == 1
+                        ? AppColors.primaryGradient
+                        : null,
                       color: _tabController.index == 1
-                        ? const Color(0xFF1E4B9B)
+                        ? null
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -654,7 +680,7 @@ class _HomePageState extends State<HomePage>
                           fontWeight: FontWeight.w500,
                           color: _tabController.index == 1
                             ? Colors.white
-                            : const Color(0xFF1E4B9B),
+                            : AppColors.gradientStart,
                         ),
                       ),
                     ),
@@ -700,8 +726,11 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
+                      gradient: _tabController.index == 0
+                        ? AppColors.primaryGradient
+                        : null,
                       color: _tabController.index == 0
-                        ? const Color(0xFF1E4B9B)
+                        ? null
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -714,7 +743,7 @@ class _HomePageState extends State<HomePage>
                           fontWeight: FontWeight.w500,
                           color: _tabController.index == 0
                             ? Colors.white
-                            : const Color(0xFF1E4B9B),
+                            : AppColors.gradientStart,
                         ),
                       ),
                     ),
@@ -731,8 +760,11 @@ class _HomePageState extends State<HomePage>
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     decoration: BoxDecoration(
+                      gradient: _tabController.index == 1
+                        ? AppColors.primaryGradient
+                        : null,
                       color: _tabController.index == 1
-                        ? const Color(0xFF1E4B9B)
+                        ? null
                         : Colors.white,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -745,7 +777,7 @@ class _HomePageState extends State<HomePage>
                           fontWeight: FontWeight.w500,
                           color: _tabController.index == 1
                             ? Colors.white
-                            : const Color(0xFF1E4B9B),
+                            : AppColors.gradientStart,
                         ),
                       ),
                     ),
@@ -1071,7 +1103,7 @@ class _HomePageState extends State<HomePage>
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -1576,6 +1608,236 @@ class _HomePageState extends State<HomePage>
       return "$day.$month.$year";
     } catch (e) {
       // Если строка не соответствует формату, возвращаем её без изменений.
+      return dateString;
+    }
+  }
+
+  Widget _buildNewsSection() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Последние новости',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.push('/blog');
+                  },
+                  child: Text(
+                    'Все новости',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.gradientStart,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.h),
+          BlocBuilder<GetNewsBloc, GetNewsStateState>(
+            builder: (context, state) {
+              if (state is GetNewsStateLoadingState) {
+                return Container(
+                  height: 150.h,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: const Center(child: CircularProgressIndicator()),
+                );
+              } else if (state is GetNewsStateSuccessState) {
+                if (state.newsResponse.data.isEmpty) {
+                  return Container(
+                    height: 150.h,
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Center(
+                      child: Text(
+                        'Новости не найдены',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                return SizedBox(
+                  height: 200.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    itemCount: state.newsResponse.data.length,
+                    itemBuilder: (context, index) {
+                      final news = state.newsResponse.data[index];
+                      return Container(
+                        width: 280.w,
+                        margin: EdgeInsets.only(right: 16.w),
+                        child: _buildNewsCard(news),
+                      );
+                    },
+                  ),
+                );
+              } else if (state is GetNewsStateFailedState) {
+                return Container(
+                  height: 150.h,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Center(
+                    child: Text(
+                      'Ошибка загрузки новостей',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+          SizedBox(height: 20.h),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewsCard(News news) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(12),
+            ),
+            child: Container(
+              height: 120.h,
+              width: double.infinity,
+              color: Colors.grey[200],
+              child: news.imageUrl != null && news.imageUrl!.isNotEmpty
+                  ? Image.network(
+                      news.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[200],
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: Colors.grey[400],
+                            size: 40.sp,
+                          ),
+                        );
+                      },
+                    )
+                  : Icon(
+                      Icons.article,
+                      color: Colors.grey[400],
+                      size: 40.sp,
+                    ),
+            ),
+          ),
+          // Content
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(12.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    news.title,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 12.sp,
+                        color: Colors.grey[600],
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        _formatNewsDate(news.date?.toIso8601String() ?? ''),
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.visibility,
+                        size: 12.sp,
+                        color: Colors.grey[600],
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        '${news.views ?? 0}',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatNewsDate(String dateString) {
+    try {
+      final dateTime = DateTime.parse(dateString);
+      final now = DateTime.now();
+      final difference = now.difference(dateTime);
+
+      if (difference.inDays > 0) {
+        return '${difference.inDays} дн. назад';
+      } else if (difference.inHours > 0) {
+        return '${difference.inHours} ч. назад';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes} мин. назад';
+      } else {
+        return 'Только что';
+      }
+    } catch (e) {
       return dateString;
     }
   }

@@ -74,7 +74,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
   }
 
   void _navigateToTab(BuildContext context, int index) {
-    final routes = ['/', '/tickets', '/services', '/activity', '/profile'];
+    final routes = ['/', '/tickets', '/services', '/blog', '/profile'];
     if (index < routes.length) {
       context.go(routes[index]);
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jankuier_mobile/core/constants/app_colors.dart';
+
+import '../../../../core/constants/app_colors.dart';
 
 class NewsCard extends StatelessWidget {
   final String imageUrl;
@@ -11,24 +12,38 @@ class NewsCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const NewsCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.tag,
     required this.title,
     required this.date,
     required this.likes,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
-      padding: EdgeInsets.all(8.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
       child: Column(
         children: [
           Row(
@@ -36,15 +51,30 @@ class NewsCard extends StatelessWidget {
             children: [
               // Картинка
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.network(
                   imageUrl,
-                  width: 90,
-                  height: 70,
-                  fit: BoxFit.contain,
+                  width: 90.w,
+                  height: 70.h,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 90.w,
+                      height: 70.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.grey100,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.image_not_supported_outlined,
+                        color: AppColors.grey400,
+                        size: 24.sp,
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 16.w),
               // Текстовая часть
               Expanded(
                 child: Column(
@@ -52,52 +82,63 @@ class NewsCard extends StatelessWidget {
                   children: [
                     // Тег
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(7),
+                        gradient: AppColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         tag,
                         style: TextStyle(
+                          fontFamily: 'Inter',
                           color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 8.h),
                     // Заголовок
-                    Text(
-                      title,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
-                        color: Colors.black
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 60.h),
+                      child: Text(
+                        title,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: AppColors.textPrimary,
+                          height: 1.3,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16)
                   ],
                 ),
               ),
             ],
           ),
+          SizedBox(height: 12.h),
           // Лайки и дата
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Icon(Icons.favorite_border,
-                      size: 18, color: Colors.grey[400]),
-                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.visibility_outlined,
+                    size: 16.sp,
+                    color: AppColors.textSecondary,
+                  ),
+                  SizedBox(width: 6.w),
                   Text(
-                    likes.toString(),
+                    _formatViews(likes),
                     style: TextStyle(
-                      color: const Color(0xFFBDBDBD),
-                      fontSize: 13.sp,
+                      fontFamily: 'Inter',
+                      color: AppColors.textSecondary,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -106,8 +147,10 @@ class NewsCard extends StatelessWidget {
                 child: Text(
                   date,
                   style: TextStyle(
-                    color: const Color(0xFFBDBDBD),
-                    fontSize: 12.5.sp,
+                    fontFamily: 'Inter',
+                    color: AppColors.textSecondary,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -116,6 +159,16 @@ class NewsCard extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
+  }
+
+  String _formatViews(int views) {
+    if (views >= 1000000) {
+      return '${(views / 1000000).toStringAsFixed(1)}M';
+    } else if (views >= 1000) {
+      return '${(views / 1000).toStringAsFixed(1)}K';
+    }
+    return views.toString();
   }
 }

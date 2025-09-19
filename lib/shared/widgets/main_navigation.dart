@@ -40,7 +40,7 @@ class MainNavigation extends StatelessWidget {
         return 1;
       case '/services':
         return 2;
-      case '/activity':
+      case '/blog':
         return 3;
       case '/profile':
         return 4;
@@ -67,8 +67,8 @@ class MainNavigation extends StatelessWidget {
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
-        icon: const Icon(Icons.local_fire_department_outlined),
-        title: "Активность",
+        icon: const Icon(Icons.newspaper_outlined),
+        title: "Новости",
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(

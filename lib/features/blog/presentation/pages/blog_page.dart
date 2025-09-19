@@ -1,42 +1,394 @@
 import 'package:flutter/material.dart';
-import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
+import '../../data/entities/news_entity.dart';
+import '../../domain/parameters/get_news_parameter.dart';
+import '../bloc/get_news/get_news_bloc.dart';
+import '../bloc/get_news/get_news_event.dart';
+import '../bloc/get_news/get_news_state.dart';
 import '../widgets/blog_card_widget.dart';
 
-class BlogListPage extends StatelessWidget {
+class BlogListPage extends StatefulWidget {
   const BlogListPage({super.key});
 
   @override
+  State<BlogListPage> createState() => _BlogListPageState();
+}
+
+class _BlogListPageState extends State<BlogListPage> {
+  late GetNewsBloc _newsBloc;
+  late ScrollController _scrollController;
+  int _currentPage = 1;
+  final int _perPage = 20;
+
+  @override
+  void initState() {
+    super.initState();
+    _newsBloc = getIt<GetNewsBloc>();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+    _loadNews();
+  }
+
+  void _loadNews() {
+    const params = GetNewsParameter(
+      platform: NewsPlatform.yii,
+      page: 1,
+      perPage: 20,
+    );
+    _currentPage = 1;
+    _newsBloc.add(GetNewsFromKffEvent(params));
+  }
+
+  void _loadMoreNews() {
+    _currentPage++;
+    final params = GetNewsParameter(
+      platform: NewsPlatform.yii,
+      page: _currentPage,
+      perPage: _perPage,
+    );
+    _newsBloc.add(LoadMoreNewsFromKffEvent(params));
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      final currentState = _newsBloc.state;
+      if (currentState is GetNewsStateSuccessState &&
+          !currentState.hasReachedMax &&
+          !currentState.isLoadingMore) {
+        _loadMoreNews();
+      }
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _newsBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PagesCommonAppBar(
-        title: "Новости",
-        actionIcon: Icons.notifications_none,
-        onActionTap: () {},
+    return BlocProvider.value(
+      value: _newsBloc,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: PagesCommonAppBar(
+          title: "Новости",
+          actionIcon: Icons.notifications_none,
+          onActionTap: () {},
+        ),
+        body: BlocBuilder<GetNewsBloc, GetNewsStateState>(
+          builder: (context, state) {
+            if (state is GetNewsStateLoadingState) {
+              return Column(
+                children: [
+                  _buildHeader(),
+                  Expanded(child: _buildLoadingState()),
+                ],
+              );
+            } else if (state is GetNewsStateSuccessState) {
+              return _buildSuccessState(state);
+            } else if (state is GetNewsStateFailedState) {
+              return Column(
+                children: [
+                  _buildHeader(),
+                  Expanded(child: _buildErrorState(state.failureData.message)),
+                ],
+              );
+            }
+            return Column(
+              children: [
+                _buildHeader(),
+                Expanded(child: _buildEmptyState()),
+              ],
+            );
+          },
+        ),
       ),
-      body: ListView(
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 16.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: MainTitleWidget(title: 'Новости'),
+          Text(
+            'Последние новости',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 22.sp,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+              letterSpacing: -0.5,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              'KFF',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-              NewsCard(
-                imageUrl: 'https://upload.wikimedia.org/wikipedia/ru/thumb/c/cd/Football_Federation_of_Kazakhstan_Logo.svg/200px-Football_Federation_of_Kazakhstan_Logo.svg.png',
-                tag: 'Новости',
-                title: 'МАРАТ ОМАРОВ: «МЫ ОФИЦИАЛЬНО ПОДАЛИ ЗАЯВКУ НА ПРОВЕДЕНИЕ ФИНАЛА ЛИГИ КОНФЕРЕНЦИЙ ИЛИ СУПЕРКУБКА»',
-                date: '14 июля 2025, 15:30',
-                likes: 234,
-                onTap: () {
-                  // обработка нажатия
-                },
-              )
-            ],
-          )
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildSuccessState(GetNewsStateSuccessState state) {
+    final newsList = state.newsResponse.data;
+    if (newsList.isEmpty) {
+      return Column(
+        children: [
+          _buildHeader(),
+          Expanded(child: _buildEmptyState()),
+        ],
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async => _loadNews(),
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverToBoxAdapter(
+            child: _buildHeader(),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index >= newsList.length) {
+                    return _buildLoadingIndicator();
+                  }
+
+                  final news = newsList[index];
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 12.h),
+                    child: NewsCard(
+                      imageUrl: news.imageUrl ?? 'https://upload.wikimedia.org/wikipedia/ru/thumb/c/cd/Football_Federation_of_Kazakhstan_Logo.svg/200px-Football_Federation_of_Kazakhstan_Logo.svg.png',
+                      tag: news.categoryTitle ?? 'Новости',
+                      title: news.title,
+                      date: _formatDate(news.date),
+                      likes: news.views ?? 0,
+                      onTap: () {
+                        // TODO: Navigate to news detail
+                      },
+                    ),
+                  );
+                },
+                childCount: newsList.length + (state.hasReachedMax ? 0 : 1),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Container(
+      padding: EdgeInsets.all(16.h),
+      alignment: Alignment.center,
+      child: const CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return ListView(
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
+      children: List.generate(5, (index) => _buildLoadingCard()),
+    );
+  }
+
+  Widget _buildLoadingCard() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 90.w,
+            height: 70.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 12.h,
+                  width: 60.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Container(
+                  height: 12.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Container(
+                  height: 12.h,
+                  width: 150.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String? message) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Icon(
+            Icons.error_outline,
+            size: 64.sp,
+            color: AppColors.error,
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            'Ошибка загрузки новостей',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            message ?? 'Неизвестная ошибка',
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 24.h),
+          ElevatedButton(
+            onPressed: _loadNews,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.gradientStart,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              'Повторить',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
+          ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Icon(
+            Icons.article_outlined,
+            size: 64.sp,
+            color: AppColors.textSecondary,
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            'Новостей пока нет',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            'Проверьте позже',
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return 'Дата не указана';
+
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      return 'Сегодня, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+    } else if (difference.inDays == 1) {
+      return 'Вчера, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} дн. назад';
+    } else {
+      return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
+    }
   }
 }

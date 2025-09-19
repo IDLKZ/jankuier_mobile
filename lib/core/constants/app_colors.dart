@@ -59,4 +59,15 @@ class AppColors {
   static const Color navBarBackground = Color(0xFFF6F7F9);
   static const Color navBarActive = Color(0xFF000000);
   static const Color navBarInactive = Color(0xFF9E9E9E);
+
+  // Brand Gradient Colors
+  static const Color gradientStart = Color(0xFF0346C0);
+  static const Color gradientEnd = Color(0xFF01215A);
+
+  // Brand Gradient
+  static const LinearGradient primaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [gradientStart, gradientEnd],
+  );
 }

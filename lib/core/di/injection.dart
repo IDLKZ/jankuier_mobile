@@ -283,4 +283,5 @@ Future<void> configureDependencies() async {
       ticketonOrderCheckUseCase: getIt<TicketonOrderCheckUseCase>(),
     ),
   );
+
 }

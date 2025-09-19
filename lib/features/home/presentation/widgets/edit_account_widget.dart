@@ -9,9 +9,9 @@ class EditAccountForm extends StatelessWidget {
   final bool showDeleteAccount;
   const EditAccountForm(
       {super.key,
-      this.showChangeEmail = true,
-      this.showChangePassword = true,
-      this.showDeleteAccount = true});
+        this.showChangeEmail = true,
+        this.showChangePassword = true,
+        this.showDeleteAccount = true});
 
   @override
   Widget build(BuildContext context) {
