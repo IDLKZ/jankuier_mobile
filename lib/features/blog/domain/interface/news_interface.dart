@@ -1,5 +1,6 @@
 import '../../../../core/utils/typedef.dart';
 import '../../data/entities/news_response.dart';
+import '../parameters/get_new_one_parameter.dart';
 import '../parameters/get_news_parameter.dart';
 
 /// Репозиторий/интерфейс для получения новостей
@@ -13,5 +14,13 @@ abstract class NewsInterface {
 
   ResultFuture<NewsListResponse> getNewsFromKffLeague(
         GetNewsParameter parameter,
+      );
+
+  ResultFuture<NewsOneResponse> getNewOneFromKff(
+      GetNewOneParameter parameter,
+      );
+
+  ResultFuture<NewsOneResponse> getNewOneFromKffLeague(
+      GetNewOneParameter parameter,
       );
 }

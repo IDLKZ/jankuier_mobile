@@ -5,6 +5,7 @@ import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utils/typedef.dart';
 import '../../domain/interface/news_interface.dart';
+import '../../domain/parameters/get_new_one_parameter.dart';
 import '../../domain/parameters/get_news_parameter.dart';
 import '../datasources/news_datasources.dart';
 import '../entities/news_response.dart';
@@ -40,6 +41,36 @@ class NewsRepository implements NewsInterface {
       ) async {
     try {
       final result = await newsDSInterface.getNewsFromKffLeague(parameter);
+      return Right(result);
+    } on ApiException catch (e) {
+      final failure = ApiFailure.fromException(e);
+      return Left(failure);
+    } on Exception catch (e) {
+      final exception = ApiException(message: e.toString(), statusCode: 500);
+      final failure = ApiFailure.fromException(exception);
+      return Left(failure);
+    }
+  }
+
+  @override
+  ResultFuture<NewsOneResponse> getNewOneFromKff(GetNewOneParameter parameter) async {
+    try {
+      final result = await newsDSInterface.getNewOneFromKff(parameter);
+      return Right(result);
+    } on ApiException catch (e) {
+      final failure = ApiFailure.fromException(e);
+      return Left(failure);
+    } on Exception catch (e) {
+      final exception = ApiException(message: e.toString(), statusCode: 500);
+      final failure = ApiFailure.fromException(exception);
+      return Left(failure);
+    }
+  }
+
+  @override
+  ResultFuture<NewsOneResponse> getNewOneFromKffLeague(GetNewOneParameter parameter) async {
+    try {
+      final result = await newsDSInterface.getNewOneFromKffLeague(parameter);
       return Right(result);
     } on ApiException catch (e) {
       final failure = ApiFailure.fromException(e);
