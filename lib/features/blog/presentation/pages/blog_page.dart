@@ -226,7 +226,7 @@ class _BlogListPageState extends State<BlogListPage> {
                   return Container(
                     margin: EdgeInsets.only(bottom: 12.h),
                     child: NewsCard(
-                      imageUrl: news.imageUrl ?? 'https://upload.wikimedia.org/wikipedia/ru/thumb/c/cd/Football_Federation_of_Kazakhstan_Logo.svg/200px-Football_Federation_of_Kazakhstan_Logo.svg.png',
+                      imageUrl: news.imageUrl ?? '',
                       tag: news.categoryTitle ?? 'Новости',
                       title: news.title,
                       date: _formatDate(news.date),

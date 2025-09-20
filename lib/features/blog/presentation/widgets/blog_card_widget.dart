@@ -52,27 +52,27 @@ class NewsCard extends StatelessWidget {
               // Картинка
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  imageUrl,
-                  width: 90.w,
-                  height: 70.h,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 90.w,
-                      height: 70.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.grey100,
-                        borderRadius: BorderRadius.circular(12),
+                child: imageUrl.isNotEmpty
+                    ? Image.network(
+                        imageUrl,
+                        width: 90.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/dummy.jpg',
+                            width: 90.w,
+                            height: 70.h,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      )
+                    : Image.asset(
+                        'assets/images/dummy.jpg',
+                        width: 90.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
                       ),
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        color: AppColors.grey400,
-                        size: 24.sp,
-                      ),
-                    );
-                  },
-                ),
               ),
               SizedBox(width: 16.w),
               // Текстовая часть

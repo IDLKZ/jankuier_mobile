@@ -26,6 +26,7 @@ import '../../../blog/domain/parameters/get_news_parameter.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_event.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_state.dart';
+import '../../../blog/presentation/pages/news_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int tournamentId, String tournamentName)? onTournamentSelected;
@@ -1715,18 +1716,30 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildNewsCard(News news) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewsDetailPage(
+              newsId: news.id,
+              platform: NewsPlatform.yii, // На главной странице загружаем только KFF новости
+            ),
           ),
-        ],
-      ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1744,20 +1757,15 @@ class _HomePageState extends State<HomePage>
                       news.imageUrl!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[200],
-                          child: Icon(
-                            Icons.image_not_supported,
-                            color: Colors.grey[400],
-                            size: 40.sp,
-                          ),
+                        return Image.asset(
+                          'assets/images/dummy.jpg',
+                          fit: BoxFit.cover,
                         );
                       },
                     )
-                  : Icon(
-                      Icons.article,
-                      color: Colors.grey[400],
-                      size: 40.sp,
+                  : Image.asset(
+                      'assets/images/dummy.jpg',
+                      fit: BoxFit.cover,
                     ),
             ),
           ),
@@ -1818,6 +1826,7 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ],
+      ),
       ),
     );
   }

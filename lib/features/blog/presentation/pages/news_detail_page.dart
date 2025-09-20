@@ -111,28 +111,20 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               fit: StackFit.expand,
               children: [
                 // Hero Image
-                news.imageUrl != null
+                news.imageUrl != null && news.imageUrl!.isNotEmpty
                     ? Image.network(
                         news.imageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: Icon(
-                              Icons.image_not_supported,
-                              size: 50.sp,
-                              color: Colors.grey[600],
-                            ),
+                          return Image.asset(
+                            'assets/images/dummy.jpg',
+                            fit: BoxFit.cover,
                           );
                         },
                       )
-                    : Container(
-                        color: Colors.grey[300],
-                        child: Icon(
-                          Icons.article,
-                          size: 50.sp,
-                          color: Colors.grey[600],
-                        ),
+                    : Image.asset(
+                        'assets/images/dummy.jpg',
+                        fit: BoxFit.cover,
                       ),
                 // Gradient overlay
                 Container(
