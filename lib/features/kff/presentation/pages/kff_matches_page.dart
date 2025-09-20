@@ -5,7 +5,6 @@ import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/ge
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/get_all_league_event.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../bloc/get_all_league/get_all_league_state.dart';
 import '../../data/entities/from_kff/kff_league_entity.dart';
 import '../bloc/get_future_matches/get_future_matches_bloc.dart';
@@ -63,124 +62,191 @@ class _KffMatchesPageState extends State<KffMatchesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: PagesCommonAppBar(
-        title: 'Матчи',
-        actionIcon: Icons.sports_soccer,
-        onActionTap: () {},
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-        width: double.infinity,
-        child: Column(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
+      backgroundColor: AppColors.background,
+      body: Column(
+        children: [
+          // Modern App Bar with Gradient
+          Container(
+            height: 120.h + MediaQuery.of(context).padding.top,
+            decoration: BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24.r),
+                bottomRight: Radius.circular(24.r),
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        _mainTabController.animateTo(0);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        decoration: BoxDecoration(
-                          gradient: _mainTabController.index == 0
-                              ? AppColors.primaryGradient
-                              : null,
-                          color:
-                              _mainTabController.index == 0 ? null : Colors.white,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Таблица',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: _mainTabController.index == 0
-                                  ? Colors.white
-                                  : AppColors.gradientStart,
-                            ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                child: Column(
+                  children: [
+                    // Top row with icons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Icon(
+                            Icons.sports_soccer,
+                            color: AppColors.white,
+                            size: 24.sp,
                           ),
                         ),
+                        Container(
+                          padding: EdgeInsets.all(8.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Icon(
+                            Icons.notifications_outlined,
+                            color: AppColors.white,
+                            size: 24.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 16.h),
+
+                    // Title
+                    Text(
+                      'KFF Матчи',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.white,
                       ),
                     ),
-                  ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        _mainTabController.animateTo(1);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        decoration: BoxDecoration(
-                          gradient: _mainTabController.index == 1
-                              ? AppColors.primaryGradient
-                              : null,
-                          color:
-                              _mainTabController.index == 1 ? null : Colors.white,
-                          borderRadius: BorderRadius.circular(6),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Main Content
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                children: [
+                  SizedBox(height: 24.h),
+
+                  // Modern Tab Selector
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 8.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.shadow.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 4),
                         ),
-                        child: Center(
-                          child: Text(
-                            'Результаты',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: _mainTabController.index == 1
-                                  ? Colors.white
-                                  : AppColors.gradientStart,
-                            ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _buildModernTabButton(
+                            'Национальные',
+                            0,
+                            Icons.flag_outlined,
                           ),
                         ),
-                      ),
+                        Container(
+                          width: 1.w,
+                          height: 40.h,
+                          color: AppColors.grey200,
+                        ),
+                        Expanded(
+                          child: _buildModernTabButton(
+                            'Клубы',
+                            1,
+                            Icons.shield_outlined,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 24.h),
+
+                  // Tab Content
+                  Expanded(
+                    child: TabBarView(
+                      controller: _mainTabController,
+                      children: [
+                        BlocProvider<GetAllLeagueBloc>(
+                          create: (BuildContext context) =>
+                              getIt<GetAllLeagueBloc>()
+                                ..add(GetAllLeagueRequestEvent()),
+                          child:
+                              BlocConsumer<GetAllLeagueBloc, GetAllLeagueState>(
+                            listener: (BuildContext context, state) {},
+                            builder: (BuildContext context, state) {
+                              if (state is GetAllLeagueLoadingState) {
+                                return _buildLoadingState();
+                              } else if (state is GetAllLeagueSuccessState) {
+                                return _buildLeaguesList(state.leagues);
+                              } else if (state is GetAllLeagueFailedState) {
+                                return _buildErrorState(
+                                    state.failure.message ?? "-");
+                              }
+                              return const SizedBox();
+                            },
+                          ),
+                        ),
+                        _buildClubsComingSoon(),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _mainTabController,
-                children: [
-                  BlocProvider<GetAllLeagueBloc>(
-                    create: (BuildContext context) => getIt<GetAllLeagueBloc>()
-                      ..add(GetAllLeagueRequestEvent()),
-                    child: BlocConsumer<GetAllLeagueBloc, GetAllLeagueState>(
-                      listener: (BuildContext context, state) {},
-                      builder: (BuildContext context, state) {
-                        if (state is GetAllLeagueLoadingState) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (state is GetAllLeagueSuccessState) {
-                          return _buildLeaguesList(state.leagues);
-                        } else if (state is GetAllLeagueFailedState) {
-                          return Center(
-                            child: Text(
-                              'Ошибка загрузки: ${state.failure.message}',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: AppColors.error,
-                              ),
-                            ),
-                          );
-                        }
-                        return const SizedBox();
-                      },
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: Text("Клубы"),
-                  ),
-                ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernTabButton(String title, int index, IconData icon) {
+    final isSelected = _mainTabController.index == index;
+
+    return GestureDetector(
+      onTap: () => _mainTabController.animateTo(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
+        decoration: BoxDecoration(
+          gradient: isSelected ? AppColors.primaryGradient : null,
+          borderRadius: BorderRadius.circular(14.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 20.sp,
+              color: isSelected ? AppColors.white : AppColors.textSecondary,
+            ),
+            SizedBox(width: 8.w),
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14.sp,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? AppColors.white : AppColors.textSecondary,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -189,20 +255,148 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  Widget _buildLoadingState() {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              shape: BoxShape.circle,
+            ),
+            child: CircularProgressIndicator(
+              color: AppColors.white,
+              strokeWidth: 3,
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            'Загружаем лиги...',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String message) {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              color: AppColors.error.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.error_outline,
+              size: 48.sp,
+              color: AppColors.error,
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            'Ошибка загрузки',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            message,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClubsComingSoon() {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.construction,
+              size: 48.sp,
+              color: AppColors.white,
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            'Скоро появится',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            'Раздел клубов находится в разработке',
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLeaguesList(List<KffLeagueEntity> leagues) {
-    if (leagues.isEmpty) return const SizedBox();
+    if (leagues.isEmpty) return _buildEmptyState();
 
     final selectedLeagueId = leagues[selectedLeagueIndex].id;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 20.h),
-        // League Selection Horizontal List
+        // Section Header
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Text(
+            'Выберите лигу',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ),
+        SizedBox(height: 16.h),
+
+        // Modern League Selection Grid
         SizedBox(
-          height: 50.h,
+          height: 120.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
             itemCount: leagues.length,
             itemBuilder: (context, index) {
               final league = leagues[index];
@@ -214,47 +408,94 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                     selectedLeagueIndex = index;
                   });
                 },
-                child: Container(
-                  margin: EdgeInsets.only(right: 12.w),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: EdgeInsets.only(right: 16.w),
+                  width: 140.w,
                   decoration: BoxDecoration(
                     gradient: isSelected ? AppColors.primaryGradient : null,
                     color: isSelected ? null : AppColors.white,
-                    borderRadius: BorderRadius.circular(25.r),
+                    borderRadius: BorderRadius.circular(20.r),
                     border: isSelected
                         ? null
                         : Border.all(
-                            color: AppColors.grey300,
-                            width: 1.5,
+                            color: AppColors.grey200,
+                            width: 2,
                           ),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: AppColors.gradientStart.withValues(alpha: 0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ]
-                        : [
-                            BoxShadow(
-                              color: AppColors.shadow,
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      league.title ?? 'Без названия',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14.sp,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                        color: isSelected ? AppColors.white : AppColors.gradientStart,
+                    boxShadow: [
+                      BoxShadow(
+                        color: isSelected
+                            ? AppColors.gradientStart.withValues(alpha: 0.3)
+                            : AppColors.shadow.withValues(alpha: 0.08),
+                        blurRadius: isSelected ? 16 : 8,
+                        offset: Offset(0, isSelected ? 8 : 4),
                       ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12.w),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Colors.white.withValues(alpha: 0.2)
+                                : AppColors.primaryLight.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            _getLeagueIcon(league.section),
+                            size: 24.sp,
+                            color: isSelected
+                                ? AppColors.white
+                                : AppColors.primary,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        Text(
+                          league.title ?? 'Без названия',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: isSelected
+                                ? AppColors.white
+                                : AppColors.textPrimary,
+                            height: 1.2,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (league.section != null) ...[
+                          SizedBox(height: 4.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 2.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Colors.white.withValues(alpha: 0.2)
+                                  : AppColors.grey100,
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Text(
+                              league.section!.toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 8.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isSelected
+                                    ? AppColors.white
+                                    : AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ),
@@ -262,42 +503,36 @@ class _KffMatchesPageState extends State<KffMatchesPage>
             },
           ),
         ),
-        SizedBox(height: 20.h),
-        // Data Tabs for Selected League
+
+        SizedBox(height: 32.h),
+
+        // Modern Data Tabs
         Container(
+          margin: EdgeInsets.symmetric(horizontal: 4.w),
+          padding: EdgeInsets.all(6.w),
           decoration: BoxDecoration(
-            color: AppColors.grey100,
-            borderRadius: BorderRadius.circular(12.r),
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow.withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: TabBar(
-            controller: _dataTabController,
-            labelPadding: EdgeInsets.symmetric(horizontal: 8.w),
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicator: BoxDecoration(
-              gradient: AppColors.primaryGradient,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            labelColor: AppColors.white,
-            unselectedLabelColor: AppColors.textSecondary,
-            labelStyle: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-            ),
-            tabs: const [
-              Tab(text: "Будущие"),
-              Tab(text: "Прошлые"),
-              Tab(text: "Игроки"),
-              Tab(text: "Тренеры"),
+          child: Row(
+            children: [
+              Expanded(child: _buildDataTab('Будущие', 0, Icons.schedule)),
+              Expanded(child: _buildDataTab('Прошлые', 1, Icons.history)),
+              Expanded(child: _buildDataTab('Игроки', 2, Icons.people)),
+              Expanded(child: _buildDataTab('Тренеры', 3, Icons.sports)),
             ],
           ),
         ),
-        SizedBox(height: 16.h),
+
+        SizedBox(height: 24.h),
+
         // Content for Data Tabs
         Expanded(
           child: MultiBlocProvider(
@@ -332,6 +567,95 @@ class _KffMatchesPageState extends State<KffMatchesPage>
         ),
       ],
     );
+  }
+
+  Widget _buildDataTab(String title, int index, IconData icon) {
+    final isSelected = _dataTabController.index == index;
+
+    return GestureDetector(
+      onTap: () => _dataTabController.animateTo(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        decoration: BoxDecoration(
+          gradient: isSelected ? AppColors.primaryGradient : null,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 18.sp,
+              color: isSelected ? AppColors.white : AppColors.textSecondary,
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 10.sp,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                color: isSelected ? AppColors.white : AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              color: AppColors.grey100,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.sports_soccer,
+              size: 48.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            'Нет доступных лиг',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            'Попробуйте обновить страницу',
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getLeagueIcon(String? section) {
+    switch (section?.toLowerCase()) {
+      case 'men':
+        return Icons.sports_soccer;
+      case 'women':
+        return Icons.sports_soccer;
+      case 'futsal':
+        return Icons.sports_handball;
+      default:
+        return Icons.shield;
+    }
   }
 
   Widget _buildFutureMatchesTab() {
@@ -416,19 +740,14 @@ class _KffMatchesPageState extends State<KffMatchesPage>
 
   Widget _buildMatchesList(dynamic matches, bool isFuture) {
     if (matches.isEmpty) {
-      return Center(
-        child: Text(
-          isFuture ? 'Нет предстоящих матчей' : 'Нет прошедших матчей',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.textSecondary,
-          ),
-        ),
+      return _buildEmptyContentState(
+        isFuture ? 'Нет предстоящих матчей' : 'Нет прошедших матчей',
+        isFuture ? Icons.schedule : Icons.history,
       );
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       itemCount: matches.length,
       itemBuilder: (context, index) {
         final match = matches[index];
@@ -436,146 +755,207 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           margin: EdgeInsets.only(bottom: 16.h),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow,
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                color: AppColors.shadow.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(20.w),
             child: Column(
               children: [
-                Text(
-                  match.championship?.title ?? 'Турнир не указан',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w500,
+                // Championship Badge
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                  textAlign: TextAlign.center,
+                  child: Text(
+                    match.championship?.title ?? 'Турнир не указан',
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 20.h),
+
+                // Teams and Score/Time
                 Row(
                   children: [
+                    // Team 1
                     Expanded(
                       child: Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.r),
-                            child: Image.network(
-                              match.team1?.image?.thumb ?? '',
-                              width: 40.w,
-                              height: 40.w,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 40.w,
-                                  height: 40.w,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.grey200,
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                  child: Icon(Icons.sports_soccer, size: 20.sp),
-                                );
-                              },
+                          Container(
+                            width: 60.w,
+                            height: 60.w,
+                            decoration: BoxDecoration(
+                              color: AppColors.grey50,
+                              borderRadius: BorderRadius.circular(30.r),
+                              border: Border.all(
+                                color: AppColors.grey200,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(28.r),
+                              child: Image.network(
+                                match.team1?.image?.thumb ?? '',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Icon(
+                                    Icons.sports_soccer,
+                                    size: 30.sp,
+                                    color: AppColors.textSecondary,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 12.h),
                           Text(
                             match.team1?.title ?? 'Команда 1',
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
                             ),
                             textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(width: 16.w),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
+
+                    // Center Section (Score/Time)
+                    SizedBox(
+                      width: 120.w,
                       child: Column(
                         children: [
                           if (isFuture) ...[
-                            Text(
-                              'ТУР ${match.tour}',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w500,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 12.h,
                               ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              _formatDateTime(match.startedAt),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w600,
+                              decoration: BoxDecoration(
+                                gradient: AppColors.primaryGradient,
+                                borderRadius: BorderRadius.circular(16.r),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    color: AppColors.white,
+                                    size: 20.sp,
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    _formatDateTime(match.startedAt),
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
                             ),
                           ] else ...[
-                            Text(
-                              '${match.team1Score ?? 0} : ${match.team2Score ?? 0}',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20.w,
+                                vertical: 16.h,
                               ),
-                            ),
-                            Text(
-                              'ТУР ${match.tour}',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w500,
+                              decoration: BoxDecoration(
+                                gradient: AppColors.primaryGradient,
+                                borderRadius: BorderRadius.circular(20.r),
+                              ),
+                              child: Text(
+                                '${match.team1Score ?? 0} : ${match.team2Score ?? 0}',
+                                style: TextStyle(
+                                  fontSize: 24.sp,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
+                          SizedBox(height: 8.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.grey100,
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Text(
+                              'ТУР ${match.tour}',
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(width: 16.w),
+
+                    // Team 2
                     Expanded(
                       child: Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.r),
-                            child: Image.network(
-                              match.team2?.image?.thumb ?? '',
-                              width: 40.w,
-                              height: 40.w,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 40.w,
-                                  height: 40.w,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.grey200,
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                  child: Icon(Icons.sports_soccer, size: 20.sp),
-                                );
-                              },
+                          Container(
+                            width: 60.w,
+                            height: 60.w,
+                            decoration: BoxDecoration(
+                              color: AppColors.grey50,
+                              borderRadius: BorderRadius.circular(30.r),
+                              border: Border.all(
+                                color: AppColors.grey200,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(28.r),
+                              child: Image.network(
+                                match.team2?.image?.thumb ?? '',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Icon(
+                                    Icons.sports_soccer,
+                                    size: 30.sp,
+                                    color: AppColors.textSecondary,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 12.h),
                           Text(
                             match.team2?.title ?? 'Команда 2',
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
                             ),
                             textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -590,102 +970,230 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  Widget _buildEmptyContentState(String message, IconData icon) {
+    return Container(
+      padding: EdgeInsets.all(40.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(20.w),
+            decoration: BoxDecoration(
+              color: AppColors.grey100,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              size: 40.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Text(
+            message,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPlayersList(dynamic players) {
     if (players.isEmpty) {
-      return Center(
-        child: Text(
-          'Нет игроков',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.textSecondary,
-          ),
-        ),
-      );
+      return _buildEmptyContentState('Нет игроков', Icons.people);
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       itemCount: players.length,
       itemBuilder: (context, index) {
         final player = players[index];
         return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
+          margin: EdgeInsets.only(bottom: 16.h),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow,
-                blurRadius: 6,
-                offset: const Offset(0, 2),
+                color: AppColors.shadow.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
-          child: ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(25.r),
-              child: Image.network(
-                player.image?.thumb ?? '',
-                width: 50.w,
-                height: 50.w,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 50.w,
-                    height: 50.w,
+          child: Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Row(
+              children: [
+                // Player Avatar
+                Container(
+                  width: 70.w,
+                  height: 70.w,
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(35.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.gradientStart.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(3.w),
                     decoration: BoxDecoration(
-                      color: AppColors.grey200,
-                      borderRadius: BorderRadius.circular(25.r),
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(32.r),
                     ),
-                    child: Icon(Icons.person, size: 25.sp),
-                  );
-                },
-              ),
-            ),
-            title: Text(
-              '${player.firstName} ${player.lastName}',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  player.line?.title ?? 'Позиция не указана',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: AppColors.primaryDark,
-                    fontWeight: FontWeight.w500,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(32.r),
+                      child: Image.network(
+                        player.image?.thumb ?? '',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.grey50,
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            child: Icon(
+                              Icons.person,
+                              size: 35.sp,
+                              color: AppColors.textSecondary,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  player.club ?? 'Клуб не указан',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textSecondary,
+
+                SizedBox(width: 16.w),
+
+                // Player Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${player.firstName ?? ''} ${player.lastName ?? ''}'
+                            .trim(),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 6.h),
+
+                      // Position Badge
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 4.h,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Text(
+                          player.line?.title ?? 'Позиция не указана',
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 8.h),
+
+                      // Club
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.business,
+                            size: 14.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              player.club ?? 'Клуб не указан',
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${player.games ?? 0}',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
-                ),
-                Text(
-                  'игр',
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    color: AppColors.textSecondary,
-                  ),
+
+                // Stats
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            '${player.games ?? 0}',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          Text(
+                            'игр',
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (player.goals != null && player.goals > 0) ...[
+                      SizedBox(height: 8.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 4.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.success.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          '⚽ ${player.goals}',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: AppColors.success,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),
@@ -697,97 +1205,198 @@ class _KffMatchesPageState extends State<KffMatchesPage>
 
   Widget _buildCoachesList(dynamic coaches) {
     if (coaches.isEmpty) {
-      return Center(
-        child: Text(
-          'Нет тренеров',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.textSecondary,
-          ),
-        ),
-      );
+      return _buildEmptyContentState('Нет тренеров', Icons.sports);
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       itemCount: coaches.length,
       itemBuilder: (context, index) {
         final coach = coaches[index];
         return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
+          margin: EdgeInsets.only(bottom: 16.h),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow,
-                blurRadius: 6,
-                offset: const Offset(0, 2),
+                color: AppColors.shadow.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
-          child: ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(25.r),
-              child: Image.network(
-                coach.image?.thumb ?? '',
-                width: 50.w,
-                height: 50.w,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 50.w,
-                    height: 50.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.grey200,
-                      borderRadius: BorderRadius.circular(25.r),
-                    ),
-                    child: Icon(Icons.person, size: 25.sp),
-                  );
-                },
-              ),
-            ),
-            title: Text(
-              '${coach.firstName} ${coach.lastName}',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Row(
               children: [
-                Text(
-                  coach.title ?? 'Должность не указана',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: AppColors.primaryDark,
-                    fontWeight: FontWeight.w500,
+                // Coach Avatar with Special Border
+                Container(
+                  width: 70.w,
+                  height: 70.w,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.warning.withValues(alpha: 0.8),
+                        AppColors.warning,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(35.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.warning.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(3.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(32.r),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(32.r),
+                      child: Image.network(
+                        coach.image?.thumb ?? '',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.grey50,
+                              borderRadius: BorderRadius.circular(32.r),
+                            ),
+                            child: Icon(
+                              Icons.sports,
+                              size: 35.sp,
+                              color: AppColors.textSecondary,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  coach.nationality ?? 'Национальность не указана',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textSecondary,
+
+                SizedBox(width: 16.w),
+
+                // Coach Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Name with Coach Icon
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${coach.firstName ?? ''} ${coach.lastName ?? ''}'
+                                  .trim(),
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6.w),
+                            decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient,
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Icon(
+                              Icons.sports,
+                              size: 14.sp,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 8.h),
+
+                      // Position/Title
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.warning.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: AppColors.warning.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          coach.title ?? 'Должность не указана',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: AppColors.warning,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 8.h),
+
+                      // Nationality
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.flag,
+                            size: 14.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              coach.nationality ?? 'Национальность не указана',
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // License if available
+                      if (coach.license?.isNotEmpty == true) ...[
+                        SizedBox(height: 8.h),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.verified,
+                              size: 14.sp,
+                              color: AppColors.success,
+                            ),
+                            SizedBox(width: 4.w),
+                            Expanded(
+                              child: Text(
+                                coach.license,
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: AppColors.success,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ],
-            ),
-            trailing: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.circular(6.r),
-              ),
-              child: Text(
-                'Тренер',
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  color: AppColors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
             ),
           ),
         );
