@@ -1,18 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
-import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
-import 'package:jankuier_mobile/features/services/domain/parameters/all_product_parameter.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_event.dart';
-import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/widgets/product_card.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
@@ -37,11 +29,61 @@ class _ShopMainState extends State<ShopMain>
   AllProductCategoryParameter allProductCategoryParameter =
       AllProductCategoryParameter(isActive: true, isShowDeleted: false);
   PaginateProductParameter paginateProductParameter =
-      PaginateProductParameter(perPage: 12);
+      PaginateProductParameter(perPage: 2);
   PaginateProductParameter recomendedProductParameter =
       PaginateProductParameter(
           perPage: 1, page: 1, isActive: true, isRecommended: true);
   final ScrollController scrollController = ScrollController();
+  ProductBloc? productBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (productBloc == null) return;
+
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent - 200) {
+      // Load more products when near the bottom
+      final currentState = productBloc!.state;
+
+      if (currentState is PaginateProductLoadedState) {
+        final pagination = currentState.pagination;
+        if (pagination.currentPage < pagination.totalPages) {
+          // Load next page
+          final nextPageParameter = paginateProductParameter.copyWith(
+            page: pagination.currentPage + 1,
+          );
+          productBloc!.add(PaginateProductEvent(nextPageParameter));
+        }
+      }
+    }
+  }
+
+  void _onFiltersApplied(List<int> categoryIds, int? minPrice, int? maxPrice) {
+    if (productBloc == null) return;
+
+    // Update the parameter with new filters
+    paginateProductParameter = paginateProductParameter.copyWith(
+      categoryIds: categoryIds.isEmpty ? null : categoryIds,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      page: 1, // Reset to first page when filters change
+    );
+
+    // Trigger filter search (shows loading state)
+    productBloc!.add(FilterProductEvent(paginateProductParameter));
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -51,8 +93,11 @@ class _ShopMainState extends State<ShopMain>
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProductBloc>(
-          create: (BuildContext context) => getIt<ProductBloc>()
-            ..add(PaginateProductEvent(paginateProductParameter)),
+          create: (BuildContext context) {
+            productBloc = getIt<ProductBloc>()
+              ..add(PaginateProductEvent(paginateProductParameter));
+            return productBloc!;
+          },
         ),
         BlocProvider<RecommendedProductBloc>(
           create: (BuildContext context) => getIt<RecommendedProductBloc>()
@@ -74,7 +119,9 @@ class _ShopMainState extends State<ShopMain>
                 child: MainTitleWidget(title: "Магазин"),
               ),
               ShopBannerProduct(),
-              ProductCategoryBottomScheet(),
+              ProductCategoryBottomScheet(
+                onFiltersApplied: _onFiltersApplied,
+              ),
               ProductGridCards(),
             ],
           ),

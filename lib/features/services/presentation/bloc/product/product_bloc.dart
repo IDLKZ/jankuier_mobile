@@ -9,26 +9,51 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc({required this.paginateProductCase})
       : super(ProductInitialState()) {
     on<PaginateProductEvent>(_onPaginateProducts);
+    on<FilterProductEvent>(_onFilterProducts);
   }
 
   Future<void> _onPaginateProducts(
     PaginateProductEvent event,
     Emitter<ProductState> emit,
   ) async {
-    if (state is! PaginateProductLoadedState) {
+    // If this is page 1, we're starting fresh (new filters or initial load)
+    final isFirstPage = (event.parameter.page ?? 1) == 1;
+
+    if (state is! PaginateProductLoadedState || isFirstPage) {
       emit(PaginateProductLoadingState());
     }
 
-    final currentProducts = state is PaginateProductLoadedState
+    final currentProducts = state is PaginateProductLoadedState && !isFirstPage
         ? (state as PaginateProductLoadedState).products
         : <ProductEntity>[];
+
     final result = await this.paginateProductCase.call(event.parameter);
 
     result.fold(
       (failure) => emit(PaginateProductFailedState(failure)),
       (data) {
-        final updatedProducts = [...currentProducts, ...data.items];
+        final updatedProducts = isFirstPage
+            ? data.items // Replace products on first page
+            : [...currentProducts, ...data.items]; // Append for subsequent pages
         emit(PaginateProductLoadedState(data, updatedProducts));
+      },
+    );
+  }
+
+  Future<void> _onFilterProducts(
+    FilterProductEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+    // Always show loading when filtering
+    emit(PaginateProductLoadingState());
+
+    final result = await this.paginateProductCase.call(event.parameter);
+
+    result.fold(
+      (failure) => emit(PaginateProductFailedState(failure)),
+      (data) {
+        // Always replace products when filtering
+        emit(PaginateProductLoadedState(data, data.items));
       },
     );
   }

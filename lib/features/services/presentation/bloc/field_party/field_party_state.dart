@@ -32,5 +32,5 @@ class PaginateFieldPartyLoadedState extends FieldPartyState {
     this.fieldParties,
   );
   @override
-  List<Object?> get props => [fieldParties];
+  List<Object?> get props => [fieldParties, pagination];
 }

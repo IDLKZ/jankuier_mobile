@@ -88,6 +88,10 @@ class FieldCard extends StatelessWidget {
               _IconText(
                   svg: 'assets/icons/group.svg',
                   text: "${fieldPartyEntity.personQty}"),
+              SizedBox(width: 12.w),
+              _IconText(
+                  svg: 'assets/icons/city.svg',
+                  text: "${fieldPartyEntity.field?.city?.titleRu}"),
             ],
           ),
           SizedBox(height: 12.h),

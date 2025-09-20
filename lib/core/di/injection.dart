@@ -28,7 +28,9 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/academy_grou
 import 'package:talker/talker.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import '../../features/countries/domain/use_cases/get_countries_from_sota_case.dart';
+import '../../features/countries/domain/use_cases/get_cities_case.dart';
 import '../../features/countries/presentation/bloc/get_country_bloc.dart';
+import '../../features/countries/presentation/bloc/get_cities_bloc/get_cities_bloc.dart';
 import '../../features/services/data/datasources/product_datasource.dart';
 import '../../features/services/data/datasources/field_datasource.dart';
 import '../../features/services/data/datasources/academy_datasource.dart';
@@ -101,6 +103,7 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<HiveInterface>(() => Hive);
   //Country
   getIt.registerLazySingleton(() => GetCountriesFromSotaCase(getIt()));
+  getIt.registerLazySingleton(() => GetCitiesCase(getIt()));
   getIt.registerLazySingleton<CountryInterface>(
       () => CountryRepository(getIt()));
   getIt.registerLazySingleton<CountryDSInterface>(() => CountryDSImpl());
@@ -158,6 +161,11 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<GetCountryBloc>(
     () => GetCountryBloc(
       getCountriesFromSotaCase: getIt<GetCountriesFromSotaCase>(),
+    ),
+  );
+  getIt.registerFactory<GetCitiesBloc>(
+    () => GetCitiesBloc(
+      getCitiesCase: getIt<GetCitiesCase>(),
     ),
   );
   getIt.registerFactory<GetTournamentBloc>(

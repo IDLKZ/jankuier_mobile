@@ -13,7 +13,7 @@ class CityEntity extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-  final CountryEntity? country;
+  final LocalCountryEntity? country;
 
   const CityEntity({
     required this.id,
@@ -44,7 +44,7 @@ class CityEntity extends Equatable {
           ? DateTime.parse(json['deleted_at'])
           : null,
       country: json['country'] != null
-          ? CountryEntity.fromJson(json['country'])
+          ? LocalCountryEntity.fromJson(json['country'])
           : null,
     );
   }
@@ -79,4 +79,10 @@ class CityEntity extends Equatable {
         deletedAt,
         country,
       ];
+}
+
+class CityListEntity {
+  static List<CityEntity> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CityEntity.fromJson(json)).toList();
+  }
 }

@@ -8,7 +8,8 @@ class ApiConstant {
       "https://jankuier.kz/web-frame-ticket/get-show/";
   static const String WebFrameRecreateOrderURL =
       "https://jankuier.kz/web-frame-ticket/get-widget/";
-
+  //Get Cities URL
+  static const String GetAllCitiesUrl = "${BaseURL}city/all/";
   //Get Product URL
   static const String PaginateAllProductsUrl = "${BaseURL}product/";
   static const String GetAllProductsUrl = "${BaseURL}product/all/";

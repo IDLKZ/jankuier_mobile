@@ -15,19 +15,25 @@ class FieldPartyBloc extends Bloc<FieldPartyEvent, FieldPartyState> {
     PaginateFieldPartyEvent event,
     Emitter<FieldPartyState> emit,
   ) async {
-    if (state is! PaginateFieldPartyLoadedState) {
+    // If this is page 1, we're starting fresh (new filters or initial load)
+    final isFirstPage = (event.parameter.page ?? 1) == 1;
+
+    if (state is! PaginateFieldPartyLoadedState || isFirstPage) {
       emit(PaginateFieldPartyLoadingState());
     }
 
-    final currentFieldParties = state is PaginateFieldPartyLoadedState
+    final currentFieldParties = state is PaginateFieldPartyLoadedState && !isFirstPage
         ? (state as PaginateFieldPartyLoadedState).fieldParties
         : <FieldPartyEntity>[];
+
     final result = await this.paginateFieldPartyCase.call(event.parameter);
 
     result.fold(
       (failure) => emit(PaginateFieldPartyFailedState(failure)),
       (data) {
-        final updatedFieldParties = [...currentFieldParties, ...data.items];
+        final updatedFieldParties = isFirstPage
+            ? data.items // Replace field parties on first page
+            : [...currentFieldParties, ...data.items]; // Append for subsequent pages
         emit(PaginateFieldPartyLoadedState(data, updatedFieldParties));
       },
     );

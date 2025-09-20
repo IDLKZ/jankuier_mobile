@@ -17,8 +17,11 @@ import '../bloc/product_category/product_category_bloc.dart';
 import '../bloc/product_category/product_category_state.dart';
 
 class ProductCategoryBottomScheet extends StatefulWidget {
+  final Function(List<int> categoryIds, int? minPrice, int? maxPrice)? onFiltersApplied;
+
   ProductCategoryBottomScheet({
     super.key,
+    this.onFiltersApplied,
   });
 
   @override
@@ -282,6 +285,20 @@ class _ProductCategoryBottomScheetState
                                               Expanded(
                                                 child: ElevatedButton(
                                                   onPressed: () {
+                                                    // Apply filters
+                                                    final selectedCategories = categoriesIds.toList();
+                                                    final minPrice = _currentRange.start.toInt();
+                                                    final maxPrice = _currentRange.end.toInt();
+
+                                                    // Call the callback to update filters
+                                                    if (widget.onFiltersApplied != null) {
+                                                      widget.onFiltersApplied!(
+                                                        selectedCategories,
+                                                        minPrice,
+                                                        maxPrice,
+                                                      );
+                                                    }
+
                                                     Navigator.of(context).pop();
                                                   },
                                                   style:

@@ -19,6 +19,7 @@ class PaginateFieldPartyParameter {
   final int? maxWidthM;
 
   final int? coverType;
+  final int? cityId;
 
   final bool? isActive;
   final bool? isCovered;
@@ -32,6 +33,7 @@ class PaginateFieldPartyParameter {
     this.orderBy = "updated_at",
     this.orderDirection = "desc",
     this.fieldIds,
+    this.cityId,
     this.minPersonQty,
     this.maxPersonQty,
     this.minLengthM,
@@ -67,6 +69,7 @@ class PaginateFieldPartyParameter {
     put("min_width_m", minWidthM);
     put("max_width_m", maxWidthM);
     put("cover_type", coverType);
+    put("city_id", cityId);
     put("is_active", isActive);
     put("is_covered", isCovered);
     put("is_default", isDefault);
@@ -103,6 +106,7 @@ class PaginateFieldPartyParameter {
     put("min_width_m", minWidthM);
     put("max_width_m", maxWidthM);
     put("cover_type", coverType);
+    put("city_id", cityId);
     put("is_active", isActive);
     put("is_covered", isCovered);
     put("is_default", isDefault);
@@ -127,6 +131,7 @@ class PaginateFieldPartyParameter {
     int? minWidthM,
     int? maxWidthM,
     int? coverType,
+    int? cityId,
     bool? isActive,
     bool? isCovered,
     bool? isDefault,
@@ -146,6 +151,7 @@ class PaginateFieldPartyParameter {
       minWidthM: minWidthM ?? this.minWidthM,
       maxWidthM: maxWidthM ?? this.maxWidthM,
       coverType: coverType ?? this.coverType,
+      cityId: cityId ?? this.cityId,
       isActive: isActive ?? this.isActive,
       isCovered: isCovered ?? this.isCovered,
       isDefault: isDefault ?? this.isDefault,

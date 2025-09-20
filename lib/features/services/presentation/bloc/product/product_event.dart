@@ -11,3 +11,10 @@ class PaginateProductEvent extends ProductEvent {
   @override
   List<Object?> get props => [parameter];
 }
+
+class FilterProductEvent extends ProductEvent {
+  final PaginateProductParameter parameter;
+  FilterProductEvent(this.parameter);
+  @override
+  List<Object?> get props => [parameter];
+}
