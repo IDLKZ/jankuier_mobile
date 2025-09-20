@@ -81,6 +81,21 @@ import '../../features/ticket/domain/use_cases/paginate_ticket_order_usecase.dar
 import '../../features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
 import '../../features/ticket/presentation/bloc/paginate_ticket_order/paginate_ticket_order_bloc.dart';
 import '../../features/ticket/presentation/bloc/ticketon_order_check/ticketon_order_check_bloc.dart';
+import '../../features/kff/data/datasource/kff_datasource.dart';
+import '../../features/kff/data/repositories/kff_repository.dart';
+import '../../features/kff/domain/interface/kff_interface.dart';
+import '../../features/kff/domain/use_cases/get_all_league_case.dart';
+import '../../features/kff/domain/use_cases/get_one_league_case.dart';
+import '../../features/kff/domain/use_cases/get_future_matches_case.dart';
+import '../../features/kff/domain/use_cases/get_past_matches_case.dart';
+import '../../features/kff/domain/use_cases/get_coaches_case.dart';
+import '../../features/kff/domain/use_cases/get_players_case.dart';
+import '../../features/kff/presentation/bloc/get_all_league/get_all_league_bloc.dart';
+import '../../features/kff/presentation/bloc/get_one_league/get_one_league_bloc.dart';
+import '../../features/kff/presentation/bloc/get_future_matches/get_future_matches_bloc.dart';
+import '../../features/kff/presentation/bloc/get_past_matches/get_past_matches_bloc.dart';
+import '../../features/kff/presentation/bloc/get_coaches/get_coaches_bloc.dart';
+import '../../features/kff/presentation/bloc/get_players/get_players_bloc.dart';
 import '../network/sota_dio_client.dart';
 import 'injection.config.dart';
 

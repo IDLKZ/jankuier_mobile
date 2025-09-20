@@ -40,9 +40,10 @@ class _StandingsPageState extends State<_StandingsPageView>
   late TabController _tabController;
   TournamentEntity? tournament;
   final HiveUtils _hiveUtils = getIt<HiveUtils>();
-  String? _activeTournament;
-  String? _activeSeason;
   late MatchParameter parameter;
+
+  // PageStorage bucket для сохранения состояний вкладок
+  final PageStorageBucket _bucket = PageStorageBucket();
 
   @override
   void initState() {
@@ -58,7 +59,6 @@ class _StandingsPageState extends State<_StandingsPageView>
         .get<Map<String, dynamic>>(HiveConstant.mainTournamentKey);
     if (tournamentJson != null) {
       tournament = TournamentEntity.fromJson(tournamentJson);
-      _activeTournament = tournament!.name;
     }
 
     // Получаем ID активного сезона как int
@@ -95,36 +95,45 @@ class _StandingsPageState extends State<_StandingsPageView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          StandingsHeaderWidget(
-            tournamentName: tournament?.name,
-            tournamentImage: tournament?.image,
-          ),
-          Container(
-            color: Colors.white,
-            child: TabBar(
-              controller: _tabController,
-              tabs: const [
-                Tab(text: "Таблица"),
-                Tab(text: "Результаты"),
-              ],
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: const Color(0xFF4B79CF),
+    return PageStorage(
+      bucket: _bucket,
+      child: Scaffold(
+        body: Column(
+          children: [
+            StandingsHeaderWidget(
+              tournamentName: tournament?.name,
+              tournamentImage: tournament?.image,
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildTableTab(),
-                _buildResultsTab(),
-              ],
+            Container(
+              color: Colors.white,
+              child: TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: "Таблица"),
+                  Tab(text: "Результаты"),
+                ],
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: const Color(0xFF4B79CF),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  PageStorage(
+                    bucket: _bucket,
+                    child: _buildTableTab(),
+                  ),
+                  PageStorage(
+                    bucket: _bucket,
+                    child: _buildResultsTab(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -189,6 +198,7 @@ class _StandingsPageState extends State<_StandingsPageView>
           ),
           Expanded(
             child: ListView.builder(
+              key: const PageStorageKey('standings_table_list'),
               itemCount: teams.length,
               itemBuilder: (context, index) {
                 return TeamTableItemWidget(
@@ -235,6 +245,7 @@ class _StandingsPageState extends State<_StandingsPageView>
     return Container(
       color: Colors.grey[50],
       child: ListView.builder(
+        key: const PageStorageKey('standings_matches_list'),
         itemCount: groupedMatches.keys.length,
         itemBuilder: (context, index) {
           final tour = groupedMatches.keys.elementAt(index);

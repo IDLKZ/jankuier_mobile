@@ -23,4 +23,6 @@ class AppRouteConstants {
   static const String SignInPageName = "Sign In Page";
   static const String SignUpPagePath = "/sign-up";
   static const String SignUpPageName = "Sign Up Page";
+  static const String KffMatchesPagePath = "/kff-matches";
+  static const String KffMatchesPageName = "Kff Matches Page Path";
 }

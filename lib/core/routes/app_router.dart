@@ -6,6 +6,7 @@ import 'package:jankuier_mobile/features/auth/presentation/pages/sign_in_page.da
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:jankuier_mobile/features/kff/presentation/pages/kff_matches_page.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_event.dart';
@@ -36,7 +37,7 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/welcome',
+    initialLocation: AppRouteConstants.KffMatchesPagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(
@@ -103,6 +104,11 @@ class AppRouter {
                 return await AppRouteMiddleware()
                     .checkAuthMiddleware(context, state);
               },
+            ),
+            GoRoute(
+              path: AppRouteConstants.KffMatchesPagePath,
+              name: AppRouteConstants.KffMatchesPageName,
+              builder: (context, state) => const KffMatchesPage(),
             ),
             GoRoute(
               path: "${AppRouteConstants.SingleProductPagePath}:productId",
