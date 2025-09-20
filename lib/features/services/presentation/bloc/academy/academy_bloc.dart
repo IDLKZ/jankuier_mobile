@@ -15,19 +15,25 @@ class AcademyBloc extends Bloc<AcademyEvent, AcademyState> {
     PaginateAcademyEvent event,
     Emitter<AcademyState> emit,
   ) async {
-    if (state is! PaginateAcademyLoadedState) {
+    // If this is page 1, we're starting fresh (new filters or initial load)
+    final isFirstPage = (event.parameter.page ?? 1) == 1;
+
+    if (state is! PaginateAcademyLoadedState || isFirstPage) {
       emit(PaginateAcademyLoadingState());
     }
 
-    final currentAcademies = state is PaginateAcademyLoadedState
+    final currentAcademies = state is PaginateAcademyLoadedState && !isFirstPage
         ? (state as PaginateAcademyLoadedState).academies
         : <AcademyEntity>[];
+
     final result = await this.paginateAcademyCase.call(event.parameter);
 
     result.fold(
       (failure) => emit(PaginateAcademyFailedState(failure)),
       (data) {
-        final updatedAcademies = [...currentAcademies, ...data.items];
+        final updatedAcademies = isFirstPage
+            ? data.items // Replace academies on first page
+            : [...currentAcademies, ...data.items]; // Append for subsequent pages
         emit(PaginateAcademyLoadedState(data, updatedAcademies));
       },
     );

@@ -309,6 +309,11 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                     _IconText(
                         svg: 'assets/icons/group.svg',
                         text: "${widget.fieldPartyEntity.personQty}"),
+                    SizedBox(width: 12.w),
+                    _IconText(
+                        svg: 'assets/icons/city.svg',
+                        text:
+                            "${widget.fieldPartyEntity.field?.city?.titleRu}"),
                   ],
                 ),
                 SizedBox(height: 16.h),
