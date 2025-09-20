@@ -11,6 +11,7 @@ import '../bloc/get_news/get_news_bloc.dart';
 import '../bloc/get_news/get_news_event.dart';
 import '../bloc/get_news/get_news_state.dart';
 import '../widgets/blog_card_widget.dart';
+import 'news_detail_page.dart';
 
 class BlogListPage extends StatefulWidget {
   const BlogListPage({super.key});
@@ -25,6 +26,15 @@ class _BlogListPageState extends State<BlogListPage> {
   int _currentPage = 1;
   final int _perPage = 20;
 
+  // Категории и выбранная категория
+  String _selectedCategory = 'KFF';
+  NewsPlatform _selectedPlatform = NewsPlatform.yii;
+
+  final List<Map<String, dynamic>> _categories = [
+    {'name': 'KFF', 'platform': NewsPlatform.yii},
+    {'name': 'KFF League', 'platform': NewsPlatform.laravel},
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -35,23 +45,35 @@ class _BlogListPageState extends State<BlogListPage> {
   }
 
   void _loadNews() {
-    const params = GetNewsParameter(
-      platform: NewsPlatform.yii,
+    final params = GetNewsParameter(
+      platform: _selectedPlatform,
       page: 1,
       perPage: 20,
     );
     _currentPage = 1;
-    _newsBloc.add(GetNewsFromKffEvent(params));
+
+    // Используем правильное событие в зависимости от платформы
+    if (_selectedPlatform == NewsPlatform.yii) {
+      _newsBloc.add(GetNewsFromKffEvent(params));
+    } else {
+      _newsBloc.add(GetNewsFromKffLeagueEvent(params));
+    }
   }
 
   void _loadMoreNews() {
     _currentPage++;
     final params = GetNewsParameter(
-      platform: NewsPlatform.yii,
+      platform: _selectedPlatform,
       page: _currentPage,
       perPage: _perPage,
     );
-    _newsBloc.add(LoadMoreNewsFromKffEvent(params));
+
+    // Используем правильное событие для пагинации в зависимости от платформы
+    if (_selectedPlatform == NewsPlatform.yii) {
+      _newsBloc.add(LoadMoreNewsFromKffEvent(params));
+    } else {
+      _newsBloc.add(LoadMoreNewsFromKffLeagueEvent(params));
+    }
   }
 
   void _onScroll() {
@@ -131,25 +153,39 @@ class _BlogListPageState extends State<BlogListPage> {
             'Последние новости',
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 22.sp,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
               letterSpacing: -0.5,
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              gradient: AppColors.primaryGradient,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              'KFF',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+          GestureDetector(
+            onTap: _showCategorySelector,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _selectedCategory,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 4.w),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
+                    size: 16.sp,
+                  ),
+                ],
               ),
             ),
           ),
@@ -196,7 +232,15 @@ class _BlogListPageState extends State<BlogListPage> {
                       date: _formatDate(news.date),
                       likes: news.views ?? 0,
                       onTap: () {
-                        // TODO: Navigate to news detail
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsDetailPage(
+                              newsId: news.id,
+                              platform: _selectedPlatform,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   );
@@ -373,6 +417,83 @@ class _BlogListPageState extends State<BlogListPage> {
         ),
       ),
     );
+  }
+
+  void _showCategorySelector() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 12.h),
+                height: 4.h,
+                width: 40.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20.w),
+                child: Text(
+                  'Выберите категорию',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              ..._categories.map((category) {
+                return ListTile(
+                  title: Text(
+                    category['name'],
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 16.sp,
+                      fontWeight: _selectedCategory == category['name']
+                          ? FontWeight.w600
+                          : FontWeight.w400,
+                      color: _selectedCategory == category['name']
+                          ? AppColors.gradientStart
+                          : AppColors.textPrimary,
+                    ),
+                  ),
+                  trailing: _selectedCategory == category['name']
+                      ? Icon(
+                          Icons.check,
+                          color: AppColors.gradientStart,
+                        )
+                      : null,
+                  onTap: () {
+                    _onCategorySelected(category['name'], category['platform']);
+                    Navigator.pop(context);
+                  },
+                );
+              }).toList(),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _onCategorySelected(String categoryName, NewsPlatform platform) {
+    setState(() {
+      _selectedCategory = categoryName;
+      _selectedPlatform = platform;
+    });
+    _loadNews();
   }
 
   String _formatDate(DateTime? date) {
