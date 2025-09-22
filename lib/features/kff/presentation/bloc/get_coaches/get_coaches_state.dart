@@ -17,7 +17,7 @@ class GetCoachesLoadingState extends GetCoachesState {
 }
 
 class GetCoachesSuccessState extends GetCoachesState {
-  final List<KffCoachImageEntity> coaches;
+  final List<KffLeagueCoachEntity> coaches;
 
   GetCoachesSuccessState(this.coaches);
 

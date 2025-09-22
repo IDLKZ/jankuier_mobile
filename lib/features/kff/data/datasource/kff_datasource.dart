@@ -20,7 +20,7 @@ abstract class KffDSInterface {
       int leagueId);
   Future<KffCommonResponseFromList<KffLeaguePostMatchEntity>> getPastMatches(
       int leagueId);
-  Future<KffCommonResponseFromList<KffCoachImageEntity>> getCoaches(
+  Future<KffCommonResponseFromList<KffLeagueCoachEntity>> getCoaches(
       int leagueId);
   Future<KffCommonResponseFromList<KffLeaguePlayerEntity>> getPlayers(
       int leagueId);
@@ -46,12 +46,13 @@ class KffDSImpl implements KffDSInterface {
   }
 
   @override
-  Future<KffCommonResponseFromList<KffCoachImageEntity>> getCoaches(
+  Future<KffCommonResponseFromList<KffLeagueCoachEntity>> getCoaches(
       int leagueId) async {
     try {
-      final response = await httpUtils.get(KffApiConstant.league(leagueId));
+      final response =
+          await httpUtils.get(KffApiConstant.leagueCoaches(leagueId));
       final result = KffCommonResponseFromList.fromJson(
-          response, KffCoachImageEntity.fromJson);
+          response, KffLeagueCoachEntity.fromJson);
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

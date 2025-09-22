@@ -5,13 +5,14 @@ import 'package:jankuier_mobile/features/kff/data/entities/from_kff/kff_league_c
 import 'package:jankuier_mobile/features/kff/domain/interface/kff_interface.dart';
 
 @injectable
-class GetCoachesCase extends UseCaseWithParams<List<KffCoachImageEntity>, int> {
+class GetCoachesCase
+    extends UseCaseWithParams<List<KffLeagueCoachEntity>, int> {
   final KffInterface _repository;
 
   GetCoachesCase(this._repository);
 
   @override
-  ResultFuture<List<KffCoachImageEntity>> call(int params) async {
+  ResultFuture<List<KffLeagueCoachEntity>> call(int params) async {
     return await _repository.getCoaches(params);
   }
 }

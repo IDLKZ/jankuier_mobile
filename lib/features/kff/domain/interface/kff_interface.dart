@@ -10,6 +10,6 @@ abstract class KffInterface {
   ResultFuture<KffLeagueEntity> getOneLeague(int leagueId);
   ResultFuture<List<KffLeagueMatchEntity>> getFutureMatches(int leagueId);
   ResultFuture<List<KffLeaguePostMatchEntity>> getPastMatches(int leagueId);
-  ResultFuture<List<KffCoachImageEntity>> getCoaches(int leagueId);
+  ResultFuture<List<KffLeagueCoachEntity>> getCoaches(int leagueId);
   ResultFuture<List<KffLeaguePlayerEntity>> getPlayers(int leagueId);
 }

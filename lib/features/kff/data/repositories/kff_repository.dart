@@ -41,7 +41,8 @@ class KffRepository implements KffInterface {
   }
 
   @override
-  Future<Either<Failure, List<KffLeagueMatchEntity>>> getFutureMatches(int leagueId) async {
+  Future<Either<Failure, List<KffLeagueMatchEntity>>> getFutureMatches(
+      int leagueId) async {
     try {
       final result = await _dataSource.getFutureMatches(leagueId);
       return Right(result.data);
@@ -53,7 +54,8 @@ class KffRepository implements KffInterface {
   }
 
   @override
-  Future<Either<Failure, List<KffLeaguePostMatchEntity>>> getPastMatches(int leagueId) async {
+  Future<Either<Failure, List<KffLeaguePostMatchEntity>>> getPastMatches(
+      int leagueId) async {
     try {
       final result = await _dataSource.getPastMatches(leagueId);
       return Right(result.data);
@@ -65,7 +67,8 @@ class KffRepository implements KffInterface {
   }
 
   @override
-  Future<Either<Failure, List<KffCoachImageEntity>>> getCoaches(int leagueId) async {
+  Future<Either<Failure, List<KffLeagueCoachEntity>>> getCoaches(
+      int leagueId) async {
     try {
       final result = await _dataSource.getCoaches(leagueId);
       return Right(result.data);
@@ -77,7 +80,8 @@ class KffRepository implements KffInterface {
   }
 
   @override
-  Future<Either<Failure, List<KffLeaguePlayerEntity>>> getPlayers(int leagueId) async {
+  Future<Either<Failure, List<KffLeaguePlayerEntity>>> getPlayers(
+      int leagueId) async {
     try {
       final result = await _dataSource.getPlayers(leagueId);
       return Right(result.data);

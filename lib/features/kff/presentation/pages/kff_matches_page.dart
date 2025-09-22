@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,16 @@ import '../bloc/get_players/get_players_state.dart';
 import '../bloc/get_coaches/get_coaches_bloc.dart';
 import '../bloc/get_coaches/get_coaches_event.dart';
 import '../bloc/get_coaches/get_coaches_state.dart';
+import '../bloc/get_one_league/get_one_league_bloc.dart';
+import '../bloc/get_one_league/get_one_league_event.dart';
 
+/// KFF Matches Page - основная страница для отображения футбольных матчей КФФ
+///
+/// Эта страница предоставляет:
+/// - Переключение между национальными командами и клубами
+/// - Выбор лиги из доступного списка
+/// - Просмотр будущих и прошедших матчей
+/// - Информацию об игроках и тренерах выбранной лиги
 class KffMatchesPage extends StatefulWidget {
   const KffMatchesPage({super.key});
 
@@ -29,109 +39,148 @@ class KffMatchesPage extends StatefulWidget {
 
 class _KffMatchesPageState extends State<KffMatchesPage>
     with TickerProviderStateMixin {
+  /// Контроллер для основных табов (Национальные/Клубы)
   late TabController _mainTabController;
+
+  /// Контроллер для табов данных (Будущие/Прошлые/Игроки/Тренеры)
   late TabController _dataTabController;
+
+  /// Индекс выбранной лиги в списке лиг
   int selectedLeagueIndex = 0;
 
+  /// Инициализация состояния виджета
+  /// Создаются контроллеры табов и устанавливаются слушатели
   @override
   void initState() {
     super.initState();
+    // Инициализация контроллера основных табов (2 таба: Национальные, Клубы)
     _mainTabController = TabController(length: 2, vsync: this);
+    // Инициализация контроллера табов данных (4 таба: Будущие, Прошлые, Игроки, Тренеры)
     _dataTabController = TabController(length: 4, vsync: this);
+    // Добавление слушателей для отслеживания изменений табов
     _mainTabController.addListener(_onMainTabChanged);
     _dataTabController.addListener(_onDataTabChanged);
   }
 
+  /// Освобождение ресурсов при уничтожении виджета
   @override
   void dispose() {
+    // Освобождение контроллеров табов
     _mainTabController.dispose();
     _dataTabController.dispose();
     super.dispose();
   }
 
+  /// Обработчик изменения основного таба (Национальные/Клубы)
   void _onMainTabChanged() {
     if (_mainTabController.indexIsChanging) return;
     setState(() {});
   }
 
+  /// Обработчик изменения таба данных (Будущие/Прошлые/Игроки/Тренеры)
   void _onDataTabChanged() {
     if (_dataTabController.indexIsChanging) return;
     setState(() {});
   }
 
+  /// Метод для обновления BLoC'ов при выборе новой лиги с корректным контекстом
+  /// Параметр [context] - BuildContext с доступом к BLoC'ам
+  /// Параметр [leagueId] - ID новой выбранной лиги
+  /// Обновляет все BLoC'ы, которые зависят от выбранной лиги:
+  /// - GetFutureMatchesBloc - для загрузки будущих матчей
+  /// - GetPastMatchesBloc - для загрузки прошедших матчей
+  /// - GetPlayersBloc - для загрузки игроков лиги
+  /// - GetCoachesBloc - для загрузки тренеров лиги
+  /// - GetOneLeagueBloc - для получения детальной информации о лиге
+  void _updateBlocsWithNewLeagueInContext(BuildContext context, int leagueId) {
+    // Обновляем все BLoC'ы, которым нужен leagueId
+    context
+        .read<GetFutureMatchesBloc>()
+        .add(GetFutureMatchesRequestEvent(leagueId));
+    context
+        .read<GetPastMatchesBloc>()
+        .add(GetPastMatchesRequestEvent(leagueId));
+    context.read<GetPlayersBloc>().add(GetPlayersRequestEvent(leagueId));
+    context.read<GetCoachesBloc>().add(GetCoachesRequestEvent(leagueId));
+    context.read<GetOneLeagueBloc>().add(GetOneLeagueRequestEvent(leagueId));
+  }
+
+  /// Основной метод построения UI страницы
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          // Modern App Bar with Gradient
-          Container(
-            height: 120.h + MediaQuery.of(context).padding.top,
-            decoration: BoxDecoration(
-              gradient: AppColors.primaryGradient,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24.r),
-                bottomRight: Radius.circular(24.r),
+      // Оборачиваем все содержимое в SingleChildScrollView для возможности прокрутки
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Modern App Bar with Gradient
+            Container(
+              height: 120.h + MediaQuery.of(context).padding.top,
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24.r),
+                  bottomRight: Radius.circular(24.r),
+                ),
               ),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                child: Column(
-                  children: [
-                    // Top row with icons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(8.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(12.r),
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                  child: Column(
+                    children: [
+                      // Top row with icons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Icon(
+                              Icons.sports_soccer,
+                              color: AppColors.white,
+                              size: 24.sp,
+                            ),
                           ),
-                          child: Icon(
-                            Icons.sports_soccer,
-                            color: AppColors.white,
-                            size: 24.sp,
+                          Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Icon(
+                              Icons.notifications_outlined,
+                              color: AppColors.white,
+                              size: 24.sp,
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(8.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Icon(
-                            Icons.notifications_outlined,
-                            color: AppColors.white,
-                            size: 24.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    // Title
-                    Text(
-                      'KFF Матчи',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
+                        ],
                       ),
-                    ),
-                  ],
+
+                      SizedBox(height: 16.h),
+
+                      // Title
+                      Text(
+                        'KFF Матчи',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
 
-          // Main Content
-          Expanded(
-            child: Padding(
+            // Основное содержимое страницы
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
@@ -178,29 +227,71 @@ class _KffMatchesPageState extends State<KffMatchesPage>
 
                   SizedBox(height: 24.h),
 
-                  // Tab Content
-                  Expanded(
+                  // Содержимое табов - ConstrainedBox для ограничения высоты в SingleChildScrollView
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height * 0.6,
+                      maxHeight: MediaQuery.of(context).size.height * 0.8,
+                    ),
                     child: TabBarView(
                       controller: _mainTabController,
                       children: [
-                        BlocProvider<GetAllLeagueBloc>(
-                          create: (BuildContext context) =>
-                              getIt<GetAllLeagueBloc>()
-                                ..add(GetAllLeagueRequestEvent()),
-                          child:
-                              BlocConsumer<GetAllLeagueBloc, GetAllLeagueState>(
-                            listener: (BuildContext context, state) {},
-                            builder: (BuildContext context, state) {
-                              if (state is GetAllLeagueLoadingState) {
-                                return _buildLoadingState();
-                              } else if (state is GetAllLeagueSuccessState) {
-                                return _buildLeaguesList(state.leagues);
-                              } else if (state is GetAllLeagueFailedState) {
-                                return _buildErrorState(
-                                    state.failure.message ?? "-");
-                              }
-                              return const SizedBox();
-                            },
+                        MultiBlocProvider(
+                          providers: [
+                            // BLoC для получения списка всех лиг
+                            BlocProvider<GetAllLeagueBloc>(
+                              create: (BuildContext context) =>
+                                  getIt<GetAllLeagueBloc>()
+                                    ..add(GetAllLeagueRequestEvent()),
+                            ),
+                            // BLoC для загрузки будущих матчей выбранной лиги
+                            BlocProvider<GetFutureMatchesBloc>(
+                              create: (context) =>
+                                  getIt<GetFutureMatchesBloc>(),
+                            ),
+                            // BLoC для загрузки прошедших матчей выбранной лиги
+                            BlocProvider<GetPastMatchesBloc>(
+                              create: (context) => getIt<GetPastMatchesBloc>(),
+                            ),
+                            // BLoC для загрузки игроков выбранной лиги
+                            BlocProvider<GetPlayersBloc>(
+                              create: (context) => getIt<GetPlayersBloc>(),
+                            ),
+                            // BLoC для загрузки тренеров выбранной лиги
+                            BlocProvider<GetCoachesBloc>(
+                              create: (context) => getIt<GetCoachesBloc>(),
+                            ),
+                            // BLoC для получения детальной информации о выбранной лиге
+                            BlocProvider<GetOneLeagueBloc>(
+                              create: (context) => getIt<GetOneLeagueBloc>(),
+                            ),
+                          ],
+                          // Используем Builder для получения нового BuildContext с доступом к BLoC'ам
+                          child: Builder(
+                            builder: (builderContext) => BlocConsumer<
+                                GetAllLeagueBloc, GetAllLeagueState>(
+                              listener: (BuildContext context, state) {
+                                // Когда лиги загружены, автоматически загружаем данные для первой лиги
+                                if (state is GetAllLeagueSuccessState &&
+                                    state.leagues.isNotEmpty) {
+                                  final firstLeagueId = state.leagues[0].id;
+                                  _updateBlocsWithNewLeagueInContext(
+                                      builderContext, firstLeagueId);
+                                }
+                              },
+                              builder: (BuildContext context, state) {
+                                if (state is GetAllLeagueLoadingState) {
+                                  return _buildLoadingState();
+                                } else if (state is GetAllLeagueSuccessState) {
+                                  return _buildLeaguesListWithContext(
+                                      state.leagues, builderContext);
+                                } else if (state is GetAllLeagueFailedState) {
+                                  return _buildErrorState(
+                                      state.failure.message ?? "-");
+                                }
+                                return const SizedBox();
+                              },
+                            ),
                           ),
                         ),
                         _buildClubsComingSoon(),
@@ -210,12 +301,17 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
+  /// Строит современную кнопку таба с анимацией и градиентом
+  /// Параметры:
+  /// [title] - текст кнопки
+  /// [index] - индекс таба для сравнения с текущим
+  /// [icon] - иконка для отображения рядом с текстом
   Widget _buildModernTabButton(String title, int index, IconData icon) {
     final isSelected = _mainTabController.index == index;
 
@@ -242,7 +338,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                 title,
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                   color: isSelected ? AppColors.white : AppColors.textSecondary,
                 ),
@@ -255,6 +351,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит состояние загрузки с анимированным индикатором
+  /// Отображается пока загружаются данные лиг
   Widget _buildLoadingState() {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -286,6 +384,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит состояние ошибки с сообщением
+  /// Параметр [message] - текст ошибки для отображения пользователю
   Widget _buildErrorState(String message) {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -327,6 +427,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит заглушку для раздела клубов
+  /// Показывает, что функционал находится в разработке
   Widget _buildClubsComingSoon() {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -368,10 +470,13 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
-  Widget _buildLeaguesList(List<KffLeagueEntity> leagues) {
+  /// Строит список лиг с возможностью выбора с корректным контекстом
+  /// Параметр [leagues] - список доступных лиг для отображения
+  /// Параметр [blocContext] - BuildContext с доступом к BLoC'ам
+  /// Содержит горизонтальный список лиг и табы с данными выбранной лиги
+  Widget _buildLeaguesListWithContext(
+      List<KffLeagueEntity> leagues, BuildContext blocContext) {
     if (leagues.isEmpty) return _buildEmptyState();
-
-    final selectedLeagueId = leagues[selectedLeagueIndex].id;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,6 +512,9 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                   setState(() {
                     selectedLeagueIndex = index;
                   });
+                  // Вызываем события для обновления данных в других BLoC при выборе новой лиги
+                  _updateBlocsWithNewLeagueInContext(
+                      blocContext, leagues[index].id);
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
@@ -454,7 +562,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        Text(
+                        AutoSizeText(
                           league.title ?? 'Без названия',
                           style: TextStyle(
                             fontFamily: 'Inter',
@@ -466,7 +574,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                             height: 1.2,
                           ),
                           textAlign: TextAlign.center,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         if (league.section != null) ...[
@@ -533,42 +641,27 @@ class _KffMatchesPageState extends State<KffMatchesPage>
 
         SizedBox(height: 24.h),
 
-        // Content for Data Tabs
+        // Содержимое табов данных - BLoC'и уже доступны из верхнего уровня
         Expanded(
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<GetFutureMatchesBloc>(
-                create: (context) => getIt<GetFutureMatchesBloc>()
-                  ..add(GetFutureMatchesRequestEvent(selectedLeagueId)),
-              ),
-              BlocProvider<GetPastMatchesBloc>(
-                create: (context) => getIt<GetPastMatchesBloc>()
-                  ..add(GetPastMatchesRequestEvent(selectedLeagueId)),
-              ),
-              BlocProvider<GetPlayersBloc>(
-                create: (context) => getIt<GetPlayersBloc>()
-                  ..add(GetPlayersRequestEvent(selectedLeagueId)),
-              ),
-              BlocProvider<GetCoachesBloc>(
-                create: (context) => getIt<GetCoachesBloc>()
-                  ..add(GetCoachesRequestEvent(selectedLeagueId)),
-              ),
+          child: TabBarView(
+            controller: _dataTabController,
+            children: [
+              _buildFutureMatchesTab(),
+              _buildPastMatchesTab(),
+              _buildPlayersTab(),
+              _buildCoachesTab(),
             ],
-            child: TabBarView(
-              controller: _dataTabController,
-              children: [
-                _buildFutureMatchesTab(),
-                _buildPastMatchesTab(),
-                _buildPlayersTab(),
-                _buildCoachesTab(),
-              ],
-            ),
           ),
         ),
       ],
     );
   }
 
+  /// Строит таб для выбора типа данных (матчи, игроки, тренеры)
+  /// Параметры:
+  /// [title] - название таба
+  /// [index] - индекс таба
+  /// [icon] - иконка таба
   Widget _buildDataTab(String title, int index, IconData icon) {
     final isSelected = _dataTabController.index == index;
 
@@ -605,6 +698,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит пустое состояние когда лиги недоступны
+  /// Отображается когда список лиг пустой
   Widget _buildEmptyState() {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -645,6 +740,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Возвращает подходящую иконку в зависимости от секции лиги
+  /// Параметр [section] - тип секции (men, women, futsal)
   IconData _getLeagueIcon(String? section) {
     switch (section?.toLowerCase()) {
       case 'men':
@@ -658,6 +755,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     }
   }
 
+  /// Строит таб с будущими матчами
+  /// Использует GetFutureMatchesBloc для получения данных
   Widget _buildFutureMatchesTab() {
     return BlocBuilder<GetFutureMatchesBloc, GetFutureMatchesState>(
       builder: (context, state) {
@@ -678,6 +777,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит таб с прошедшими матчами
+  /// Использует GetPastMatchesBloc для получения данных
   Widget _buildPastMatchesTab() {
     return BlocBuilder<GetPastMatchesBloc, GetPastMatchesState>(
       builder: (context, state) {
@@ -698,6 +799,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит таб с игроками лиги
+  /// Использует GetPlayersBloc для получения данных
   Widget _buildPlayersTab() {
     return BlocBuilder<GetPlayersBloc, GetPlayersState>(
       builder: (context, state) {
@@ -718,6 +821,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит таб с тренерами лиги
+  /// Использует GetCoachesBloc для получения данных
   Widget _buildCoachesTab() {
     return BlocBuilder<GetCoachesBloc, GetCoachesState>(
       builder: (context, state) {
@@ -738,6 +843,10 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит список матчей с карточками
+  /// Параметры:
+  /// [matches] - список матчей для отображения
+  /// [isFuture] - флаг определяющий тип матчей (будущие/прошедшие)
   Widget _buildMatchesList(dynamic matches, bool isFuture) {
     if (matches.isEmpty) {
       return _buildEmptyContentState(
@@ -809,8 +918,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(28.r),
                               child: Image.network(
-                                match.team1?.image?.thumb ?? '',
-                                fit: BoxFit.cover,
+                                match.team1?.image?.avatar ?? '',
+                                fit: BoxFit.fitHeight,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
                                     Icons.sports_soccer,
@@ -933,8 +1042,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(28.r),
                               child: Image.network(
-                                match.team2?.image?.thumb ?? '',
-                                fit: BoxFit.cover,
+                                match.team2?.image?.avatar ?? '',
+                                fit: BoxFit.fitHeight,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
                                     Icons.sports_soccer,
@@ -970,6 +1079,10 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит состояние пустого контента с сообщением
+  /// Параметры:
+  /// [message] - текст сообщения
+  /// [icon] - иконка для отображения
   Widget _buildEmptyContentState(String message, IconData icon) {
     return Container(
       padding: EdgeInsets.all(40.w),
@@ -1003,6 +1116,9 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит список игроков с подробной информацией
+  /// Параметр [players] - список игроков для отображения
+  /// Показывает фото, позицию, клуб, статистику игроков
   Widget _buildPlayersList(dynamic players) {
     if (players.isEmpty) {
       return _buildEmptyContentState('Нет игроков', Icons.people);
@@ -1054,8 +1170,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(32.r),
                       child: Image.network(
-                        player.image?.thumb ?? '',
-                        fit: BoxFit.cover,
+                        player.image?.avatar ?? '',
+                        fit: BoxFit.fitHeight,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
                             decoration: BoxDecoration(
@@ -1203,6 +1319,9 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Строит список тренеров с информацией о них
+  /// Параметр [coaches] - список тренеров для отображения
+  /// Показывает фото, должность, национальность тренеров
   Widget _buildCoachesList(dynamic coaches) {
     if (coaches.isEmpty) {
       return _buildEmptyContentState('Нет тренеров', Icons.sports);
@@ -1259,8 +1378,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(32.r),
                       child: Image.network(
-                        coach.image?.thumb ?? '',
-                        fit: BoxFit.cover,
+                        coach.image?.avatar ?? '',
+                        fit: BoxFit.fitHeight,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
                             decoration: BoxDecoration(
@@ -1404,6 +1523,9 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     );
   }
 
+  /// Форматирует дату и время для отображения
+  /// Параметр [dateTime] - строка с датой в ISO формате
+  /// Возвращает отформатированную строку вида "DD.MM.YYYY\nHH:MM"
   String _formatDateTime(String? dateTime) {
     if (dateTime == null) return 'Время не указано';
     try {
