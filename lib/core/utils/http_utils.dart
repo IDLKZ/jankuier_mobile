@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/routes/app_router.dart';
 import 'package:jankuier_mobile/core/utils/toasters.dart';
 import 'package:talker/talker.dart';
 import '../di/injection.dart';
+import '../errors/exception.dart';
 import '../network/dio_client.dart';
 import 'hive_utils.dart';
 
@@ -91,6 +91,106 @@ class HttpUtil {
     return headers;
   }
 
+  /// Парсит структурированный ответ об ошибке от API
+  /// Ожидаемый формат: { "detail": { "message": "...", "is_custom": true, "details": "..." } }
+  ApiException _parseApiError(DioException dioError) {
+    final statusCode = dioError.response?.statusCode ?? 500;
+    final responseData = dioError.response?.data;
+
+    // Если данные ответа отсутствуют
+    if (responseData == null) {
+      return ApiException.create(
+        statusCode: statusCode,
+        message: dioError.message ?? 'Network error',
+        isCustom: false,
+      );
+    }
+
+    // Если это структурированный ответ с полем "detail"
+    if (responseData is Map<String, dynamic> && responseData.containsKey('detail')) {
+      final detail = responseData['detail'];
+
+      if (detail is Map<String, dynamic>) {
+        final message = detail['message']?.toString() ?? 'Unknown error';
+        final isCustom = detail['is_custom'] as bool? ?? true;
+        final details = detail['details']?.toString();
+
+        // Добавляем дополнительную информацию в extra
+        final Map<String, dynamic> extra = {};
+        if (details != null && details.isNotEmpty) {
+          extra['details'] = details;
+        }
+        // Добавляем все остальные поля из detail в extra
+        detail.forEach((key, value) {
+          if (key != 'message' && key != 'is_custom') {
+            extra[key] = value;
+          }
+        });
+
+        return ApiException.create(
+          statusCode: statusCode,
+          message: message,
+          extra: extra.isNotEmpty ? extra : null,
+          isCustom: isCustom,
+        );
+      }
+    }
+
+    // Если это простое сообщение об ошибке
+    if (responseData is Map<String, dynamic>) {
+      final message = responseData['message']?.toString() ??
+                     responseData['error']?.toString() ??
+                     'Server error';
+
+      return ApiException.create(
+        statusCode: statusCode,
+        message: message,
+        extra: responseData,
+        isCustom: responseData.containsKey('is_custom') ?
+                  responseData['is_custom'] as bool? ?? true : false,
+      );
+    }
+
+    // Если ответ не в ожидаемом формате
+    return ApiException.create(
+      statusCode: statusCode,
+      message: responseData.toString(),
+      isCustom: false,
+    );
+  }
+
+  /// Получает пользовательское сообщение для отображения
+  String _getUserFriendlyMessage(ApiException exception) {
+    // Если есть кастомное сообщение от сервера
+    if (exception.isCustom && exception.message.isNotEmpty) {
+      return exception.message;
+    }
+
+    // Стандартные сообщения для разных статус-кодов
+    switch (exception.statusCode) {
+      case 400:
+        return 'Некорректный запрос';
+      case 401:
+        return 'Необходима авторизация';
+      case 403:
+        return 'Доступ запрещен';
+      case 404:
+        return 'Ресурс не найден';
+      case 422:
+        return 'Ошибка валидации данных';
+      case 429:
+        return 'Слишком много запросов. Попробуйте позже';
+      case 500:
+        return 'Внутренняя ошибка сервера';
+      case 502:
+        return 'Сервер недоступен';
+      case 503:
+        return 'Сервис временно недоступен';
+      default:
+        return exception.message.isNotEmpty ? exception.message : 'Произошла ошибка';
+    }
+  }
+
   Future<void> _handle401Error() async {
     try {
       // Clear user data and token from Hive
@@ -126,20 +226,72 @@ class HttpUtil {
       );
       return response.data;
     } on DioException catch (e) {
-      talker.error('HTTP $method $path', e);
+      // Парсим структурированную ошибку
+      final apiException = _parseApiError(e);
 
-      // Handle 401 Unauthorized error
-      if (e.response?.statusCode == 401) {
-        await _handle401Error();
-        AppToaster.showError("Сессия истекла. Войдите заново");
-      } else {
-        AppToaster.showError("Ошибка сети: ${e.message}");
+      // Логируем детальную информацию об ошибке
+      talker.error('HTTP $method $path - ${apiException.statusCode}', {
+        'message': apiException.message,
+        'isCustom': apiException.isCustom,
+        'extra': apiException.extra,
+        'originalError': e.toString(),
+      });
+
+      // Обрабатываем конкретные статус-коды
+      switch (apiException.statusCode) {
+        case 400:
+          // Для ошибок 400 Bad Request показываем toast
+          final userMessage = _getUserFriendlyMessage(apiException);
+          AppToaster.showError(userMessage);
+          break;
+        case 401:
+          await _handle401Error();
+          AppToaster.showError("Сессия истекла. Войдите заново");
+          break;
+        case 403:
+          AppToaster.showError("Доступ запрещен");
+          break;
+        case 404:
+          AppToaster.showError("Ресурс не найден");
+          break;
+        case 422:
+          // Для ошибок валидации показываем более детальное сообщение
+          final userMessage = _getUserFriendlyMessage(apiException);
+          AppToaster.showError(userMessage);
+          break;
+        case 429:
+          AppToaster.showError("Слишком много запросов. Попробуйте позже");
+          break;
+        case >= 500:
+          // Для серверных ошибок 500+ показываем toast с пользовательским сообщением
+          final userMessage = _getUserFriendlyMessage(apiException);
+          AppToaster.showError(userMessage);
+          break;
+        default:
+          // Для остальных ошибок используем пользовательское сообщение
+          final userMessage = _getUserFriendlyMessage(apiException);
+          AppToaster.showError(userMessage);
       }
-      // throw AppException.fromDioError(e);
+
+      // Выбрасываем исключение для обработки в вызывающем коде
+      throw apiException;
     } catch (e, st) {
+      // Обрабатываем неожиданные ошибки
       talker.handle(e, st);
-      AppToaster.showError("Неизвестная ошибка");
-      // throw AppException(message: 'Unexpected error');
+
+      if (e is! ApiException) {
+        AppToaster.showError("Неизвестная ошибка");
+
+        // Создаем ApiException для неожиданных ошибок
+        throw ApiException.create(
+          statusCode: 0,
+          message: e.toString(),
+          isCustom: false,
+        );
+      }
+
+      // Перебрасываем ApiException без изменений
+      rethrow;
     }
   }
 }

@@ -75,7 +75,7 @@ class _SignInPageState extends State<SignInPage> {
               listener: (context, state) {
                 if (state is GetMeLoaded) {
                   // Navigate to home after user data is loaded
-                  context.go('/');
+                  context.go(AppRouteConstants.HomePagePath);
                 }
               },
             ),
@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
               top: 40.h,
               left: 25.w,
               child: GestureDetector(
-                onTap: () => context.go("/"),
+                onTap: () => context.go(AppRouteConstants.HomePagePath),
                 child: Container(
                   width: 40, // сделал чуть больше для баланса
                   height: 40,

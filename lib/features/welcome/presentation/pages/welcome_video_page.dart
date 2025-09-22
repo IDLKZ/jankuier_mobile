@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_route_constants.dart';
 
 class WelcomeVideoPage extends StatefulWidget {
   const WelcomeVideoPage({super.key});
@@ -57,7 +58,7 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
   }
 
   void _navigateToHome() {
-    context.go('/');
+    context.go(AppRouteConstants.HomePagePath);
   }
 
   void _skipVideo() {

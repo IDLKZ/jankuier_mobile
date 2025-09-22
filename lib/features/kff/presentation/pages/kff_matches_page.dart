@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/get_all_league_bloc.dart';
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/get_all_league_event.dart';
+import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../bloc/get_all_league/get_all_league_state.dart';
@@ -110,75 +111,15 @@ class _KffMatchesPageState extends State<KffMatchesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: PagesCommonAppBar(
+          title: "Матчи KFF",
+          actionIcon: Icons.sports_soccer,
+          leadingIcon: Icons.arrow_back_ios_new,
+          onActionTap: () {}),
       // Оборачиваем все содержимое в SingleChildScrollView для возможности прокрутки
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Modern App Bar with Gradient
-            Container(
-              height: 120.h + MediaQuery.of(context).padding.top,
-              decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24.r),
-                  bottomRight: Radius.circular(24.r),
-                ),
-              ),
-              child: SafeArea(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                  child: Column(
-                    children: [
-                      // Top row with icons
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(8.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Icon(
-                              Icons.sports_soccer,
-                              color: AppColors.white,
-                              size: 24.sp,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Icon(
-                              Icons.notifications_outlined,
-                              color: AppColors.white,
-                              size: 24.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 16.h),
-
-                      // Title
-                      Text(
-                        'KFF Матчи',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
             // Основное содержимое страницы
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),

@@ -37,12 +37,12 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRouteConstants.KffMatchesPagePath,
+    initialLocation: AppRouteConstants.WelcomePagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(
-        path: '/welcome',
-        name: 'welcome',
+        path: AppRouteConstants.WelcomePagePath,
+        name: AppRouteConstants.WelcomePageName,
         builder: (context, state) => const WelcomeVideoPage(),
       ),
       GoRoute(
@@ -69,36 +69,33 @@ class AppRouter {
           },
           routes: [
             GoRoute(
-              path: '/',
-              name: 'home',
+              path: AppRouteConstants.HomePagePath,
+              name: AppRouteConstants.HomePageName,
               builder: (context, state) => const HomePage(),
-              // redirect: (BuildContext context, GoRouterState state) async {
-              //   return await AppRouteMiddleware().mainMiddleware(context, state);
-              // }
             ),
             GoRoute(
-              path: '/tasks',
-              name: 'tasks',
+              path: AppRouteConstants.TasksPagePath,
+              name: AppRouteConstants.TasksPageName,
               builder: (context, state) => const TasksPage(),
             ),
             GoRoute(
-              path: '/matches',
-              name: 'matches',
+              path: AppRouteConstants.MatchesPagePath,
+              name: AppRouteConstants.MatchesPageName,
               builder: (context, state) => const MatchesPage(),
             ),
             GoRoute(
-              path: '/services',
-              name: 'services',
+              path: AppRouteConstants.ServicesPagePath,
+              name: AppRouteConstants.ServicesPageName,
               builder: (context, state) => const ServicesPage(),
             ),
             GoRoute(
-              path: '/activity',
-              name: 'activity',
+              path: AppRouteConstants.ActivityPagePath,
+              name: AppRouteConstants.ActivityPageName,
               builder: (context, state) => const ActivityPage(),
             ),
             GoRoute(
-              path: '/profile',
-              name: 'profile',
+              path: AppRouteConstants.ProfilePagePath,
+              name: AppRouteConstants.ProfilePageName,
               builder: (context, state) => const ProfilePage(),
               redirect: (BuildContext context, GoRouterState state) async {
                 return await AppRouteMiddleware()
@@ -229,7 +226,7 @@ class AppRouter {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go(AppRouteConstants.HomePagePath),
               child: const Text('Go Home'),
             ),
           ],

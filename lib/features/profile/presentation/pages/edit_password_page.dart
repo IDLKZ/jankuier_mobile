@@ -6,6 +6,7 @@ import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_event.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/hive_utils.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
@@ -171,7 +172,7 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
                 backgroundColor: Colors.green,
               ),
             );
-            context.go('/profile');
+            context.go(AppRouteConstants.ProfilePagePath);
           } else if (state is UpdatePasswordFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

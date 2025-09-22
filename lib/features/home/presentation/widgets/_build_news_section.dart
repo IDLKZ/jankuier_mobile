@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_route_constants.dart';
 import '../../../blog/data/entities/news_entity.dart';
 import '../../../blog/domain/parameters/get_news_parameter.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
@@ -34,7 +35,7 @@ Widget buildNewsSection(BuildContext context) {
               ),
               GestureDetector(
                 onTap: () {
-                  context.push('/blog');
+                  context.push(AppRouteConstants.BlogListPagePath);
                 },
                 child: Text(
                   'Все новости',

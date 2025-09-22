@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/main_selection_service.dart';
+import '../../../../core/constants/app_route_constants.dart';
 import '../../domain/parameters/get_tournament_parameter.dart';
 import '../../data/entities/tournament_entity.dart';
 import '../bloc/get_tournaments/get_tournament_bloc.dart';
@@ -88,7 +89,7 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
         context.pop();
       } else {
         // Navigate to standings page when no external callback
-        context.go('/standings');
+        context.go(AppRouteConstants.StandingsPagePath);
       }
     } catch (e) {
       if (!mounted) return;

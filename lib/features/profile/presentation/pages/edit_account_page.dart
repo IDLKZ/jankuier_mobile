@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/constants/form_validation_constants.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_profile_parameter.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_me_bloc.dart';
@@ -369,7 +370,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
                   ),
                 );
                 context.read<GetMeBloc>().add(const RefreshUserProfile());
-                context.go('/profile');
+                context.go(AppRouteConstants.ProfilePagePath);
               } else if (state is UpdateProfileFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

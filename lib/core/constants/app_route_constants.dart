@@ -1,4 +1,21 @@
 class AppRouteConstants {
+  // Main navigation routes
+  static const String HomePagePath = "/";
+  static const String HomePageName = "Home Page";
+  static const String TasksPagePath = "/tasks";
+  static const String TasksPageName = "Tasks Page";
+  static const String MatchesPagePath = "/matches";
+  static const String MatchesPageName = "Matches Page";
+  static const String ServicesPagePath = "/services";
+  static const String ServicesPageName = "Services Page";
+  static const String ActivityPagePath = "/activity";
+  static const String ActivityPageName = "Activity Page";
+  static const String ProfilePagePath = "/profile";
+  static const String ProfilePageName = "Profile Page";
+  static const String WelcomePagePath = "/welcome";
+  static const String WelcomePageName = "Welcome Page";
+
+  // Product and service routes
   static const String SingleProductPagePath = "/product-page/";
   static const String SingleProductPageName = "Product Page";
   static const String ServiceSectionSinglePagePath = "/section-single-page";

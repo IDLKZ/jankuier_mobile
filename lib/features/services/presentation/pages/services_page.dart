@@ -4,6 +4,7 @@ import 'package:jankuier_mobile/features/services/presentation/widgets/fields/fi
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/product_category_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/section/section_main.dart';
 import '../widgets/shop/shop_main.dart';
@@ -50,9 +51,9 @@ class _ServicesPageState extends State<ServicesPage>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  ShopMain(key: PageStorageKey('shop')),
-                  FieldsMain(key: PageStorageKey('fields')),
-                  SectionMain(key: PageStorageKey('sections')),
+                  ShopMain(key: PageStorageKey(ProductCategoryConstants.shopPageStorageKey)),
+                  FieldsMain(key: PageStorageKey(ProductCategoryConstants.fieldsPageStorageKey)),
+                  SectionMain(key: PageStorageKey(ProductCategoryConstants.sectionsPageStorageKey)),
                 ],
               ),
             ),

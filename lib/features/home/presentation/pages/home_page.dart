@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/features/kff/presentation/bloc/get_past_matches/get_past_matches_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/main_selection_service.dart';
+import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_bloc.dart';
+import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_event.dart';
+import '../../../kff/presentation/bloc/get_past_matches/get_past_matches_event.dart';
 import '../../../standings/domain/parameters/match_parameter.dart';
 import '../../../standings/presentation/bloc/standing_bloc.dart';
 import '../../../standings/presentation/bloc/standing_event.dart';
@@ -14,6 +18,7 @@ import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_eve
 import '../../../blog/domain/parameters/get_news_parameter.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_event.dart';
+import '../widgets/_build_future_match_widget.dart';
 import '../widgets/_build_header.dart';
 import '../widgets/_build_main_tournament_card.dart';
 import '../widgets/_build_news_section.dart';
@@ -39,6 +44,7 @@ class _HomePageState extends State<HomePage>
   late GetTournamentBloc _tournamentBloc;
   late StandingBloc _standingBloc;
   late GetNewsBloc _newsBloc;
+  late GetFutureMatchesBloc _futureMatchesBloc;
   late TabController _tabController;
   final GetTournamentParameter _params = const GetTournamentParameter();
   bool _hasMainCountry = false;
@@ -49,6 +55,9 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _tournamentBloc = getIt<GetTournamentBloc>();
     _standingBloc = getIt<StandingBloc>();
+    _newsBloc = getIt<GetNewsBloc>();
+    _futureMatchesBloc = getIt<GetFutureMatchesBloc>()
+      ..add(GetFutureMatchesRequestEvent(1));
     _newsBloc = getIt<GetNewsBloc>();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
@@ -63,7 +72,7 @@ class _HomePageState extends State<HomePage>
     setState(() {
       _hasMainCountry = hasCountry;
     });
-    
+
     // Загружаем турниры независимо от выбранной страны
     _loadTournaments();
   }
@@ -76,12 +85,12 @@ class _HomePageState extends State<HomePage>
     setState(() {
       _selectedTournament = tournament;
     });
-    
+
     // Save tournament and load data based on current tab
     try {
       final mainSelectionService = getIt<MainSelectionService>();
       await mainSelectionService.saveMainTournament(tournament);
-      
+
       // Load data for current tab
       _loadTabData();
     } catch (e) {
@@ -98,18 +107,17 @@ class _HomePageState extends State<HomePage>
 
   void _loadTabData() {
     if (_selectedTournament == null) return;
-    
+
     if (_tabController.index == 0) {
       // Load standings table
       _standingBloc.add(LoadStandingsTableFromSotaEvent());
     } else {
       // Load matches
       final latestSeason = _selectedTournament!.seasons.isNotEmpty
-          ? _selectedTournament!.seasons
-              .reduce((current, next) => 
-                  current.startDate.isAfter(next.startDate) ? current : next)
+          ? _selectedTournament!.seasons.reduce((current, next) =>
+              current.startDate.isAfter(next.startDate) ? current : next)
           : null;
-      
+
       final parameter = MatchParameter(
         tournamentId: _selectedTournament!.id,
         seasonId: latestSeason?.id ?? 0,
@@ -132,6 +140,7 @@ class _HomePageState extends State<HomePage>
     _tournamentBloc.close();
     _standingBloc.close();
     _newsBloc.close();
+    _futureMatchesBloc.close();
     super.dispose();
   }
 
@@ -142,6 +151,7 @@ class _HomePageState extends State<HomePage>
         BlocProvider.value(value: _tournamentBloc),
         BlocProvider.value(value: _standingBloc),
         BlocProvider.value(value: _newsBloc),
+        BlocProvider.value(value: _futureMatchesBloc),
       ],
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -155,14 +165,18 @@ class _HomePageState extends State<HomePage>
                 child: Column(
                   children: [
                     // Tournament selection section
-                    buildTournamentSection(_selectedTournament, _onTournamentSelected),
+                    buildTournamentSection(
+                        _selectedTournament, _onTournamentSelected),
                     // Main tournament card
                     if (_selectedTournament != null)
                       buildMainTournamentCard(_selectedTournament),
                     // Tabs and content
                     _selectedTournament != null
-                        ? buildTabsSectionWithScroll(_tabController, () => setState(() {}))
+                        ? buildTabsSectionWithScroll(
+                            _tabController, () => setState(() {}))
                         : _buildSelectTournamentMessage(),
+                    // Future Match
+                    if (_selectedTournament != null) buildFutureMatch(context),
                     // News section
                     if (_selectedTournament != null) buildNewsSection(context),
                   ],
