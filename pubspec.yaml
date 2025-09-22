@@ -76,6 +76,7 @@ dependencies:
   slide_countdown: ^2.0.2
   flutter_carousel_widget: ^3.1.0
   dropdown_search: ^6.0.2
+  url_launcher: ^6.3.2
   #Local Storage
   hive: ^2.2.3
 

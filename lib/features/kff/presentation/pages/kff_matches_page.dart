@@ -112,7 +112,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-          title: "Матчи KFF",
+          title: "Матчи Сборной",
           actionIcon: Icons.sports_soccer,
           leadingIcon: Icons.arrow_back_ios_new,
           onActionTap: () {}),
@@ -125,118 +125,68 @@ class _KffMatchesPageState extends State<KffMatchesPage>
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
-                  SizedBox(height: 24.h),
-
-                  // Modern Tab Selector
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(16.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.shadow.withValues(alpha: 0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: _buildModernTabButton(
-                            'Национальные',
-                            0,
-                            Icons.flag_outlined,
-                          ),
-                        ),
-                        Container(
-                          width: 1.w,
-                          height: 40.h,
-                          color: AppColors.grey200,
-                        ),
-                        Expanded(
-                          child: _buildModernTabButton(
-                            'Клубы',
-                            1,
-                            Icons.shield_outlined,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 24.h),
-
                   // Содержимое табов - ConstrainedBox для ограничения высоты в SingleChildScrollView
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height * 0.6,
                       maxHeight: MediaQuery.of(context).size.height * 0.8,
                     ),
-                    child: TabBarView(
-                      controller: _mainTabController,
-                      children: [
-                        MultiBlocProvider(
-                          providers: [
-                            // BLoC для получения списка всех лиг
-                            BlocProvider<GetAllLeagueBloc>(
-                              create: (BuildContext context) =>
-                                  getIt<GetAllLeagueBloc>()
-                                    ..add(GetAllLeagueRequestEvent()),
-                            ),
-                            // BLoC для загрузки будущих матчей выбранной лиги
-                            BlocProvider<GetFutureMatchesBloc>(
-                              create: (context) =>
-                                  getIt<GetFutureMatchesBloc>(),
-                            ),
-                            // BLoC для загрузки прошедших матчей выбранной лиги
-                            BlocProvider<GetPastMatchesBloc>(
-                              create: (context) => getIt<GetPastMatchesBloc>(),
-                            ),
-                            // BLoC для загрузки игроков выбранной лиги
-                            BlocProvider<GetPlayersBloc>(
-                              create: (context) => getIt<GetPlayersBloc>(),
-                            ),
-                            // BLoC для загрузки тренеров выбранной лиги
-                            BlocProvider<GetCoachesBloc>(
-                              create: (context) => getIt<GetCoachesBloc>(),
-                            ),
-                            // BLoC для получения детальной информации о выбранной лиге
-                            BlocProvider<GetOneLeagueBloc>(
-                              create: (context) => getIt<GetOneLeagueBloc>(),
-                            ),
-                          ],
-                          // Используем Builder для получения нового BuildContext с доступом к BLoC'ам
-                          child: Builder(
-                            builder: (builderContext) => BlocConsumer<
-                                GetAllLeagueBloc, GetAllLeagueState>(
-                              listener: (BuildContext context, state) {
-                                // Когда лиги загружены, автоматически загружаем данные для первой лиги
-                                if (state is GetAllLeagueSuccessState &&
-                                    state.leagues.isNotEmpty) {
-                                  final firstLeagueId = state.leagues[0].id;
-                                  _updateBlocsWithNewLeagueInContext(
-                                      builderContext, firstLeagueId);
-                                }
-                              },
-                              builder: (BuildContext context, state) {
-                                if (state is GetAllLeagueLoadingState) {
-                                  return _buildLoadingState();
-                                } else if (state is GetAllLeagueSuccessState) {
-                                  return _buildLeaguesListWithContext(
-                                      state.leagues, builderContext);
-                                } else if (state is GetAllLeagueFailedState) {
-                                  return _buildErrorState(
-                                      state.failure.message ?? "-");
-                                }
-                                return const SizedBox();
-                              },
-                            ),
-                          ),
+                    child: MultiBlocProvider(
+                      providers: [
+                        // BLoC для получения списка всех лиг
+                        BlocProvider<GetAllLeagueBloc>(
+                          create: (BuildContext context) =>
+                              getIt<GetAllLeagueBloc>()
+                                ..add(GetAllLeagueRequestEvent()),
                         ),
-                        _buildClubsComingSoon(),
+                        // BLoC для загрузки будущих матчей выбранной лиги
+                        BlocProvider<GetFutureMatchesBloc>(
+                          create: (context) => getIt<GetFutureMatchesBloc>(),
+                        ),
+                        // BLoC для загрузки прошедших матчей выбранной лиги
+                        BlocProvider<GetPastMatchesBloc>(
+                          create: (context) => getIt<GetPastMatchesBloc>(),
+                        ),
+                        // BLoC для загрузки игроков выбранной лиги
+                        BlocProvider<GetPlayersBloc>(
+                          create: (context) => getIt<GetPlayersBloc>(),
+                        ),
+                        // BLoC для загрузки тренеров выбранной лиги
+                        BlocProvider<GetCoachesBloc>(
+                          create: (context) => getIt<GetCoachesBloc>(),
+                        ),
+                        // BLoC для получения детальной информации о выбранной лиге
+                        BlocProvider<GetOneLeagueBloc>(
+                          create: (context) => getIt<GetOneLeagueBloc>(),
+                        ),
                       ],
+                      // Используем Builder для получения нового BuildContext с доступом к BLoC'ам
+                      child: Builder(
+                        builder: (builderContext) =>
+                            BlocConsumer<GetAllLeagueBloc, GetAllLeagueState>(
+                          listener: (BuildContext context, state) {
+                            // Когда лиги загружены, автоматически загружаем данные для первой лиги
+                            if (state is GetAllLeagueSuccessState &&
+                                state.leagues.isNotEmpty) {
+                              final firstLeagueId = state.leagues[0].id;
+                              _updateBlocsWithNewLeagueInContext(
+                                  builderContext, firstLeagueId);
+                            }
+                          },
+                          builder: (BuildContext context, state) {
+                            if (state is GetAllLeagueLoadingState) {
+                              return _buildLoadingState();
+                            } else if (state is GetAllLeagueSuccessState) {
+                              return _buildLeaguesListWithContext(
+                                  state.leagues, builderContext);
+                            } else if (state is GetAllLeagueFailedState) {
+                              return _buildErrorState(
+                                  state.failure.message ?? "-");
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -426,7 +376,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Text(
-            'Выберите лигу',
+            'Выберите сборную',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18.sp,
@@ -439,7 +389,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
 
         // Modern League Selection Grid
         SizedBox(
-          height: 120.h,
+          height: 140.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -512,10 +462,10 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                             color: isSelected
                                 ? AppColors.white
                                 : AppColors.textPrimary,
-                            height: 1.2,
+                            height: 1.4,
                           ),
                           textAlign: TextAlign.center,
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         if (league.section != null) ...[

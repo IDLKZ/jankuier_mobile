@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/features/home/presentation/widgets/_build_future_club_match_widget.dart';
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_past_matches/get_past_matches_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
@@ -8,6 +9,9 @@ import '../../../../core/services/main_selection_service.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_bloc.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_event.dart';
 import '../../../kff/presentation/bloc/get_past_matches/get_past_matches_event.dart';
+import '../../../kff_league/domain/parameters/kff_league_match_parameter.dart';
+import '../../../kff_league/presentation/bloc/matches/matches_bloc.dart';
+import '../../../kff_league/presentation/bloc/matches/matches_event.dart';
 import '../../../standings/domain/parameters/match_parameter.dart';
 import '../../../standings/presentation/bloc/standing_bloc.dart';
 import '../../../standings/presentation/bloc/standing_event.dart';
@@ -45,8 +49,10 @@ class _HomePageState extends State<HomePage>
   late StandingBloc _standingBloc;
   late GetNewsBloc _newsBloc;
   late GetFutureMatchesBloc _futureMatchesBloc;
+  late MatchesBloc _futureClubMatches;
   late TabController _tabController;
   final GetTournamentParameter _params = const GetTournamentParameter();
+  final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   bool _hasMainCountry = false;
   TournamentEntity? _selectedTournament;
 
@@ -59,9 +65,11 @@ class _HomePageState extends State<HomePage>
     _futureMatchesBloc = getIt<GetFutureMatchesBloc>()
       ..add(GetFutureMatchesRequestEvent(1));
     _newsBloc = getIt<GetNewsBloc>();
+    _futureClubMatches = getIt<MatchesBloc>();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
     _checkMainCountry();
+    _loadClubMatches();
     _loadNews();
   }
 
@@ -134,6 +142,16 @@ class _HomePageState extends State<HomePage>
     )));
   }
 
+  void _loadClubMatches() async {
+    _futureClubMatches
+      ..add(LoadMatches(KffLeagueClubMatchParameters(
+        order: 'oldest',
+        dateFrom: now,
+        page: 1,
+        perPage: 3,
+      )));
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -141,6 +159,7 @@ class _HomePageState extends State<HomePage>
     _standingBloc.close();
     _newsBloc.close();
     _futureMatchesBloc.close();
+    _futureClubMatches.close();
     super.dispose();
   }
 
@@ -152,6 +171,7 @@ class _HomePageState extends State<HomePage>
         BlocProvider.value(value: _standingBloc),
         BlocProvider.value(value: _newsBloc),
         BlocProvider.value(value: _futureMatchesBloc),
+        BlocProvider.value(value: _futureClubMatches),
       ],
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -176,6 +196,8 @@ class _HomePageState extends State<HomePage>
                             _tabController, () => setState(() {}))
                         : _buildSelectTournamentMessage(),
                     // Future Match
+                    if (_selectedTournament != null)
+                      buildFutureClubMatch(context),
                     if (_selectedTournament != null) buildFutureMatch(context),
                     // News section
                     if (_selectedTournament != null) buildNewsSection(context),

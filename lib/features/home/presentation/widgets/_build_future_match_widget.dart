@@ -21,7 +21,7 @@ Widget buildFutureMatch(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Предстоящие игры',
+                'Игры сборной',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,

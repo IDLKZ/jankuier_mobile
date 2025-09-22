@@ -96,6 +96,21 @@ import '../../features/kff/presentation/bloc/get_future_matches/get_future_match
 import '../../features/kff/presentation/bloc/get_past_matches/get_past_matches_bloc.dart';
 import '../../features/kff/presentation/bloc/get_coaches/get_coaches_bloc.dart';
 import '../../features/kff/presentation/bloc/get_players/get_players_bloc.dart';
+// KFF League imports
+import '../../features/kff_league/data/repositories/kff_league_repository_impl.dart';
+import '../../features/kff_league/domain/repositories/kff_league_repository.dart';
+import '../../features/kff_league/domain/use_cases/get_seasons_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_season_by_id_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_championships_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_championship_by_id_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_tournaments_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_tournament_by_id_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_matches_usecase.dart';
+import '../../features/kff_league/domain/use_cases/get_match_by_id_usecase.dart';
+import '../../features/kff_league/presentation/bloc/seasons/seasons_bloc.dart';
+import '../../features/kff_league/presentation/bloc/championships/championships_bloc.dart';
+import '../../features/kff_league/presentation/bloc/tournaments/tournaments_bloc.dart';
+import '../../features/kff_league/presentation/bloc/matches/matches_bloc.dart';
 import '../network/sota_dio_client.dart';
 import 'injection.config.dart';
 

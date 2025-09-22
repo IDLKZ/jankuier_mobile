@@ -11,4 +11,6 @@ class KffLeagueApiConstant {
       "championships/$championshipId";
   static String tournaments() => "tournaments";
   static String tournament(int tournamentId) => "tournaments/$tournamentId";
+  static String matches() => "matches";
+  static String match(int matchId) => "matches/$matchId";
 }
