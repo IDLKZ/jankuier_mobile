@@ -11,7 +11,9 @@
       "Read(C:\\Users\\misti\\OneDrive\\Рабочий стол/**)",
       "Bash(dir:*)",
       "Bash(mkdir:*)",
-      "Bash(flutter build:*)"
+      "Bash(flutter build:*)",
+      "Bash(findstr:*)",
+      "Bash(rd:*)"
     ],
     "deny": [],
     "ask": [],

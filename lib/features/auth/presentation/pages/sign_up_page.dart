@@ -310,11 +310,15 @@ class _SignUpViewState extends State<_SignUpView> {
                 if (state is SignUpSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Регистрация успешна! Войдите в аккаунт'),
+                      content: Text('Регистрация успешна! Пожалуйста, подтвердите номер телефона'),
                       backgroundColor: Colors.green,
                     ),
                   );
-                  context.go(AppRouteConstants.SignInPagePath);
+                  // Navigate to EnterPhonePage with phone from UserEntity
+                  context.pushNamed(
+                    AppRouteConstants.EnterPhonePageName,
+                    queryParameters: {'phone': state.user.phone},
+                  );
                 } else if (state is SignUpFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/enter_phone_page.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/verify_code_page.dart';
+import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
 import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:jankuier_mobile/features/kff/presentation/pages/kff_matches_page.dart';
@@ -38,7 +41,7 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRouteConstants.HomePagePath,
+    initialLocation: AppRouteConstants.WelcomePagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(
@@ -59,6 +62,34 @@ class AppRouter {
         path: AppRouteConstants.SignUpPagePath,
         name: AppRouteConstants.SignUpPageName,
         builder: (context, state) => const SignUpPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.EnterPhonePagePath,
+        name: AppRouteConstants.EnterPhonePageName,
+        builder: (context, state) {
+          final phone = state.uri.queryParameters['phone'];
+          return EnterPhonePage(phone: phone);
+        },
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.VerifyCodePagePath,
+        name: AppRouteConstants.VerifyCodePageName,
+        builder: (context, state) {
+          final phone = state.uri.queryParameters['phone'] ?? '';
+          final verificationResult = state.extra as UserCodeVerificationResultEntity;
+          return VerifyCodePage(
+            phone: phone,
+            verificationResult: verificationResult,
+          );
+        },
         redirect: (BuildContext context, GoRouterState state) async {
           return await AppRouteMiddleware()
               .checkGuestMiddleware(context, state);

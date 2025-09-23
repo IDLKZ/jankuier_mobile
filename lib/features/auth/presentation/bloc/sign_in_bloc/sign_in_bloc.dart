@@ -24,7 +24,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     await result.fold(
       (failure) async =>
-          emit(SignInFailure(failure.message ?? 'Sign in failed')),
+          emit(SignInFailure(failure.message ?? 'Sign in failed', failure: failure)),
       (token) async {
         // Save token to secure storage
         await _hiveUtils.setAccessToken(token.accessToken);

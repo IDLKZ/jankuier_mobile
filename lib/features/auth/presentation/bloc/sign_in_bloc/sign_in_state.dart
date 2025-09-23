@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
+import 'package:jankuier_mobile/core/errors/failures.dart';
 
 abstract class SignInState extends Equatable {
   const SignInState();
@@ -27,9 +28,10 @@ class SignInSuccess extends SignInState {
 
 class SignInFailure extends SignInState {
   final String message;
+  final Failure? failure;
 
-  const SignInFailure(this.message);
+  const SignInFailure(this.message, {this.failure});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, failure];
 }

@@ -62,12 +62,24 @@ class _SignInPageState extends State<SignInPage> {
                   // Trigger GetMe after successful sign-in
                   context.read<GetMeBloc>().add(const LoadUserProfile());
                 } else if (state is SignInFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  // Check if it's a 403 error (user needs phone verification)
+                  if (state.failure?.statusCode == 403) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Требуется подтверждение номера телефона'),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                    // Navigate to EnterPhonePage - user will need to enter their phone
+                    context.pushNamed(AppRouteConstants.EnterPhonePageName);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 }
               },
             ),
