@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
+import '../../../../core/utils/hive_utils.dart';
+import '../../../auth/presentation/pages/sign_in_page.dart';
 import '../bloc/shows/ticketon_bloc.dart';
 import '../bloc/shows/ticketon_state.dart';
 import '../pages/ticket_webview_page.dart';
@@ -66,9 +71,9 @@ class NewTicketWidgets extends StatelessWidget {
         );
       }
       if (state is TicketonShowsError) {
-        return Center(child: Text("Пока нет активных билетов"));
+        return const Center(child: Text("Пока нет активных билетов"));
       }
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     });
@@ -104,7 +109,11 @@ class TicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
-
+    Future<String?> _getAccessToken() async {
+      final hiveUtils = getIt<HiveUtils>();
+      final accessToken = await hiveUtils.getAccessToken();
+      return accessToken;
+    }
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -112,7 +121,7 @@ class TicketCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
             blurRadius: 8,
             spreadRadius: 0,
           ),
@@ -542,15 +551,17 @@ class TicketCard extends StatelessWidget {
                                               children: [
                                                 Expanded(
                                                   child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .push(
+                                                    onTap: () async {
+                                                      final token = await _getAccessToken();
+                                                      token == null ? context.go(AppRouteConstants.SignInPagePath) : Navigator.of(context)
+                                                          .pushReplacement(
                                                         MaterialPageRoute(
                                                           builder: (context) =>
                                                               TicketWebViewPage(
-                                                            showId: showId
-                                                                .toString(),
-                                                          ),
+                                                                showId: showId
+                                                                    .toString(),
+                                                                token: token,
+                                                              ),
                                                         ),
                                                       );
                                                     },

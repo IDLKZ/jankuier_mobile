@@ -189,7 +189,7 @@ class AppRouter {
                 return BlocProvider(
                   create: (BuildContext context) {
                     return getIt<TicketonShowsBloc>()
-                      ..add(LoadTicketonShowsEvent(
+                      ..add(const LoadTicketonShowsEvent(
                           parameter: TicketonGetShowsParameter()));
                   },
                   child: const TicketsPage(),

@@ -7,10 +7,11 @@ import '../../../../core/constants/api_constants.dart';
 
 class TicketWebViewPage extends StatefulWidget {
   final String showId;
+  final String token;
 
   const TicketWebViewPage({
     super.key,
-    required this.showId,
+    required this.showId, required this.token,
   });
 
   @override
@@ -27,7 +28,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
   @override
   void initState() {
     super.initState();
-    initialUrl = ApiConstant.WebFrameGetShowURL + widget.showId;
+    initialUrl = '${ApiConstant.WebFrameGetShowURL}${widget.showId}/${widget.token}';
     _initializeWebView();
   }
 
