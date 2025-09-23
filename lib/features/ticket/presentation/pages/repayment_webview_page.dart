@@ -4,13 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/utils/hive_utils.dart';
 
 class RepaymentWebViewPage extends StatefulWidget {
   final String orderId;
 
   const RepaymentWebViewPage({
     super.key,
-    required this.orderId,
+    required this.orderId
   });
 
   @override
@@ -18,17 +20,40 @@ class RepaymentWebViewPage extends StatefulWidget {
 }
 
 class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
+  String? _token;
   InAppWebViewController? webViewController;
   double progress = 0;
   bool isLoading = true;
   String? errorMessage;
   late String initialUrl;
+  Future<void> _loadToken() async {
+    final hiveUtils = getIt<HiveUtils>();
+    final token = await hiveUtils.getAccessToken();
+
+    if (mounted) {
+      setState(() {
+        _token = token;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    initialUrl = ApiConstant.WebFrameRecreateOrderURL + widget.orderId;
-    _initializeWebView();
+    _initializeWithToken();
+  }
+
+  Future<void> _initializeWithToken() async {
+    // Сначала загружаем токен
+    await _loadToken();
+
+    // Затем формируем URL с токеном
+    if (mounted && _token != null) {
+      setState(() {
+        initialUrl = '${ApiConstant.WebFrameRecreateOrderURL}${widget.orderId}/$_token';
+      });
+      _initializeWebView();
+    }
   }
 
   Future<void> _initializeWebView() async {

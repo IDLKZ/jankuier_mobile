@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/constants/order_status_constants.dart';
 import 'package:jankuier_mobile/features/ticket/domain/parameters/paginate_ticketon_order_parameter.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/bloc/paginate_ticket_order/paginate_ticket_order_bloc.dart';
@@ -12,6 +14,8 @@ import 'package:jankuier_mobile/features/ticket/presentation/bloc/ticketon_order
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/hive_utils.dart';
+import '../../../auth/presentation/pages/sign_in_page.dart';
 import '../pages/repayment_webview_page.dart';
 import '../../../../core/di/injection.dart';
 import '../../data/entities/ticket_order/ticket_order_entity.dart';
@@ -26,6 +30,38 @@ class MyTicketsWidget extends StatefulWidget {
 }
 
 class _MyTicketsWidgetState extends State<MyTicketsWidget> {
+  bool isAuthenticated = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Проверяем авторизацию при каждом возврате на экран
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    try {
+      final hiveUtils = getIt<HiveUtils>();
+      final token = await hiveUtils.getAccessToken();
+
+      setState(() {
+        isAuthenticated = token != null && token.isNotEmpty;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isAuthenticated = false;
+        isLoading = false;
+      });
+    }
+  }
   PaginateTicketonOrderParameter myTicketParameter =
       const PaginateTicketonOrderParameter(
         perPage: 20,
@@ -58,6 +94,16 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (!isAuthenticated) {
+      context.go(AppRouteConstants.SignInPagePath);
+    }
+
     return BlocProvider(
       create: (BuildContext context) {
         return getIt<PaginateTicketOrderBloc>()
@@ -65,6 +111,7 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       },
       child: BlocBuilder<PaginateTicketOrderBloc, PaginateTicketOrderState>(
           builder: (context, state) {
+
         if (state is PaginateTicketOrderLoadedState) {
           if (state.orders.isEmpty) {
             return Center(
@@ -122,7 +169,7 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
         }
 
         if (state is PaginateTicketOrderLoadingState) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: AppColors.primary,
             ),
@@ -175,7 +222,7 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
           );
         }
 
-        return SizedBox();
+        return const SizedBox();
       }),
     );
   }
@@ -389,7 +436,7 @@ class TicketOrderCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => RepaymentWebViewPage(
-                  orderId: order.id.toString(),
+                  orderId: order.id.toString()
                 ),
               ),
             );

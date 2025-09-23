@@ -94,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
           ],
           child: Stack(children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
                     Color(0xFF004AD0), // #004AD0
@@ -118,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
                 child: Container(
                   width: 40, // сделал чуть больше для баланса
                   height: 40,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
@@ -126,7 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                     child: Icon(
                       Icons.arrow_back_ios_new, // более ровная версия
                       size: 20.sp,
-                      color: Color(0xFF0148C9),
+                      color: const Color(0xFF0148C9),
                     ),
                   ),
                 ),
@@ -162,21 +162,21 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                               // Поле Email
                               TextFormField(
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 controller: _usernameC,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.transparent,
                                   hintText: 'Логин',
-                                  hintStyle: TextStyle(color: AppColors.white),
+                                  hintStyle: const TextStyle(color: AppColors.white),
                                   // цвет подсказки
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: AppColors.white),
+                                        const BorderSide(color: AppColors.white),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: AppColors.white, width: 2),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -204,7 +204,7 @@ class _SignInPageState extends State<SignInPage> {
                                   if (v.length < 3) return 'Минимум 3 символов';
                                   return null;
                                 },
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.transparent,
@@ -242,7 +242,7 @@ class _SignInPageState extends State<SignInPage> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.yellow[700],
                                     foregroundColor: Color(0xFF0148C9),
-                                    padding: EdgeInsets.symmetric(vertical: 14),
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),

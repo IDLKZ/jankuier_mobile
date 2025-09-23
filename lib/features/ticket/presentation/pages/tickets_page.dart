@@ -5,6 +5,8 @@ import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/widgets/my_tickets.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
+import '../../../../core/di/injection.dart';
+import '../../../../core/utils/hive_utils.dart';
 import '../widgets/new_tickets.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -37,7 +39,7 @@ class _TicketsPageState extends State<TicketsPage>
       appBar: PagesCommonAppBar(
           title: "Билеты", actionIcon: Iconsax.ticket, onActionTap: () {}),
       body: Padding(
-        padding: EdgeInsets.symmetric(),
+        padding: const EdgeInsets.symmetric(),
         child: Column(
           children: [
             Padding(
@@ -59,7 +61,7 @@ class _TicketsPageState extends State<TicketsPage>
                     ),
                     labelColor: AppColors.white,
                     unselectedLabelColor: AppColors.grey500,
-                    tabs: [
+                    tabs: const [
                       Tab(
                         text: "Активные билеты",
                       ),
@@ -70,7 +72,7 @@ class _TicketsPageState extends State<TicketsPage>
               ),
             ),
             Expanded(
-              child: TabBarView(controller: _tabController, children: [
+              child: TabBarView(controller: _tabController, children: const [
                 NewTicketWidgets(),
                 MyTicketsWidget(),
               ]),
