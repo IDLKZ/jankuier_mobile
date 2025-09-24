@@ -31,6 +31,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker _imagePicker = ImagePicker();
+  late GetMeBloc _getMeBloc;
+  late UpdateProfilePhotoBloc _updateProfilePhotoBloc;
+  late DeleteProfilePhotoBloc _deleteProfilePhotoBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _getMeBloc = getIt<GetMeBloc>();
+    _updateProfilePhotoBloc = getIt<UpdateProfilePhotoBloc>();
+    _deleteProfilePhotoBloc = getIt<DeleteProfilePhotoBloc>();
+    _getMeBloc.add(LoadUserProfile());
+  }
 
   Future<void> _showPhotoOptions(BuildContext context, bool hasImage) async {
     showModalBottomSheet(
@@ -113,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (await imageFile.exists()) {
           final fileSize = await imageFile.length();
           if (fileSize > 0) {
-            context.read<UpdateProfilePhotoBloc>().add(
+            _updateProfilePhotoBloc.add(
                   UpdateProfilePhotoSubmitted(imageFile),
                 );
           } else {
@@ -162,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _deletePhoto() {
-    context.read<DeleteProfilePhotoBloc>().add(
+    _deleteProfilePhotoBloc.add(
           const DeleteProfilePhotoSubmitted(),
         );
   }
@@ -193,99 +205,90 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => getIt<GetMeBloc>()..add(LoadUserProfile()),
-        ),
-        BlocProvider(
-          create: (context) => getIt<UpdateProfilePhotoBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<DeleteProfilePhotoBloc>(),
-        ),
-      ],
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: PagesCommonAppBar(
-          title: "Профиль",
-          actionIcon: Icons.notifications_none,
-          onActionTap: () {},
-        ),
-        body: MultiBlocListener(
-          listeners: [
-            BlocListener<GetMeBloc, GetMeState>(
-              listener: (context, state) {
-                if (state is GetMeError) {
-                  context.go(AppRouteConstants.SignInPagePath);
-                }
-              },
-            ),
-            BlocListener<UpdateProfilePhotoBloc, UpdateProfilePhotoState>(
-              listener: (context, state) {
-                if (state is UpdateProfilePhotoSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Фото профиля обновлено'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  context.read<GetMeBloc>().add(LoadUserProfile());
-                } else if (state is UpdateProfilePhotoFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ошибка: ${state.message}'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-            ),
-            BlocListener<DeleteProfilePhotoBloc, DeleteProfilePhotoState>(
-              listener: (context, state) {
-                if (state is DeleteProfilePhotoSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Фото профиля удалено'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  context.read<GetMeBloc>().add(LoadUserProfile());
-                } else if (state is DeleteProfilePhotoFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ошибка: ${state.message}'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-          child: BlocBuilder<GetMeBloc, GetMeState>(
-            builder: (context, state) {
-              if (state is GetMeLoaded) {
-                return EditProfilePage(
-                  userName: "${state.user.firstName} ${state.user.lastName}",
-                  onAvatarTap: () {
-                    _showPhotoOptions(context, state.user.imageId != null);
-                  },
-                  onPersonalDataTap: () {
-                    context.push(AppRouteConstants.EditAccountPagePath);
-                  },
-                  onSecurityTap: () {
-                    context.push(AppRouteConstants.EditPasswordPagePath);
-                  },
-                  onLogout: _onLogout,
-                );
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: PagesCommonAppBar(
+        title: "Профиль",
+        actionIcon: Icons.notifications_none,
+        onActionTap: () {},
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<GetMeBloc, GetMeState>(
+            bloc: _getMeBloc,
+            listener: (context, state) {
+              if (state is GetMeError) {
+                context.go(AppRouteConstants.SignInPagePath);
               }
-              return const SizedBox.expand(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
             },
           ),
+          BlocListener<UpdateProfilePhotoBloc, UpdateProfilePhotoState>(
+            bloc: _updateProfilePhotoBloc,
+            listener: (context, state) {
+              if (state is UpdateProfilePhotoSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Фото профиля обновлено'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+                _getMeBloc.add(LoadUserProfile());
+              } else if (state is UpdateProfilePhotoFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Ошибка: ${state.message}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<DeleteProfilePhotoBloc, DeleteProfilePhotoState>(
+            bloc: _deleteProfilePhotoBloc,
+            listener: (context, state) {
+              if (state is DeleteProfilePhotoSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Фото профиля удалено'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+                _getMeBloc.add(LoadUserProfile());
+              } else if (state is DeleteProfilePhotoFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Ошибка: ${state.message}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+        child: BlocBuilder<GetMeBloc, GetMeState>(
+          bloc: _getMeBloc,
+          builder: (context, state) {
+            if (state is GetMeLoaded) {
+              return EditProfilePage(
+                userName: "${state.user.firstName} ${state.user.lastName}",
+                onAvatarTap: () {
+                  _showPhotoOptions(context, state.user.imageId != null);
+                },
+                onPersonalDataTap: () {
+                  context.push(AppRouteConstants.EditAccountPagePath);
+                },
+                onSecurityTap: () {
+                  context.push(AppRouteConstants.EditPasswordPagePath);
+                },
+                onLogout: _onLogout,
+              );
+            }
+            return const SizedBox.expand(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
         ),
       ),
     );
