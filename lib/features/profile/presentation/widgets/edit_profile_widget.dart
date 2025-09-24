@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import 'package:jankuier_mobile/core/common/entities/file_entity.dart';
 
 class EditProfilePage extends StatelessWidget {
   final String userName;
+  final FileEntity? userImage;
+  final bool isPhotoLoading;
   final VoidCallback? onAvatarTap;
   final VoidCallback? onPersonalDataTap;
   final VoidCallback? onSecurityTap;
@@ -12,6 +15,8 @@ class EditProfilePage extends StatelessWidget {
   const EditProfilePage({
     Key? key,
     required this.userName,
+    this.userImage,
+    this.isPhotoLoading = false,
     this.onAvatarTap,
     this.onPersonalDataTap,
     this.onSecurityTap,
@@ -42,19 +47,87 @@ class EditProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: onAvatarTap,
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF6F7F9),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            size: 36,
-                            color: Color(0xFFBDBDBD),
-                          ),
+                        onTap: isPhotoLoading ? null : onAvatarTap,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF6F7F9),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFE0E0E0),
+                                  width: 2,
+                                ),
+                              ),
+                              child: userImage != null
+                                  ? ClipOval(
+                                      child: Image.network(
+                                        userImage!.filePath,
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return const Icon(
+                                            Icons.person,
+                                            size: 36,
+                                            color: Color(0xFFBDBDBD),
+                                          );
+                                        },
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 36,
+                                      color: Color(0xFFBDBDBD),
+                                    ),
+                            ),
+                            if (isPhotoLoading)
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color(0xFFE0E0E0),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  size: 14,
+                                  color: Color(0xFF666666),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 12),

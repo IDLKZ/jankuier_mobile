@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:jankuier_mobile/core/errors/failures.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
@@ -18,6 +20,8 @@ abstract class AuthRepository {
       UpdatePasswordParameter parameter);
   Future<Either<Failure, UserEntity>> updateProfile(
       UpdateProfileParameter parameter);
+  Future<Either<Failure, UserEntity>> updateProfilePhoto(File file);
+  Future<Either<Failure, UserEntity>> deleteProfilePhoto();
   Future<Either<Failure, UserCodeVerificationResultEntity>> sendVerifyCode(
       String phone);
   Future<Either<Failure, UserCodeVerificationResultEntity>> verifyCode(

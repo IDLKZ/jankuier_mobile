@@ -80,7 +80,7 @@ class NewTicketWidgets extends StatelessWidget {
   }
 }
 
-class TicketCard extends StatelessWidget {
+class TicketCard extends StatefulWidget {
   final String? image;
   final String? genre;
   final String? cityName;
@@ -106,14 +106,45 @@ class TicketCard extends StatelessWidget {
   });
 
   @override
+  State<TicketCard> createState() => _TicketCardState();
+}
+
+class _TicketCardState extends State<TicketCard> {
+  bool _isAuthenticated = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    try {
+      final hiveUtils = getIt<HiveUtils>();
+      final token = await hiveUtils.getAccessToken();
+      setState(() {
+        _isAuthenticated = token != null && token.isNotEmpty;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isAuthenticated = false;
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<String?> _getAccessToken() async {
+    final hiveUtils = getIt<HiveUtils>();
+    final accessToken = await hiveUtils.getAccessToken();
+    return accessToken;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
-    Future<String?> _getAccessToken() async {
-      final hiveUtils = getIt<HiveUtils>();
-      final accessToken = await hiveUtils.getAccessToken();
-      return accessToken;
-    }
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -134,9 +165,9 @@ class TicketCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                child: image != null
+                child: widget.image != null
                     ? Image.network(
-                        image!,
+                        widget.image!,
                         width: double.infinity,
                         height: 160.h,
                         fit: BoxFit.cover,
@@ -162,7 +193,7 @@ class TicketCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: AutoSizeText(
-                          genre ?? "Футбол",
+                          widget.genre ?? "Футбол",
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -185,7 +216,7 @@ class TicketCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: AutoSizeText(
-                          cityName ?? "-",
+                          widget.cityName ?? "-",
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -207,7 +238,7 @@ class TicketCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name ?? "",
+                  widget.name ?? "",
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
@@ -219,7 +250,7 @@ class TicketCard extends StatelessWidget {
                 ),
                 SizedBox(height: 6.h),
                 Text(
-                  description ?? "",
+                  widget.description ?? "",
                   style: TextStyle(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w400,
@@ -240,7 +271,7 @@ class TicketCard extends StatelessWidget {
                     SizedBox(width: 3.w),
                     Expanded(
                       child: Text(
-                        placeName ?? "-",
+                        widget.placeName ?? "-",
                         style: TextStyle(
                           fontSize: 9.sp,
                           fontWeight: FontWeight.w400,
@@ -263,7 +294,7 @@ class TicketCard extends StatelessWidget {
                     SizedBox(width: 3.w),
                     Flexible(
                       child: Text(
-                        dateFormatter.format(startAt!.toLocal()),
+                        dateFormatter.format(widget.startAt!.toLocal()),
                         style: TextStyle(
                           fontSize: 9.sp,
                           fontWeight: FontWeight.w600,
@@ -281,6 +312,10 @@ class TicketCard extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
+                          if (!_isAuthenticated) {
+                            context.go(AppRouteConstants.SignInPagePath);
+                            return;
+                          }
                           showModalBottomSheet<void>(
                             useRootNavigator: true,
                             context: context,
@@ -318,9 +353,9 @@ class TicketCard extends StatelessWidget {
                                             ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(16.r),
-                                              child: image != null
+                                              child: widget.image != null
                                                   ? Image.network(
-                                                      image!,
+                                                      widget.image!,
                                                       width: double.infinity,
                                                       height: 200.h,
                                                       fit: BoxFit.cover,
@@ -350,7 +385,7 @@ class TicketCard extends StatelessWidget {
                                                               16.r),
                                                     ),
                                                     child: Text(
-                                                      genre?.toUpperCase() ??
+                                                      widget.genre?.toUpperCase() ??
                                                           "СПОРТ",
                                                       style: TextStyle(
                                                         fontSize: 12.sp,
@@ -377,7 +412,7 @@ class TicketCard extends StatelessWidget {
                                                               16.r),
                                                     ),
                                                     child: Text(
-                                                      cityName ?? "",
+                                                      widget.cityName ?? "",
                                                       style: TextStyle(
                                                         fontSize: 12.sp,
                                                         fontWeight:
@@ -392,7 +427,7 @@ class TicketCard extends StatelessWidget {
                                             ),
                                             SizedBox(height: 16.h),
                                             Text(
-                                              name ?? "",
+                                              widget.name ?? "",
                                               style: TextStyle(
                                                 fontSize: 24.sp,
                                                 fontWeight: FontWeight.w700,
@@ -402,7 +437,7 @@ class TicketCard extends StatelessWidget {
                                             ),
                                             SizedBox(height: 8.h),
                                             Html(
-                                              data: remark ?? '',
+                                              data: widget.remark ?? '',
                                               style: {
                                                 "p": Style(
                                                     fontSize: FontSize(12.sp),
@@ -467,7 +502,7 @@ class TicketCard extends StatelessWidget {
                                                             SizedBox(
                                                                 height: 2.h),
                                                             Text(
-                                                              address ?? "",
+                                                              widget.address ?? "",
                                                               style: TextStyle(
                                                                 fontSize: 14.sp,
                                                                 fontWeight:
@@ -527,7 +562,7 @@ class TicketCard extends StatelessWidget {
                                                                 height: 2.h),
                                                             Text(
                                                               dateFormatter
-                                                                  .format(startAt!
+                                                                  .format(widget.startAt!
                                                                       .toLocal()),
                                                               style: TextStyle(
                                                                 fontSize: 14.sp,
@@ -558,7 +593,7 @@ class TicketCard extends StatelessWidget {
                                                         MaterialPageRoute(
                                                           builder: (context) =>
                                                               TicketWebViewPage(
-                                                                showId: showId
+                                                                showId: widget.showId
                                                                     .toString(),
                                                                 token: token,
                                                               ),
@@ -589,7 +624,7 @@ class TicketCard extends StatelessWidget {
                                                           ),
                                                           SizedBox(width: 4.w),
                                                           Text(
-                                                            'Купить билеты',
+                                                            _isAuthenticated ? 'Купить билеты' : 'Вход',
                                                             style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
@@ -632,7 +667,7 @@ class TicketCard extends StatelessWidget {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                'Детали',
+                                _isAuthenticated ? 'Детали' : 'Вход',
                                 style: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w600,

@@ -101,7 +101,51 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
     }
 
     if (!isAuthenticated) {
-      context.go(AppRouteConstants.SignInPagePath);
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Iconsax.user_add_copy,
+                size: 64.sp,
+                color: AppColors.grey300,
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                'Пожалуйста, пройдите авторизацию',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              ElevatedButton(
+                onPressed: () {
+                  context.go(AppRouteConstants.SignInPagePath);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 12.h,
+                  ),
+                ),
+                child: Text(
+                  'Войти',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return BlocProvider(
