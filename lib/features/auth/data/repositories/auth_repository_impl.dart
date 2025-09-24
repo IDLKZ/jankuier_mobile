@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jankuier_mobile/core/errors/failures.dart';
@@ -66,6 +68,26 @@ class AuthRepositoryImpl implements AuthRepository {
       UpdateProfileParameter parameter) async {
     try {
       final result = await _dataSource.updateProfile(parameter);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateProfilePhoto(File file) async {
+    try {
+      final result = await _dataSource.updateProfilePhoto(file);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> deleteProfilePhoto() async {
+    try {
+      final result = await _dataSource.deleteProfilePhoto();
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

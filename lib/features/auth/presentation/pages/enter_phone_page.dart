@@ -51,13 +51,6 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return null;
   }
 
-  void _submitForm(context) {
-    if (_formKey.currentState!.validate()) {
-      String phone = _phoneC.text.trim();
-      context.read<SendVerifyCodeBloc>().add(SendVerifyCodeSubmitted(phone));
-    }
-  }
-
   // Widget builders
   Widget _buildTextFormField({
     required TextEditingController controller,
@@ -102,7 +95,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocProvider(
+      body: BlocProvider<SendVerifyCodeBloc>(
         create: (context) => getIt<SendVerifyCodeBloc>(),
         child: BlocConsumer<SendVerifyCodeBloc, SendVerifyCodeState>(
           listener: (BuildContext context, SendVerifyCodeState state) {
@@ -210,16 +203,21 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                onPressed: () => _submitForm(context),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    String phone = _phoneC.text.trim();
+                                    context
+                                        .read<SendVerifyCodeBloc>()
+                                        .add(SendVerifyCodeSubmitted(phone));
+                                  }
+                                },
                                 child: Text(
                                   'Отправить SMS код',
                                   style: TextStyle(fontSize: 14.sp),
                                 ),
                               ),
                             ),
-
                             SizedBox(height: 16.h),
-
                             // Регистрация
                             TextButton(
                               onPressed: () {

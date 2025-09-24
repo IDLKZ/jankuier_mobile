@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Конфигурация путей для FileProvider -->
+<!-- Определяет, к каким директориям приложение может предоставлять доступ -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Внешнее хранилище -->
+    <external-path name="external_files" path="."/>
+    <!-- Кэш внешнего хранилища -->
+    <external-cache-path name="external_cache" path="."/>
+    <!-- Внутренний кэш приложения -->
+    <cache-path name="cache" path="."/>
+    <!-- Внутренние файлы приложения -->
+    <files-path name="files" path="."/>
+</paths>

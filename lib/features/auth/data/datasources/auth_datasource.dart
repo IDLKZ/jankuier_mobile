@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
@@ -19,6 +21,8 @@ abstract class AuthDSInterface {
   Future<UserEntity> me();
   Future<bool> updatePassword(UpdatePasswordParameter parameter);
   Future<UserEntity> updateProfile(UpdateProfileParameter parameter);
+  Future<UserEntity> updateProfilePhoto(File file);
+  Future<UserEntity> deleteProfilePhoto();
   Future<UserCodeVerificationResultEntity> sendVerifyCode(String phone);
   Future<UserCodeVerificationResultEntity> verifyCode(
       UserCodeVerificationParameter parameter);
@@ -118,6 +122,44 @@ class AuthDSImpl implements AuthDSInterface {
       final response = await httpUtils.post(ApiConstant.VerifyCodeUrl,
           data: parameter.toJson());
       final result = UserCodeVerificationResultEntity.fromJson(response);
+      return result;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<UserEntity> updateProfilePhoto(File file) async {
+    try {
+      String fileName = file.path.split('/').last;
+
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName, // можно указать своё имя
+        ),
+      });
+      final response = await httpUtils
+          .put(ApiConstant.UpdateProfilePhoto, data: formData, headers: {
+        "Content-Type": "multipart/form-data",
+      });
+      final result = UserEntity.fromJson(response);
+      return result;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<UserEntity> deleteProfilePhoto() async {
+    try {
+      final response =
+          await httpUtils.delete(ApiConstant.DeleteProfilePhotoUrl);
+      final result = UserEntity.fromJson(response);
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

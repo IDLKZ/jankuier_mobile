@@ -21,12 +21,12 @@ import '../../../../core/di/injection.dart';
 
 class VerifyCodePage extends StatefulWidget {
   final String phone;
-  final UserCodeVerificationResultEntity verificationResult;
+  final UserCodeVerificationResultEntity? verificationResult;
 
   const VerifyCodePage({
     super.key,
     required this.phone,
-    required this.verificationResult,
+    this.verificationResult,
   });
 
   @override
@@ -37,6 +37,21 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
   final _codeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isCodeComplete = false;
+  bool _isTimerExpired = false;
+  UserCodeVerificationResultEntity? _currentVerificationResult;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentVerificationResult = widget.verificationResult;
+
+    // If no verification result provided, redirect to EnterPhonePage
+    if (_currentVerificationResult == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(AppRouteConstants.EnterPhonePagePath);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -46,24 +61,8 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
 
   void _onCodeChanged(String code) {
     setState(() {
-      _isCodeComplete = code.length == 6;
+      _isCodeComplete = code.length == 4;
     });
-
-    if (_isCodeComplete) {
-      _submitCode(code);
-    }
-  }
-
-  void _submitCode(String code) {
-    final parameter = UserCodeVerificationParameter(
-      phone: widget.phone,
-      code: code,
-    );
-    context.read<VerifyCodeBloc>().add(VerifyCodeSubmitted(parameter));
-  }
-
-  void _resendCode() {
-    context.read<SendVerifyCodeBloc>().add(SendVerifyCodeSubmitted(widget.phone));
   }
 
   @override
@@ -109,6 +108,11 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is SendVerifyCodeSuccess) {
                   if (state.result.result == true) {
+                    // Update verification result with fresh data
+                    setState(() {
+                      _currentVerificationResult = state.result;
+                      _isTimerExpired = false;
+                    });
                     Fluttertoast.showToast(msg: "Код повторно отправлен");
                   } else {
                     Fluttertoast.showToast(
@@ -124,7 +128,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                 if (state is VerifyCodeSuccess) {
                   if (state.result.result == true) {
                     Fluttertoast.showToast(msg: "Код подтвержден успешно!");
-                    context.go(AppRouteConstants.HomePagePath);
+                    context.go(AppRouteConstants.SignInPagePath);
                   } else {
                     Fluttertoast.showToast(
                         msg: state.result.message ?? "Неверный код");
@@ -165,7 +169,8 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                         top: 40.h,
                         left: 25.w,
                         child: GestureDetector(
-                          onTap: () => context.go(AppRouteConstants.EnterPhonePagePath),
+                          onTap: () =>
+                              context.go(AppRouteConstants.EnterPhonePagePath),
                           child: Container(
                             width: 40,
                             height: 40,
@@ -205,6 +210,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                         fontSize: 24.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
                                     SizedBox(height: 8.h),
                                     Text(
@@ -213,18 +219,20 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                         color: Colors.white.withOpacity(0.8),
                                         fontSize: 16.sp,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
                                     SizedBox(height: 24.h),
 
                                     // PIN Input
                                     Pinput(
                                       controller: _codeController,
-                                      length: 6,
+                                      length: 4,
                                       defaultPinTheme: defaultPinTheme,
                                       focusedPinTheme: focusedPinTheme,
                                       submittedPinTheme: submittedPinTheme,
                                       onChanged: _onCodeChanged,
-                                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                                      pinputAutovalidateMode:
+                                          PinputAutovalidateMode.onSubmit,
                                       showCursor: true,
                                       cursor: Container(
                                         width: 2,
@@ -236,15 +244,22 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                     SizedBox(height: 24.h),
 
                                     // Countdown Timer
-                                    if (widget.verificationResult.expiresInSeconds != null)
+                                    if (_currentVerificationResult != null &&
+                                        _currentVerificationResult!
+                                                .expiresInSeconds !=
+                                            null &&
+                                        !_isTimerExpired)
                                       SlideCountdown(
+                                        key: ValueKey(_currentVerificationResult!.hashCode),
                                         duration: Duration(
-                                          seconds: widget.verificationResult.expiresInSeconds!,
+                                          seconds: _currentVerificationResult!
+                                              .expiresInSeconds!,
                                         ),
                                         slideDirection: SlideDirection.down,
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         style: TextStyle(
                                           color: Colors.white,
@@ -253,34 +268,89 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                         ),
                                         separator: ":",
                                         onDone: () {
+                                          setState(() {
+                                            _isTimerExpired = true;
+                                          });
                                           Fluttertoast.showToast(
-                                            msg: "Время истекло. Запросите новый код",
+                                            msg:
+                                                "Время истекло. Запросите новый код",
                                           );
                                         },
                                       ),
 
-                                    SizedBox(height: 16.h),
+                                    SizedBox(height: 24.h),
 
-                                    // Resend Code Button
-                                    TextButton(
-                                      onPressed: isLoading ? null : _resendCode,
-                                      child: Text(
-                                        'Отправить код повторно',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.sp,
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Colors.white,
+                                    // Verify Button
+                                    if (_isCodeComplete)
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: 50.h,
+                                        child: ElevatedButton(
+                                          onPressed: isLoading
+                                              ? null
+                                              : () {
+                                                  final parameter =
+                                                      UserCodeVerificationParameter(
+                                                    phone: widget.phone,
+                                                    code: _codeController.text
+                                                        .trim(),
+                                                  );
+                                                  context
+                                                      .read<VerifyCodeBloc>()
+                                                      .add(VerifyCodeSubmitted(
+                                                          parameter));
+                                                },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Верифицировать',
+                                            style: TextStyle(
+                                              color: const Color(0xFF0148C9),
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+
+                                    SizedBox(height: 16.h),
+
+                                    // Resend Code Button - only when timer expired
+                                    if (_isTimerExpired)
+                                      TextButton(
+                                        onPressed: isLoading
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<SendVerifyCodeBloc>()
+                                                    .add(
+                                                        SendVerifyCodeSubmitted(
+                                                            widget.phone));
+                                              },
+                                        child: Text(
+                                          'Отправить код повторно',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14.sp,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Colors.white,
+                                          ),
+                                        ),
+                                      ),
 
                                     SizedBox(height: 16.h),
 
                                     // Back to Login
                                     TextButton(
                                       onPressed: () {
-                                        context.go(AppRouteConstants.SignInPagePath);
+                                        context.go(
+                                            AppRouteConstants.SignInPagePath);
                                       },
                                       child: Text(
                                         'Назад к входу',

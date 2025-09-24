@@ -80,6 +80,8 @@ class ApiConstant {
 
   //User Update Profile, Password, Avatar
   static const String UpdateProfileUrl = "${BaseURL}auth/update-profile";
+  static const String DeleteProfilePhotoUrl =
+      "${BaseURL}auth/delete-profile-photo";
   static const String UpdatePasswordUrl = "${BaseURL}auth/update-password";
   static const String UpdateProfilePhoto =
       "${BaseURL}auth/update-profile-photo";

@@ -62,13 +62,14 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       });
     }
   }
+
   PaginateTicketonOrderParameter myTicketParameter =
       const PaginateTicketonOrderParameter(
-        perPage: 20,
-        page: 1,
-        orderBy: "id",
-        orderDirection: "desc",
-      );
+    perPage: 20,
+    page: 1,
+    orderBy: "id",
+    orderDirection: "desc",
+  );
 
   void _showOrderDetailsBottomSheet(
       BuildContext context, TicketonOrderEntity order) {
@@ -96,12 +97,58 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Scaffold(
+        backgroundColor: AppColors.background,
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (!isAuthenticated) {
-      context.go(AppRouteConstants.SignInPagePath);
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Iconsax.user_add_copy,
+                size: 64.sp,
+                color: AppColors.grey300,
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                'Пожалуйста, пройдите авторизацию',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              ElevatedButton(
+                onPressed: () {
+                  context.go(AppRouteConstants.SignInPagePath);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 12.h,
+                  ),
+                ),
+                child: Text(
+                  'Войти',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return BlocProvider(
@@ -111,7 +158,6 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       },
       child: BlocBuilder<PaginateTicketOrderBloc, PaginateTicketOrderState>(
           builder: (context, state) {
-
         if (state is PaginateTicketOrderLoadedState) {
           if (state.orders.isEmpty) {
             return Center(
@@ -426,8 +472,8 @@ class TicketOrderCard extends StatelessWidget {
     return 'НЕАКТИВЕН';
   }
 
-  Widget _getCompactAction(BuildContext context,
-      TicketonOrderEntity order, VoidCallback onShowDetails) {
+  Widget _getCompactAction(BuildContext context, TicketonOrderEntity order,
+      VoidCallback onShowDetails) {
     switch (order.statusId) {
       case (OrderStatusConstants.created || OrderStatusConstants.paidAwaiting):
         return GestureDetector(
@@ -435,9 +481,8 @@ class TicketOrderCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RepaymentWebViewPage(
-                  orderId: order.id.toString()
-                ),
+                builder: (context) =>
+                    RepaymentWebViewPage(orderId: order.id.toString()),
               ),
             );
           },

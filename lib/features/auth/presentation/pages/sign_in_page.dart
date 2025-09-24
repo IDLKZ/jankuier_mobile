@@ -66,7 +66,8 @@ class _SignInPageState extends State<SignInPage> {
                   if (state.failure?.statusCode == 403) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Требуется подтверждение номера телефона'),
+                        content:
+                            Text('Требуется подтверждение номера телефона'),
                         backgroundColor: Colors.orange,
                       ),
                     );
@@ -168,11 +169,12 @@ class _SignInPageState extends State<SignInPage> {
                                   filled: true,
                                   fillColor: Colors.transparent,
                                   hintText: 'Логин',
-                                  hintStyle: const TextStyle(color: AppColors.white),
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
                                   // цвет подсказки
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: AppColors.white),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.white),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -242,7 +244,8 @@ class _SignInPageState extends State<SignInPage> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.yellow[700],
                                     foregroundColor: Color(0xFF0148C9),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -264,6 +267,18 @@ class _SignInPageState extends State<SignInPage> {
                                 },
                                 child: Text(
                                   'Регистрация',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14.sp),
+                                ),
+                              ),
+                              SizedBox(height: 16.h),
+                              TextButton(
+                                onPressed: () {
+                                  context
+                                      .go(AppRouteConstants.EnterPhonePagePath);
+                                },
+                                child: Text(
+                                  'Пройти верификацию',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 14.sp),
                                 ),

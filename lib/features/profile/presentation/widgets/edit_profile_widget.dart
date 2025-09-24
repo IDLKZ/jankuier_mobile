@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import 'package:jankuier_mobile/core/common/entities/file_entity.dart';
 
 class EditProfilePage extends StatelessWidget {
   final String userName;
+  final FileEntity? userImage;
   final VoidCallback? onAvatarTap;
   final VoidCallback? onPersonalDataTap;
   final VoidCallback? onSecurityTap;
@@ -12,6 +15,7 @@ class EditProfilePage extends StatelessWidget {
   const EditProfilePage({
     Key? key,
     required this.userName,
+    this.userImage,
     this.onAvatarTap,
     this.onPersonalDataTap,
     this.onSecurityTap,
@@ -46,25 +50,33 @@ class EditProfilePage extends StatelessWidget {
                         child: Container(
                           width: 70,
                           height: 70,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFF6F7F9),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF6F7F9),
                             shape: BoxShape.circle,
+                            image: userImage != null
+                                ? DecorationImage(
+                                    image: NetworkImage(ApiConstant.GetImageUrl(
+                                        userImage!.filePath)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            size: 36,
-                            color: Color(0xFFBDBDBD),
-                          ),
+                          child: userImage == null
+                              ? const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 36,
+                                  color: Color(0xFFBDBDBD),
+                                )
+                              : null,
                         ),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         userName,
                         style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black
-                        ),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -89,7 +101,8 @@ class EditProfilePage extends StatelessWidget {
                   onTap: onLogout,
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
