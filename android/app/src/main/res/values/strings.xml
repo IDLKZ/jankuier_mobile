@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jankuier</string>
+
+    <!-- Permission rationale messages -->
+    <string name="camera_permission_rationale">Это приложение использует камеру для создания фото профиля и других функций приложения.</string>
+    <string name="storage_permission_rationale">Это приложение использует хранилище для сохранения и загрузки изображений профиля.</string>
+    <string name="photo_permission_rationale">Это приложение использует галерею фотографий для выбора изображений профиля.</string>
+</resources>

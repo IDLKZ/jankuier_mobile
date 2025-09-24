@@ -78,7 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
               if (hasImage)
                 ListTile(
                   leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text('Удалить фото', style: TextStyle(color: Colors.red)),
+                  title: const Text('Удалить фото',
+                      style: TextStyle(color: Colors.red)),
                   onTap: () {
                     Navigator.pop(context);
                     _deletePhoto();
@@ -113,8 +114,8 @@ class _ProfilePageState extends State<ProfilePage> {
           final fileSize = await imageFile.length();
           if (fileSize > 0) {
             context.read<UpdateProfilePhotoBloc>().add(
-              UpdateProfilePhotoSubmitted(imageFile),
-            );
+                  UpdateProfilePhotoSubmitted(imageFile),
+                );
           } else {
             throw Exception('Выбранный файл пуст');
           }
@@ -126,11 +127,14 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         String errorMessage = 'Ошибка доступа к камере/галерее';
         if (e.code == 'photo_access_denied') {
-          errorMessage = 'Доступ к фото запрещен. Проверьте разрешения в настройках';
+          errorMessage =
+              'Доступ к фото запрещен. Проверьте разрешения в настройках';
         } else if (e.code == 'camera_access_denied') {
-          errorMessage = 'Доступ к камере запрещен. Проверьте разрешения в настройках';
+          errorMessage =
+              'Доступ к камере запрещен. Проверьте разрешения в настройках';
         } else if (e.message?.contains('channel-error') == true) {
-          errorMessage = 'Ошибка подключения к камере. Попробуйте перезапустить приложение';
+          errorMessage =
+              'Ошибка подключения к камере. Попробуйте перезапустить приложение';
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -140,9 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
             action: SnackBarAction(
               label: 'Настройки',
               textColor: Colors.white,
-              onPressed: () {
-                // You can add app settings opening here if needed
-              },
+              onPressed: () {},
             ),
           ),
         );
@@ -161,8 +163,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _deletePhoto() {
     context.read<DeleteProfilePhotoBloc>().add(
-      const DeleteProfilePhotoSubmitted(),
-    );
+          const DeleteProfilePhotoSubmitted(),
+        );
   }
 
   Future<void> _onLogout() async {
@@ -193,9 +195,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<GetMeBloc>()..add(LoadUserProfile())),
-        BlocProvider(create: (context) => getIt<UpdateProfilePhotoBloc>()),
-        BlocProvider(create: (context) => getIt<DeleteProfilePhotoBloc>()),
+        BlocProvider(
+          create: (context) => getIt<GetMeBloc>()..add(LoadUserProfile()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<UpdateProfilePhotoBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<DeleteProfilePhotoBloc>(),
+        ),
       ],
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -206,21 +214,27 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         body: MultiBlocListener(
           listeners: [
+            BlocListener<GetMeBloc, GetMeState>(
+              listener: (context, state) {
+                if (state is GetMeError) {
+                  context.go(AppRouteConstants.SignInPagePath);
+                }
+              },
+            ),
             BlocListener<UpdateProfilePhotoBloc, UpdateProfilePhotoState>(
               listener: (context, state) {
                 if (state is UpdateProfilePhotoSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.successMessage ?? 'Фото профиля обновлено'),
+                    const SnackBar(
+                      content: Text('Фото профиля обновлено'),
                       backgroundColor: Colors.green,
                     ),
                   );
-                  // Refresh user data
                   context.read<GetMeBloc>().add(LoadUserProfile());
                 } else if (state is UpdateProfilePhotoFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(state.message),
+                      content: Text('Ошибка: ${state.message}'),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -231,65 +245,44 @@ class _ProfilePageState extends State<ProfilePage> {
               listener: (context, state) {
                 if (state is DeleteProfilePhotoSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.successMessage ?? 'Фото профиля удалено'),
+                    const SnackBar(
+                      content: Text('Фото профиля удалено'),
                       backgroundColor: Colors.green,
                     ),
                   );
-                  // Refresh user data
                   context.read<GetMeBloc>().add(LoadUserProfile());
                 } else if (state is DeleteProfilePhotoFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(state.message),
+                      content: Text('Ошибка: ${state.message}'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               },
             ),
-            BlocListener<GetMeBloc, GetMeState>(
-              listener: (context, state) {
-                if (state is GetMeError) {
-                  context.go(AppRouteConstants.SignInPagePath);
-                }
-              },
-            ),
           ],
           child: BlocBuilder<GetMeBloc, GetMeState>(
-            builder: (context, getMeState) {
-              return BlocBuilder<UpdateProfilePhotoBloc, UpdateProfilePhotoState>(
-                builder: (context, updatePhotoState) {
-                  return BlocBuilder<DeleteProfilePhotoBloc, DeleteProfilePhotoState>(
-                    builder: (context, deletePhotoState) {
-                      if (getMeState is GetMeLoaded) {
-                        final bool isLoading = updatePhotoState is UpdateProfilePhotoLoading ||
-                            deletePhotoState is DeleteProfilePhotoLoading;
-
-                        return EditProfilePage(
-                          userName: "${getMeState.user.firstName} ${getMeState.user.lastName}",
-                          userImage: getMeState.user.image,
-                          isPhotoLoading: isLoading,
-                          onAvatarTap: () {
-                            _showPhotoOptions(context, getMeState.user.imageId != null);
-                          },
-                          onPersonalDataTap: () {
-                            context.push(AppRouteConstants.EditAccountPagePath);
-                          },
-                          onSecurityTap: () {
-                            context.push(AppRouteConstants.EditPasswordPagePath);
-                          },
-                          onLogout: _onLogout,
-                        );
-                      }
-                      return const SizedBox.expand(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    },
-                  );
-                },
+            builder: (context, state) {
+              if (state is GetMeLoaded) {
+                return EditProfilePage(
+                  userName: "${state.user.firstName} ${state.user.lastName}",
+                  onAvatarTap: () {
+                    _showPhotoOptions(context, state.user.imageId != null);
+                  },
+                  onPersonalDataTap: () {
+                    context.push(AppRouteConstants.EditAccountPagePath);
+                  },
+                  onSecurityTap: () {
+                    context.push(AppRouteConstants.EditPasswordPagePath);
+                  },
+                  onLogout: _onLogout,
+                );
+              }
+              return const SizedBox.expand(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             },
           ),

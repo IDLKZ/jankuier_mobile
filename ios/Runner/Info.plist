@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Permissions for image_picker -->
+	<key>NSCameraUsageDescription</key>
+	<string>Это приложение использует камеру для создания фото профиля и других функций.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Это приложение использует галерею фотографий для выбора изображений профиля.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Это приложение может использовать микрофон для записи видео.</string>
 </dict>
 </plist>
