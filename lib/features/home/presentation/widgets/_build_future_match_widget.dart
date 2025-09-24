@@ -10,63 +10,60 @@ import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_blo
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_state.dart';
 
 Widget buildFutureMatch(BuildContext context) {
-  return Container(
-    margin: EdgeInsets.only(top: 20.h),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Игры сборной',
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Игры сборной',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                context.push(AppRouteConstants.KffMatchesPagePath);
+              },
+              child: Text(
+                'Все игры',
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.gradientStart,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  context.push(AppRouteConstants.KffMatchesPagePath);
-                },
-                child: Text(
-                  'Все игры',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.gradientStart,
-                  ),
-                ),
+            ),
+          ],
+        ),
+      ),
+      SizedBox(height: 16.h),
+      BlocBuilder<GetFutureMatchesBloc, GetFutureMatchesState>(
+        builder: (context, state) {
+          if (state is GetFutureMatchesLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is GetFutureMatchesSuccessState) {
+            return homebuildMatchesList(state.matches, true);
+          } else if (state is GetFutureMatchesFailedState) {
+            return Center(
+              child: Text(
+                'Ошибка загрузки: ${state.failure.message}',
+                style: TextStyle(fontSize: 16.sp, color: AppColors.error),
               ),
-            ],
-          ),
-        ),
-        SizedBox(height: 16.h),
-        BlocBuilder<GetFutureMatchesBloc, GetFutureMatchesState>(
-          builder: (context, state) {
-            if (state is GetFutureMatchesLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is GetFutureMatchesSuccessState) {
-              return homebuildMatchesList(state.matches, true);
-            } else if (state is GetFutureMatchesFailedState) {
-              return Center(
-                child: Text(
-                  'Ошибка загрузки: ${state.failure.message}',
-                  style: TextStyle(fontSize: 16.sp, color: AppColors.error),
-                ),
-              );
-            }
-            return const SizedBox();
-          },
-        ),
-        SizedBox(height: 16.h),
-      ],
-    ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
+      SizedBox(height: 16.h),
+    ],
   );
 }
 

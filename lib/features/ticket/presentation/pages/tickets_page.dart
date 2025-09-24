@@ -35,7 +35,7 @@ class _TicketsPageState extends State<TicketsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.grey100,
       appBar: PagesCommonAppBar(
           title: "Билеты", actionIcon: Iconsax.ticket, onActionTap: () {}),
       body: Padding(
@@ -56,7 +56,7 @@ class _TicketsPageState extends State<TicketsPage>
                     dividerColor: Colors.transparent,
                     indicatorSize: TabBarIndicatorSize.tab,
                     indicator: BoxDecoration(
-                      color: AppColors.primaryLight,
+                      gradient: AppColors.primaryGradient,
                       borderRadius: BorderRadius.circular(5.r),
                     ),
                     labelColor: AppColors.white,

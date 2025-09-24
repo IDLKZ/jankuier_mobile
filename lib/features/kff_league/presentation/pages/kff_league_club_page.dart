@@ -37,9 +37,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
   int? selectedTournamentId;
   KffLeagueTournamentSeasonEntity? selectedSeason;
 
-  // Scroll controllers for pagination
-  final ScrollController _futureMatchesScrollController = ScrollController();
-  final ScrollController _pastMatchesScrollController = ScrollController();
+  // Single scroll controller for the entire page
+  final ScrollController _pageScrollController = ScrollController();
 
   // Current page trackers
   int _futureMatchesPage = 1;
@@ -55,9 +54,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
     _tournamentsBloc = getIt<TournamentsBloc>()..add(LoadTournaments());
     _matchesBloc = getIt<MatchesBloc>();
 
-    // Setup scroll listeners for pagination
-    _futureMatchesScrollController.addListener(_onFutureMatchesScroll);
-    _pastMatchesScrollController.addListener(_onPastMatchesScroll);
+    // Setup scroll listener for pagination
+    _pageScrollController.addListener(_onPageScroll);
 
     // Initialize Hive box
     _initHiveBox();
@@ -70,8 +68,7 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
   @override
   void dispose() {
     _tabController.dispose();
-    _futureMatchesScrollController.dispose();
-    _pastMatchesScrollController.dispose();
+    _pageScrollController.dispose();
     _tournamentsBloc.close();
     _matchesBloc.close();
     super.dispose();
@@ -186,17 +183,11 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
     _matchesBloc.add(LoadMatches(params));
   }
 
-  void _onFutureMatchesScroll() {
-    if (_futureMatchesScrollController.position.pixels >=
-        _futureMatchesScrollController.position.maxScrollExtent - 200) {
-      _loadMoreMatches(0); // Future matches tab
-    }
-  }
-
-  void _onPastMatchesScroll() {
-    if (_pastMatchesScrollController.position.pixels >=
-        _pastMatchesScrollController.position.maxScrollExtent - 200) {
-      _loadMoreMatches(1); // Past matches tab
+  void _onPageScroll() {
+    if (_pageScrollController.position.pixels >=
+        _pageScrollController.position.maxScrollExtent - 200) {
+      // Load more matches based on current tab
+      _loadMoreMatches(_tabController.index);
     }
   }
 
@@ -250,153 +241,153 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
             BlocProvider.value(value: _tournamentsBloc),
             BlocProvider.value(value: _matchesBloc),
           ],
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                BlocConsumer<TournamentsBloc, TournamentsState>(
-                  listener: (BuildContext context, TournamentsState state) {
-                    if (state is TournamentsLoaded) {
-                      if (state.tournaments.data.isNotEmpty) {
-                        _loadSavedTournamentSelection(state.tournaments.data);
-                      }
-                    }
-                  },
-                  builder: (BuildContext context, TournamentsState state) {
-                    if (state is TournamentsLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (state is TournamentsLoaded) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title Section
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Text(
-                              'Турниры',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
+          child: BlocConsumer<TournamentsBloc, TournamentsState>(
+            listener: (BuildContext context, TournamentsState state) {
+              if (state is TournamentsLoaded) {
+                if (state.tournaments.data.isNotEmpty) {
+                  _loadSavedTournamentSelection(state.tournaments.data);
+                }
+              }
+            },
+            builder: (BuildContext context, TournamentsState state) {
+              if (state is TournamentsLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is TournamentsLoaded) {
+                return CustomScrollView(
+                  controller: _pageScrollController,
+                  slivers: [
+                    // Title Section
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Text(
+                          'Турниры',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
                           ),
+                        ),
+                      ),
+                    ),
 
-                          // Horizontal Tournaments List
-                          HorizontalTournamentsList(
-                            tournaments: state.tournaments.data,
-                            selectedTournamentId: selectedTournamentId,
-                            onTournamentTap: _onTournamentSelected,
+                    // Horizontal Tournaments List
+                    SliverToBoxAdapter(
+                      child: HorizontalTournamentsList(
+                        tournaments: state.tournaments.data,
+                        selectedTournamentId: selectedTournamentId,
+                        onTournamentTap: _onTournamentSelected,
+                      ),
+                    ),
+
+                    // Tabs Section
+                    if (selectedSeason != null) ...[
+                      // TabBar
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.grey100,
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
-                          // Tabs Section
-                          if (selectedSeason != null) ...[
-                            // TabBar
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 20.w),
-                              decoration: BoxDecoration(
-                                color: AppColors.grey100,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: TabBar(
-                                controller: _tabController,
-                                indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  gradient: AppColors.primaryGradient,
-                                ),
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                dividerColor: Colors.transparent,
-                                labelColor: AppColors.white,
-                                unselectedLabelColor: AppColors.textSecondary,
-                                labelStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                unselectedLabelStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                onTap: (index) {
-                                  if (selectedSeason != null) {
-                                    _loadMatchesForTab(index, selectedSeason!);
-                                  }
-                                },
-                                tabs: const [
-                                  Tab(text: 'Будущие'),
-                                  Tab(text: 'Прошлые'),
-                                ],
-                              ),
+                          child: TabBar(
+                            controller: _tabController,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: AppColors.primaryGradient,
                             ),
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            dividerColor: Colors.transparent,
+                            labelColor: AppColors.white,
+                            unselectedLabelColor: AppColors.textSecondary,
+                            labelStyle: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            unselectedLabelStyle: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            onTap: (index) {
+                              if (selectedSeason != null) {
+                                _loadMatchesForTab(index, selectedSeason!);
+                              }
+                            },
+                            tabs: const [
+                              Tab(text: 'Будущие'),
+                              Tab(text: 'Прошлые'),
+                            ],
+                          ),
+                        ),
+                      ),
 
-                            // TabBarView with fixed height
-                            SizedBox(
-                              height: 500.h, // Fixed height for TabBarView
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  _buildMatchesTab(true), // Future matches
-                                  _buildMatchesTab(false), // Past matches
-                                ],
-                              ),
-                            ),
-                          ],
-                        ],
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                )
-              ],
-            ),
+                      // Matches List
+                      _buildMatchesSliver(),
+                    ],
+                  ],
+                );
+              }
+              return const SizedBox();
+            },
           )),
     );
   }
 
-  Widget _buildMatchesTab(bool isFuture) {
-    final scrollController = isFuture
-        ? _futureMatchesScrollController
-        : _pastMatchesScrollController;
+  Widget _buildMatchesSliver() {
+    final isFuture = _tabController.index == 0;
 
     return BlocBuilder<MatchesBloc, MatchesState>(
       builder: (context, state) {
         if (state is MatchesLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200.h,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
 
         if (state is MatchesError) {
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.all(20.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 48.sp,
-                    color: AppColors.error,
+          return SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200.h,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 48.sp,
+                        color: AppColors.error,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'Ошибка загрузки матчей',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        state.message,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColors.textSecondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Ошибка загрузки матчей',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    state.message,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.textSecondary,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                ),
               ),
             ),
           );
@@ -415,68 +406,78 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
           final isLoadingMore = state is MatchesLoadingMore;
 
           if (matches.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      isFuture ? Icons.schedule : Icons.history,
-                      size: 48.sp,
-                      color: AppColors.textSecondary,
+            return SliverToBoxAdapter(
+              child: SizedBox(
+                height: 200.h,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isFuture ? Icons.schedule : Icons.history,
+                          size: 48.sp,
+                          color: AppColors.textSecondary,
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          isFuture
+                              ? 'Нет предстоящих матчей'
+                              : 'Нет прошедших матчей',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          'Матчи будут отображены, когда станут доступны',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      isFuture
-                          ? 'Нет предстоящих матчей'
-                          : 'Нет прошедших матчей',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Матчи будут отображены, когда станут доступны',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppColors.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             );
           }
 
-          return ListView.builder(
-            controller: scrollController,
-            padding: EdgeInsets.all(20.w),
-            itemCount: matches.length + (hasNext || isLoadingMore ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index == matches.length) {
-                // Loading indicator at the bottom
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (index == matches.length) {
+                  // Loading indicator at the bottom
+                  return Padding(
+                    padding: EdgeInsets.all(16.h),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                final match = matches[index];
                 return Padding(
-                  padding: EdgeInsets.all(16.h),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: MatchCardWidget(
+                    match: match,
+                    isFuture: isFuture,
                   ),
                 );
-              }
-
-              final match = matches[index];
-              return MatchCardWidget(
-                match: match,
-                isFuture: isFuture,
-              );
-            },
+              },
+              childCount: matches.length + (hasNext || isLoadingMore ? 1 : 0),
+            ),
           );
         }
 
-        return const SizedBox();
+        return const SliverToBoxAdapter(
+          child: SizedBox(),
+        );
       },
     );
   }

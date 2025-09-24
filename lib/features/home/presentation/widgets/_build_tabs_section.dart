@@ -236,7 +236,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
           child: Row(
             children: [
               SizedBox(
-                width: 30.w,
+                width: 20.w,
                 child: Text(
                   "№",
                   style: TextStyle(
@@ -248,7 +248,6 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
                 ),
               ),
               Expanded(
-                flex: 3,
                 child: Text(
                   "Команда",
                   style: TextStyle(
@@ -286,7 +285,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
                 ),
               ),
               SizedBox(
-                width: 30.w,
+                width: 20.w,
                 child: Text(
                   "О",
                   textAlign: TextAlign.center,

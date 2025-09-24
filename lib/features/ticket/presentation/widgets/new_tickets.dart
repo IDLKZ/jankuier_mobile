@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,43 +29,33 @@ class NewTicketWidgets extends StatelessWidget {
         final filteredShows = state.shows.validShows;
         return Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 15.w,
+            horizontal: 20.w,
             vertical: 15.h,
           ),
-          child: Column(
-            children: [
-              Expanded(
-                child: DynamicHeightGridView(
-                  itemCount: filteredShows.length,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.w,
-                  mainAxisSpacing: 10.w,
-                  builder: (ctx, index) {
-                    final show = filteredShows[index];
-                    final event = state.shows.events[show.eventId];
-                    final place = state.shows.places[show.placeId];
-                    final city =
-                        place != null ? state.shows.cities[place.cityId] : null;
+          child: ListView.builder(
+            itemCount: filteredShows.length,
+            itemBuilder: (ctx, index) {
+              final show = filteredShows[index];
+              final event = state.shows.events[show.eventId];
+              final place = state.shows.places[show.placeId];
+              final city = place != null ? state.shows.cities[place.cityId] : null;
 
-                    return TicketCard(
-                      image: event?.main != "" ? event?.main : event?.cover,
-                      genre: event?.genre,
-                      cityName: city?.name,
-                      name: event?.name,
-                      description: event?.description,
-                      placeName: place?.name,
-                      remark: event?.remark,
-                      address: place?.address,
-                      startAt:
-                          show.dateTime, // или другое поле с временем начала
-                      showId: show.id != null
-                          ? int.tryParse(show.id!)
-                          : null, // теперь доступен showId из сущности
-                    );
-                  },
+              return Padding(
+                padding: EdgeInsets.only(bottom: 16.h),
+                child: TicketCard(
+                  image: event?.main != "" ? event?.main : event?.cover,
+                  genre: event?.genre,
+                  cityName: city?.name,
+                  name: event?.name,
+                  description: event?.description,
+                  placeName: place?.name,
+                  remark: event?.remark,
+                  address: place?.address,
+                  startAt: show.dateTime,
+                  showId: show.id != null ? int.tryParse(show.id!) : null,
                 ),
-              ),
-            ],
+              );
+            },
           ),
         );
       }
@@ -109,548 +98,581 @@ class TicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
+
     Future<String?> _getAccessToken() async {
       final hiveUtils = getIt<HiveUtils>();
       final accessToken = await hiveUtils.getAccessToken();
       return accessToken;
     }
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            offset: const Offset(0, 2),
-            blurRadius: 8,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                child: image != null
-                    ? Image.network(
-                        image!,
-                        width: double.infinity,
-                        height: 160.h,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        FileUtils.LocalProductImage,
-                        width: double.infinity,
-                        height: 160.h,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: AutoSizeText(
-                          genre ?? "Футбол",
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+
+    return GestureDetector(
+      onTap: () => _showDetailsBottomSheet(context, _getAccessToken),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Левая часть - изображение
+            SizedBox(
+              width: 100.w,
+              height: 120.h,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.r),
+                      bottomLeft: Radius.circular(8.r),
                     ),
-                    SizedBox(
-                      width: 4.w,
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: AppColors.success.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: AutoSizeText(
-                          cityName ?? "-",
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name ?? "",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    height: 1.2,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 6.h),
-                Text(
-                  description ?? "",
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textSecondary,
-                    height: 1.3,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Icon(
-                      Iconsax.location_copy,
-                      size: 10.sp,
-                      color: AppColors.textSecondary,
-                    ),
-                    SizedBox(width: 3.w),
-                    Expanded(
-                      child: Text(
-                        placeName ?? "-",
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textSecondary,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4.h),
-                Row(
-                  children: [
-                    Icon(
-                      Iconsax.clock_copy,
-                      size: 10.sp,
-                      color: AppColors.primary,
-                    ),
-                    SizedBox(width: 3.w),
-                    Flexible(
-                      child: Text(
-                        dateFormatter.format(startAt!.toLocal()),
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            useRootNavigator: true,
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.8,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20.r)),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 40.w,
-                                      height: 4.h,
-                                      margin: EdgeInsets.only(top: 12.h),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.textSecondary
-                                            .withOpacity(0.3),
-                                        borderRadius:
-                                            BorderRadius.circular(2.r),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        padding: EdgeInsets.all(20.w),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(16.r),
-                                              child: image != null
-                                                  ? Image.network(
-                                                      image!,
-                                                      width: double.infinity,
-                                                      height: 200.h,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Image.asset(
-                                                      FileUtils
-                                                          .LocalProductImage,
-                                                      width: double.infinity,
-                                                      height: 200.h,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                            ),
-                                            SizedBox(height: 20.h),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 12.w,
-                                                            vertical: 6.h),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.primary
-                                                          .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16.r),
-                                                    ),
-                                                    child: Text(
-                                                      genre?.toUpperCase() ??
-                                                          "СПОРТ",
-                                                      style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color:
-                                                            AppColors.primary,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 8.w),
-                                                Expanded(
-                                                  child: Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 12.w,
-                                                            vertical: 6.h),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.success
-                                                          .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16.r),
-                                                    ),
-                                                    child: Text(
-                                                      cityName ?? "",
-                                                      style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color:
-                                                            AppColors.success,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 16.h),
-                                            Text(
-                                              name ?? "",
-                                              style: TextStyle(
-                                                fontSize: 24.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: AppColors.textPrimary,
-                                                height: 1.3,
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Html(
-                                              data: remark ?? '',
-                                              style: {
-                                                "p": Style(
-                                                    fontSize: FontSize(12.sp),
-                                                    textAlign: TextAlign.left),
-                                              },
-                                            ),
-                                            SizedBox(height: 20.h),
-                                            Container(
-                                              padding: EdgeInsets.all(16.w),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.background,
-                                                borderRadius:
-                                                    BorderRadius.circular(12.r),
-                                                border: Border.all(
-                                                  color: AppColors.primary
-                                                      .withOpacity(0.1),
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            EdgeInsets.all(8.w),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: AppColors
-                                                              .primary
-                                                              .withOpacity(0.1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.r),
-                                                        ),
-                                                        child: Icon(
-                                                          Iconsax.location_copy,
-                                                          size: 20.sp,
-                                                          color:
-                                                              AppColors.primary,
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 12.w),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              'Место проведения',
-                                                              style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: AppColors
-                                                                    .textSecondary,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 2.h),
-                                                            Text(
-                                                              address ?? "",
-                                                              style: TextStyle(
-                                                                fontSize: 14.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: AppColors
-                                                                    .textPrimary,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 16.h),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            EdgeInsets.all(8.w),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: AppColors
-                                                              .primary
-                                                              .withOpacity(0.1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.r),
-                                                        ),
-                                                        child: Icon(
-                                                          Iconsax.clock_copy,
-                                                          size: 20.sp,
-                                                          color:
-                                                              AppColors.primary,
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 12.w),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              'Дата и время',
-                                                              style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: AppColors
-                                                                    .textSecondary,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 2.h),
-                                                            Text(
-                                                              dateFormatter
-                                                                  .format(startAt!
-                                                                      .toLocal()),
-                                                              style: TextStyle(
-                                                                fontSize: 14.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: AppColors
-                                                                    .textPrimary,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(height: 20.h),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      final token = await _getAccessToken();
-                                                      token == null ? context.go(AppRouteConstants.SignInPagePath) : Navigator.of(context)
-                                                          .pushReplacement(
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              TicketWebViewPage(
-                                                                showId: showId
-                                                                    .toString(),
-                                                                token: token,
-                                                              ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10.h),
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            AppColors.primary,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.r),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(
-                                                            Iconsax
-                                                                .ticket_discount_copy,
-                                                            size: 14.sp,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(width: 4.w),
-                                                          Text(
-                                                            'Купить билеты',
-                                                            style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                    child: image != null
+                        ? Image.network(
+                            image!,
+                            width: 120.w,
+                            height: 140.h,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                FileUtils.LocalProductImage,
+                                width: 120.w,
+                                height: 140.h,
+                                fit: BoxFit.cover,
                               );
                             },
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 6.h),
+                          )
+                        : Image.asset(
+                            FileUtils.LocalProductImage,
+                            width: 120.w,
+                            height: 140.h,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+
+                  // Градиент оверлей для лучшей читаемости текста
+                  Container(
+                    width: 120.w,
+                    height: 140.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        bottomLeft: Radius.circular(20.r),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.3),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Город тег
+                  Positioned(
+                    bottom: 12.h,
+                    left: 8.w,
+                    right: 8.w,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.9),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        cityName ?? "Город",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Правая часть - содержимое
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Название события
+                    Text(
+                      name ?? "Событие",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        height: 1.2,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    SizedBox(height: 8.h),
+
+                    // Описание
+                    if (description != null && description!.isNotEmpty) ...[
+                      Text(
+                        description!,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textSecondary,
+                          height: 1.4,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 12.h),
+                    ],
+
+                    // Информация о месте и времени
+                    Row(
+                      children: [
+                        // Иконка места
+                        Container(
+                          padding: EdgeInsets.all(6.w),
                           decoration: BoxDecoration(
-                            color: AppColors.primary,
+                            color: AppColors.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8.r),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Icon(
+                            Iconsax.location_copy,
+                            size: 12.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+
+                        // Место
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Iconsax.eye_copy,
-                                size: 14.sp,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 4.w),
                               Text(
-                                'Детали',
+                                placeName ?? "Место не указано",
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: AppColors.textPrimary,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              SizedBox(height: 2.h),
+                              if (startAt != null)
+                                Text(
+                                  dateFormatter.format(startAt!.toLocal()),
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                             ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
+
+                    SizedBox(height: 12.h),
+
+                    // Кнопки действий
+                    // Row(
+                    //   children: [
+                    //     // Кнопка "Детали"
+                    //     Expanded(
+                    //       child: GestureDetector(
+                    //         onTap: () => _showDetailsBottomSheet(context, _getAccessToken),
+                    //         child: Container(
+                    //           padding: EdgeInsets.symmetric(vertical: 10.h),
+                    //           decoration: BoxDecoration(
+                    //             color: AppColors.grey100,
+                    //             borderRadius: BorderRadius.circular(12.r),
+                    //             border: Border.all(
+                    //               color: AppColors.primary.withValues(alpha: 0.2),
+                    //               width: 1,
+                    //             ),
+                    //           ),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               Icon(
+                    //                 Iconsax.eye_copy,
+                    //                 size: 14.sp,
+                    //                 color: AppColors.primary,
+                    //               ),
+                    //               SizedBox(width: 6.w),
+                    //               Text(
+                    //                 'Детали',
+                    //                 style: TextStyle(
+                    //                   fontSize: 12.sp,
+                    //                   fontWeight: FontWeight.w600,
+                    //                   color: AppColors.primary,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //
+                    //     SizedBox(width: 8.w),
+                    //
+                    //     // Кнопка "Купить"
+                    //     Expanded(
+                    //       child: GestureDetector(
+                    //         onTap: () async {
+                    //           final token = await _getAccessToken();
+                    //           if (token == null) {
+                    //             context.go(AppRouteConstants.SignInPagePath);
+                    //           } else {
+                    //             Navigator.of(context).push(
+                    //               MaterialPageRoute(
+                    //                 builder: (context) => TicketWebViewPage(
+                    //                   showId: showId.toString(),
+                    //                   token: token,
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           }
+                    //         },
+                    //         child: Container(
+                    //           padding: EdgeInsets.symmetric(vertical: 10.h),
+                    //           decoration: BoxDecoration(
+                    //             gradient: AppColors.primaryGradient,
+                    //             borderRadius: BorderRadius.circular(12.r),
+                    //           ),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               Icon(
+                    //                 Iconsax.ticket_discount_copy,
+                    //                 size: 14.sp,
+                    //                 color: Colors.white,
+                    //               ),
+                    //               SizedBox(width: 6.w),
+                    //               Text(
+                    //                 'Купить',
+                    //                 style: TextStyle(
+                    //                   fontSize: 12.sp,
+                    //                   fontWeight: FontWeight.w600,
+                    //                   color: Colors.white,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+
+  void _showDetailsBottomSheet(BuildContext context, Future<String?> Function() getAccessToken) {
+    final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
+
+    showModalBottomSheet<void>(
+      useRootNavigator: true,
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+          ),
+          child: Column(
+            children: [
+              // Хэндл
+              Container(
+                width: 40.w,
+                height: 4.h,
+                margin: EdgeInsets.only(top: 12.h),
+                decoration: BoxDecoration(
+                  color: AppColors.textSecondary.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+
+              // Содержимое
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Изображение
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16.r),
+                        child: image != null
+                            ? Image.network(
+                                image!,
+                                width: double.infinity,
+                                height: 200.h,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                FileUtils.LocalProductImage,
+                                width: double.infinity,
+                                height: 200.h,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      SizedBox(height: 20.h),
+
+                      // Теги
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(16.r),
+                              ),
+                              child: Text(
+                                genre?.toUpperCase() ?? "СПОРТ",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primary,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              decoration: BoxDecoration(
+                                color: AppColors.success.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(16.r),
+                              ),
+                              child: Text(
+                                cityName ?? "",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.success,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Название
+                      Text(
+                        name ?? "",
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                          height: 1.3,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+
+                      // HTML контент
+                      Html(
+                        data: remark ?? '',
+                        style: {
+                          "p": Style(
+                            fontSize: FontSize(12.sp),
+                            textAlign: TextAlign.left,
+                          ),
+                        },
+                      ),
+                      SizedBox(height: 20.h),
+
+                      // Информация о месте и времени
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.background,
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            // Место
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Icon(
+                                    Iconsax.location_copy,
+                                    size: 20.sp,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                SizedBox(width: 12.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Место проведения',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      Text(
+                                        address ?? "",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16.h),
+
+                            // Время
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Icon(
+                                    Iconsax.clock_copy,
+                                    size: 20.sp,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                SizedBox(width: 12.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Дата и время',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      Text(
+                                        startAt != null
+                                          ? dateFormatter.format(startAt!.toLocal())
+                                          : "Время не указано",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+
+                      // Кнопка покупки
+                      SizedBox(
+                        width: double.infinity,
+                        child: GestureDetector(
+                          onTap: () async {
+                            final token = await getAccessToken();
+                            if (token == null) {
+                              context.go(AppRouteConstants.SignInPagePath);
+                            } else {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => TicketWebViewPage(
+                                    showId: showId.toString(),
+                                    token: token,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Iconsax.ticket_discount_copy,
+                                  size: 18.sp,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  'Купить билеты',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

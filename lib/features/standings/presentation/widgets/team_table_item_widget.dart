@@ -74,6 +74,7 @@ class TeamTableItemWidget extends StatelessWidget {
 
           // Логотип и название команды
           Expanded(
+            flex: 3,
             child: Row(
               children: [
                 Container(
@@ -122,7 +123,7 @@ class TeamTableItemWidget extends StatelessWidget {
                 child: _buildStatItem("И", "${team.matches}", AppColors.textSecondary),
               ),
               SizedBox(
-                width: 40.w,
+                width: 50.w,
                 child: _buildStatItem("Г", team.goals, AppColors.textSecondary),
               ),
               SizedBox(
