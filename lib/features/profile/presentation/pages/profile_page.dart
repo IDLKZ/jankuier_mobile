@@ -271,6 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
             if (state is GetMeLoaded) {
               return EditProfilePage(
                 userName: "${state.user.firstName} ${state.user.lastName}",
+                userImage: state.user.image,
                 onAvatarTap: () {
                   _showPhotoOptions(context, state.user.imageId != null);
                 },
