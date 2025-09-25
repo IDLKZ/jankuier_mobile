@@ -494,7 +494,7 @@ class TicketCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                          color: AppColors.black,
                           height: 1.3,
                         ),
                       ),
@@ -507,6 +507,7 @@ class TicketCard extends StatelessWidget {
                           "p": Style(
                             fontSize: FontSize(12.sp),
                             textAlign: TextAlign.left,
+                            color: AppColors.black
                           ),
                         },
                       ),
@@ -550,7 +551,7 @@ class TicketCard extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: AppColors.textSecondary,
+                                          color: AppColors.black,
                                         ),
                                       ),
                                       SizedBox(height: 2.h),
@@ -559,7 +560,7 @@ class TicketCard extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
-                                          color: AppColors.textPrimary,
+                                          color: AppColors.black,
                                         ),
                                       ),
                                     ],
@@ -655,7 +656,7 @@ class TicketCard extends StatelessWidget {
                                 Text(
                                   'Купить билеты',
                                   style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),

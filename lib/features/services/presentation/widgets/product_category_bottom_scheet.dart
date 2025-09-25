@@ -55,7 +55,7 @@ class _ProductCategoryBottomScheetState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MainTitleWidget(title: "Новые товары"),
+              const MainTitleWidget(title: "Новые товары"),
               IconButton(
                   onPressed: () {
                     showModalBottomSheet<void>(
@@ -93,7 +93,7 @@ class _ProductCategoryBottomScheetState
                                           vertical: 15.h, horizontal: 15.w),
                                       child: Column(
                                         children: [
-                                          MainTitleWidget(title: "Категории"),
+                                          const MainTitleWidget(title: "Категории"),
                                           SizedBox(height: 15.h),
                                           DynamicHeightGridView(
                                             itemCount: cats.length,
@@ -168,7 +168,7 @@ class _ProductCategoryBottomScheetState
                                                     ),
                                                     const SizedBox(height: 8),
                                                     Text(
-                                                      "${pc.titleRu}",
+                                                      pc.titleRu,
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -227,6 +227,8 @@ class _ProductCategoryBottomScheetState
                                                         border:
                                                             OutlineInputBorder(),
                                                         isDense: true,
+                                                        filled: true,
+                                                        fillColor: Colors.white,
                                                       ),
                                                       onChanged: (val) {
                                                         final parsed =
@@ -246,32 +248,28 @@ class _ProductCategoryBottomScheetState
                                                   SizedBox(width: 10.w),
                                                   Expanded(
                                                     child: TextField(
-                                                      controller:
-                                                          _maxController,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          const InputDecoration(
+                                                      controller: _maxController,
+                                                      keyboardType: TextInputType.number,
+                                                      decoration: const InputDecoration(
                                                         labelText: "до",
-                                                        border:
-                                                            OutlineInputBorder(),
+                                                        border: OutlineInputBorder(),
                                                         isDense: true,
+                                                        filled: true,
+                                                        fillColor: Colors.white,
                                                       ),
                                                       onChanged: (val) {
-                                                        final parsed =
-                                                            int.tryParse(val);
+                                                        final parsed = int.tryParse(val);
                                                         if (parsed != null) {
                                                           setModalState(() {
-                                                            _currentRange =
-                                                                RangeValues(
-                                                              _currentRange
-                                                                  .start,
+                                                            _currentRange = RangeValues(
+                                                              _currentRange.start,
                                                               parsed.toDouble(),
                                                             );
                                                           });
                                                         }
                                                       },
-                                                    ),
+                                                    )
+                                                    ,
                                                   ),
                                                 ],
                                               ),
