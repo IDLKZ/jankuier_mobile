@@ -75,7 +75,7 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
           // Touch skip - нажатие на экран пропускает видео
@@ -87,10 +87,14 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
           children: [
             // Видео плеер
             if (_controller.value.isInitialized)
-              Center(
-                child: AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
+              SizedBox.expand(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: _controller.value.size.width,
+                    height: _controller.value.size.height,
+                    child: VideoPlayer(_controller),
+                  ),
                 ),
               )
             else
@@ -106,7 +110,7 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
                       color: Colors.white,
                     ),
                     SizedBox(height: 20.h),
-                    CircularProgressIndicator(
+                    const CircularProgressIndicator(
                       color: AppColors.primary,
                     ),
                     SizedBox(height: 20.h),

@@ -77,7 +77,7 @@ Widget buildNewsSection(BuildContext context) {
                 );
               }
               return SizedBox(
-                height: 200.h,
+                height: 210.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -173,22 +173,25 @@ Widget _buildNewsCard(News news, BuildContext context) {
           // Content
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(12.w),
+              padding: EdgeInsets.all(10.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    news.title,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                  Flexible(
+                    child: Text(
+                      news.title,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  const Spacer(),
+                  SizedBox(height: 8.h),
                   Row(
                     children: [
                       Icon(
