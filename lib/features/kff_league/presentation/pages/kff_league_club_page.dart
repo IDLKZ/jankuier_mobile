@@ -6,9 +6,9 @@ import 'package:hive/hive.dart';
 import 'package:jankuier_mobile/features/kff_league/domain/parameters/kff_league_match_parameter.dart';
 import 'package:jankuier_mobile/features/kff_league/presentation/bloc/tournaments/tournaments_state.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
-
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/kff_league_tournament_entity.dart';
 import '../bloc/matches/matches_bloc.dart';
 import '../bloc/matches/matches_event.dart';
@@ -90,7 +90,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
     _loadMatchesForCurrentTab(season);
   }
 
-  Future<void> _saveSelectedTournament(KffLeagueTournamentSeasonEntity season) async {
+  Future<void> _saveSelectedTournament(
+      KffLeagueTournamentSeasonEntity season) async {
     try {
       await _preferencesBox.put('ActiveKffTournamentId', season.tournamentId);
       await _preferencesBox.put('ActiveKffSeasonId', season.season?.id);
@@ -100,7 +101,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
     }
   }
 
-  void _loadSavedTournamentSelection(List<KffLeagueTournamentWithSeasonsEntity> tournaments) {
+  void _loadSavedTournamentSelection(
+      List<KffLeagueTournamentWithSeasonsEntity> tournaments) {
     // Only auto-select if none is currently selected
     if (selectedTournamentId != null) return;
 
@@ -114,7 +116,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
           if (tournament.seasons != null) {
             for (final season in tournament.seasons!) {
               if (season.tournamentId == savedTournamentId &&
-                  (savedSeasonId == null || season.season?.id == savedSeasonId)) {
+                  (savedSeasonId == null ||
+                      season.season?.id == savedSeasonId)) {
                 _onTournamentSelected(season);
                 return;
               }
@@ -232,7 +235,7 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-          title: "Клубные матчи",
+          title: AppLocalizations.of(context)!.clubMatches,
           leadingIcon: Icons.arrow_back_ios_new,
           actionIcon: Icons.sports_soccer,
           onActionTap: () {}),
@@ -264,7 +267,7 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Text(
-                          'Турниры',
+                          AppLocalizations.of(context)!.tournaments,
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
@@ -288,7 +291,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                       // TabBar
                       SliverToBoxAdapter(
                         child: Container(
-                          margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+                          margin: EdgeInsets.only(
+                              left: 20.w, right: 20.w, bottom: 20.h),
                           decoration: BoxDecoration(
                             color: AppColors.grey100,
                             borderRadius: BorderRadius.circular(12.r),
@@ -316,9 +320,9 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                                 _loadMatchesForTab(index, selectedSeason!);
                               }
                             },
-                            tabs: const [
-                              Tab(text: 'Будущие'),
-                              Tab(text: 'Прошлые'),
+                            tabs: [
+                              Tab(text: AppLocalizations.of(context)!.future),
+                              Tab(text: AppLocalizations.of(context)!.past),
                             ],
                           ),
                         ),
@@ -369,7 +373,7 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        'Ошибка загрузки матчей',
+                        AppLocalizations.of(context)!.matchesLoadingError,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -423,8 +427,8 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                         SizedBox(height: 16.h),
                         Text(
                           isFuture
-                              ? 'Нет предстоящих матчей'
-                              : 'Нет прошедших матчей',
+                              ? AppLocalizations.of(context)!.noUpcomingMatches
+                              : AppLocalizations.of(context)!.noPastMatches,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -433,7 +437,7 @@ class _KffLeagueClubPageState extends State<KffLeagueClubPage>
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'Матчи будут отображены, когда станут доступны',
+                          AppLocalizations.of(context)!.matchesWillBeDisplayed,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.textSecondary,

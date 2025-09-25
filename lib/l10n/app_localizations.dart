@@ -1047,6 +1047,138 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Национальность не указана'**
   String get nationalityNotSpecified;
+
+  /// No description provided for @clubMatches.
+  ///
+  /// In ru, this message translates to:
+  /// **'Клубные матчи'**
+  String get clubMatches;
+
+  /// No description provided for @matchesLoadingError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки матчей'**
+  String get matchesLoadingError;
+
+  /// No description provided for @tournament.
+  ///
+  /// In ru, this message translates to:
+  /// **'Турнир'**
+  String get tournament;
+
+  /// No description provided for @stadiumNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Стадион не указан'**
+  String get stadiumNotSpecified;
+
+  /// No description provided for @attendance.
+  ///
+  /// In ru, this message translates to:
+  /// **'Посещаемость'**
+  String get attendance;
+
+  /// No description provided for @matchProtocol.
+  ///
+  /// In ru, this message translates to:
+  /// **'Протокол матча'**
+  String get matchProtocol;
+
+  /// No description provided for @invalidDateFormat.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неверный формат даты'**
+  String get invalidDateFormat;
+
+  /// No description provided for @matchDetails.
+  ///
+  /// In ru, this message translates to:
+  /// **'Детали матча'**
+  String get matchDetails;
+
+  /// No description provided for @dateAndTime.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата и время'**
+  String get dateAndTime;
+
+  /// No description provided for @status.
+  ///
+  /// In ru, this message translates to:
+  /// **'Статус'**
+  String get status;
+
+  /// No description provided for @additionalInfo.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дополнительная информация'**
+  String get additionalInfo;
+
+  /// No description provided for @attendanceCount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Посещаемость'**
+  String get attendanceCount;
+
+  /// No description provided for @downloadPdf.
+  ///
+  /// In ru, this message translates to:
+  /// **'Скачать PDF'**
+  String get downloadPdf;
+
+  /// No description provided for @videoOverview.
+  ///
+  /// In ru, this message translates to:
+  /// **'Видеообзор'**
+  String get videoOverview;
+
+  /// No description provided for @watchOnYoutube.
+  ///
+  /// In ru, this message translates to:
+  /// **'Смотреть на YouTube'**
+  String get watchOnYoutube;
+
+  /// No description provided for @scheduled.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запланирован'**
+  String get scheduled;
+
+  /// No description provided for @finished.
+  ///
+  /// In ru, this message translates to:
+  /// **'Завершен'**
+  String get finished;
+
+  /// No description provided for @canceled.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отменен'**
+  String get canceled;
+
+  /// No description provided for @unknown.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неизвестно'**
+  String get unknown;
+
+  /// No description provided for @stadium.
+  ///
+  /// In ru, this message translates to:
+  /// **'Стадион'**
+  String get stadium;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не указан'**
+  String get notSpecified;
+
+  /// No description provided for @stadiumNameNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Название не указано'**
+  String get stadiumNameNotSpecified;
 }
 
 class _AppLocalizationsDelegate

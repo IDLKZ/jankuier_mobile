@@ -489,4 +489,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nationalityNotSpecified => 'Nationality not specified';
+
+  @override
+  String get clubMatches => 'Club matches';
+
+  @override
+  String get matchesLoadingError => 'Error loading matches';
+
+  @override
+  String get tournament => 'Tournament';
+
+  @override
+  String get stadiumNotSpecified => 'Stadium not specified';
+
+  @override
+  String get attendance => 'Attendance';
+
+  @override
+  String get matchProtocol => 'Match protocol';
+
+  @override
+  String get invalidDateFormat => 'Invalid date format';
+
+  @override
+  String get matchDetails => 'Match details';
+
+  @override
+  String get dateAndTime => 'Date and time';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get additionalInfo => 'Additional information';
+
+  @override
+  String get attendanceCount => 'Attendance';
+
+  @override
+  String get downloadPdf => 'Download PDF';
+
+  @override
+  String get videoOverview => 'Video overview';
+
+  @override
+  String get watchOnYoutube => 'Watch on YouTube';
+
+  @override
+  String get scheduled => 'Scheduled';
+
+  @override
+  String get finished => 'Finished';
+
+  @override
+  String get canceled => 'Canceled';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get stadium => 'Stadium';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get stadiumNameNotSpecified => 'Stadium name not specified';
 }

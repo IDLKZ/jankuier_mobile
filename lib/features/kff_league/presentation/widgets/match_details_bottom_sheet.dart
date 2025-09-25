@@ -5,6 +5,8 @@ import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/kff_league/data/entities/kff_league_match_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class MatchDetailsBottomSheet extends StatelessWidget {
   final KffLeagueClubMatchEntity match;
   final bool isFuture;
@@ -46,21 +48,21 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Tournament header
-                  _buildTournamentHeader(),
+                  _buildTournamentHeader(context),
 
                   SizedBox(height: 20.h),
 
                   // Main match info
-                  _buildMainMatchInfo(),
+                  _buildMainMatchInfo(context),
 
                   SizedBox(height: 24.h),
 
                   // Match details
-                  _buildMatchDetails(),
+                  _buildMatchDetails(context),
 
                   if (!isFuture) ...[
                     SizedBox(height: 24.h),
-                    _buildPastMatchExtras(),
+                    _buildPastMatchExtras(context),
                   ],
 
                   SizedBox(height: 20.h),
@@ -73,7 +75,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildTournamentHeader() {
+  Widget _buildTournamentHeader(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -106,7 +108,8 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  match.tournament?.title?.ru ?? 'Турнир',
+                  match.tournament?.title?.ru ??
+                      AppLocalizations.of(context)!.tournament,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -129,7 +132,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildMainMatchInfo() {
+  Widget _buildMainMatchInfo(BuildContext context) {
     return Row(
       children: [
         // Team 1
@@ -169,7 +172,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               Text(
-                match.team1?.title?.ru ?? 'Команда 1',
+                match.team1?.title?.ru ?? AppLocalizations.of(context)!.team1,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -206,7 +209,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        _formatMatchTime(match.datetimeIso),
+                        _formatMatchTime(match.datetimeIso, context),
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: AppColors.white,
@@ -279,7 +282,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               Text(
-                match.team2?.title?.ru ?? 'Команда 2',
+                match.team2?.title?.ru ?? AppLocalizations.of(context)!.team2,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -296,12 +299,12 @@ class MatchDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildMatchDetails() {
+  Widget _buildMatchDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Детали матча',
+          AppLocalizations.of(context)!.team2,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -311,32 +314,32 @@ class MatchDetailsBottomSheet extends StatelessWidget {
         SizedBox(height: 16.h),
 
         // Stadium with photo
-        _buildStadiumSection(),
+        _buildStadiumSection(context),
 
         // Date and time
         _buildDetailItem(
           icon: Icons.schedule,
-          title: 'Дата и время',
-          value: _formatFullDateTime(match.datetimeIso),
+          title: AppLocalizations.of(context)!.dateAndTime,
+          value: _formatFullDateTime(match.datetimeIso, context),
         ),
 
         // Status
         if (match.status != null)
           _buildDetailItem(
             icon: Icons.info_outline,
-            title: 'Статус',
-            value: _getStatusText(match.status!),
+            title: AppLocalizations.of(context)!.status,
+            value: _getStatusText(match.status!, context),
           ),
       ],
     );
   }
 
-  Widget _buildPastMatchExtras() {
+  Widget _buildPastMatchExtras(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Дополнительная информация',
+          AppLocalizations.of(context)!.additionalInfo,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -347,22 +350,22 @@ class MatchDetailsBottomSheet extends StatelessWidget {
         if (match.attendance != null)
           _buildDetailItem(
             icon: Icons.people,
-            title: 'Посещаемость',
-            value: '${match.attendance} человек',
+            title: AppLocalizations.of(context)!.attendanceCount,
+            value: '${match.attendance}',
           ),
         if (match.protocol != null)
           _buildDetailItem(
             icon: Icons.description,
-            title: 'Протокол матча',
-            value: 'Скачать PDF',
+            title: AppLocalizations.of(context)!.matchProtocol,
+            value: AppLocalizations.of(context)!.downloadPdf,
             isClickable: true,
             onTap: () => _launchUrl(match.protocol!),
           ),
         if (match.reviewCode != null && match.reviewCode!.isNotEmpty)
           _buildDetailItem(
             icon: Icons.video_library,
-            title: 'Видеообзор',
-            value: 'Смотреть на YouTube',
+            title: AppLocalizations.of(context)!.videoOverview,
+            value: AppLocalizations.of(context)!.watchOnYoutube,
             isClickable: true,
             onTap: () => _showVideoReview(),
           ),
@@ -435,9 +438,9 @@ class MatchDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  String _formatMatchTime(String? dateTimeIso) {
+  String _formatMatchTime(String? dateTimeIso, BuildContext context) {
     if (dateTimeIso == null || dateTimeIso.isEmpty) {
-      return 'Время\nне указано';
+      return AppLocalizations.of(context)!.timeNotSpecified;
     }
 
     try {
@@ -449,13 +452,13 @@ class MatchDetailsBottomSheet extends StatelessWidget {
 
       return '$hour:$minute\n$day.$month';
     } catch (e) {
-      return 'Время\nне указано';
+      return AppLocalizations.of(context)!.timeNotSpecified;
     }
   }
 
-  String _formatFullDateTime(String? dateTimeIso) {
+  String _formatFullDateTime(String? dateTimeIso, BuildContext context) {
     if (dateTimeIso == null || dateTimeIso.isEmpty) {
-      return 'Дата не указана';
+      return AppLocalizations.of(context)!.dateNotSpecified;
     }
 
     try {
@@ -468,20 +471,20 @@ class MatchDetailsBottomSheet extends StatelessWidget {
 
       return '$day.$month.$year в $hour:$minute';
     } catch (e) {
-      return 'Неверный формат даты';
+      return AppLocalizations.of(context)!.invalidDateFormat;
     }
   }
 
-  String _getStatusText(int status) {
+  String _getStatusText(int status, BuildContext context) {
     switch (status) {
       case 1:
-        return 'Запланирован';
+        return AppLocalizations.of(context)!.scheduled;
       case 2:
-        return 'Завершен';
+        return AppLocalizations.of(context)!.finished;
       case 3:
-        return 'Отменен';
+        return AppLocalizations.of(context)!.canceled;
       default:
-        return 'Неизвестно';
+        return AppLocalizations.of(context)!.unknown;
     }
   }
 
@@ -509,13 +512,13 @@ class MatchDetailsBottomSheet extends StatelessWidget {
     return match?.group(1);
   }
 
-  Widget _buildStadiumSection() {
+  Widget _buildStadiumSection(BuildContext context) {
     final stadium = match.stadiumObj;
     if (stadium == null) {
       return _buildDetailItem(
         icon: Icons.stadium,
-        title: 'Стадион',
-        value: 'Не указан',
+        title: AppLocalizations.of(context)!.stadium,
+        value: AppLocalizations.of(context)!.stadiumNameNotSpecified,
       );
     }
 
@@ -572,7 +575,7 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Стадион',
+                      AppLocalizations.of(context)!.stadium,
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: AppColors.textSecondary,
@@ -581,7 +584,8 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      stadium.title?.ru ?? 'Название не указано',
+                      stadium.title?.ru ??
+                          AppLocalizations.of(context)!.notSpecified,
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: AppColors.textPrimary,

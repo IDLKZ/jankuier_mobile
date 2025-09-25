@@ -491,4 +491,70 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get nationalityNotSpecified => 'Национальность не указана';
+
+  @override
+  String get clubMatches => 'Клубные матчи';
+
+  @override
+  String get matchesLoadingError => 'Ошибка загрузки матчей';
+
+  @override
+  String get tournament => 'Турнир';
+
+  @override
+  String get stadiumNotSpecified => 'Стадион не указан';
+
+  @override
+  String get attendance => 'Посещаемость';
+
+  @override
+  String get matchProtocol => 'Протокол матча';
+
+  @override
+  String get invalidDateFormat => 'Неверный формат даты';
+
+  @override
+  String get matchDetails => 'Детали матча';
+
+  @override
+  String get dateAndTime => 'Дата и время';
+
+  @override
+  String get status => 'Статус';
+
+  @override
+  String get additionalInfo => 'Дополнительная информация';
+
+  @override
+  String get attendanceCount => 'Посещаемость';
+
+  @override
+  String get downloadPdf => 'Скачать PDF';
+
+  @override
+  String get videoOverview => 'Видеообзор';
+
+  @override
+  String get watchOnYoutube => 'Смотреть на YouTube';
+
+  @override
+  String get scheduled => 'Запланирован';
+
+  @override
+  String get finished => 'Завершен';
+
+  @override
+  String get canceled => 'Отменен';
+
+  @override
+  String get unknown => 'Неизвестно';
+
+  @override
+  String get stadium => 'Стадион';
+
+  @override
+  String get notSpecified => 'Не указан';
+
+  @override
+  String get stadiumNameNotSpecified => 'Название не указано';
 }

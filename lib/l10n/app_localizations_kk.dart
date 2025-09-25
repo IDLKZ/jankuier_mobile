@@ -391,14 +391,14 @@ class AppLocalizationsKk extends AppLocalizations {
   String get clubGames => 'Клуб ойындары';
 
   @override
-  String get noUpcomingMatches => 'Алда матчтар жоқ';
+  String get noUpcomingMatches => 'Алдағы матчтар жоқ';
 
   @override
   String get noPastMatches => 'Өткен матчтар жоқ';
 
   @override
   String get matchesWillBeDisplayed =>
-      'Матчтар қол жетімді болған кезде көрсетіледі';
+      'Матчтар қолжетімді болғанда көрсетіледі';
 
   @override
   String get tournamentNotSpecified => 'Турнир көрсетілмеген';
@@ -410,7 +410,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get team2 => '2-команда';
 
   @override
-  String get timeNotSpecified => 'Уақыт көрсетілмеген';
+  String get timeNotSpecified => 'Уақыты көрсетілмеген';
 
   @override
   String get invalidFormat => 'Жарамсыз формат';
@@ -486,4 +486,70 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get nationalityNotSpecified => 'Ұлты көрсетілмеген';
+
+  @override
+  String get clubMatches => 'Клубтық матчтар';
+
+  @override
+  String get matchesLoadingError => 'Матчтарды жүктеу қатесі';
+
+  @override
+  String get tournament => 'Турнир';
+
+  @override
+  String get stadiumNotSpecified => 'Стадион көрсетілмеген';
+
+  @override
+  String get attendance => 'Келушілер саны';
+
+  @override
+  String get matchProtocol => 'Матч хаттамасы';
+
+  @override
+  String get invalidDateFormat => 'Күн форматы қате';
+
+  @override
+  String get matchDetails => 'Матч туралы мәлімет';
+
+  @override
+  String get dateAndTime => 'Күні және уақыты';
+
+  @override
+  String get status => 'Мәртебе';
+
+  @override
+  String get additionalInfo => 'Қосымша ақпарат';
+
+  @override
+  String get attendanceCount => 'Қатысқандар саны';
+
+  @override
+  String get downloadPdf => 'PDF жүктеу';
+
+  @override
+  String get videoOverview => 'Бейнешолу';
+
+  @override
+  String get watchOnYoutube => 'YouTube-тан көру';
+
+  @override
+  String get scheduled => 'Жоспарланған';
+
+  @override
+  String get finished => 'Аяқталған';
+
+  @override
+  String get canceled => 'Бас тартылған';
+
+  @override
+  String get unknown => 'Белгісіз';
+
+  @override
+  String get stadium => 'Стадион';
+
+  @override
+  String get notSpecified => 'Көрсетілмеген';
+
+  @override
+  String get stadiumNameNotSpecified => 'Стадион атауы көрсетілмеген';
 }
