@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/common/entities/city_entity.dart';
+import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/countries/domain/use_cases/get_cities_case.dart';
 import 'package:jankuier_mobile/features/countries/presentation/bloc/get_cities_bloc/get_cities_bloc.dart';
 import 'package:jankuier_mobile/features/countries/presentation/bloc/get_cities_bloc/get_cities_event.dart';
@@ -188,6 +189,7 @@ class _FieldsMainState extends State<FieldsMain>
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
+                                    color: AppColors.black
                                   ),
                                 ),
                                 SizedBox(height: 20.h),
@@ -198,9 +200,11 @@ class _FieldsMainState extends State<FieldsMain>
                                   decoration: InputDecoration(
                                     labelText: 'Поиск',
                                     hintText: 'Введите название поля...',
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                     errorText: _searchError,
-                                    prefixIcon: Icon(Icons.search),
+                                    prefixIcon: const Icon(Icons.search),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
                                   onChanged: (value) {
                                     setModalState(() {
@@ -218,7 +222,7 @@ class _FieldsMainState extends State<FieldsMain>
                                     builder: (BuildContext context,
                                         GetCitiesState state) {
                                       if (state is GetCitiesLoadingState) {
-                                        return Center(
+                                        return const Center(
                                           child: CircularProgressIndicator(),
                                         );
                                       }
@@ -251,12 +255,13 @@ class _FieldsMainState extends State<FieldsMain>
                                               (filter, infiniteScrollProps) =>
                                                   state.cities,
                                           decoratorProps:
-                                              DropDownDecoratorProps(
+                                              const DropDownDecoratorProps(
                                             decoration: InputDecoration(
                                               labelText: 'Выберите город',
                                               border: OutlineInputBorder(),
-                                              prefixIcon:
-                                                  Icon(Icons.location_city),
+                                              prefixIcon: Icon(Icons.location_city),
+                                              filled: true,
+                                              fillColor: Colors.white,
                                             ),
                                           ),
                                           popupProps: PopupProps.menu(
@@ -279,7 +284,7 @@ class _FieldsMainState extends State<FieldsMain>
                                           ),
                                         );
                                       }
-                                      return SizedBox();
+                                      return const SizedBox();
                                     },
                                   ),
                                 ),

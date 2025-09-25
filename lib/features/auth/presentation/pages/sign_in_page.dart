@@ -185,13 +185,11 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ),
                                 validator: (v) {
-                                  if (v == null || v.trim().isEmpty)
-                                    return AppLocalizations.of(context)!.enterUsername;
+                                  if (v == null || v.trim().isEmpty) return AppLocalizations.of(context)!.enterUsername;
                                   final username = v.trim();
                                   final re = RegExp(
                                       FormValidationConstant.UserNameRegExp);
-                                  if (!re.hasMatch(username))
-                                    return AppLocalizations.of(context)!.incorrectFormat;
+                                  if (!re.hasMatch(username)) return AppLocalizations.of(context)!.incorrectFormat;
                                   return null; // ok
                                 },
                               ),
@@ -202,8 +200,7 @@ class _SignInPageState extends State<SignInPage> {
                                 obscureText: true,
                                 controller: _passC,
                                 validator: (v) {
-                                  if (v == null || v.isEmpty)
-                                    return AppLocalizations.of(context)!.enterPassword;
+                                  if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
                                   if (v.length < 3) return AppLocalizations.of(context)!.minimumThreeChars;
                                   return null;
                                 },
@@ -212,15 +209,15 @@ class _SignInPageState extends State<SignInPage> {
                                   filled: true,
                                   fillColor: Colors.transparent,
                                   hintText: AppLocalizations.of(context)!.password,
-                                  hintStyle: TextStyle(color: AppColors.white),
+                                  hintStyle: const TextStyle(color: AppColors.white),
                                   // цвет подсказки
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: AppColors.white),
+                                        const BorderSide(color: AppColors.white),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: AppColors.white, width: 2),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -243,19 +240,32 @@ class _SignInPageState extends State<SignInPage> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.yellow[700],
-                                    foregroundColor: Color(0xFF0148C9),
+                                    backgroundColor: state is SignInLoading
+                                        ? Colors.grey[400]
+                                        : Colors.yellow[700],
+                                    foregroundColor: const Color(0xFF0148C9),
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 14),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  onPressed: () => _submitForm(context),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.signIn,
-                                    style: TextStyle(fontSize: 14.sp),
-                                  ),
+                                  onPressed: state is SignInLoading
+                                      ? null
+                                      : () => _submitForm(context),
+                                  child: state is SignInLoading
+                                      ? SizedBox(
+                                          height: 20.h,
+                                          width: 20.w,
+                                          child: const CircularProgressIndicator(
+                                            color: Color(0xFF0148C9),
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : Text(
+                                          AppLocalizations.of(context)!.signIn,
+                                          style: TextStyle(fontSize: 14.sp),
+                                        ),
                                 ),
                               ),
 

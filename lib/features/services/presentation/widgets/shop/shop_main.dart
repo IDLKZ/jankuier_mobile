@@ -27,11 +27,11 @@ class ShopMain extends StatefulWidget {
 class _ShopMainState extends State<ShopMain>
     with AutomaticKeepAliveClientMixin {
   AllProductCategoryParameter allProductCategoryParameter =
-      AllProductCategoryParameter(isActive: true, isShowDeleted: false);
+      const AllProductCategoryParameter(isActive: true, isShowDeleted: false);
   PaginateProductParameter paginateProductParameter =
-      PaginateProductParameter(perPage: 2);
-  PaginateProductParameter recomendedProductParameter =
-      PaginateProductParameter(
+      const PaginateProductParameter(perPage: 2);
+  PaginateProductParameter recommendedProductParameter =
+      const PaginateProductParameter(
           perPage: 1, page: 1, isActive: true, isRecommended: true);
   final ScrollController scrollController = ScrollController();
   ProductBloc? productBloc;
@@ -101,7 +101,7 @@ class _ShopMainState extends State<ShopMain>
         ),
         BlocProvider<RecommendedProductBloc>(
           create: (BuildContext context) => getIt<RecommendedProductBloc>()
-            ..add(GetRecommendedProductEvent(recomendedProductParameter)),
+            ..add(GetRecommendedProductEvent(recommendedProductParameter)),
         ),
         BlocProvider<AllProductCategoryBloc>(
           create: (BuildContext context) => getIt<AllProductCategoryBloc>()
@@ -116,13 +116,13 @@ class _ShopMainState extends State<ShopMain>
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: MainTitleWidget(title: "Магазин"),
+                child: const MainTitleWidget(title: "Магазин"),
               ),
-              ShopBannerProduct(),
+              const ShopBannerProduct(),
               ProductCategoryBottomScheet(
                 onFiltersApplied: _onFiltersApplied,
               ),
-              ProductGridCards(),
+              const ProductGridCards(),
             ],
           ),
         );
