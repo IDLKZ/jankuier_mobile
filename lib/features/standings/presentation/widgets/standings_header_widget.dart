@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class StandingsHeaderWidget extends StatelessWidget {
   final String? tournamentName;
@@ -49,7 +50,7 @@ class StandingsHeaderWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        tournamentName ?? "Первая Лига",
+                        tournamentName ?? AppLocalizations.of(context)!.firstLeague,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18.sp,

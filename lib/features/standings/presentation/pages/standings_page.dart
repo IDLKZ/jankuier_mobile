@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/standings/domain/parameters/match_parameter.dart';
 import '../../../../features/tournament/data/entities/tournament_entity.dart';
-
 import '../../../../core/constants/hive_constants.dart';
 import '../../../../core/utils/hive_utils.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/match_entity.dart';
 import '../../data/entities/score_table_team_entity.dart';
 import '../bloc/standing_bloc.dart';
@@ -108,9 +108,9 @@ class _StandingsPageState extends State<_StandingsPageView>
               color: Colors.white,
               child: TabBar(
                 controller: _tabController,
-                tabs: const [
-                  Tab(text: "Таблица"),
-                  Tab(text: "Результаты"),
+                tabs: [
+                  Tab(text: AppLocalizations.of(context)!.table),
+                  Tab(text: AppLocalizations.of(context)!.results),
                 ],
                 labelColor: Colors.black,
                 unselectedLabelColor: Colors.grey,
@@ -147,7 +147,7 @@ class _StandingsPageState extends State<_StandingsPageView>
           return _buildStandingsTable(state.result);
         } else if (state is GetStandingsTableFromSotaFailedState) {
           return Center(
-            child: Text("Ошибка загрузки: ${state.failureData.message}"),
+            child: Text("${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
           );
         }
         return const SizedBox();
@@ -167,29 +167,29 @@ class _StandingsPageState extends State<_StandingsPageView>
               children: [
                 SizedBox(
                     width: 30.w,
-                    child: Text("№",
+                    child: Text(AppLocalizations.of(context)!.position,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
                 Expanded(
                     flex: 3,
-                    child: Text("Команда",
+                    child: Text(AppLocalizations.of(context)!.team,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
                 SizedBox(
                     width: 30.w,
-                    child: Text("И",
+                    child: Text(AppLocalizations.of(context)!.matchesPlayed,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
                 SizedBox(
                     width: 50.w,
-                    child: Text("Г",
+                    child: Text(AppLocalizations.of(context)!.goalsScored,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
                 SizedBox(
                     width: 30.w,
-                    child: Text("О",
+                    child: Text(AppLocalizations.of(context)!.points,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 12.sp))),
@@ -222,11 +222,11 @@ class _StandingsPageState extends State<_StandingsPageView>
           return _buildMatchesList(state.result);
         } else if (state is GetMatchesFromSotaFailedState) {
           return Center(
-            child: Text("Ошибка загрузки: ${state.failureData.message}"),
+            child: Text("${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
           );
         }
-        return const Center(
-          child: Text("Выберите вкладку 'Результаты' для загрузки матчей"),
+        return Center(
+          child: Text(AppLocalizations.of(context)!.selectResultsTab),
         );
       },
     );
@@ -259,7 +259,7 @@ class _StandingsPageState extends State<_StandingsPageView>
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 color: Colors.grey[200],
                 child: Text(
-                  "Тур $tour",
+                  "${AppLocalizations.of(context)!.tour} $tour",
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

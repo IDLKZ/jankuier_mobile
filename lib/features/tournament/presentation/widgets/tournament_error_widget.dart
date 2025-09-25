@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class TournamentErrorWidget extends StatelessWidget {
   final String error;
   final VoidCallback onRetry;
@@ -33,7 +35,7 @@ class TournamentErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Text(
-              'Ошибка загрузки турниров',
+              AppLocalizations.of(context)!.tournamentLoadingError,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -70,7 +72,7 @@ class TournamentErrorWidget extends StatelessWidget {
                   size: 20.sp,
                 ),
                 label: Text(
-                  'Повторить попытку',
+                  AppLocalizations.of(context)!.retryAttempt,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

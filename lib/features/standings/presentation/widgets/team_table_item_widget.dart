@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/score_table_team_entity.dart';
 
 class TeamTableItemWidget extends StatelessWidget {
@@ -120,15 +121,15 @@ class TeamTableItemWidget extends StatelessWidget {
             children: [
               SizedBox(
                 width: 30.w,
-                child: _buildStatItem("И", "${team.matches}", AppColors.textSecondary),
+                child: _buildStatItem(AppLocalizations.of(context)!.matchesPlayed, "${team.matches}", AppColors.textSecondary),
               ),
               SizedBox(
                 width: 50.w,
-                child: _buildStatItem("Г", team.goals, AppColors.textSecondary),
+                child: _buildStatItem(AppLocalizations.of(context)!.goalsScored, team.goals, AppColors.textSecondary),
               ),
               SizedBox(
                 width: 30.w,
-                child: _buildStatItem("О", "${team.points}", AppColors.gradientStart),
+                child: _buildStatItem(AppLocalizations.of(context)!.points, "${team.points}", AppColors.gradientStart),
               ),
             ],
           ),

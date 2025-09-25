@@ -252,7 +252,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get players => 'Игроки';
 
   @override
-  String get loadingErrorWithMessage => 'Ошибка загрузки';
+  String get loadingErrorWithMessage => 'Ошибка загрузки:';
 
   @override
   String get selectLineupTabToLoad =>
@@ -896,10 +896,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get any => 'Любой';
 
   @override
-  String get male => 'Мужской';
+  String get male => 'М';
 
   @override
-  String get female => 'Женский';
+  String get female => 'Ж';
 
   @override
   String get age => 'Возраст';
@@ -930,4 +930,194 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get buy => 'Купить';
+
+  @override
+  String get firstLeague => 'Первая лига';
+
+  @override
+  String get activeTickets => 'Активные билеты';
+
+  @override
+  String get buyTickets => 'Купить билеты';
+
+  @override
+  String get loading => 'Загрузка...';
+
+  @override
+  String get httpError => 'HTTP ошибка';
+
+  @override
+  String get tryAgain => 'Попробовать снова';
+
+  @override
+  String get repeatPayment => 'Повторная оплата';
+
+  @override
+  String get loadingPayment => 'Загрузка оплаты...';
+
+  @override
+  String get noActiveTicketsYet => 'Пока нет активных билетов';
+
+  @override
+  String get city => 'Город';
+
+  @override
+  String get event => 'Событие';
+
+  @override
+  String get venueNotSpecified => 'Место не указано';
+
+  @override
+  String get sport => 'СПОРТ';
+
+  @override
+  String get venue => 'Место проведения';
+
+  @override
+  String get pleaseAuthorize => 'Пожалуйста, пройдите авторизацию';
+
+  @override
+  String get youHaveNoOrdersYet => 'У вас пока нет заказов';
+
+  @override
+  String get orderedTicketsWillAppearHere =>
+      'Заказанные билеты будут отображаться здесь';
+
+  @override
+  String get orderDetails => 'Детали заказа #';
+
+  @override
+  String get genre => 'Жанр:';
+
+  @override
+  String get duration => 'Длительность:';
+
+  @override
+  String get unknownLocation => 'Неизвестное место';
+
+  @override
+  String get unknownCity => 'Неизвестный город';
+
+  @override
+  String get hall => 'Зал:';
+
+  @override
+  String get unknownHall => 'Неизвестный зал';
+
+  @override
+  String get ticket => 'Билет';
+
+  @override
+  String get row => 'Ряд';
+
+  @override
+  String get seat => 'Место';
+
+  @override
+  String get level => 'Уровень:';
+
+  @override
+  String get orderInformation => 'Информация о заказе';
+
+  @override
+  String get ticketCount => 'Количество билетов';
+
+  @override
+  String get totalCost => 'Общая стоимость';
+
+  @override
+  String get phone => 'Телефон';
+
+  @override
+  String get dateCreated => 'Дата создания';
+
+  @override
+  String get cancellationReason => 'Причина отмены';
+
+  @override
+  String get cancelOrder => 'Отменить заказ';
+
+  @override
+  String get payOrder => 'Оплатить заказ';
+
+  @override
+  String get showPass => 'Показать пропуск';
+
+  @override
+  String get statusCanceled => 'ОТМЕНЕН';
+
+  @override
+  String get statusPaid => 'ОПЛАЧЕН';
+
+  @override
+  String get statusActive => 'АКТИВЕН';
+
+  @override
+  String get statusInactive => 'НЕАКТИВЕН';
+
+  @override
+  String get eventPass => 'Пропуск на мероприятие';
+
+  @override
+  String get order => 'Заказ #';
+
+  @override
+  String get loadingPass => 'Загрузка пропуска...';
+
+  @override
+  String get passLoadingError => 'Ошибка загрузки пропуска';
+
+  @override
+  String get qrCodeUnavailable => 'QR-код недоступен';
+
+  @override
+  String get qrCodesNotFound => 'QR-коды не найдены';
+
+  @override
+  String get amount => 'Сумма';
+
+  @override
+  String get ticketsCount => 'Билетов';
+
+  @override
+  String get details => 'Детали';
+
+  @override
+  String get selectCountryFirst => 'Сначала выберите страну';
+
+  @override
+  String get season => 'Сезон:';
+
+  @override
+  String get tournamentSelected => 'Выбран турнир:';
+
+  @override
+  String get tournamentSaveError => 'Ошибка сохранения турнира';
+
+  @override
+  String get selectTournament => 'Выберите турнир';
+
+  @override
+  String get international => 'Межд.';
+
+  @override
+  String get tournamentLoadingError => 'Ошибка загрузки турниров';
+
+  @override
+  String get retryAttempt => 'Повторить попытку';
+
+  @override
+  String get searchTournaments => 'Поиск турниров...';
+
+  @override
+  String get maleTournaments => 'Мужские';
+
+  @override
+  String get femaleTournaments => 'Женские';
+
+  @override
+  String get tryChangeSearchFilters => 'Попробуйте изменить фильтры поиска';
+
+  @override
+  String get touchScreenToSkip => 'Коснитесь экрана, чтобы пропустить';
 }

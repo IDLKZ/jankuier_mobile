@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/parameters/get_tournament_parameter.dart';
 
 class TournamentFiltersWidget extends StatefulWidget {
@@ -61,7 +62,7 @@ class _TournamentFiltersWidgetState extends State<TournamentFiltersWidget> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Поиск турниров...',
+              hintText: AppLocalizations.of(context)!.searchTournaments,
               hintStyle: TextStyle(
                 color: Colors.grey[500],
                 fontSize: 14.sp,
@@ -113,7 +114,7 @@ class _TournamentFiltersWidgetState extends State<TournamentFiltersWidget> {
             children: [
               Expanded(
                 child: _buildGenderFilter(
-                  label: 'Мужские',
+                  label: AppLocalizations.of(context)!.maleTournaments,
                   icon: Icons.male,
                   isSelected: _isMale,
                   onTap: () {
@@ -127,7 +128,7 @@ class _TournamentFiltersWidgetState extends State<TournamentFiltersWidget> {
               SizedBox(width: 12.w),
               Expanded(
                 child: _buildGenderFilter(
-                  label: 'Женские',
+                  label: AppLocalizations.of(context)!.femaleTournaments,
                   icon: Icons.female,
                   isSelected: !_isMale,
                   onTap: () {

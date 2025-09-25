@@ -249,7 +249,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get players => 'Ойыншылар';
 
   @override
-  String get loadingErrorWithMessage => 'Жүктеу қатесі';
+  String get loadingErrorWithMessage => 'Жүктеу қатесі:';
 
   @override
   String get selectLineupTabToLoad => '\'Құрам\' қойындысын таңдаңыз';
@@ -892,10 +892,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get any => 'Кез келген';
 
   @override
-  String get male => 'Ер';
+  String get male => 'Ер.';
 
   @override
-  String get female => 'Әйел';
+  String get female => 'Әй.';
 
   @override
   String get age => 'Жасы';
@@ -926,4 +926,194 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get buy => 'Сатып алу';
+
+  @override
+  String get firstLeague => 'Бірінші лига';
+
+  @override
+  String get activeTickets => 'Белсенді билеттер';
+
+  @override
+  String get buyTickets => 'Билет сатып алу';
+
+  @override
+  String get loading => 'Жүктелуде...';
+
+  @override
+  String get httpError => 'HTTP қатесі';
+
+  @override
+  String get tryAgain => 'Қайта көру';
+
+  @override
+  String get repeatPayment => 'Қайталап төлеу';
+
+  @override
+  String get loadingPayment => 'Төлем жүктелуде...';
+
+  @override
+  String get noActiveTicketsYet => 'Әлі белсенді билеттер жоқ';
+
+  @override
+  String get city => 'Қала';
+
+  @override
+  String get event => 'Оқиға';
+
+  @override
+  String get venueNotSpecified => 'Орын көрсетілмеген';
+
+  @override
+  String get sport => 'СПОРТ';
+
+  @override
+  String get venue => 'Өткізу орны';
+
+  @override
+  String get pleaseAuthorize => 'Өтінім, авторизациядан өтіңіз';
+
+  @override
+  String get youHaveNoOrdersYet => 'Сізде әлі тапсырыстар жоқ';
+
+  @override
+  String get orderedTicketsWillAppearHere =>
+      'Тапсырыс берілген билеттер осы жерде көрсетіледі';
+
+  @override
+  String get orderDetails => 'Тапсырыс мәліметтері #';
+
+  @override
+  String get genre => 'Жанр:';
+
+  @override
+  String get duration => 'Ұзақтығы:';
+
+  @override
+  String get unknownLocation => 'Белгісіз орын';
+
+  @override
+  String get unknownCity => 'Белгісіз қала';
+
+  @override
+  String get hall => 'Зал:';
+
+  @override
+  String get unknownHall => 'Белгісіз зал';
+
+  @override
+  String get ticket => 'Билет';
+
+  @override
+  String get row => 'Қатар';
+
+  @override
+  String get seat => 'Орын';
+
+  @override
+  String get level => 'Деңгей:';
+
+  @override
+  String get orderInformation => 'Тапсырыс туралы ақпарат';
+
+  @override
+  String get ticketCount => 'Билеттер саны';
+
+  @override
+  String get totalCost => 'Жалпы құны';
+
+  @override
+  String get phone => 'Телефон';
+
+  @override
+  String get dateCreated => 'Ұйымдастыру күні';
+
+  @override
+  String get cancellationReason => 'Болдырмау себебі';
+
+  @override
+  String get cancelOrder => 'Тапсырысты болдырмау';
+
+  @override
+  String get payOrder => 'Тапсырыс үшін төлеу';
+
+  @override
+  String get showPass => 'Өту құжатын көрсету';
+
+  @override
+  String get statusCanceled => 'БОЛДЫРМАЛМАғАН';
+
+  @override
+  String get statusPaid => 'ТӨЛЕНГЕН';
+
+  @override
+  String get statusActive => 'БЕЛСЕНДІ';
+
+  @override
+  String get statusInactive => 'БЕЛСЕНДІ ЕМЕС';
+
+  @override
+  String get eventPass => 'Оқиғаға құжат';
+
+  @override
+  String get order => 'Тапсырыс #';
+
+  @override
+  String get loadingPass => 'Құжат жүктелуде...';
+
+  @override
+  String get passLoadingError => 'Құжатты жүктеу қатесі';
+
+  @override
+  String get qrCodeUnavailable => 'QR-код қол жетімді емес';
+
+  @override
+  String get qrCodesNotFound => 'QR-кодтар табылмады';
+
+  @override
+  String get amount => 'Сома';
+
+  @override
+  String get ticketsCount => 'Билеттер';
+
+  @override
+  String get details => 'Мәліметтер';
+
+  @override
+  String get selectCountryFirst => 'Алдымен елді таңдаңыз';
+
+  @override
+  String get season => 'Маусым:';
+
+  @override
+  String get tournamentSelected => 'Турнир таңдалған:';
+
+  @override
+  String get tournamentSaveError => 'Турнирді сақтау қатесі';
+
+  @override
+  String get selectTournament => 'Турнир таңдаңыз';
+
+  @override
+  String get international => 'Хал.';
+
+  @override
+  String get tournamentLoadingError => 'Турнирлерді жүктеу қатесі';
+
+  @override
+  String get retryAttempt => 'Қайта көру';
+
+  @override
+  String get searchTournaments => 'Турнирлерді іздеу...';
+
+  @override
+  String get maleTournaments => 'Ерлер';
+
+  @override
+  String get femaleTournaments => 'Әйелдер';
+
+  @override
+  String get tryChangeSearchFilters => 'Іздеу сүзгілерін өзгертуге тырысыңыз';
+
+  @override
+  String get touchScreenToSkip => 'Өткізіп жіберу үшін экранға тегіңіз';
 }

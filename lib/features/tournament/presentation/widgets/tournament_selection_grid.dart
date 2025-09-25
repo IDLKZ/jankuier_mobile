@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/entities/sota_pagination_entity.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/sota_api_constants.dart';
 import '../../data/entities/tournament_entity.dart';
 import 'tournament_card_widget.dart';
@@ -37,7 +38,7 @@ class TournamentSelectionGrid extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Турниры не найдены',
+              AppLocalizations.of(context)!.tournamentsNotFound,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w500,
@@ -46,7 +47,7 @@ class TournamentSelectionGrid extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Попробуйте изменить фильтры поиска',
+              AppLocalizations.of(context)!.tryChangeSearchFilters,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[500],

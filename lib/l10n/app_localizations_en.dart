@@ -252,7 +252,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get players => 'Players';
 
   @override
-  String get loadingErrorWithMessage => 'Loading error';
+  String get loadingErrorWithMessage => 'Loading error:';
 
   @override
   String get selectLineupTabToLoad => 'Select \'Lineup\' tab to load lineup';
@@ -346,7 +346,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tournaments => 'Tournaments';
 
   @override
-  String get tournamentsNotFound => 'No tournaments found';
+  String get tournamentsNotFound => 'Tournaments not found';
 
   @override
   String get tournamentsLoadError => 'Error loading tournaments';
@@ -894,10 +894,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get any => 'Any';
 
   @override
-  String get male => 'Male';
+  String get male => 'M';
 
   @override
-  String get female => 'Female';
+  String get female => 'F';
 
   @override
   String get age => 'Age';
@@ -928,4 +928,193 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get buy => 'Buy';
+
+  @override
+  String get firstLeague => 'First League';
+
+  @override
+  String get activeTickets => 'Active Tickets';
+
+  @override
+  String get buyTickets => 'Buy Tickets';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get httpError => 'HTTP error';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get repeatPayment => 'Repeat Payment';
+
+  @override
+  String get loadingPayment => 'Loading payment...';
+
+  @override
+  String get noActiveTicketsYet => 'No active tickets yet';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get event => 'Event';
+
+  @override
+  String get venueNotSpecified => 'Venue not specified';
+
+  @override
+  String get sport => 'SPORT';
+
+  @override
+  String get venue => 'Venue';
+
+  @override
+  String get pleaseAuthorize => 'Please authorize';
+
+  @override
+  String get youHaveNoOrdersYet => 'You have no orders yet';
+
+  @override
+  String get orderedTicketsWillAppearHere => 'Ordered tickets will appear here';
+
+  @override
+  String get orderDetails => 'Order Details #';
+
+  @override
+  String get genre => 'Genre:';
+
+  @override
+  String get duration => 'Duration:';
+
+  @override
+  String get unknownLocation => 'Unknown location';
+
+  @override
+  String get unknownCity => 'Unknown city';
+
+  @override
+  String get hall => 'Hall:';
+
+  @override
+  String get unknownHall => 'Unknown hall';
+
+  @override
+  String get ticket => 'Ticket';
+
+  @override
+  String get row => 'Row';
+
+  @override
+  String get seat => 'Seat';
+
+  @override
+  String get level => 'Level:';
+
+  @override
+  String get orderInformation => 'Order Information';
+
+  @override
+  String get ticketCount => 'Ticket count';
+
+  @override
+  String get totalCost => 'Total cost';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get dateCreated => 'Date created';
+
+  @override
+  String get cancellationReason => 'Cancellation reason';
+
+  @override
+  String get cancelOrder => 'Cancel order';
+
+  @override
+  String get payOrder => 'Pay order';
+
+  @override
+  String get showPass => 'Show pass';
+
+  @override
+  String get statusCanceled => 'CANCELED';
+
+  @override
+  String get statusPaid => 'PAID';
+
+  @override
+  String get statusActive => 'ACTIVE';
+
+  @override
+  String get statusInactive => 'INACTIVE';
+
+  @override
+  String get eventPass => 'Event Pass';
+
+  @override
+  String get order => 'Order #';
+
+  @override
+  String get loadingPass => 'Loading pass...';
+
+  @override
+  String get passLoadingError => 'Error loading pass';
+
+  @override
+  String get qrCodeUnavailable => 'QR code unavailable';
+
+  @override
+  String get qrCodesNotFound => 'QR codes not found';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get ticketsCount => 'Tickets';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get selectCountryFirst => 'Select country first';
+
+  @override
+  String get season => 'Season:';
+
+  @override
+  String get tournamentSelected => 'Tournament selected:';
+
+  @override
+  String get tournamentSaveError => 'Error saving tournament';
+
+  @override
+  String get selectTournament => 'Select Tournament';
+
+  @override
+  String get international => 'Int.';
+
+  @override
+  String get tournamentLoadingError => 'Error loading tournaments';
+
+  @override
+  String get retryAttempt => 'Retry attempt';
+
+  @override
+  String get searchTournaments => 'Search tournaments...';
+
+  @override
+  String get maleTournaments => 'Male';
+
+  @override
+  String get femaleTournaments => 'Female';
+
+  @override
+  String get tryChangeSearchFilters => 'Try changing search filters';
+
+  @override
+  String get touchScreenToSkip => 'Touch screen to skip';
 }

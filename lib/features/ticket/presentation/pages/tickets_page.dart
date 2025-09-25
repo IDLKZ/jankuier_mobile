@@ -4,9 +4,8 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/widgets/my_tickets.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
+import '../../../../l10n/app_localizations.dart';
 
-import '../../../../core/di/injection.dart';
-import '../../../../core/utils/hive_utils.dart';
 import '../widgets/new_tickets.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -37,7 +36,7 @@ class _TicketsPageState extends State<TicketsPage>
     return Scaffold(
       backgroundColor: AppColors.grey100,
       appBar: PagesCommonAppBar(
-          title: "Билеты", actionIcon: Iconsax.ticket, onActionTap: () {}),
+          title: AppLocalizations.of(context)!.tickets, actionIcon: Iconsax.ticket, onActionTap: () {}),
       body: Padding(
         padding: const EdgeInsets.symmetric(),
         child: Column(
@@ -61,12 +60,12 @@ class _TicketsPageState extends State<TicketsPage>
                     ),
                     labelColor: AppColors.white,
                     unselectedLabelColor: AppColors.grey500,
-                    tabs: const [
+                    tabs: [
                       Tab(
-                        text: "Активные билеты",
+                        text: AppLocalizations.of(context)!.activeTickets,
                       ),
                       Tab(
-                        text: "Мои билеты",
+                        text: AppLocalizations.of(context)!.yourTickets,
                       )
                     ]),
               ),

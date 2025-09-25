@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class WelcomeVideoPage extends StatefulWidget {
   const WelcomeVideoPage({super.key});
@@ -135,7 +136,7 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
                 right: 20.w,
                 child: SafeArea(
                   child: Text(
-                    'Коснитесь экрана, чтобы пропустить',
+                    AppLocalizations.of(context)!.touchScreenToSkip,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.4),
                       fontSize: 12.sp,

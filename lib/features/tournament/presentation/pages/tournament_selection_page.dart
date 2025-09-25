@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/main_selection_service.dart';
 import '../../../../core/constants/app_route_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/parameters/get_tournament_parameter.dart';
 import '../../data/entities/tournament_entity.dart';
 import '../bloc/get_tournaments/get_tournament_bloc.dart';
@@ -51,7 +52,7 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
     if (!hasCountry) {
       if (mounted) {
         Fluttertoast.showToast(
-          msg: 'Сначала выберите страну',
+          msg: AppLocalizations.of(context)!.selectCountryFirst,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
         );
@@ -75,10 +76,10 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
       
       // Get the selected season info for the toast
       final activeSeason = await mainSelectionService.getActiveSeason();
-      final seasonInfo = activeSeason != null ? ' (Сезон: ${activeSeason.name})' : '';
+      final seasonInfo = activeSeason != null ? ' (${AppLocalizations.of(context)!.season} ${activeSeason.name})' : '';
       
       Fluttertoast.showToast(
-        msg: 'Выбран турнир: ${tournament.name}$seasonInfo',
+        msg: '${AppLocalizations.of(context)!.tournamentSelected} ${tournament.name}$seasonInfo',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
       );
@@ -95,7 +96,7 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
       if (!mounted) return;
       
       Fluttertoast.showToast(
-        msg: 'Ошибка сохранения турнира',
+        msg: AppLocalizations.of(context)!.tournamentSaveError,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -129,7 +130,7 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
           backgroundColor: Colors.white,
           elevation: 0,
           title: Text(
-            'Выберите турнир',
+            AppLocalizations.of(context)!.selectTournament,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -169,7 +170,7 @@ class _TournamentSelectionPageState extends State<TournamentSelectionPage> {
                     );
                   } else if (state is GetTournamentStateFailedState) {
                     return TournamentErrorWidget(
-                      error: state.failureData.message ?? 'Unknown error',
+                      error: state.failureData.message ?? AppLocalizations.of(context)!.unknownError,
                       onRetry: _loadTournaments,
                     );
                       }

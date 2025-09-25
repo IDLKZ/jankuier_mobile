@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../../core/constants/api_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class TicketWebViewPage extends StatefulWidget {
   final String showId;
@@ -42,7 +43,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Купить билеты'),
+        title: Text(AppLocalizations.of(context)!.buyTickets),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -286,7 +287,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
             onReceivedError: (controller, request, error) {
               setState(() {
                 isLoading = false;
-                errorMessage = 'Ошибка загрузки: ${error.description}';
+                errorMessage = '${AppLocalizations.of(context)!.loadingError}: ${error.description}';
               });
             },
             onReceivedHttpError: (controller, request, errorResponse) {
@@ -311,7 +312,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
               // Показываем ошибку только для критических случаев
               setState(() {
                 isLoading = false;
-                errorMessage = 'HTTP ошибка ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
+                errorMessage = '${AppLocalizations.of(context)!.httpError} ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
               });
             },
             onConsoleMessage: (controller, consoleMessage) {
@@ -328,7 +329,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
                     const CircularProgressIndicator(),
                     SizedBox(height: 16.h),
                     Text(
-                      'Загрузка...',
+                      AppLocalizations.of(context)!.loading,
                       style: TextStyle(fontSize: 16.sp),
                     ),
                     if (progress > 0)
@@ -363,7 +364,7 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
                       onPressed: () {
                         webViewController?.reload();
                       },
-                      child: const Text('Попробовать снова'),
+                      child: Text(AppLocalizations.of(context)!.tryAgain),
                     ),
                   ],
                 ),

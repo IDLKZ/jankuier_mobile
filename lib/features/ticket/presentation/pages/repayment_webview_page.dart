@@ -6,6 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/hive_utils.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class RepaymentWebViewPage extends StatefulWidget {
   final String orderId;
@@ -66,7 +67,7 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Повторная оплата'),
+        title: Text(AppLocalizations.of(context)!.repeatPayment),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -262,7 +263,7 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
             onReceivedError: (controller, request, error) {
               setState(() {
                 isLoading = false;
-                errorMessage = 'Ошибка загрузки: ${error.description}';
+                errorMessage = '${AppLocalizations.of(context)!.loadingError}: ${error.description}';
               });
             },
             onReceivedHttpError: (controller, request, errorResponse) {
@@ -287,7 +288,7 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
               // Показываем ошибку только для критических случаев
               setState(() {
                 isLoading = false;
-                errorMessage = 'HTTP ошибка ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
+                errorMessage = '${AppLocalizations.of(context)!.httpError} ${errorResponse.statusCode}: ${errorResponse.reasonPhrase}';
               });
             },
             onConsoleMessage: (controller, consoleMessage) {
@@ -304,7 +305,7 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
                     const CircularProgressIndicator(),
                     SizedBox(height: 16.h),
                     Text(
-                      'Загрузка оплаты...',
+                      AppLocalizations.of(context)!.loadingPayment,
                       style: TextStyle(fontSize: 16.sp),
                     ),
                     if (progress > 0)
@@ -339,7 +340,7 @@ class _RepaymentWebViewPageState extends State<RepaymentWebViewPage> {
                       onPressed: () {
                         webViewController?.reload();
                       },
-                      child: const Text('Попробовать снова'),
+                      child: Text(AppLocalizations.of(context)!.tryAgain),
                     ),
                   ],
                 ),

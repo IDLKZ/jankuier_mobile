@@ -577,7 +577,7 @@ abstract class AppLocalizations {
   /// No description provided for @loadingErrorWithMessage.
   ///
   /// In ru, this message translates to:
-  /// **'Ошибка загрузки'**
+  /// **'Ошибка загрузки:'**
   String get loadingErrorWithMessage;
 
   /// No description provided for @selectLineupTabToLoad.
@@ -1849,13 +1849,13 @@ abstract class AppLocalizations {
   /// No description provided for @male.
   ///
   /// In ru, this message translates to:
-  /// **'Мужской'**
+  /// **'М'**
   String get male;
 
   /// No description provided for @female.
   ///
   /// In ru, this message translates to:
-  /// **'Женский'**
+  /// **'Ж'**
   String get female;
 
   /// No description provided for @age.
@@ -1917,6 +1917,384 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Купить'**
   String get buy;
+
+  /// No description provided for @firstLeague.
+  ///
+  /// In ru, this message translates to:
+  /// **'Первая лига'**
+  String get firstLeague;
+
+  /// No description provided for @activeTickets.
+  ///
+  /// In ru, this message translates to:
+  /// **'Активные билеты'**
+  String get activeTickets;
+
+  /// No description provided for @buyTickets.
+  ///
+  /// In ru, this message translates to:
+  /// **'Купить билеты'**
+  String get buyTickets;
+
+  /// No description provided for @loading.
+  ///
+  /// In ru, this message translates to:
+  /// **'Загрузка...'**
+  String get loading;
+
+  /// No description provided for @httpError.
+  ///
+  /// In ru, this message translates to:
+  /// **'HTTP ошибка'**
+  String get httpError;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробовать снова'**
+  String get tryAgain;
+
+  /// No description provided for @repeatPayment.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторная оплата'**
+  String get repeatPayment;
+
+  /// No description provided for @loadingPayment.
+  ///
+  /// In ru, this message translates to:
+  /// **'Загрузка оплаты...'**
+  String get loadingPayment;
+
+  /// No description provided for @noActiveTicketsYet.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пока нет активных билетов'**
+  String get noActiveTicketsYet;
+
+  /// No description provided for @city.
+  ///
+  /// In ru, this message translates to:
+  /// **'Город'**
+  String get city;
+
+  /// No description provided for @event.
+  ///
+  /// In ru, this message translates to:
+  /// **'Событие'**
+  String get event;
+
+  /// No description provided for @venueNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Место не указано'**
+  String get venueNotSpecified;
+
+  /// No description provided for @sport.
+  ///
+  /// In ru, this message translates to:
+  /// **'СПОРТ'**
+  String get sport;
+
+  /// No description provided for @venue.
+  ///
+  /// In ru, this message translates to:
+  /// **'Место проведения'**
+  String get venue;
+
+  /// No description provided for @pleaseAuthorize.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пожалуйста, пройдите авторизацию'**
+  String get pleaseAuthorize;
+
+  /// No description provided for @youHaveNoOrdersYet.
+  ///
+  /// In ru, this message translates to:
+  /// **'У вас пока нет заказов'**
+  String get youHaveNoOrdersYet;
+
+  /// No description provided for @orderedTicketsWillAppearHere.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заказанные билеты будут отображаться здесь'**
+  String get orderedTicketsWillAppearHere;
+
+  /// No description provided for @orderDetails.
+  ///
+  /// In ru, this message translates to:
+  /// **'Детали заказа #'**
+  String get orderDetails;
+
+  /// No description provided for @genre.
+  ///
+  /// In ru, this message translates to:
+  /// **'Жанр:'**
+  String get genre;
+
+  /// No description provided for @duration.
+  ///
+  /// In ru, this message translates to:
+  /// **'Длительность:'**
+  String get duration;
+
+  /// No description provided for @unknownLocation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неизвестное место'**
+  String get unknownLocation;
+
+  /// No description provided for @unknownCity.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неизвестный город'**
+  String get unknownCity;
+
+  /// No description provided for @hall.
+  ///
+  /// In ru, this message translates to:
+  /// **'Зал:'**
+  String get hall;
+
+  /// No description provided for @unknownHall.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неизвестный зал'**
+  String get unknownHall;
+
+  /// No description provided for @ticket.
+  ///
+  /// In ru, this message translates to:
+  /// **'Билет'**
+  String get ticket;
+
+  /// No description provided for @row.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ряд'**
+  String get row;
+
+  /// No description provided for @seat.
+  ///
+  /// In ru, this message translates to:
+  /// **'Место'**
+  String get seat;
+
+  /// No description provided for @level.
+  ///
+  /// In ru, this message translates to:
+  /// **'Уровень:'**
+  String get level;
+
+  /// No description provided for @orderInformation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Информация о заказе'**
+  String get orderInformation;
+
+  /// No description provided for @ticketCount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Количество билетов'**
+  String get ticketCount;
+
+  /// No description provided for @totalCost.
+  ///
+  /// In ru, this message translates to:
+  /// **'Общая стоимость'**
+  String get totalCost;
+
+  /// No description provided for @phone.
+  ///
+  /// In ru, this message translates to:
+  /// **'Телефон'**
+  String get phone;
+
+  /// No description provided for @dateCreated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата создания'**
+  String get dateCreated;
+
+  /// No description provided for @cancellationReason.
+  ///
+  /// In ru, this message translates to:
+  /// **'Причина отмены'**
+  String get cancellationReason;
+
+  /// No description provided for @cancelOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отменить заказ'**
+  String get cancelOrder;
+
+  /// No description provided for @payOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплатить заказ'**
+  String get payOrder;
+
+  /// No description provided for @showPass.
+  ///
+  /// In ru, this message translates to:
+  /// **'Показать пропуск'**
+  String get showPass;
+
+  /// No description provided for @statusCanceled.
+  ///
+  /// In ru, this message translates to:
+  /// **'ОТМЕНЕН'**
+  String get statusCanceled;
+
+  /// No description provided for @statusPaid.
+  ///
+  /// In ru, this message translates to:
+  /// **'ОПЛАЧЕН'**
+  String get statusPaid;
+
+  /// No description provided for @statusActive.
+  ///
+  /// In ru, this message translates to:
+  /// **'АКТИВЕН'**
+  String get statusActive;
+
+  /// No description provided for @statusInactive.
+  ///
+  /// In ru, this message translates to:
+  /// **'НЕАКТИВЕН'**
+  String get statusInactive;
+
+  /// No description provided for @eventPass.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пропуск на мероприятие'**
+  String get eventPass;
+
+  /// No description provided for @order.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заказ #'**
+  String get order;
+
+  /// No description provided for @loadingPass.
+  ///
+  /// In ru, this message translates to:
+  /// **'Загрузка пропуска...'**
+  String get loadingPass;
+
+  /// No description provided for @passLoadingError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки пропуска'**
+  String get passLoadingError;
+
+  /// No description provided for @qrCodeUnavailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'QR-код недоступен'**
+  String get qrCodeUnavailable;
+
+  /// No description provided for @qrCodesNotFound.
+  ///
+  /// In ru, this message translates to:
+  /// **'QR-коды не найдены'**
+  String get qrCodesNotFound;
+
+  /// No description provided for @amount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сумма'**
+  String get amount;
+
+  /// No description provided for @ticketsCount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Билетов'**
+  String get ticketsCount;
+
+  /// No description provided for @details.
+  ///
+  /// In ru, this message translates to:
+  /// **'Детали'**
+  String get details;
+
+  /// No description provided for @selectCountryFirst.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сначала выберите страну'**
+  String get selectCountryFirst;
+
+  /// No description provided for @season.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сезон:'**
+  String get season;
+
+  /// No description provided for @tournamentSelected.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбран турнир:'**
+  String get tournamentSelected;
+
+  /// No description provided for @tournamentSaveError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка сохранения турнира'**
+  String get tournamentSaveError;
+
+  /// No description provided for @selectTournament.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите турнир'**
+  String get selectTournament;
+
+  /// No description provided for @international.
+  ///
+  /// In ru, this message translates to:
+  /// **'Межд.'**
+  String get international;
+
+  /// No description provided for @tournamentLoadingError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки турниров'**
+  String get tournamentLoadingError;
+
+  /// No description provided for @retryAttempt.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторить попытку'**
+  String get retryAttempt;
+
+  /// No description provided for @searchTournaments.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поиск турниров...'**
+  String get searchTournaments;
+
+  /// No description provided for @maleTournaments.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мужские'**
+  String get maleTournaments;
+
+  /// No description provided for @femaleTournaments.
+  ///
+  /// In ru, this message translates to:
+  /// **'Женские'**
+  String get femaleTournaments;
+
+  /// No description provided for @tryChangeSearchFilters.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте изменить фильтры поиска'**
+  String get tryChangeSearchFilters;
+
+  /// No description provided for @touchScreenToSkip.
+  ///
+  /// In ru, this message translates to:
+  /// **'Коснитесь экрана, чтобы пропустить'**
+  String get touchScreenToSkip;
 }
 
 class _AppLocalizationsDelegate

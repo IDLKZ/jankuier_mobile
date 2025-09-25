@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/utils/hive_utils.dart';
@@ -60,7 +61,7 @@ class NewTicketWidgets extends StatelessWidget {
         );
       }
       if (state is TicketonShowsError) {
-        return const Center(child: Text("Пока нет активных билетов"));
+        return Center(child: Text(AppLocalizations.of(context)!.noActiveTicketsYet));
       }
       return const Center(
         child: CircularProgressIndicator(),
@@ -182,7 +183,7 @@ class TicketCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Text(
-                        cityName ?? "Город",
+                        cityName ?? AppLocalizations.of(context)!.city,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 10.sp,
@@ -208,7 +209,7 @@ class TicketCard extends StatelessWidget {
                   children: [
                     // Название события
                     Text(
-                      name ?? "Событие",
+                      name ?? AppLocalizations.of(context)!.event,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
@@ -261,7 +262,7 @@ class TicketCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                placeName ?? "Место не указано",
+                                placeName ?? AppLocalizations.of(context)!.venueNotSpecified,
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.w600,
@@ -455,7 +456,7 @@ class TicketCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(16.r),
                               ),
                               child: Text(
-                                genre?.toUpperCase() ?? "СПОРТ",
+                                genre?.toUpperCase() ?? AppLocalizations.of(context)!.sport,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w600,
@@ -547,7 +548,7 @@ class TicketCard extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Место проведения',
+                                        AppLocalizations.of(context)!.venue,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
@@ -591,7 +592,7 @@ class TicketCard extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Дата и время',
+                                        AppLocalizations.of(context)!.dateAndTime,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
@@ -602,7 +603,7 @@ class TicketCard extends StatelessWidget {
                                       Text(
                                         startAt != null
                                           ? dateFormatter.format(startAt!.toLocal())
-                                          : "Время не указано",
+                                          : AppLocalizations.of(context)!.timeNotSpecified,
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
@@ -654,7 +655,7 @@ class TicketCard extends StatelessWidget {
                                 ),
                                 SizedBox(width: 8.w),
                                 Text(
-                                  'Купить билеты',
+                                  AppLocalizations.of(context)!.buyTickets,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,

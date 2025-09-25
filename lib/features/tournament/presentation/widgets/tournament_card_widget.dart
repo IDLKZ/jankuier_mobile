@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/tournament_entity.dart';
 
 class TournamentCardWidget extends StatelessWidget {
@@ -78,11 +79,11 @@ class TournamentCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (tournament.isInternational)
-                          _buildChip('Межд.', Colors.blue),
+                          _buildChip(AppLocalizations.of(context)!.international, Colors.blue),
                         if (tournament.isInternational && tournament.isMale)
                           SizedBox(width: 4.w),
-                        if (tournament.isMale) _buildChip('М', Colors.green),
-                        if (!tournament.isMale) _buildChip('Ж', Colors.pink),
+                        if (tournament.isMale) _buildChip(AppLocalizations.of(context)!.male, Colors.green),
+                        if (!tournament.isMale) _buildChip(AppLocalizations.of(context)!.female, Colors.pink),
                       ],
                     ),
                   ],
