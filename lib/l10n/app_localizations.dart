@@ -939,6 +939,114 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Только что'**
   String get justNow;
+
+  /// No description provided for @nationalTeamMatches.
+  ///
+  /// In ru, this message translates to:
+  /// **'Матчи Сборной'**
+  String get nationalTeamMatches;
+
+  /// No description provided for @loadingLeagues.
+  ///
+  /// In ru, this message translates to:
+  /// **'Загружаем лиги...'**
+  String get loadingLeagues;
+
+  /// No description provided for @selectNationalTeam.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите сборную'**
+  String get selectNationalTeam;
+
+  /// No description provided for @untitled.
+  ///
+  /// In ru, this message translates to:
+  /// **'Без названия'**
+  String get untitled;
+
+  /// No description provided for @future.
+  ///
+  /// In ru, this message translates to:
+  /// **'Будущие'**
+  String get future;
+
+  /// No description provided for @past.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прошлые'**
+  String get past;
+
+  /// No description provided for @coaches.
+  ///
+  /// In ru, this message translates to:
+  /// **'Тренеры'**
+  String get coaches;
+
+  /// No description provided for @noAvailableLeagues.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет доступных лиг'**
+  String get noAvailableLeagues;
+
+  /// No description provided for @tryReloadPage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Попробуйте обновить страницу'**
+  String get tryReloadPage;
+
+  /// No description provided for @tour.
+  ///
+  /// In ru, this message translates to:
+  /// **'ТУР'**
+  String get tour;
+
+  /// No description provided for @noPlayers.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет игроков'**
+  String get noPlayers;
+
+  /// No description provided for @fullName.
+  ///
+  /// In ru, this message translates to:
+  /// **'ФИО'**
+  String get fullName;
+
+  /// No description provided for @club.
+  ///
+  /// In ru, this message translates to:
+  /// **'Клуб'**
+  String get club;
+
+  /// No description provided for @games.
+  ///
+  /// In ru, this message translates to:
+  /// **'Игр'**
+  String get games;
+
+  /// No description provided for @clubNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Клуб не указан'**
+  String get clubNotSpecified;
+
+  /// No description provided for @noCoaches.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет тренеров'**
+  String get noCoaches;
+
+  /// No description provided for @positionNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Должность не указана'**
+  String get positionNotSpecified;
+
+  /// No description provided for @nationalityNotSpecified.
+  ///
+  /// In ru, this message translates to:
+  /// **'Национальность не указана'**
+  String get nationalityNotSpecified;
 }
 
 class _AppLocalizationsDelegate

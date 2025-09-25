@@ -437,4 +437,58 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get justNow => 'Только что';
+
+  @override
+  String get nationalTeamMatches => 'Матчи Сборной';
+
+  @override
+  String get loadingLeagues => 'Загружаем лиги...';
+
+  @override
+  String get selectNationalTeam => 'Выберите сборную';
+
+  @override
+  String get untitled => 'Без названия';
+
+  @override
+  String get future => 'Будущие';
+
+  @override
+  String get past => 'Прошлые';
+
+  @override
+  String get coaches => 'Тренеры';
+
+  @override
+  String get noAvailableLeagues => 'Нет доступных лиг';
+
+  @override
+  String get tryReloadPage => 'Попробуйте обновить страницу';
+
+  @override
+  String get tour => 'ТУР';
+
+  @override
+  String get noPlayers => 'Нет игроков';
+
+  @override
+  String get fullName => 'ФИО';
+
+  @override
+  String get club => 'Клуб';
+
+  @override
+  String get games => 'Игр';
+
+  @override
+  String get clubNotSpecified => 'Клуб не указан';
+
+  @override
+  String get noCoaches => 'Нет тренеров';
+
+  @override
+  String get positionNotSpecified => 'Должность не указана';
+
+  @override
+  String get nationalityNotSpecified => 'Национальность не указана';
 }

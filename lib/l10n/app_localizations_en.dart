@@ -435,4 +435,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get justNow => 'Just now';
+
+  @override
+  String get nationalTeamMatches => 'National Team Matches';
+
+  @override
+  String get loadingLeagues => 'Loading leagues...';
+
+  @override
+  String get selectNationalTeam => 'Select a national team';
+
+  @override
+  String get untitled => 'Untitled';
+
+  @override
+  String get future => 'Future';
+
+  @override
+  String get past => 'Past';
+
+  @override
+  String get coaches => 'Coaches';
+
+  @override
+  String get noAvailableLeagues => 'No available leagues';
+
+  @override
+  String get tryReloadPage => 'Try reloading the page';
+
+  @override
+  String get tour => 'TOUR';
+
+  @override
+  String get noPlayers => 'No players';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get club => 'Club';
+
+  @override
+  String get games => 'Games';
+
+  @override
+  String get clubNotSpecified => 'Club not specified';
+
+  @override
+  String get noCoaches => 'No coaches';
+
+  @override
+  String get positionNotSpecified => 'Position not specified';
+
+  @override
+  String get nationalityNotSpecified => 'Nationality not specified';
 }

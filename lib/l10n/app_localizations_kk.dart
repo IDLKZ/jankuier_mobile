@@ -391,7 +391,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get clubGames => 'Клуб ойындары';
 
   @override
-  String get noUpcomingMatches => 'Күтілетін матчтар жоқ';
+  String get noUpcomingMatches => 'Алда матчтар жоқ';
 
   @override
   String get noPastMatches => 'Өткен матчтар жоқ';
@@ -404,10 +404,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get tournamentNotSpecified => 'Турнир көрсетілмеген';
 
   @override
-  String get team1 => 'Команда 1';
+  String get team1 => '1-команда';
 
   @override
-  String get team2 => 'Команда 2';
+  String get team2 => '2-команда';
 
   @override
   String get timeNotSpecified => 'Уақыт көрсетілмеген';
@@ -432,4 +432,58 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get justNow => 'Қазір ғана';
+
+  @override
+  String get nationalTeamMatches => 'Құрама матчтары';
+
+  @override
+  String get loadingLeagues => 'Лигалар жүктелуде...';
+
+  @override
+  String get selectNationalTeam => 'Құраманы таңдаңыз';
+
+  @override
+  String get untitled => 'Атаусыз';
+
+  @override
+  String get future => 'Болашақ';
+
+  @override
+  String get past => 'Өткен';
+
+  @override
+  String get coaches => 'Бапкерлер';
+
+  @override
+  String get noAvailableLeagues => 'Қол жетімді лигалар жоқ';
+
+  @override
+  String get tryReloadPage => 'Бетті қайта жүктеп көріңіз';
+
+  @override
+  String get tour => 'ТУР';
+
+  @override
+  String get noPlayers => 'Ойыншылар жоқ';
+
+  @override
+  String get fullName => 'Т.А.Ә.';
+
+  @override
+  String get club => 'Клуб';
+
+  @override
+  String get games => 'Ойындар';
+
+  @override
+  String get clubNotSpecified => 'Клуб көрсетілмеген';
+
+  @override
+  String get noCoaches => 'Бапкерлер жоқ';
+
+  @override
+  String get positionNotSpecified => 'Лауазым көрсетілмеген';
+
+  @override
+  String get nationalityNotSpecified => 'Ұлты көрсетілмеген';
 }

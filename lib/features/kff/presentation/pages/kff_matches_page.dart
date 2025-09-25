@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/get_all_league_bloc.dart';
 import 'package:jankuier_mobile/features/kff/presentation/bloc/get_all_league/get_all_league_event.dart';
+import 'package:jankuier_mobile/l10n/app_localizations.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
@@ -110,7 +111,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-          title: "Матчи Сборной",
+          title: AppLocalizations.of(context)!.nationalTeamMatches,
           actionIcon: Icons.sports_soccer,
           leadingIcon: Icons.arrow_back_ios_new,
           onActionTap: () {}),
@@ -217,7 +218,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           ),
           SizedBox(height: 24.h),
           Text(
-            'Загружаем лиги...',
+            AppLocalizations.of(context)!.loadingLeagues,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
@@ -251,7 +252,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           ),
           SizedBox(height: 24.h),
           Text(
-            'Ошибка загрузки',
+            AppLocalizations.of(context)!.loadingError,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -287,7 +288,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Text(
-            'Выберите сборную',
+            AppLocalizations.of(context)!.selectNationalTeam,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18.sp,
@@ -343,12 +344,14 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AutoSizeText(
-                          league.title ?? 'Без названия',
+                          league.title ??
+                              AppLocalizations.of(context)!.untitled,
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 10.sp,
@@ -404,10 +407,18 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           ),
           child: Row(
             children: [
-              Expanded(child: buildDataTab('Будущие', 0, Icons.schedule, _dataTabController)),
-              Expanded(child: buildDataTab('Прошлые', 1, Icons.history, _dataTabController)),
-              Expanded(child: buildDataTab('Игроки', 2, Icons.people, _dataTabController)),
-              Expanded(child: buildDataTab('Тренеры', 3, Icons.sports, _dataTabController)),
+              Expanded(
+                  child: buildDataTab(AppLocalizations.of(context)!.future, 0,
+                      Icons.schedule, _dataTabController)),
+              Expanded(
+                  child: buildDataTab(AppLocalizations.of(context)!.past, 1,
+                      Icons.history, _dataTabController)),
+              Expanded(
+                  child: buildDataTab(AppLocalizations.of(context)!.players, 2,
+                      Icons.people, _dataTabController)),
+              Expanded(
+                  child: buildDataTab(AppLocalizations.of(context)!.coaches, 3,
+                      Icons.sports, _dataTabController)),
             ],
           ),
         ),
@@ -426,7 +437,6 @@ class _KffMatchesPageState extends State<KffMatchesPage>
             ],
           ),
         ),
-
       ],
     );
   }
@@ -453,7 +463,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           ),
           SizedBox(height: 24.h),
           Text(
-            'Нет доступных лиг',
+            AppLocalizations.of(context)!.noAvailableLeagues,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -462,7 +472,7 @@ class _KffMatchesPageState extends State<KffMatchesPage>
           ),
           SizedBox(height: 8.h),
           Text(
-            'Попробуйте обновить страницу',
+            AppLocalizations.of(context)!.tryReloadPage,
             style: TextStyle(
               fontSize: 14.sp,
               color: AppColors.textSecondary,
