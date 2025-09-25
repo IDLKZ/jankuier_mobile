@@ -115,7 +115,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Регистрация успешна! Пожалуйста, подтвердите номер телефона';
 
   @override
-  String get register => 'Зарегистрировать';
+  String get register => 'Записаться';
 
   @override
   String get next => 'Далее';
@@ -557,4 +557,377 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get stadiumNameNotSpecified => 'Название не указано';
+
+  @override
+  String get matches => 'Матчи';
+
+  @override
+  String get activeMatch => 'Активный матч';
+
+  @override
+  String get tickets => 'Билеты';
+
+  @override
+  String get yourTickets => 'Ваши билеты';
+
+  @override
+  String get availableTickets => 'Доступные билеты';
+
+  @override
+  String get liveNow => 'Прямо эфир';
+
+  @override
+  String get showQrToController => 'Покажите QR Контролеру';
+
+  @override
+  String get close => 'Закрыть';
+
+  @override
+  String get buyMore => 'Купить еще';
+
+  @override
+  String get myTicket => 'Мой билет';
+
+  @override
+  String get profile => 'Профиль';
+
+  @override
+  String get takePhoto => 'Сделать фото';
+
+  @override
+  String get chooseFromGallery => 'Выбрать из галереи';
+
+  @override
+  String get takeNewPhoto => 'Сделать новое фото';
+
+  @override
+  String get chooseNewFromGallery => 'Выбрать новое из галереи';
+
+  @override
+  String get deletePhoto => 'Удалить фото';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get selectedFileEmpty => 'Выбранный файл пуст';
+
+  @override
+  String get fileNotFound => 'Файл не найден';
+
+  @override
+  String get errorAccessingCameraGallery => 'Ошибка доступа к камере/галерее';
+
+  @override
+  String get photoAccessDenied =>
+      'Доступ к фото запрещен. Проверьте разрешения в настройках';
+
+  @override
+  String get cameraAccessDenied =>
+      'Доступ к камере запрещен. Проверьте разрешения в настройках';
+
+  @override
+  String get cameraConnectionError =>
+      'Ошибка подключения к камере. Попробуйте перезапустить приложение';
+
+  @override
+  String get settings => 'Настройки';
+
+  @override
+  String get errorSelectingImage => 'Ошибка при выборе изображения';
+
+  @override
+  String get profilePhotoUpdated => 'Фото профиля обновлено';
+
+  @override
+  String get profilePhotoDeleted => 'Фото профиля удалено';
+
+  @override
+  String get errorOnLogout => 'Ошибка при выходе';
+
+  @override
+  String get data => 'Данные';
+
+  @override
+  String get personalInformation => 'Личная информация';
+
+  @override
+  String get lastName => 'Фамилия';
+
+  @override
+  String get firstName => 'Имя';
+
+  @override
+  String get patronymicOptional => 'Отчество (необязательно)';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get phoneNumber => 'Номер телефона';
+
+  @override
+  String get iinOptional => 'ИИН (необязательно)';
+
+  @override
+  String get saveChanges => 'Сохранить изменения';
+
+  @override
+  String get profileSuccessfullyUpdated => 'Профиль успешно обновлен';
+
+  @override
+  String get security => 'Безопасность';
+
+  @override
+  String get passwordChange => 'Изменение пароля';
+
+  @override
+  String get currentPassword => 'Текущий пароль';
+
+  @override
+  String get newPassword => 'Новый пароль';
+
+  @override
+  String get repeatNewPassword => 'Повторите новый пароль';
+
+  @override
+  String get updatePassword => 'Обновить пароль';
+
+  @override
+  String get passwordSuccessfullyUpdated => 'Пароль успешно обновлен';
+
+  @override
+  String get newPasswordMustDiffer =>
+      'Новый пароль должен отличаться от текущего';
+
+  @override
+  String get changePassword => 'Поменять пароль';
+
+  @override
+  String get changeEmail => 'Поменять почту';
+
+  @override
+  String get deleteAccount => 'Удалить аккаунт';
+
+  @override
+  String get oldPassword => 'Старый пароль';
+
+  @override
+  String get enterOldPassword => 'Введите старый пароль';
+
+  @override
+  String get enterNewPassword => 'Введите новый пароль';
+
+  @override
+  String get editProfile => 'Редактировать профиль';
+
+  @override
+  String get personalData => 'Личные данные';
+
+  @override
+  String get logout => 'Выход';
+
+  @override
+  String get enterCurrentPassword => 'Введите текущий пароль';
+
+  @override
+  String get enterNewPasswordField => 'Введите новый пароль';
+
+  @override
+  String get repeatNewPasswordField => 'Повторите новый пароль';
+
+  @override
+  String get shop => 'Магазин';
+
+  @override
+  String get fields => 'Поля';
+
+  @override
+  String get sections => 'Секции';
+
+  @override
+  String get years => 'лет';
+
+  @override
+  String get schedule => 'Расписание';
+
+  @override
+  String get noScheduleYet => 'Расписания пока нет';
+
+  @override
+  String get groups => 'Группы';
+
+  @override
+  String get recruitmentOpen => 'Набор открыт';
+
+  @override
+  String get recruitmentClosed => 'Набор закрыт';
+
+  @override
+  String get month => 'мес';
+
+  @override
+  String get free => 'Бесплатно';
+
+  @override
+  String get minutes => 'мин';
+
+  @override
+  String get students => 'учеников';
+
+  @override
+  String get errorOccurred => 'Произошла ошибка';
+
+  @override
+  String get goBack => 'Вернуться';
+
+  @override
+  String get imageNotAvailable => 'Изображение недоступно';
+
+  @override
+  String get imageLoadingError => 'Ошибка загрузки изображения';
+
+  @override
+  String get addedToFavorites => 'Добавлено в избранное';
+
+  @override
+  String get removedFromFavorites => 'Убрано из избранного';
+
+  @override
+  String get productAddedToCart => 'Товар добавлен в корзину';
+
+  @override
+  String get toCart => 'В корзину';
+
+  @override
+  String get article => 'Арт:';
+
+  @override
+  String get forChildren => 'Для детей';
+
+  @override
+  String get forAdults => 'Для взрослых';
+
+  @override
+  String get unisex => 'Унисекс';
+
+  @override
+  String get forMen => 'Для мужчин';
+
+  @override
+  String get forWomen => 'Для женщин';
+
+  @override
+  String get inStock => 'В наличии';
+
+  @override
+  String get outOfStock => 'Нет в наличии';
+
+  @override
+  String get variants => 'Варианты';
+
+  @override
+  String get price => 'Цена';
+
+  @override
+  String get add => 'Добавить';
+
+  @override
+  String get addToCart => 'Добавить в корзину';
+
+  @override
+  String get astanaFacilities => 'Астана: 256 сооружений';
+
+  @override
+  String get addFacility => 'Добавить площадку';
+
+  @override
+  String get filters => 'Фильтры';
+
+  @override
+  String get searchFreeTime => 'Поиск свободного времени';
+
+  @override
+  String get book => 'Забронировать';
+
+  @override
+  String get selectTime => 'Выберите время';
+
+  @override
+  String get pay => 'Оплатить';
+
+  @override
+  String get fieldRental => 'Аренда полей';
+
+  @override
+  String get searchFilters => 'Фильтры поиска';
+
+  @override
+  String get minimumThreeCharacters => 'Минимум 3 символа';
+
+  @override
+  String get maximumTwoHundredFiftyFiveCharacters => 'Максимум 255 символов';
+
+  @override
+  String get search => 'Поиск';
+
+  @override
+  String get enterFieldName => 'Введите название поля...';
+
+  @override
+  String get selectCity => 'Выберите город';
+
+  @override
+  String get apply => 'Применить';
+
+  @override
+  String get noMoreFields => 'Больше полей нет';
+
+  @override
+  String get sectionRegistration => 'Запись в секцию';
+
+  @override
+  String get enterSectionName => 'Введите название секции...';
+
+  @override
+  String get gender => 'Пол';
+
+  @override
+  String get any => 'Любой';
+
+  @override
+  String get male => 'Мужской';
+
+  @override
+  String get female => 'Женский';
+
+  @override
+  String get age => 'Возраст';
+
+  @override
+  String get from => 'От';
+
+  @override
+  String get to => 'До';
+
+  @override
+  String get averagePrice => 'Средняя цена';
+
+  @override
+  String get priceFrom => 'Цена от';
+
+  @override
+  String get priceTo => 'Цена до';
+
+  @override
+  String get noMoreSections => 'Больше секций нет';
+
+  @override
+  String get newProducts => 'Новые товары';
+
+  @override
+  String get categories => 'Категории';
+
+  @override
+  String get buy => 'Купить';
 }

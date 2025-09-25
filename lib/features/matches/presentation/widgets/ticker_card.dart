@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class TicketCard extends StatelessWidget {
   final String league;
   final String dateTime;
@@ -14,25 +16,25 @@ class TicketCard extends StatelessWidget {
   final double verticalMargin;
   final double padding;
 
-  const TicketCard({
-    super.key,
-    required this.league,
-    required this.dateTime,
-    required this.team1Name,
-    required this.team2Name,
-    required this.team1LogoUrl,
-    required this.team2LogoUrl,
-    this.horizontalMargin = 10,
-    this.verticalMargin = 10,
-    this.padding = 16,
-    this.onBuyPressed,
-    this.onMyTicketPressed
-  });
+  const TicketCard(
+      {super.key,
+      required this.league,
+      required this.dateTime,
+      required this.team1Name,
+      required this.team2Name,
+      required this.team1LogoUrl,
+      required this.team2LogoUrl,
+      this.horizontalMargin = 10,
+      this.verticalMargin = 10,
+      this.padding = 16,
+      this.onBuyPressed,
+      this.onMyTicketPressed});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: verticalMargin),
+      margin: EdgeInsets.symmetric(
+          horizontal: horizontalMargin, vertical: verticalMargin),
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -55,17 +57,17 @@ class TicketCard extends StatelessWidget {
               Text(
                 league,
                 style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black
-                ),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black),
               ),
               // Дата и время
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF0F6FF),
                       borderRadius: BorderRadius.circular(11),
@@ -102,7 +104,10 @@ class TicketCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     team1Name,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                 ],
               ),
@@ -129,7 +134,10 @@ class TicketCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     team2Name,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Colors.black),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                 ],
               ),
@@ -152,7 +160,7 @@ class TicketCard extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: Text(
-                    "Купить еще",
+                    AppLocalizations.of(context)!.buyMore,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -166,14 +174,15 @@ class TicketCard extends StatelessWidget {
                   onPressed: onMyTicketPressed,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF166CFF),
-                    side: const BorderSide(color: Color(0xFF166CFF), width: 1.5),
+                    side:
+                        const BorderSide(color: Color(0xFF166CFF), width: 1.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     minimumSize: const Size(0, 44),
                   ),
                   child: Text(
-                    "Мой билет",
+                    AppLocalizations.of(context)!.myTicket,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,

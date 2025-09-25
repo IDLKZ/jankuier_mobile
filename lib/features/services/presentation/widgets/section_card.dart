@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
 import 'package:jankuier_mobile/features/services/data/entities/academy/academy_entity.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class SectionCardWidget extends StatelessWidget {
   final AcademyEntity entity;
@@ -70,12 +71,14 @@ class SectionCardWidget extends StatelessWidget {
             children: [
               Icon(Icons.access_time, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
-              Text("${entity.averageTrainingTimeInMinute}",
+              Text(
+                  "${entity.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
               SizedBox(width: 12.w),
               Icon(Icons.person, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
-              Text("${entity.minAge}-${entity.maxAge} лет",
+              Text(
+                  "${entity.minAge}-${entity.maxAge} ${AppLocalizations.of(context)!.years}",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
             ],
           ),
@@ -87,7 +90,7 @@ class SectionCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${entity.averagePrice}KZT/месяц",
+                "${entity.averagePrice}KZT/${AppLocalizations.of(context)!.month}",
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
@@ -105,7 +108,8 @@ class SectionCardWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(3.r),
                   ),
                 ),
-                child: Text("Записаться", style: TextStyle(fontSize: 12.sp)),
+                child: Text(AppLocalizations.of(context)!.register,
+                    style: TextStyle(fontSize: 12.sp)),
               ),
             ],
           ),

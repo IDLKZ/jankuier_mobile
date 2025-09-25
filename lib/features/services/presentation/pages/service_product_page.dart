@@ -12,6 +12,7 @@ import 'package:jankuier_mobile/features/services/data/entities/product/product_
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// Экран детальной информации о продукте/услуге
 ///
@@ -68,7 +69,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
     }
 
     if (state is GetFullProductFailedState) {
-      return _buildErrorState(state.failure.message ?? 'Произошла ошибка');
+      return _buildErrorState(state.failure.message ?? AppLocalizations.of(context)!.errorOccurred);
     }
 
     if (state is GetFullProductLoadedState) {
@@ -93,7 +94,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
             ),
             SizedBox(height: 20.h),
             Text(
-              'Ошибка загрузки',
+              AppLocalizations.of(context)!.loadingError,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -114,7 +115,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
             ElevatedButton.icon(
               onPressed: () => context.pop(),
               icon: const Icon(Icons.arrow_back),
-              label: const Text('Вернуться'),
+              label: Text(AppLocalizations.of(context)!.goBack),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.white,
@@ -250,7 +251,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Изображение недоступно',
+                AppLocalizations.of(context)!.imageNotAvailable,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.grey600,
@@ -281,7 +282,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
           ),
           SizedBox(height: 12.h),
           Text(
-            'Ошибка загрузки изображения',
+            AppLocalizations.of(context)!.imageLoadingError,
             style: TextStyle(
               fontSize: 14.sp,
               color: AppColors.grey500,
@@ -451,7 +452,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-            _isFavorite ? 'Добавлено в избранное' : 'Убрано из избранного'),
+            _isFavorite ? AppLocalizations.of(context)!.addedToFavorites : AppLocalizations.of(context)!.removedFromFavorites),
         backgroundColor: _isFavorite ? AppColors.success : AppColors.info,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -472,7 +473,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
           children: [
             const Icon(Icons.shopping_cart, color: AppColors.white),
             SizedBox(width: 8.w),
-            const Expanded(child: Text('Товар добавлен в корзину')),
+            Expanded(child: Text(AppLocalizations.of(context)!.productAddedToCart)),
           ],
         ),
         backgroundColor: AppColors.success,
@@ -482,7 +483,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
         ),
         duration: const Duration(seconds: 2),
         action: SnackBarAction(
-          label: 'В корзину',
+          label: AppLocalizations.of(context)!.toCart,
           textColor: AppColors.white,
           onPressed: () {
             // TODO: Навигация в корзину
@@ -566,7 +567,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MainTitleWidget(
-            title: widget.fullProductEntity.product.titleRu ?? 'Без названия'),
+            title: widget.fullProductEntity.product.titleRu ?? AppLocalizations.of(context)!.untitled),
         SizedBox(height: 12.h),
         if (widget.fullProductEntity.product.descriptionRu?.isNotEmpty == true)
           Text(
@@ -611,7 +612,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Text(
-            'Арт: ${widget.fullProductEntity.product.sku}',
+            '${AppLocalizations.of(context)!.article} ${widget.fullProductEntity.product.sku}',
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 12.sp,
@@ -643,8 +644,8 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
         _buildCharacteristicChip(
           icon: Icons.child_care_outlined,
           label: widget.fullProductEntity.product.isForChildren
-              ? "Для детей"
-              : "Для взрослых",
+              ? AppLocalizations.of(context)!.forChildren
+              : AppLocalizations.of(context)!.forAdults,
         ),
       ],
     );
@@ -701,7 +702,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           ),
           SizedBox(width: 12.w),
           Text(
-            isInStock ? 'В наличии ($stock шт.)' : 'Нет в наличии',
+            isInStock ? '${AppLocalizations.of(context)!.inStock} ($stock шт.)' : AppLocalizations.of(context)!.outOfStock,
             style: TextStyle(
               color: isInStock ? AppColors.success : AppColors.error,
               fontSize: 15.sp,
@@ -723,7 +724,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Варианты',
+          AppLocalizations.of(context)!.variants,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -813,7 +814,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Цена',
+              AppLocalizations.of(context)!.price,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.textSecondary,
@@ -853,7 +854,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  isAvailable ? 'Добавить' : 'Нет в наличии',
+                  isAvailable ? AppLocalizations.of(context)!.add : AppLocalizations.of(context)!.outOfStock,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -972,13 +973,13 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
   String _getGenderText(int gender) {
     switch (gender) {
       case 0:
-        return "Унисекс";
+        return AppLocalizations.of(context)!.unisex;
       case 1:
-        return "Для мужчин";
+        return AppLocalizations.of(context)!.forMen;
       case 2:
-        return "Для женщин";
+        return AppLocalizations.of(context)!.forWomen;
       default:
-        return "Унисекс";
+        return AppLocalizations.of(context)!.unisex;
     }
   }
 }

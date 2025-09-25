@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class ActiveMatchCard extends StatelessWidget {
   final String title;
   final String team1Name;
@@ -48,10 +50,7 @@ class ActiveMatchCard extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black
-            ),
+                fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
           ),
           const SizedBox(height: 8),
           Row(
@@ -72,10 +71,9 @@ class ActiveMatchCard extends StatelessWidget {
                   Text(
                     team1Name,
                     style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black
-                    ),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                   if (team1Subtitle != null)
                     Text(
@@ -93,10 +91,9 @@ class ActiveMatchCard extends StatelessWidget {
                   Text(
                     score,
                     style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                    ),
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   ),
                   const SizedBox(height: 4),
                   Container(
@@ -135,10 +132,9 @@ class ActiveMatchCard extends StatelessWidget {
                   Text(
                     team2Name,
                     style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black
-                    ),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                   if (team2Subtitle != null)
                     Text(
@@ -154,13 +150,13 @@ class ActiveMatchCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           if (isLive)
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.fiber_manual_record, color: Colors.red, size: 14),
                 SizedBox(width: 5),
                 Text(
-                  'Прямо эфир',
+                  AppLocalizations.of(context)!.liveNow,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class QrDisplayDialog extends StatelessWidget {
   final String qrData;
@@ -10,8 +11,8 @@ class QrDisplayDialog extends StatelessWidget {
   const QrDisplayDialog({
     Key? key,
     required this.qrData,
-    this.title = "Покажите QR Контролеру",
-    this.buttonText = "Закрыть",
+    this.title = "",
+    this.buttonText = "",
     this.onClose,
   }) : super(key: key);
 
@@ -24,12 +25,13 @@ class QrDisplayDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              title,
+              title.isNotEmpty
+                  ? title
+                  : AppLocalizations.of(context)!.showQrToController,
               style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
-                color: Colors.black
-              ),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                  color: Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -55,7 +57,9 @@ class QrDisplayDialog extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                child: Text(buttonText),
+                child: Text(buttonText.isNotEmpty
+                    ? buttonText
+                    : AppLocalizations.of(context)!.close),
               ),
             ),
           ],

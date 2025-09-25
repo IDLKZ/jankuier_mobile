@@ -6,10 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
-import 'package:jankuier_mobile/features/services/data/entities/field/field_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/field/field_party_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/field_party_schedule_preview/field_party_schedule_preview_bloc.dart';
-
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../data/entities/field/field_schedule_record_entity.dart';
@@ -17,6 +15,7 @@ import '../../domain/parameters/field_party_schedule_preview_parameter.dart';
 import '../../domain/use_cases/field/get_field_party_schedule_preview_case.dart';
 import '../bloc/field_party_schedule_preview/field_party_schedule_preview_event.dart';
 import '../bloc/field_party_schedule_preview/field_party_schedule_preview_state.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class FieldCard extends StatelessWidget {
   final FieldPartyEntity fieldPartyEntity;
@@ -83,7 +82,7 @@ class FieldCard extends StatelessWidget {
               _IconText(
                   svg: 'assets/icons/clock.svg',
                   text:
-                      "${fieldPartyEntity.activeScheduleSetting?.sessionMinuteInt ?? 60}"),
+                      "${fieldPartyEntity.activeScheduleSetting?.sessionMinuteInt ?? 60} ${AppLocalizations.of(context)!.minutes}"),
               SizedBox(width: 12.w),
               _IconText(
                   svg: 'assets/icons/group.svg',
@@ -132,7 +131,7 @@ class FieldCard extends StatelessWidget {
                                 controller: scrollController,
                                 child: FieldBookingCard(
                                   fieldPartyEntity: fieldPartyEntity,
-                                  onPay: () => print("Оплата выполнена"),
+                                  onPay: () => print("Payment completed"),
                                 ),
                               ),
                             );
@@ -149,7 +148,7 @@ class FieldCard extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "Забронировать",
+                    AppLocalizations.of(context)!.book,
                     style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
@@ -304,7 +303,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                     _IconText(
                         svg: 'assets/icons/clock.svg',
                         text:
-                            "${widget.fieldPartyEntity.activeScheduleSetting?.sessionMinuteInt ?? 60}"),
+                            "${widget.fieldPartyEntity.activeScheduleSetting?.sessionMinuteInt ?? 60} ${AppLocalizations.of(context)!.minutes}"),
                     SizedBox(width: 12.w),
                     _IconText(
                         svg: 'assets/icons/group.svg',
@@ -318,7 +317,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                 ),
                 SizedBox(height: 16.h),
 
-                Text('Выберите время',
+                Text(AppLocalizations.of(context)!.selectTime,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -447,7 +446,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                                             ),
                                             onPressed: () => widget.onPay,
                                             child: Text(
-                                              "Оплатить",
+                                              AppLocalizations.of(context)!.pay,
                                               style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w500,
@@ -460,7 +459,8 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                               ],
                             );
                           }
-                          return Text("Расписания пока нет");
+                          return Text(
+                              AppLocalizations.of(context)!.noScheduleYet);
                         }
                         return const Center(
                           child: CircularProgressIndicator(),

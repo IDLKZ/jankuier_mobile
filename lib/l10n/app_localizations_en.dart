@@ -555,4 +555,377 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stadiumNameNotSpecified => 'Stadium name not specified';
+
+  @override
+  String get matches => 'Matches';
+
+  @override
+  String get activeMatch => 'Active Match';
+
+  @override
+  String get tickets => 'Tickets';
+
+  @override
+  String get yourTickets => 'Your Tickets';
+
+  @override
+  String get availableTickets => 'Available Tickets';
+
+  @override
+  String get liveNow => 'Live Now';
+
+  @override
+  String get showQrToController => 'Show QR to Controller';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get buyMore => 'Buy More';
+
+  @override
+  String get myTicket => 'My Ticket';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get takePhoto => 'Take Photo';
+
+  @override
+  String get chooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get takeNewPhoto => 'Take New Photo';
+
+  @override
+  String get chooseNewFromGallery => 'Choose New from Gallery';
+
+  @override
+  String get deletePhoto => 'Delete Photo';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get selectedFileEmpty => 'Selected file is empty';
+
+  @override
+  String get fileNotFound => 'File not found';
+
+  @override
+  String get errorAccessingCameraGallery => 'Error accessing camera/gallery';
+
+  @override
+  String get photoAccessDenied =>
+      'Photo access denied. Check permissions in settings';
+
+  @override
+  String get cameraAccessDenied =>
+      'Camera access denied. Check permissions in settings';
+
+  @override
+  String get cameraConnectionError =>
+      'Camera connection error. Try restarting the app';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get errorSelectingImage => 'Error selecting image';
+
+  @override
+  String get profilePhotoUpdated => 'Profile photo updated';
+
+  @override
+  String get profilePhotoDeleted => 'Profile photo deleted';
+
+  @override
+  String get errorOnLogout => 'Error on logout';
+
+  @override
+  String get data => 'Data';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get lastName => 'Last Name';
+
+  @override
+  String get firstName => 'First Name';
+
+  @override
+  String get patronymicOptional => 'Patronymic (optional)';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get iinOptional => 'IIN (optional)';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get profileSuccessfullyUpdated => 'Profile successfully updated';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get passwordChange => 'Password Change';
+
+  @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get repeatNewPassword => 'Repeat New Password';
+
+  @override
+  String get updatePassword => 'Update Password';
+
+  @override
+  String get passwordSuccessfullyUpdated => 'Password successfully updated';
+
+  @override
+  String get newPasswordMustDiffer =>
+      'New password must be different from current';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get changeEmail => 'Change Email';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get oldPassword => 'Old Password';
+
+  @override
+  String get enterOldPassword => 'Enter old password';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get personalData => 'Personal Data';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get enterCurrentPassword => 'Enter current password';
+
+  @override
+  String get enterNewPasswordField => 'Enter new password';
+
+  @override
+  String get repeatNewPasswordField => 'Repeat new password';
+
+  @override
+  String get shop => 'Shop';
+
+  @override
+  String get fields => 'Fields';
+
+  @override
+  String get sections => 'Sections';
+
+  @override
+  String get years => 'years';
+
+  @override
+  String get schedule => 'Schedule';
+
+  @override
+  String get noScheduleYet => 'No schedule yet';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String get recruitmentOpen => 'Recruitment open';
+
+  @override
+  String get recruitmentClosed => 'Recruitment closed';
+
+  @override
+  String get month => 'month';
+
+  @override
+  String get free => 'Free';
+
+  @override
+  String get minutes => 'min';
+
+  @override
+  String get students => 'students';
+
+  @override
+  String get errorOccurred => 'An error occurred';
+
+  @override
+  String get goBack => 'Go back';
+
+  @override
+  String get imageNotAvailable => 'Image not available';
+
+  @override
+  String get imageLoadingError => 'Image loading error';
+
+  @override
+  String get addedToFavorites => 'Added to favorites';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites';
+
+  @override
+  String get productAddedToCart => 'Product added to cart';
+
+  @override
+  String get toCart => 'To cart';
+
+  @override
+  String get article => 'Art:';
+
+  @override
+  String get forChildren => 'For children';
+
+  @override
+  String get forAdults => 'For adults';
+
+  @override
+  String get unisex => 'Unisex';
+
+  @override
+  String get forMen => 'For men';
+
+  @override
+  String get forWomen => 'For women';
+
+  @override
+  String get inStock => 'In stock';
+
+  @override
+  String get outOfStock => 'Out of stock';
+
+  @override
+  String get variants => 'Variants';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get addToCart => 'Add to cart';
+
+  @override
+  String get astanaFacilities => 'Astana: 256 facilities';
+
+  @override
+  String get addFacility => 'Add facility';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get searchFreeTime => 'Search free time';
+
+  @override
+  String get book => 'Book';
+
+  @override
+  String get selectTime => 'Select time';
+
+  @override
+  String get pay => 'Pay';
+
+  @override
+  String get fieldRental => 'Field Rental';
+
+  @override
+  String get searchFilters => 'Search Filters';
+
+  @override
+  String get minimumThreeCharacters => 'Minimum 3 characters';
+
+  @override
+  String get maximumTwoHundredFiftyFiveCharacters => 'Maximum 255 characters';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get enterFieldName => 'Enter field name...';
+
+  @override
+  String get selectCity => 'Select city';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get noMoreFields => 'No more fields';
+
+  @override
+  String get sectionRegistration => 'Section Registration';
+
+  @override
+  String get enterSectionName => 'Enter section name...';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get any => 'Any';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get age => 'Age';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get averagePrice => 'Average Price';
+
+  @override
+  String get priceFrom => 'Price from';
+
+  @override
+  String get priceTo => 'Price to';
+
+  @override
+  String get noMoreSections => 'No more sections';
+
+  @override
+  String get newProducts => 'New Products';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get buy => 'Buy';
 }

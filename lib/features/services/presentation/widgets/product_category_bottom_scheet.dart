@@ -9,6 +9,7 @@ import 'package:jankuier_mobile/features/services/data/entities/product/product_
 
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/utils/file_utils.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/main_title_widget.dart';
 import '../../domain/parameters/paginate_product_parameter.dart';
 import '../bloc/product/product_bloc.dart';
@@ -17,7 +18,8 @@ import '../bloc/product_category/product_category_bloc.dart';
 import '../bloc/product_category/product_category_state.dart';
 
 class ProductCategoryBottomScheet extends StatefulWidget {
-  final Function(List<int> categoryIds, int? minPrice, int? maxPrice)? onFiltersApplied;
+  final Function(List<int> categoryIds, int? minPrice, int? maxPrice)?
+      onFiltersApplied;
 
   ProductCategoryBottomScheet({
     super.key,
@@ -55,7 +57,7 @@ class _ProductCategoryBottomScheetState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const MainTitleWidget(title: "Новые товары"),
+              MainTitleWidget(title: AppLocalizations.of(context)!.newProducts),
               IconButton(
                   onPressed: () {
                     showModalBottomSheet<void>(
@@ -93,7 +95,10 @@ class _ProductCategoryBottomScheetState
                                           vertical: 15.h, horizontal: 15.w),
                                       child: Column(
                                         children: [
-                                          const MainTitleWidget(title: "Категории"),
+                                          MainTitleWidget(
+                                              title:
+                                                  AppLocalizations.of(context)!
+                                                      .categories),
                                           SizedBox(height: 15.h),
                                           DynamicHeightGridView(
                                             itemCount: cats.length,
@@ -222,8 +227,11 @@ class _ProductCategoryBottomScheetState
                                                       keyboardType:
                                                           TextInputType.number,
                                                       decoration:
-                                                          const InputDecoration(
-                                                        labelText: "от",
+                                                          InputDecoration(
+                                                        labelText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .from,
                                                         border:
                                                             OutlineInputBorder(),
                                                         isDense: true,
@@ -248,28 +256,37 @@ class _ProductCategoryBottomScheetState
                                                   SizedBox(width: 10.w),
                                                   Expanded(
                                                     child: TextField(
-                                                      controller: _maxController,
-                                                      keyboardType: TextInputType.number,
-                                                      decoration: const InputDecoration(
-                                                        labelText: "до",
-                                                        border: OutlineInputBorder(),
+                                                      controller:
+                                                          _maxController,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .to,
+                                                        border:
+                                                            OutlineInputBorder(),
                                                         isDense: true,
                                                         filled: true,
                                                         fillColor: Colors.white,
                                                       ),
                                                       onChanged: (val) {
-                                                        final parsed = int.tryParse(val);
+                                                        final parsed =
+                                                            int.tryParse(val);
                                                         if (parsed != null) {
                                                           setModalState(() {
-                                                            _currentRange = RangeValues(
-                                                              _currentRange.start,
+                                                            _currentRange =
+                                                                RangeValues(
+                                                              _currentRange
+                                                                  .start,
                                                               parsed.toDouble(),
                                                             );
                                                           });
                                                         }
                                                       },
-                                                    )
-                                                    ,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -284,12 +301,19 @@ class _ProductCategoryBottomScheetState
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     // Apply filters
-                                                    final selectedCategories = categoriesIds.toList();
-                                                    final minPrice = _currentRange.start.toInt();
-                                                    final maxPrice = _currentRange.end.toInt();
+                                                    final selectedCategories =
+                                                        categoriesIds.toList();
+                                                    final minPrice =
+                                                        _currentRange.start
+                                                            .toInt();
+                                                    final maxPrice =
+                                                        _currentRange.end
+                                                            .toInt();
 
                                                     // Call the callback to update filters
-                                                    if (widget.onFiltersApplied != null) {
+                                                    if (widget
+                                                            .onFiltersApplied !=
+                                                        null) {
                                                       widget.onFiltersApplied!(
                                                         selectedCategories,
                                                         minPrice,
@@ -313,7 +337,10 @@ class _ProductCategoryBottomScheetState
                                                               10.r),
                                                     ),
                                                   ),
-                                                  child: Text("Применить",
+                                                  child: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .apply,
                                                       style: TextStyle(
                                                           fontSize: 14.sp,
                                                           color: Colors.white)),

@@ -14,6 +14,7 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_p
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_state.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
@@ -54,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               if (!hasImage)
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Сделать фото'),
+                  title: Text(AppLocalizations.of(context)!.takePhoto),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.camera);
@@ -63,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
               if (!hasImage)
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Выбрать из галереи'),
+                  title: Text(AppLocalizations.of(context)!.chooseFromGallery),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.gallery);
@@ -72,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
               if (hasImage)
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Сделать новое фото'),
+                  title: Text(AppLocalizations.of(context)!.takeNewPhoto),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.camera);
@@ -81,7 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
               if (hasImage)
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Выбрать новое из галереи'),
+                  title:
+                      Text(AppLocalizations.of(context)!.chooseNewFromGallery),
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.gallery);
@@ -90,8 +92,8 @@ class _ProfilePageState extends State<ProfilePage> {
               if (hasImage)
                 ListTile(
                   leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text('Удалить фото',
-                      style: TextStyle(color: Colors.red)),
+                  title: Text(AppLocalizations.of(context)!.deletePhoto,
+                      style: const TextStyle(color: Colors.red)),
                   onTap: () {
                     Navigator.pop(context);
                     _deletePhoto();
@@ -99,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ListTile(
                 leading: const Icon(Icons.cancel),
-                title: const Text('Отмена'),
+                title: Text(AppLocalizations.of(context)!.cancel),
                 onTap: () => Navigator.pop(context),
               ),
             ],
@@ -126,27 +128,25 @@ class _ProfilePageState extends State<ProfilePage> {
           final fileSize = await imageFile.length();
           if (fileSize > 0) {
             _updateProfilePhotoBloc.add(
-                  UpdateProfilePhotoSubmitted(imageFile),
-                );
+              UpdateProfilePhotoSubmitted(imageFile),
+            );
           } else {
-            throw Exception('Выбранный файл пуст');
+            throw Exception(AppLocalizations.of(context)!.selectedFileEmpty);
           }
         } else {
-          throw Exception('Файл не найден');
+          throw Exception(AppLocalizations.of(context)!.fileNotFound);
         }
       }
     } on PlatformException catch (e) {
       if (mounted) {
-        String errorMessage = 'Ошибка доступа к камере/галерее';
+        String errorMessage =
+            AppLocalizations.of(context)!.errorAccessingCameraGallery;
         if (e.code == 'photo_access_denied') {
-          errorMessage =
-              'Доступ к фото запрещен. Проверьте разрешения в настройках';
+          errorMessage = AppLocalizations.of(context)!.photoAccessDenied;
         } else if (e.code == 'camera_access_denied') {
-          errorMessage =
-              'Доступ к камере запрещен. Проверьте разрешения в настройках';
+          errorMessage = AppLocalizations.of(context)!.cameraAccessDenied;
         } else if (e.message?.contains('channel-error') == true) {
-          errorMessage =
-              'Ошибка подключения к камере. Попробуйте перезапустить приложение';
+          errorMessage = AppLocalizations.of(context)!.cameraConnectionError;
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -154,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
             content: Text(errorMessage),
             backgroundColor: Colors.red,
             action: SnackBarAction(
-              label: 'Настройки',
+              label: AppLocalizations.of(context)!.settings,
               textColor: Colors.white,
               onPressed: () {},
             ),
@@ -165,7 +165,8 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка при выборе изображения: ${e.toString()}'),
+            content: Text(
+                '${AppLocalizations.of(context)!.errorSelectingImage}: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -175,8 +176,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _deletePhoto() {
     _deleteProfilePhotoBloc.add(
-          const DeleteProfilePhotoSubmitted(),
-        );
+      const DeleteProfilePhotoSubmitted(),
+    );
   }
 
   Future<void> _onLogout() async {
@@ -195,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка при выходе: $e'),
+            content: Text('${AppLocalizations.of(context)!.errorOnLogout}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -208,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-        title: "Профиль",
+        title: AppLocalizations.of(context)!.profile,
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
       ),
@@ -227,8 +228,9 @@ class _ProfilePageState extends State<ProfilePage> {
             listener: (context, state) {
               if (state is UpdateProfilePhotoSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Фото профиля обновлено'),
+                  SnackBar(
+                    content:
+                        Text(AppLocalizations.of(context)!.profilePhotoUpdated),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -236,7 +238,8 @@ class _ProfilePageState extends State<ProfilePage> {
               } else if (state is UpdateProfilePhotoFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Ошибка: ${state.message}'),
+                    content: Text(
+                        '${AppLocalizations.of(context)!.unknownError}: ${state.message}'),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -248,8 +251,9 @@ class _ProfilePageState extends State<ProfilePage> {
             listener: (context, state) {
               if (state is DeleteProfilePhotoSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Фото профиля удалено'),
+                  SnackBar(
+                    content:
+                        Text(AppLocalizations.of(context)!.profilePhotoDeleted),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -257,7 +261,8 @@ class _ProfilePageState extends State<ProfilePage> {
               } else if (state is DeleteProfilePhotoFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Ошибка: ${state.message}'),
+                    content: Text(
+                        '${AppLocalizations.of(context)!.unknownError}: ${state.message}'),
                     backgroundColor: Colors.red,
                   ),
                 );

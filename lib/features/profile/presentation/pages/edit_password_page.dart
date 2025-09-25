@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_parameter.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_password_bloc/update_password_event.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
@@ -72,30 +73,30 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
   // Validation methods
   String? _validateOldPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Введите текущий пароль';
+      return AppLocalizations.of(context)!.enterCurrentPassword;
     }
     return null;
   }
 
   String? _validateNewPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Введите новый пароль';
+      return AppLocalizations.of(context)!.enterNewPasswordField;
     }
     if (value.length < 6) {
-      return 'Пароль должен содержать минимум 6 символов';
+      return AppLocalizations.of(context)!.passwordMinSixChars;
     }
     if (value == _oldPasswordC.text) {
-      return 'Новый пароль должен отличаться от текущего';
+      return AppLocalizations.of(context)!.newPasswordMustDiffer;
     }
     return null;
   }
 
   String? _validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Повторите новый пароль';
+      return AppLocalizations.of(context)!.repeatNewPasswordField;
     }
     if (value != _newPasswordC.text) {
-      return 'Пароли не совпадают';
+      return AppLocalizations.of(context)!.passwordsNotMatch;
     }
     return null;
   }
@@ -158,7 +159,7 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-        title: "Безопасность",
+        title: AppLocalizations.of(context)!.security,
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
         leadingIcon: Icons.arrow_back_ios,
@@ -168,7 +169,7 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
           if (state is UpdatePasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Пароль успешно обновлен'),
+                content: Text(AppLocalizations.of(context)!.passwordSuccessfullyUpdated),
                 backgroundColor: Colors.green,
               ),
             );
@@ -197,7 +198,7 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Изменение пароля',
+                    AppLocalizations.of(context)!.passwordChange,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -208,19 +209,19 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
 
                   _buildPasswordField(
                     controller: _oldPasswordC,
-                    labelText: 'Текущий пароль',
+                    labelText: AppLocalizations.of(context)!.currentPassword,
                     validator: _validateOldPassword,
                   ),
 
                   _buildPasswordField(
                     controller: _newPasswordC,
-                    labelText: 'Новый пароль',
+                    labelText: AppLocalizations.of(context)!.newPassword,
                     validator: _validateNewPassword,
                   ),
 
                   _buildPasswordField(
                     controller: _confirmPasswordC,
-                    labelText: 'Повторите новый пароль',
+                    labelText: AppLocalizations.of(context)!.repeatNewPassword,
                     validator: _validateConfirmPassword,
                   ),
 
@@ -252,7 +253,7 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
                                   ),
                                 )
                               : Text(
-                                  'Обновить пароль',
+                                  AppLocalizations.of(context)!.updatePassword,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,

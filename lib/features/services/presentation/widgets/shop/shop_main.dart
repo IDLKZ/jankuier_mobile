@@ -7,6 +7,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/product_cate
 import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_event.dart';
 import 'package:jankuier_mobile/features/services/presentation/widgets/product_card.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 import '../../../../../core/di/injection.dart';
 import '../../../domain/parameters/all_product_category_parameter.dart';
@@ -116,7 +117,7 @@ class _ShopMainState extends State<ShopMain>
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: const MainTitleWidget(title: "Магазин"),
+                child: MainTitleWidget(title: AppLocalizations.of(context)!.shop),
               ),
               const ShopBannerProduct(),
               ProductCategoryBottomScheet(

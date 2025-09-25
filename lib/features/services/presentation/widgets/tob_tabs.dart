@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ServiceTopTabs extends StatelessWidget {
   final TabController controller;
@@ -13,17 +14,17 @@ class ServiceTopTabs extends StatelessWidget {
       _TabItemData(
         icon: Icons.storefront_outlined,
         activeIcon: Icons.storefront,
-        label: 'Магазин',
+        label: AppLocalizations.of(context)!.shop,
       ),
       _TabItemData(
         icon: Icons.map_outlined,
         activeIcon: Icons.map,
-        label: 'Поля',
+        label: AppLocalizations.of(context)!.fields,
       ),
       _TabItemData(
         icon: Icons.group_outlined,
         activeIcon: Icons.group,
-        label: 'Секции',
+        label: AppLocalizations.of(context)!.sections,
       ),
     ];
 

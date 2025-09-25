@@ -552,4 +552,378 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get stadiumNameNotSpecified => 'Стадион атауы көрсетілмеген';
+
+  @override
+  String get matches => 'Матчтар';
+
+  @override
+  String get activeMatch => 'Белсенді матч';
+
+  @override
+  String get tickets => 'Билеттер';
+
+  @override
+  String get yourTickets => 'Сіздің билеттеріңіз';
+
+  @override
+  String get availableTickets => 'Қолжетімді билеттер';
+
+  @override
+  String get liveNow => 'Тікелей эфир';
+
+  @override
+  String get showQrToController => 'QR кодын бақылаушыға көрсетіңіз';
+
+  @override
+  String get close => 'Жабу';
+
+  @override
+  String get buyMore => 'Тағы сатып алу';
+
+  @override
+  String get myTicket => 'Менің билетім';
+
+  @override
+  String get profile => 'Профиль';
+
+  @override
+  String get takePhoto => 'Фото түсіру';
+
+  @override
+  String get chooseFromGallery => 'Галереядан таңдау';
+
+  @override
+  String get takeNewPhoto => 'Жаңа фото түсіру';
+
+  @override
+  String get chooseNewFromGallery => 'Галереядан жаңасын таңдау';
+
+  @override
+  String get deletePhoto => 'Фотоны жою';
+
+  @override
+  String get cancel => 'Болдырмау';
+
+  @override
+  String get selectedFileEmpty => 'Таңдалған файл бос';
+
+  @override
+  String get fileNotFound => 'Файл табылмады';
+
+  @override
+  String get errorAccessingCameraGallery =>
+      'Камера/галерея қол жетімділік қатесі';
+
+  @override
+  String get photoAccessDenied =>
+      'Фотоға қол жетімділік жоқ. Баптауларда рұқсаттарды тексеріңіз';
+
+  @override
+  String get cameraAccessDenied =>
+      'Камераға қол жетімділік жоқ. Баптауларда рұқсаттарды тексеріңіз';
+
+  @override
+  String get cameraConnectionError =>
+      'Камера қосылу қатесі. Қосымшаны қайта іске қосыңыз';
+
+  @override
+  String get settings => 'Баптаулар';
+
+  @override
+  String get errorSelectingImage => 'Суретті таңдау қатесі';
+
+  @override
+  String get profilePhotoUpdated => 'Профиль фотосы жаңартылды';
+
+  @override
+  String get profilePhotoDeleted => 'Профиль фотосы жойылды';
+
+  @override
+  String get errorOnLogout => 'Шығу кезінде қате';
+
+  @override
+  String get data => 'Деректер';
+
+  @override
+  String get personalInformation => 'Жеке ақпарат';
+
+  @override
+  String get lastName => 'Тегі';
+
+  @override
+  String get firstName => 'Аты';
+
+  @override
+  String get patronymicOptional => 'Әкесінің аты (қажет емес)';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get phoneNumber => 'Телефон нөмірі';
+
+  @override
+  String get iinOptional => 'ЖСН (қажет емес)';
+
+  @override
+  String get saveChanges => 'Өзгерістерді сақтау';
+
+  @override
+  String get profileSuccessfullyUpdated => 'Профиль сәтті жаңартылды';
+
+  @override
+  String get security => 'Қауіпсіздік';
+
+  @override
+  String get passwordChange => 'Құпия сөзді өзгерту';
+
+  @override
+  String get currentPassword => 'Ағымдағы құпия сөз';
+
+  @override
+  String get newPassword => 'Жаңа құпия сөз';
+
+  @override
+  String get repeatNewPassword => 'Жаңа құпия сөзді қайталаңыз';
+
+  @override
+  String get updatePassword => 'Құпия сөзді жаңарту';
+
+  @override
+  String get passwordSuccessfullyUpdated => 'Құпия сөз сәтті жаңартылды';
+
+  @override
+  String get newPasswordMustDiffer =>
+      'Жаңа құпия сөз ағымдағысынан ерекшеленуі тиіс';
+
+  @override
+  String get changePassword => 'Құпия сөзді өзгерту';
+
+  @override
+  String get changeEmail => 'Поштаны өзгерту';
+
+  @override
+  String get deleteAccount => 'Тіркелгіні жою';
+
+  @override
+  String get oldPassword => 'Ескі құпия сөз';
+
+  @override
+  String get enterOldPassword => 'Ескі құпия сөзді енгізіңіз';
+
+  @override
+  String get enterNewPassword => 'Жаңа құпия сөзді енгізіңіз';
+
+  @override
+  String get editProfile => 'Профильді өңдеу';
+
+  @override
+  String get personalData => 'Жеке деректер';
+
+  @override
+  String get logout => 'Шығу';
+
+  @override
+  String get enterCurrentPassword => 'Ағымдағы құпия сөзді енгізіңіз';
+
+  @override
+  String get enterNewPasswordField => 'Жаңа құпия сөзді енгізіңіз';
+
+  @override
+  String get repeatNewPasswordField => 'Жаңа құпия сөзді қайталаңыз';
+
+  @override
+  String get shop => 'Дүкен';
+
+  @override
+  String get fields => 'Алаңдар';
+
+  @override
+  String get sections => 'Бөлімдер';
+
+  @override
+  String get years => 'жас';
+
+  @override
+  String get schedule => 'Кесте';
+
+  @override
+  String get noScheduleYet => 'Кесте әлі жоқ';
+
+  @override
+  String get groups => 'Топтар';
+
+  @override
+  String get recruitmentOpen => 'Қабылдау ашық';
+
+  @override
+  String get recruitmentClosed => 'Қабылдау жабық';
+
+  @override
+  String get month => 'ай';
+
+  @override
+  String get free => 'Тегін';
+
+  @override
+  String get minutes => 'мин';
+
+  @override
+  String get students => 'оқушы';
+
+  @override
+  String get errorOccurred => 'Қате пайда болды';
+
+  @override
+  String get goBack => 'Кері қайту';
+
+  @override
+  String get imageNotAvailable => 'Сурет қолжетімді емес';
+
+  @override
+  String get imageLoadingError => 'Сурет жүктеу қатесі';
+
+  @override
+  String get addedToFavorites => 'Таңдаулыларға қосылды';
+
+  @override
+  String get removedFromFavorites => 'Таңдаулылардан алынды';
+
+  @override
+  String get productAddedToCart => 'Өнім себетке қосылды';
+
+  @override
+  String get toCart => 'Себетке';
+
+  @override
+  String get article => 'Арт:';
+
+  @override
+  String get forChildren => 'Балаларға арналған';
+
+  @override
+  String get forAdults => 'Ересектерге арналған';
+
+  @override
+  String get unisex => 'Унисекс';
+
+  @override
+  String get forMen => 'Ерлерге арналған';
+
+  @override
+  String get forWomen => 'Әйелдерге арналған';
+
+  @override
+  String get inStock => 'Қоймада бар';
+
+  @override
+  String get outOfStock => 'Қоймада жоқ';
+
+  @override
+  String get variants => 'Нұсқалар';
+
+  @override
+  String get price => 'Бағасы';
+
+  @override
+  String get add => 'Қосу';
+
+  @override
+  String get addToCart => 'Себетке қосу';
+
+  @override
+  String get astanaFacilities => 'Астана: 256 нысан';
+
+  @override
+  String get addFacility => 'Алаң қосу';
+
+  @override
+  String get filters => 'Сүзгілер';
+
+  @override
+  String get searchFreeTime => 'Бос уақыт іздеу';
+
+  @override
+  String get book => 'Брондау';
+
+  @override
+  String get selectTime => 'Уақыт таңдау';
+
+  @override
+  String get pay => 'Төлеу';
+
+  @override
+  String get fieldRental => 'Алаң жалдау';
+
+  @override
+  String get searchFilters => 'Іздеу сүзгілері';
+
+  @override
+  String get minimumThreeCharacters => 'Кемінде 3 таңба';
+
+  @override
+  String get maximumTwoHundredFiftyFiveCharacters => 'Ең көбі 255 таңба';
+
+  @override
+  String get search => 'Іздеу';
+
+  @override
+  String get enterFieldName => 'Алаң атауын енгізіңіз...';
+
+  @override
+  String get selectCity => 'Қаланы таңдаңыз';
+
+  @override
+  String get apply => 'Қолдану';
+
+  @override
+  String get noMoreFields => 'Басқа алаңдар жоқ';
+
+  @override
+  String get sectionRegistration => 'Секцияға жазылу';
+
+  @override
+  String get enterSectionName => 'Секция атауын енгізіңіз...';
+
+  @override
+  String get gender => 'Жынысы';
+
+  @override
+  String get any => 'Кез келген';
+
+  @override
+  String get male => 'Ер';
+
+  @override
+  String get female => 'Әйел';
+
+  @override
+  String get age => 'Жасы';
+
+  @override
+  String get from => 'Бастап';
+
+  @override
+  String get to => 'Дейін';
+
+  @override
+  String get averagePrice => 'Орташа баға';
+
+  @override
+  String get priceFrom => 'Бағасы бастап';
+
+  @override
+  String get priceTo => 'Бағасы дейін';
+
+  @override
+  String get noMoreSections => 'Басқа секциялар жоқ';
+
+  @override
+  String get newProducts => 'Жаңа өнімдер';
+
+  @override
+  String get categories => 'Санаттар';
+
+  @override
+  String get buy => 'Сатып алу';
 }

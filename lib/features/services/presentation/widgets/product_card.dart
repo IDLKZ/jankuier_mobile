@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
-import 'package:jankuier_mobile/features/services/domain/parameters/paginate_product_parameter.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
-import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_event.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_state.dart';
 
 import '../../../../core/constants/app_route_constants.dart';

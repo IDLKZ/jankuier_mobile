@@ -12,6 +12,7 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_state.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/hive_utils.dart';
@@ -72,44 +73,44 @@ class _EditAccountPageState extends State<EditAccountPage> {
   // Validation methods
   String? _validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите email';
+      return AppLocalizations.of(context)!.enterEmail;
     }
     final email = value.trim();
     final re = RegExp(FormValidationConstant.EmailRegExp);
     if (!re.hasMatch(email)) {
-      return 'Введите корректный email адрес';
+      return AppLocalizations.of(context)!.enterCorrectEmail;
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите номер телефона';
+      return AppLocalizations.of(context)!.enterPhone;
     }
     final phone = value.trim();
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
-      return 'Номер должен начинаться с 7 и содержать 11 цифр (7XXXXXXXXXX)';
+      return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
   }
 
   String? _validateFirstName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите имя';
+      return AppLocalizations.of(context)!.enterFirstName;
     }
     if (value.trim().length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.firstNameMinChars;
     }
     return null;
   }
 
   String? _validateLastName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите фамилию';
+      return AppLocalizations.of(context)!.enterLastName;
     }
     if (value.trim().length < 2) {
-      return 'Фамилия должна содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.lastNameMinChars;
     }
     return null;
   }
@@ -245,44 +246,44 @@ class _EditAccountViewState extends State<_EditAccountView> {
   // Validation methods
   String? _validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите email';
+      return AppLocalizations.of(context)!.enterEmail;
     }
     final email = value.trim();
     final re = RegExp(FormValidationConstant.EmailRegExp);
     if (!re.hasMatch(email)) {
-      return 'Введите корректный email адрес';
+      return AppLocalizations.of(context)!.enterCorrectEmail;
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите номер телефона';
+      return AppLocalizations.of(context)!.enterPhone;
     }
     final phone = value.trim();
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
-      return 'Номер должен начинаться с 7 и содержать 11 цифр (7XXXXXXXXXX)';
+      return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
   }
 
   String? _validateFirstName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите имя';
+      return AppLocalizations.of(context)!.enterFirstName;
     }
     if (value.trim().length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.firstNameMinChars;
     }
     return null;
   }
 
   String? _validateLastName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите фамилию';
+      return AppLocalizations.of(context)!.enterLastName;
     }
     if (value.trim().length < 2) {
-      return 'Фамилия должна содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.lastNameMinChars;
     }
     return null;
   }
@@ -353,7 +354,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
-        title: "Данные",
+        title: AppLocalizations.of(context)!.data,
         actionIcon: Icons.notifications_none,
         onActionTap: () {},
         leadingIcon: Icons.arrow_back_ios,
@@ -365,7 +366,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
               if (state is UpdateProfileSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Профиль успешно обновлен'),
+                    content: Text(AppLocalizations.of(context)!.profileSuccessfullyUpdated),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -396,7 +397,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Личная информация',
+                    AppLocalizations.of(context)!.personalInformation,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -407,39 +408,39 @@ class _EditAccountViewState extends State<_EditAccountView> {
 
                   _buildTextFormField(
                     controller: _lastNameC,
-                    labelText: 'Фамилия',
+                    labelText: AppLocalizations.of(context)!.lastName,
                     validator: _validateLastName,
                   ),
 
                   _buildTextFormField(
                     controller: _firstNameC,
-                    labelText: 'Имя',
+                    labelText: AppLocalizations.of(context)!.firstName,
                     validator: _validateFirstName,
                   ),
 
                   _buildTextFormField(
                     controller: _patronomicC,
-                    labelText: 'Отчество (необязательно)',
+                    labelText: AppLocalizations.of(context)!.patronymicOptional,
                     validator: (value) => null, // Optional field
                   ),
 
                   _buildTextFormField(
                     controller: _emailC,
-                    labelText: 'Email',
+                    labelText: AppLocalizations.of(context)!.email,
                     validator: _validateEmail,
                     keyboardType: TextInputType.emailAddress,
                   ),
 
                   _buildTextFormField(
                     controller: _phoneC,
-                    labelText: 'Номер телефона',
+                    labelText: AppLocalizations.of(context)!.phoneNumber,
                     validator: _validatePhone,
                     keyboardType: TextInputType.phone,
                   ),
 
                   _buildTextFormField(
                     controller: _iinC,
-                    labelText: 'ИИН (необязательно)',
+                    labelText: AppLocalizations.of(context)!.iinOptional,
                     validator: (value) => null, // Optional field
                     keyboardType: TextInputType.number,
                   ),
@@ -472,7 +473,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
                                   ),
                                 )
                               : Text(
-                                  'Сохранить изменения',
+                                  AppLocalizations.of(context)!.saveChanges,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,

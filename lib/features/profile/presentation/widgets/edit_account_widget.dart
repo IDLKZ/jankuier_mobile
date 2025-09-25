@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class EditAccountForm extends StatelessWidget {
   const EditAccountForm({super.key});
@@ -13,17 +14,17 @@ class EditAccountForm extends StatelessWidget {
         children: [
           // Смена пароля
           _SectionContainer(
-            title: 'Поменять пароль',
+            title: AppLocalizations.of(context)!.changePassword,
             children: [
               _LabeledTextField(
-                  label: 'Старый пароль', hint: 'Введите старый пароль'),
+                  label: AppLocalizations.of(context)!.oldPassword, hint: AppLocalizations.of(context)!.enterOldPassword),
               _LabeledTextField(
-                  label: 'Новый пароль', hint: 'Введите новый пароль'),
+                  label: AppLocalizations.of(context)!.newPassword, hint: AppLocalizations.of(context)!.enterNewPassword),
               _LabeledTextField(
-                  label: 'Повторите новый пароль',
-                  hint: 'Введите новый пароль'),
+                  label: AppLocalizations.of(context)!.repeatNewPassword,
+                  hint: AppLocalizations.of(context)!.enterNewPassword),
               SizedBox(height: 12.h),
-              _PrimaryButton(title: 'Сменить пароль', onPressed: () {}),
+              _PrimaryButton(title: AppLocalizations.of(context)!.changePassword, onPressed: () {}),
             ],
           ),
 
@@ -31,11 +32,11 @@ class EditAccountForm extends StatelessWidget {
 
           // Смена почты
           _SectionContainer(
-            title: 'Поменять почту',
+            title: AppLocalizations.of(context)!.changeEmail,
             children: [
-              _LabeledTextField(label: 'Почта', hint: 'example@mail.com'),
+              _LabeledTextField(label: AppLocalizations.of(context)!.email, hint: 'example@mail.com'),
               SizedBox(height: 12.h),
-              _PrimaryButton(title: 'Сменить почту', onPressed: () {}),
+              _PrimaryButton(title: AppLocalizations.of(context)!.changeEmail, onPressed: () {}),
             ],
           ),
 
@@ -55,7 +56,7 @@ class EditAccountForm extends StatelessWidget {
                 TextButton(
                   onPressed: () {},
                   child: Text(
-                    'Удалить аккаунт',
+                    AppLocalizations.of(context)!.deleteAccount,
                     style: TextStyle(color: Colors.red),
                   ),
                 ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class FieldsSortingFilter extends StatelessWidget {
   const FieldsSortingFilter({super.key});
 
@@ -17,12 +19,9 @@ class FieldsSortingFilter extends StatelessWidget {
   List<Widget> _buildFilterChildren(BuildContext context) {
     return [
       Text(
-        'Астана: 256 сооружений',
+        AppLocalizations.of(context)!.astanaFacilities,
         style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w500,
-          color: Colors.black
-        ),
+            fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.black),
       ),
       SizedBox(height: 12.h),
       Row(
@@ -39,7 +38,7 @@ class FieldsSortingFilter extends StatelessWidget {
               ),
               onPressed: () {},
               child: Text(
-                "Добавить площадку",
+                AppLocalizations.of(context)!.addFacility,
                 style: TextStyle(
                   fontFamily: "Inter",
                   fontSize: 11.sp,
@@ -62,7 +61,7 @@ class FieldsSortingFilter extends StatelessWidget {
               ),
               onPressed: () {},
               label: Text(
-                "Фильтры",
+                AppLocalizations.of(context)!.filters,
                 style: TextStyle(
                   fontFamily: "Inter",
                   fontSize: 11.sp,
@@ -74,12 +73,9 @@ class FieldsSortingFilter extends StatelessWidget {
       ),
       SizedBox(height: 12.h),
       Text(
-        'Поиск свободного времени',
+        AppLocalizations.of(context)!.searchFreeTime,
         style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w500,
-          color: Colors.black
-        ),
+            fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.black),
       ),
       SizedBox(height: 12.h),
       Row(

@@ -20,6 +20,7 @@ import '../../../../countries/domain/parameters/get_city_parameter.dart';
 import '../../../domain/use_cases/field/paginate_field_party_case.dart';
 import '../../bloc/field_party/field_party_bloc.dart';
 import '../field_card.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class FieldsMain extends StatefulWidget {
   const FieldsMain({super.key});
@@ -69,10 +70,10 @@ class _FieldsMainState extends State<FieldsMain>
       return null; // Пустое поле разрешено
     }
     if (value.length < 3) {
-      return 'Минимум 3 символа';
+      return AppLocalizations.of(context)!.minimumThreeCharacters;
     }
     if (value.length > 255) {
-      return 'Максимум 255 символов';
+      return AppLocalizations.of(context)!.maximumTwoHundredFiftyFiveCharacters;
     }
     return null;
   }
@@ -150,7 +151,7 @@ class _FieldsMainState extends State<FieldsMain>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const MainTitleWidget(title: "Аренда полей"),
+        MainTitleWidget(title: AppLocalizations.of(context)!.fieldRental),
         IconButton(
           icon: Icon(Iconsax.filter_square_copy, size: 18.sp),
           onPressed: () {
@@ -185,12 +186,11 @@ class _FieldsMainState extends State<FieldsMain>
                               children: [
                                 // Title
                                 Text(
-                                  'Фильтры поиска',
+                                  AppLocalizations.of(context)!.searchFilters,
                                   style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black
-                                  ),
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.black),
                                 ),
                                 SizedBox(height: 20.h),
 
@@ -198,8 +198,10 @@ class _FieldsMainState extends State<FieldsMain>
                                 TextField(
                                   controller: _searchController,
                                   decoration: InputDecoration(
-                                    labelText: 'Поиск',
-                                    hintText: 'Введите название поля...',
+                                    labelText:
+                                        AppLocalizations.of(context)!.search,
+                                    hintText: AppLocalizations.of(context)!
+                                        .enterFieldName,
                                     border: const OutlineInputBorder(),
                                     errorText: _searchError,
                                     prefixIcon: const Icon(Icons.search),
@@ -255,11 +257,14 @@ class _FieldsMainState extends State<FieldsMain>
                                               (filter, infiniteScrollProps) =>
                                                   state.cities,
                                           decoratorProps:
-                                              const DropDownDecoratorProps(
+                                              DropDownDecoratorProps(
                                             decoration: InputDecoration(
-                                              labelText: 'Выберите город',
+                                              labelText:
+                                                  AppLocalizations.of(context)!
+                                                      .selectCity,
                                               border: OutlineInputBorder(),
-                                              prefixIcon: Icon(Icons.location_city),
+                                              prefixIcon:
+                                                  Icon(Icons.location_city),
                                               filled: true,
                                               fillColor: Colors.white,
                                             ),
@@ -308,7 +313,7 @@ class _FieldsMainState extends State<FieldsMain>
                                       ),
                                     ),
                                     child: Text(
-                                      'Применить',
+                                      AppLocalizations.of(context)!.apply,
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         color: Colors.white,
@@ -372,7 +377,7 @@ class _FieldsMainState extends State<FieldsMain>
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.h),
             child: Text(
-              'Больше полей нет',
+              AppLocalizations.of(context)!.noMoreFields,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey,

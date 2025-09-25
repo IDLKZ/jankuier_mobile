@@ -12,6 +12,7 @@ import 'package:jankuier_mobile/features/services/data/entities/academy/get_full
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_state.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../data/entities/academy/academy_group_entity.dart';
@@ -242,13 +243,14 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
             children: [
               Icon(Icons.access_time, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
-              Text("${widget.entity.academy.averageTrainingTimeInMinute}",
+              Text(
+                  "${widget.entity.academy.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
               SizedBox(width: 12.w),
               Icon(Icons.person, size: 14.sp, color: Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
-                  "${widget.entity.academy.minAge} - ${widget.entity.academy.maxAge} лет",
+                  "${widget.entity.academy.minAge} - ${widget.entity.academy.maxAge} ${AppLocalizations.of(context)!.years}",
                   style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
             ],
           ),
@@ -256,7 +258,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
           if (parameter != null)
             Column(
               children: [
-                const MainTitleWidget(title: "Расписание"),
+                MainTitleWidget(title: AppLocalizations.of(context)!.schedule),
                 SizedBox(height: 6.h),
                 SizedBox(
                   height: 90,
@@ -289,7 +291,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
                     return Container(
                       margin: EdgeInsetsGeometry.symmetric(vertical: 10.h),
                       child: Text(
-                        "Расписания пока нет",
+                        AppLocalizations.of(context)!.noScheduleYet,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: AppColors.warning,
@@ -307,7 +309,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
             height: 15.h,
             color: AppColors.grey200,
           ),
-          const MainTitleWidget(title: "Группы"),
+          MainTitleWidget(title: AppLocalizations.of(context)!.groups),
           SizedBox(height: 8.h),
           Column(
             children: widget.entity.groups
@@ -374,7 +376,9 @@ class AcademyGroupCard extends StatelessWidget {
                       color: AppColors.error, size: 16.sp),
               SizedBox(width: 4.w),
               Text(
-                group.isRecruiting ? "Набор открыт" : "Набор закрыт",
+                group.isRecruiting
+                    ? AppLocalizations.of(context)!.recruitmentOpen
+                    : AppLocalizations.of(context)!.recruitmentClosed,
                 style: TextStyle(
                   color: group.isRecruiting ? Colors.green : Colors.red,
                   fontSize: 12.sp,
@@ -411,8 +415,8 @@ class AcademyGroupCard extends StatelessWidget {
             children: [
               Text(
                 group.price != null
-                    ? "${group.price?.toStringAsFixed(0)} ₸/${group.pricePerRu ?? 'мес'}"
-                    : "Бесплатно",
+                    ? "${group.price?.toStringAsFixed(0)} ₸/${group.pricePerRu ?? AppLocalizations.of(context)!.month}"
+                    : AppLocalizations.of(context)!.free,
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
@@ -437,7 +441,7 @@ class AcademyGroupCard extends StatelessWidget {
               Icon(Icons.access_time, size: 16.sp, color: Colors.grey),
               SizedBox(width: 4.w),
               Text(
-                "${group.averageTrainingTimeInMinute ?? 60} мин",
+                "${group.averageTrainingTimeInMinute ?? 60} ${AppLocalizations.of(context)!.minutes}",
                 style: TextStyle(fontSize: 12.sp, color: Colors.black87),
               ),
             ],
@@ -520,9 +524,9 @@ class AcademyGroupScheduleCard extends StatelessWidget {
                 SizedBox(height: 4.h),
 
                 // Подзаголовок
-                if (group?.descriptionRu != null)
+                if (group?.localizedDescription(context) != null)
                   Text(
-                    group!.descriptionRu!,
+                    group!.localizedDescription(context),
                     style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
                   ),
 
@@ -533,13 +537,15 @@ class AcademyGroupScheduleCard extends StatelessWidget {
                   children: [
                     Icon(Icons.group, size: 14.sp, color: Colors.grey),
                     SizedBox(width: 3.w),
-                    Text("${group?.bookedSpace ?? 0} учеников",
+                    Text(
+                        "${group?.bookedSpace ?? 0} ${AppLocalizations.of(context)!.students}",
                         style:
                             TextStyle(fontSize: 12.sp, color: Colors.black87)),
                     SizedBox(width: 12.w),
                     Icon(Icons.location_on, size: 14.sp, color: Colors.grey),
                     SizedBox(width: 3.w),
-                    Text("${group?.averageTrainingTimeInMinute ?? 60} мин",
+                    Text(
+                        "${group?.averageTrainingTimeInMinute ?? 60} ${AppLocalizations.of(context)!.minutes}",
                         style: TextStyle(
                             fontSize: 12.sp, color: Colors.grey[700])),
                   ],

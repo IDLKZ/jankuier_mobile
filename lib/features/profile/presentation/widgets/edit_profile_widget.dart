@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import 'package:jankuier_mobile/core/common/entities/file_entity.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class EditProfilePage extends StatelessWidget {
   final String userName;
@@ -33,7 +34,7 @@ class EditProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const MainTitleWidget(title: 'Редактировать профиль'),
+                MainTitleWidget(title: AppLocalizations.of(context)!.editProfile),
                 const SizedBox(height: 20),
                 // Avatar + Name Card
                 Container(
@@ -85,14 +86,14 @@ class EditProfilePage extends StatelessWidget {
                 // Личные данные
                 _ProfileTile(
                   icon: Icons.description_outlined,
-                  text: "Личные данные",
+                  text: AppLocalizations.of(context)!.personalData,
                   onTap: onPersonalDataTap,
                 ),
                 SizedBox(height: 8.h),
                 // Безопасность
                 _ProfileTile(
                   icon: Icons.lock_outline,
-                  text: "Безопасность",
+                  text: AppLocalizations.of(context)!.security,
                   onTap: onSecurityTap,
                 ),
                 SizedBox(height: 16.h),
@@ -112,7 +113,7 @@ class EditProfilePage extends StatelessWidget {
                         const Icon(Icons.logout, color: Color(0xFFFF4C4C)),
                         SizedBox(width: 12.w),
                         Text(
-                          "Выход",
+                          AppLocalizations.of(context)!.logout,
                           style: TextStyle(
                             color: const Color(0xFFFF4C4C),
                             fontSize: 16.sp,

@@ -22,6 +22,7 @@ import '../../../../countries/presentation/bloc/get_cities_bloc/get_cities_event
 import '../../../../countries/presentation/bloc/get_cities_bloc/get_cities_state.dart';
 import '../../../data/entities/academy/academy_entity.dart';
 import '../section_card.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class SectionMain extends StatefulWidget {
   const SectionMain({super.key});
@@ -81,10 +82,10 @@ class _SectionMainState extends State<SectionMain>
       return null; // Пустое поле разрешено
     }
     if (value.length < 3) {
-      return 'Минимум 3 символа';
+      return AppLocalizations.of(context)!.minimumThreeCharacters;
     }
     if (value.length > 255) {
-      return 'Максимум 255 символов';
+      return AppLocalizations.of(context)!.maximumTwoHundredFiftyFiveCharacters;
     }
     return null;
   }
@@ -160,7 +161,9 @@ class _SectionMainState extends State<SectionMain>
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const MainTitleWidget(title: "Запись в секцию"),
+                        MainTitleWidget(
+                            title: AppLocalizations.of(context)!
+                                .sectionRegistration),
                         IconButton(
                             onPressed: () {
                               showModalBottomSheet<void>(
@@ -196,12 +199,14 @@ class _SectionMainState extends State<SectionMain>
                                                 children: [
                                                   // Title
                                                   Text(
-                                                    'Фильтры поиска',
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .searchFilters,
                                                     style: TextStyle(
-                                                      fontSize: 18.sp,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: AppColors.black
-                                                    ),
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColors.black),
                                                   ),
                                                   SizedBox(height: 20.h),
 
@@ -210,14 +215,19 @@ class _SectionMainState extends State<SectionMain>
                                                     controller:
                                                         _searchController,
                                                     decoration: InputDecoration(
-                                                      labelText: 'Поиск',
+                                                      labelText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .search,
                                                       hintText:
-                                                          'Введите название секции...',
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterSectionName,
                                                       border:
                                                           const OutlineInputBorder(),
                                                       errorText: _searchError,
-                                                      prefixIcon:
-                                                          const Icon(Icons.search),
+                                                      prefixIcon: const Icon(
+                                                          Icons.search),
                                                       filled: true,
                                                       fillColor: Colors.white,
                                                     ),
@@ -289,15 +299,25 @@ class _SectionMainState extends State<SectionMain>
                                                                       .contains(
                                                                           query));
                                                             },
-                                                            items: (filter, infiniteScrollProps) => state.cities,
+                                                            items: (filter,
+                                                                    infiniteScrollProps) =>
+                                                                state.cities,
                                                             decoratorProps:
-                                                                const DropDownDecoratorProps(
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Выберите город',
-                                                                border: OutlineInputBorder(),
-                                                                prefixIcon: Icon(Icons.location_city),
+                                                                DropDownDecoratorProps(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                labelText: AppLocalizations.of(
+                                                                        context)!
+                                                                    .selectCity,
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                                prefixIcon:
+                                                                    Icon(Icons
+                                                                        .location_city),
                                                                 filled: true,
-                                                                fillColor: Colors.white,
+                                                                fillColor:
+                                                                    Colors
+                                                                        .white,
                                                               ),
                                                             ),
                                                             popupProps:
@@ -340,9 +360,14 @@ class _SectionMainState extends State<SectionMain>
                                                   // Gender selector
                                                   DropdownButtonFormField<int>(
                                                     value: _selectedGender,
-                                                    decoration: const InputDecoration(
-                                                      labelText: 'Пол',
-                                                      labelStyle: TextStyle(color: AppColors.black),
+                                                    decoration: InputDecoration(
+                                                      labelText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .gender,
+                                                      labelStyle: TextStyle(
+                                                          color:
+                                                              AppColors.black),
                                                       border:
                                                           OutlineInputBorder(),
                                                       prefixIcon:
@@ -350,18 +375,25 @@ class _SectionMainState extends State<SectionMain>
                                                       filled: true,
                                                       fillColor: Colors.white,
                                                     ),
-                                                    items: const [
+                                                    items: [
                                                       DropdownMenuItem(
                                                           value: 0,
-                                                          child: Text('Любой')),
+                                                          child: Text(
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .any)),
                                                       DropdownMenuItem(
                                                           value: 1,
-                                                          child:
-                                                              Text('Мужской')),
+                                                          child: Text(
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .male)),
                                                       DropdownMenuItem(
                                                           value: 2,
-                                                          child:
-                                                              Text('Женский')),
+                                                          child: Text(
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .female)),
                                                     ],
                                                     onChanged: (value) {
                                                       setModalState(() {
@@ -374,12 +406,14 @@ class _SectionMainState extends State<SectionMain>
 
                                                   // Age range
                                                   Text(
-                                                    'Возраст',
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .age,
                                                     style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: AppColors.black
-                                                    ),
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: AppColors.black),
                                                   ),
                                                   SizedBox(height: 8.h),
                                                   Row(
@@ -392,13 +426,17 @@ class _SectionMainState extends State<SectionMain>
                                                               TextInputType
                                                                   .number,
                                                           decoration:
-                                                              const InputDecoration(
-                                                            labelText: 'От',
+                                                              InputDecoration(
+                                                            labelText:
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .from,
                                                             border:
                                                                 OutlineInputBorder(),
                                                             isDense: true,
                                                             filled: true,
-                                                            fillColor: Colors.white,
+                                                            fillColor:
+                                                                Colors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -411,13 +449,17 @@ class _SectionMainState extends State<SectionMain>
                                                               TextInputType
                                                                   .number,
                                                           decoration:
-                                                              const InputDecoration(
-                                                            labelText: 'До',
+                                                              InputDecoration(
+                                                            labelText:
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .to,
                                                             border:
                                                                 OutlineInputBorder(),
                                                             isDense: true,
                                                             filled: true,
-                                                            fillColor: Colors.white,
+                                                            fillColor:
+                                                                Colors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -427,12 +469,14 @@ class _SectionMainState extends State<SectionMain>
 
                                                   // Price range
                                                   Text(
-                                                    'Средняя цена',
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .averagePrice,
                                                     style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: AppColors.black
-                                                    ),
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: AppColors.black),
                                                   ),
                                                   SizedBox(height: 8.h),
                                                   Row(
@@ -444,18 +488,21 @@ class _SectionMainState extends State<SectionMain>
                                                           keyboardType:
                                                               const TextInputType
                                                                   .numberWithOptions(
-                                                                      decimal:
-                                                                          true),
+                                                                  decimal:
+                                                                      true),
                                                           decoration:
-                                                              const InputDecoration(
+                                                              InputDecoration(
                                                             labelText:
-                                                                'Цена от',
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .priceFrom,
                                                             border:
                                                                 OutlineInputBorder(),
                                                             isDense: true,
                                                             suffixText: '₸',
                                                             filled: true,
-                                                            fillColor: Colors.white,
+                                                            fillColor:
+                                                                Colors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -467,18 +514,21 @@ class _SectionMainState extends State<SectionMain>
                                                           keyboardType:
                                                               const TextInputType
                                                                   .numberWithOptions(
-                                                                      decimal:
-                                                                          true),
+                                                                  decimal:
+                                                                      true),
                                                           decoration:
-                                                              const InputDecoration(
+                                                              InputDecoration(
                                                             labelText:
-                                                                'Цена до',
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .priceTo,
                                                             border:
                                                                 OutlineInputBorder(),
                                                             isDense: true,
                                                             suffixText: '₸',
                                                             filled: true,
-                                                            fillColor: Colors.white,
+                                                            fillColor:
+                                                                Colors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -512,7 +562,9 @@ class _SectionMainState extends State<SectionMain>
                                                         ),
                                                       ),
                                                       child: Text(
-                                                        'Применить',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .apply,
                                                         style: TextStyle(
                                                           fontSize: 16.sp,
                                                           color: Colors.white,
@@ -597,7 +649,7 @@ class _SectionMainState extends State<SectionMain>
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.h),
             child: Text(
-              'Больше секций нет',
+              AppLocalizations.of(context)!.noMoreSections,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey,

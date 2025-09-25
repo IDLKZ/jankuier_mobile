@@ -307,7 +307,7 @@ abstract class AppLocalizations {
   /// No description provided for @register.
   ///
   /// In ru, this message translates to:
-  /// **'Зарегистрировать'**
+  /// **'Записаться'**
   String get register;
 
   /// No description provided for @next.
@@ -1179,6 +1179,744 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Название не указано'**
   String get stadiumNameNotSpecified;
+
+  /// No description provided for @matches.
+  ///
+  /// In ru, this message translates to:
+  /// **'Матчи'**
+  String get matches;
+
+  /// No description provided for @activeMatch.
+  ///
+  /// In ru, this message translates to:
+  /// **'Активный матч'**
+  String get activeMatch;
+
+  /// No description provided for @tickets.
+  ///
+  /// In ru, this message translates to:
+  /// **'Билеты'**
+  String get tickets;
+
+  /// No description provided for @yourTickets.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ваши билеты'**
+  String get yourTickets;
+
+  /// No description provided for @availableTickets.
+  ///
+  /// In ru, this message translates to:
+  /// **'Доступные билеты'**
+  String get availableTickets;
+
+  /// No description provided for @liveNow.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прямо эфир'**
+  String get liveNow;
+
+  /// No description provided for @showQrToController.
+  ///
+  /// In ru, this message translates to:
+  /// **'Покажите QR Контролеру'**
+  String get showQrToController;
+
+  /// No description provided for @close.
+  ///
+  /// In ru, this message translates to:
+  /// **'Закрыть'**
+  String get close;
+
+  /// No description provided for @buyMore.
+  ///
+  /// In ru, this message translates to:
+  /// **'Купить еще'**
+  String get buyMore;
+
+  /// No description provided for @myTicket.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мой билет'**
+  String get myTicket;
+
+  /// No description provided for @profile.
+  ///
+  /// In ru, this message translates to:
+  /// **'Профиль'**
+  String get profile;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сделать фото'**
+  String get takePhoto;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать из галереи'**
+  String get chooseFromGallery;
+
+  /// No description provided for @takeNewPhoto.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сделать новое фото'**
+  String get takeNewPhoto;
+
+  /// No description provided for @chooseNewFromGallery.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать новое из галереи'**
+  String get chooseNewFromGallery;
+
+  /// No description provided for @deletePhoto.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить фото'**
+  String get deletePhoto;
+
+  /// No description provided for @cancel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отмена'**
+  String get cancel;
+
+  /// No description provided for @selectedFileEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбранный файл пуст'**
+  String get selectedFileEmpty;
+
+  /// No description provided for @fileNotFound.
+  ///
+  /// In ru, this message translates to:
+  /// **'Файл не найден'**
+  String get fileNotFound;
+
+  /// No description provided for @errorAccessingCameraGallery.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка доступа к камере/галерее'**
+  String get errorAccessingCameraGallery;
+
+  /// No description provided for @photoAccessDenied.
+  ///
+  /// In ru, this message translates to:
+  /// **'Доступ к фото запрещен. Проверьте разрешения в настройках'**
+  String get photoAccessDenied;
+
+  /// No description provided for @cameraAccessDenied.
+  ///
+  /// In ru, this message translates to:
+  /// **'Доступ к камере запрещен. Проверьте разрешения в настройках'**
+  String get cameraAccessDenied;
+
+  /// No description provided for @cameraConnectionError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка подключения к камере. Попробуйте перезапустить приложение'**
+  String get cameraConnectionError;
+
+  /// No description provided for @settings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Настройки'**
+  String get settings;
+
+  /// No description provided for @errorSelectingImage.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка при выборе изображения'**
+  String get errorSelectingImage;
+
+  /// No description provided for @profilePhotoUpdated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фото профиля обновлено'**
+  String get profilePhotoUpdated;
+
+  /// No description provided for @profilePhotoDeleted.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фото профиля удалено'**
+  String get profilePhotoDeleted;
+
+  /// No description provided for @errorOnLogout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка при выходе'**
+  String get errorOnLogout;
+
+  /// No description provided for @data.
+  ///
+  /// In ru, this message translates to:
+  /// **'Данные'**
+  String get data;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Личная информация'**
+  String get personalInformation;
+
+  /// No description provided for @lastName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фамилия'**
+  String get lastName;
+
+  /// No description provided for @firstName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Имя'**
+  String get firstName;
+
+  /// No description provided for @patronymicOptional.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отчество (необязательно)'**
+  String get patronymicOptional;
+
+  /// No description provided for @email.
+  ///
+  /// In ru, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In ru, this message translates to:
+  /// **'Номер телефона'**
+  String get phoneNumber;
+
+  /// No description provided for @iinOptional.
+  ///
+  /// In ru, this message translates to:
+  /// **'ИИН (необязательно)'**
+  String get iinOptional;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сохранить изменения'**
+  String get saveChanges;
+
+  /// No description provided for @profileSuccessfullyUpdated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Профиль успешно обновлен'**
+  String get profileSuccessfullyUpdated;
+
+  /// No description provided for @security.
+  ///
+  /// In ru, this message translates to:
+  /// **'Безопасность'**
+  String get security;
+
+  /// No description provided for @passwordChange.
+  ///
+  /// In ru, this message translates to:
+  /// **'Изменение пароля'**
+  String get passwordChange;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Текущий пароль'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новый пароль'**
+  String get newPassword;
+
+  /// No description provided for @repeatNewPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторите новый пароль'**
+  String get repeatNewPassword;
+
+  /// No description provided for @updatePassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Обновить пароль'**
+  String get updatePassword;
+
+  /// No description provided for @passwordSuccessfullyUpdated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пароль успешно обновлен'**
+  String get passwordSuccessfullyUpdated;
+
+  /// No description provided for @newPasswordMustDiffer.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новый пароль должен отличаться от текущего'**
+  String get newPasswordMustDiffer;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поменять пароль'**
+  String get changePassword;
+
+  /// No description provided for @changeEmail.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поменять почту'**
+  String get changeEmail;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить аккаунт'**
+  String get deleteAccount;
+
+  /// No description provided for @oldPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Старый пароль'**
+  String get oldPassword;
+
+  /// No description provided for @enterOldPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите старый пароль'**
+  String get enterOldPassword;
+
+  /// No description provided for @enterNewPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите новый пароль'**
+  String get enterNewPassword;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In ru, this message translates to:
+  /// **'Редактировать профиль'**
+  String get editProfile;
+
+  /// No description provided for @personalData.
+  ///
+  /// In ru, this message translates to:
+  /// **'Личные данные'**
+  String get personalData;
+
+  /// No description provided for @logout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выход'**
+  String get logout;
+
+  /// No description provided for @enterCurrentPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите текущий пароль'**
+  String get enterCurrentPassword;
+
+  /// No description provided for @enterNewPasswordField.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите новый пароль'**
+  String get enterNewPasswordField;
+
+  /// No description provided for @repeatNewPasswordField.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторите новый пароль'**
+  String get repeatNewPasswordField;
+
+  /// No description provided for @shop.
+  ///
+  /// In ru, this message translates to:
+  /// **'Магазин'**
+  String get shop;
+
+  /// No description provided for @fields.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поля'**
+  String get fields;
+
+  /// No description provided for @sections.
+  ///
+  /// In ru, this message translates to:
+  /// **'Секции'**
+  String get sections;
+
+  /// No description provided for @years.
+  ///
+  /// In ru, this message translates to:
+  /// **'лет'**
+  String get years;
+
+  /// No description provided for @schedule.
+  ///
+  /// In ru, this message translates to:
+  /// **'Расписание'**
+  String get schedule;
+
+  /// No description provided for @noScheduleYet.
+  ///
+  /// In ru, this message translates to:
+  /// **'Расписания пока нет'**
+  String get noScheduleYet;
+
+  /// No description provided for @groups.
+  ///
+  /// In ru, this message translates to:
+  /// **'Группы'**
+  String get groups;
+
+  /// No description provided for @recruitmentOpen.
+  ///
+  /// In ru, this message translates to:
+  /// **'Набор открыт'**
+  String get recruitmentOpen;
+
+  /// No description provided for @recruitmentClosed.
+  ///
+  /// In ru, this message translates to:
+  /// **'Набор закрыт'**
+  String get recruitmentClosed;
+
+  /// No description provided for @month.
+  ///
+  /// In ru, this message translates to:
+  /// **'мес'**
+  String get month;
+
+  /// No description provided for @free.
+  ///
+  /// In ru, this message translates to:
+  /// **'Бесплатно'**
+  String get free;
+
+  /// No description provided for @minutes.
+  ///
+  /// In ru, this message translates to:
+  /// **'мин'**
+  String get minutes;
+
+  /// No description provided for @students.
+  ///
+  /// In ru, this message translates to:
+  /// **'учеников'**
+  String get students;
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In ru, this message translates to:
+  /// **'Произошла ошибка'**
+  String get errorOccurred;
+
+  /// No description provided for @goBack.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вернуться'**
+  String get goBack;
+
+  /// No description provided for @imageNotAvailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Изображение недоступно'**
+  String get imageNotAvailable;
+
+  /// No description provided for @imageLoadingError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки изображения'**
+  String get imageLoadingError;
+
+  /// No description provided for @addedToFavorites.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавлено в избранное'**
+  String get addedToFavorites;
+
+  /// No description provided for @removedFromFavorites.
+  ///
+  /// In ru, this message translates to:
+  /// **'Убрано из избранного'**
+  String get removedFromFavorites;
+
+  /// No description provided for @productAddedToCart.
+  ///
+  /// In ru, this message translates to:
+  /// **'Товар добавлен в корзину'**
+  String get productAddedToCart;
+
+  /// No description provided for @toCart.
+  ///
+  /// In ru, this message translates to:
+  /// **'В корзину'**
+  String get toCart;
+
+  /// No description provided for @article.
+  ///
+  /// In ru, this message translates to:
+  /// **'Арт:'**
+  String get article;
+
+  /// No description provided for @forChildren.
+  ///
+  /// In ru, this message translates to:
+  /// **'Для детей'**
+  String get forChildren;
+
+  /// No description provided for @forAdults.
+  ///
+  /// In ru, this message translates to:
+  /// **'Для взрослых'**
+  String get forAdults;
+
+  /// No description provided for @unisex.
+  ///
+  /// In ru, this message translates to:
+  /// **'Унисекс'**
+  String get unisex;
+
+  /// No description provided for @forMen.
+  ///
+  /// In ru, this message translates to:
+  /// **'Для мужчин'**
+  String get forMen;
+
+  /// No description provided for @forWomen.
+  ///
+  /// In ru, this message translates to:
+  /// **'Для женщин'**
+  String get forWomen;
+
+  /// No description provided for @inStock.
+  ///
+  /// In ru, this message translates to:
+  /// **'В наличии'**
+  String get inStock;
+
+  /// No description provided for @outOfStock.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет в наличии'**
+  String get outOfStock;
+
+  /// No description provided for @variants.
+  ///
+  /// In ru, this message translates to:
+  /// **'Варианты'**
+  String get variants;
+
+  /// No description provided for @price.
+  ///
+  /// In ru, this message translates to:
+  /// **'Цена'**
+  String get price;
+
+  /// No description provided for @add.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить'**
+  String get add;
+
+  /// No description provided for @addToCart.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить в корзину'**
+  String get addToCart;
+
+  /// No description provided for @astanaFacilities.
+  ///
+  /// In ru, this message translates to:
+  /// **'Астана: 256 сооружений'**
+  String get astanaFacilities;
+
+  /// No description provided for @addFacility.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить площадку'**
+  String get addFacility;
+
+  /// No description provided for @filters.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фильтры'**
+  String get filters;
+
+  /// No description provided for @searchFreeTime.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поиск свободного времени'**
+  String get searchFreeTime;
+
+  /// No description provided for @book.
+  ///
+  /// In ru, this message translates to:
+  /// **'Забронировать'**
+  String get book;
+
+  /// No description provided for @selectTime.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите время'**
+  String get selectTime;
+
+  /// No description provided for @pay.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплатить'**
+  String get pay;
+
+  /// No description provided for @fieldRental.
+  ///
+  /// In ru, this message translates to:
+  /// **'Аренда полей'**
+  String get fieldRental;
+
+  /// No description provided for @searchFilters.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фильтры поиска'**
+  String get searchFilters;
+
+  /// No description provided for @minimumThreeCharacters.
+  ///
+  /// In ru, this message translates to:
+  /// **'Минимум 3 символа'**
+  String get minimumThreeCharacters;
+
+  /// No description provided for @maximumTwoHundredFiftyFiveCharacters.
+  ///
+  /// In ru, this message translates to:
+  /// **'Максимум 255 символов'**
+  String get maximumTwoHundredFiftyFiveCharacters;
+
+  /// No description provided for @search.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поиск'**
+  String get search;
+
+  /// No description provided for @enterFieldName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите название поля...'**
+  String get enterFieldName;
+
+  /// No description provided for @selectCity.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите город'**
+  String get selectCity;
+
+  /// No description provided for @apply.
+  ///
+  /// In ru, this message translates to:
+  /// **'Применить'**
+  String get apply;
+
+  /// No description provided for @noMoreFields.
+  ///
+  /// In ru, this message translates to:
+  /// **'Больше полей нет'**
+  String get noMoreFields;
+
+  /// No description provided for @sectionRegistration.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запись в секцию'**
+  String get sectionRegistration;
+
+  /// No description provided for @enterSectionName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите название секции...'**
+  String get enterSectionName;
+
+  /// No description provided for @gender.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пол'**
+  String get gender;
+
+  /// No description provided for @any.
+  ///
+  /// In ru, this message translates to:
+  /// **'Любой'**
+  String get any;
+
+  /// No description provided for @male.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мужской'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In ru, this message translates to:
+  /// **'Женский'**
+  String get female;
+
+  /// No description provided for @age.
+  ///
+  /// In ru, this message translates to:
+  /// **'Возраст'**
+  String get age;
+
+  /// No description provided for @from.
+  ///
+  /// In ru, this message translates to:
+  /// **'От'**
+  String get from;
+
+  /// No description provided for @to.
+  ///
+  /// In ru, this message translates to:
+  /// **'До'**
+  String get to;
+
+  /// No description provided for @averagePrice.
+  ///
+  /// In ru, this message translates to:
+  /// **'Средняя цена'**
+  String get averagePrice;
+
+  /// No description provided for @priceFrom.
+  ///
+  /// In ru, this message translates to:
+  /// **'Цена от'**
+  String get priceFrom;
+
+  /// No description provided for @priceTo.
+  ///
+  /// In ru, this message translates to:
+  /// **'Цена до'**
+  String get priceTo;
+
+  /// No description provided for @noMoreSections.
+  ///
+  /// In ru, this message translates to:
+  /// **'Больше секций нет'**
+  String get noMoreSections;
+
+  /// No description provided for @newProducts.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новые товары'**
+  String get newProducts;
+
+  /// No description provided for @categories.
+  ///
+  /// In ru, this message translates to:
+  /// **'Категории'**
+  String get categories;
+
+  /// No description provided for @buy.
+  ///
+  /// In ru, this message translates to:
+  /// **'Купить'**
+  String get buy;
 }
 
 class _AppLocalizationsDelegate
