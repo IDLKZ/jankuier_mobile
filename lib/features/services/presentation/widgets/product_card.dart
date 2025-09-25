@@ -9,6 +9,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/product/prod
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_state.dart';
 
 import '../../../../core/constants/app_route_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProductGridCards extends StatefulWidget {
   const ProductGridCards({
@@ -49,8 +50,9 @@ class _ProductGridCardsState extends State<ProductGridCards> {
             : items.length >= totalItems;
 
         // Первый лоад первой страницы
-        if (state is PaginateProductLoadingState)
+        if (state is PaginateProductLoadingState) {
           return const Center(child: CircularProgressIndicator());
+        }
 
         // Контент
         return Stack(
@@ -68,7 +70,7 @@ class _ProductGridCardsState extends State<ProductGridCards> {
                   imageWidget: FileUtils.getProductImage(p.image),
                   title: p.titleRu ?? '',
                   price: '${p.basePrice} ₸',
-                  buttonText: 'Добавить в корзину',
+                  buttonText: AppLocalizations.of(context)!.addToCart,
                   onPressed: () {
                     context.push(
                         "${AppRouteConstants.SingleProductPagePath}${p.id}");

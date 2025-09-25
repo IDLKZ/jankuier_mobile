@@ -39,7 +39,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get incorrectFormat => 'Қате пішім';
 
   @override
-  String get enterPassword => 'Күйт сөзді енгізіңіз';
+  String get enterPassword => 'Құпия сөзді енгізіңіз';
 
   @override
   String get minimumThreeChars => 'Кемінде 3 таңба';
@@ -48,10 +48,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get minimumSixChars => 'Кемінде 6 таңба';
 
   @override
-  String get password => 'Күйт сөз';
+  String get password => 'Құпия сөз';
 
   @override
-  String get forgotPassword => 'Күйт сөзді ұмыттыңыз ба?';
+  String get forgotPassword => 'Құпия сөзді ұмыттыңыз ба?';
 
   @override
   String get signIn => 'Кіру';
@@ -75,13 +75,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get enterCorrectEmail => 'Дұрыс электронды пошта мекенжайын енгізіңіз';
 
   @override
-  String get passwordMinSixChars => 'Күйт сөз кемінде 6 таңбаны қамтуы қажет';
+  String get passwordMinSixChars => 'Құпия сөз кемінде 6 таңбаны қамтуы қажет';
 
   @override
-  String get repeatPassword => 'Күйт сөзді қайталаңыз';
+  String get repeatPassword => 'Құпия сөзді қайталаңыз';
 
   @override
-  String get passwordsNotMatch => 'Күйт сөздер сәйкес келмейді';
+  String get passwordsNotMatch => 'Құпия сөздер сәйкес келмейді';
 
   @override
   String get enterPhone => 'Телефон нөмірін енгізіңіз';
@@ -331,7 +331,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get additionalStats => 'Қосымша статистика';
 
   @override
-  String get home => 'Үй беті';
+  String get home => 'Басты бет';
 
   @override
   String get loadingTournaments => 'Турнирлер жүктелуде...';
@@ -370,22 +370,22 @@ class AppLocalizationsKk extends AppLocalizations {
   String get team => 'Команда';
 
   @override
-  String get matchesPlayed => 'Ойындар';
+  String get matchesPlayed => 'О';
 
   @override
-  String get goalsScored => 'Голдар';
+  String get goalsScored => 'Г';
 
   @override
-  String get points => 'Очколар';
+  String get points => 'О';
 
   @override
-  String get allNews => 'Барлық жаңалықтар';
+  String get allNews => 'Барлығы';
 
   @override
   String get nationalTeamGames => 'Ұлттық құрама ойындары';
 
   @override
-  String get allGames => 'Барлық ойындар';
+  String get allGames => 'Барлығы';
 
   @override
   String get clubGames => 'Клуб ойындары';

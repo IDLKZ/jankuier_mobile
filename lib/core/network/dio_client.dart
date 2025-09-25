@@ -3,6 +3,8 @@ import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:injectable/injectable.dart';
 import '../constants/app_constants.dart';
+import '../services/localization_service.dart';
+import '../di/injection.dart';
 
 @injectable
 class DioClient {
@@ -35,13 +37,15 @@ class DioClient {
 
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
+        onRequest: (options, handler) async {
           // Добавляем язык
           try {
-            const language = "ru";
+            final localizationService = await getIt.getAsync<LocalizationService>();
+            final language = localizationService.currentLocale.languageCode;
             options.headers['Accept-Language'] = language;
           } catch (e) {
-            // Ignore
+            // Fallback to ru if service not available
+            options.headers['Accept-Language'] = 'ru';
           }
 
           // Add auth token if available for main API

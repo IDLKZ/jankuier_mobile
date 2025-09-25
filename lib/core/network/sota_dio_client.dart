@@ -6,6 +6,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../constants/hive_constants.dart';
 import '../constants/sota_api_constants.dart';
 import '../utils/hive_utils.dart';
+import '../services/localization_service.dart';
+import '../di/injection.dart';
 
 @injectable
 class SotaApiDio {
@@ -56,10 +58,12 @@ class SotaApiDio {
 
           // Добавляем язык
           try {
-            const language = "ru";
+            final localizationService = await getIt.getAsync<LocalizationService>();
+            final language = localizationService.currentLocale.languageCode;
             options.headers['Accept-Language'] = language;
           } catch (e) {
-            // Ignore
+            // Fallback to ru if service not available
+            options.headers['Accept-Language'] = 'ru';
           }
 
           handler.next(options);

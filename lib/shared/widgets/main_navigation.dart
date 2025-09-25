@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import '../../l10n/app_localizations.dart';
 import 'custom_navbar.dart';
 
 class MainNavigation extends StatelessWidget {
@@ -26,7 +27,7 @@ class MainNavigation extends StatelessWidget {
           onItemSelected: (index) {
             // Navigation handled in CustomNavBarWidgetV2
           },
-          items: _buildNavItems(),
+          items: _buildNavItems(context),
         ),
       ),
     );
@@ -49,31 +50,31 @@ class MainNavigation extends StatelessWidget {
     }
   }
 
-  List<ItemConfig> _buildNavItems() {
+  List<ItemConfig> _buildNavItems(BuildContext context) {
     return [
       ItemConfig(
         icon: const Icon(Icons.home),
-        title: "Главная",
+        title: AppLocalizations.of(context)!.home,
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
         icon: const Icon(Iconsax.ticket),
-        title: "Билеты",
+        title: AppLocalizations.of(context)!.tickets,
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
         icon: const Icon(Icons.dashboard_outlined),
-        title: "Сервисы",
+        title: AppLocalizations.of(context)!.services,
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
         icon: const Icon(Icons.newspaper_outlined),
-        title: "Новости",
+        title: AppLocalizations.of(context)!.news,
         activeColorSecondary: Colors.black,
       ),
       ItemConfig(
         icon: const Icon(Icons.person),
-        title: "Профиль",
+        title: AppLocalizations.of(context)!.profile,
         activeColorSecondary: Colors.black,
       ),
     ];

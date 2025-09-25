@@ -8,6 +8,7 @@ import 'package:jankuier_mobile/core/api_client/sota_api_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'core/adapters/file_entity_adapter.dart';
+import 'core/services/localization_service.dart';
 import 'core/adapters/permission_entity_adapter.dart';
 import 'core/adapters/role_entity_adapter.dart';
 import 'core/adapters/user_entity_adapter.dart';
@@ -51,6 +52,10 @@ void main() async {
 
   // Configure dependencies
   await configureDependencies();
+
+  // Initialize LocalizationService (already initialized by dependency injection)
+  await getIt.isReady<LocalizationService>();
+
   await SotaApiClient().getSotaToken();
   runApp(const MyApp());
 }
@@ -61,25 +66,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      child: MaterialApp.router(
-        title: FlavorConfig.instance.appName,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        routerConfig: AppRouter.router,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: const Locale("ru"),
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('ru', 'RU'),
-          Locale('kk', 'KZ'),
-        ],
+      child: FutureBuilder<LocalizationService>(
+        future: getIt.getAsync<LocalizationService>(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const MaterialApp(
+              home: Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              ),
+            );
+          }
+
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const MaterialApp(
+              home: Scaffold(
+                body: Center(child: Text('Error initializing app')),
+              ),
+            );
+          }
+
+          final localizationService = snapshot.data!;
+
+          return AnimatedBuilder(
+            animation: localizationService,
+            builder: (context, child) {
+              return MaterialApp.router(
+                title: FlavorConfig.instance.appName,
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: ThemeMode.system,
+                routerConfig: AppRouter.router,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: localizationService.currentLocale,
+                supportedLocales: LocalizationService.supportedLocales,
+              );
+            },
+          );
+        },
       ),
     );
   }

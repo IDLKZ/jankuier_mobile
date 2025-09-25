@@ -4,6 +4,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../constants/hive_constants.dart';
 import '../constants/kff_api_constants.dart';
 import '../utils/hive_utils.dart';
+import '../services/localization_service.dart';
+import '../di/injection.dart';
 
 @injectable
 class KffApiDio {
@@ -39,11 +41,14 @@ class KffApiDio {
         onRequest: (options, handler) async {
           // Добавляем язык
           try {
-            const language = "ru";
+            final localizationService = await getIt.getAsync<LocalizationService>();
+            final language = localizationService.currentLocale.languageCode;
             options.headers['Accept-Language'] = language;
             options.headers['Authorization'] = 'Bearer ${KffApiConstant.Token}';
           } catch (e) {
-            // Ignore
+            // Fallback to ru if service not available
+            options.headers['Accept-Language'] = 'ru';
+            options.headers['Authorization'] = 'Bearer ${KffApiConstant.Token}';
           }
           handler.next(options);
         },
