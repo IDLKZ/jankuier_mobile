@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/constants/form_validation_constants.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/register_parameter.dart';
@@ -72,79 +73,79 @@ class _SignUpViewState extends State<_SignUpView> {
   // Validation methods
   String? _validateUsername(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите логин';
+      return AppLocalizations.of(context)!.enterLoginHint;
     }
     final username = value.trim();
     final re = RegExp(FormValidationConstant.UserNameRegExp);
     if (!re.hasMatch(username)) {
-      return 'Логин должен начинаться с буквы и содержать только буквы, цифры и _';
+      return AppLocalizations.of(context)!.usernameValidation;
     }
     if (username.length < 3) {
-      return 'Логин должен содержать минимум 3 символа';
+      return AppLocalizations.of(context)!.usernameMinChars;
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите email';
+      return AppLocalizations.of(context)!.enterEmail;
     }
     final email = value.trim();
     final re = RegExp(FormValidationConstant.EmailRegExp);
     if (!re.hasMatch(email)) {
-      return 'Введите корректный email адрес';
+      return AppLocalizations.of(context)!.enterCorrectEmail;
     }
     return null;
   }
 
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Введите пароль';
+      return AppLocalizations.of(context)!.enterPassword;
     }
     if (value.length < 6) {
-      return 'Пароль должен содержать минимум 6 символов';
+      return AppLocalizations.of(context)!.passwordMinSixChars;
     }
     return null;
   }
 
   String? _validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Повторите пароль';
+      return AppLocalizations.of(context)!.repeatPassword;
     }
     if (value != _passC.text) {
-      return 'Пароли не совпадают';
+      return AppLocalizations.of(context)!.passwordsNotMatch;
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите номер телефона';
+      return AppLocalizations.of(context)!.enterPhone;
     }
     final phone = value.trim();
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
-      return 'Номер должен начинаться с 7 и содержать 11 цифр (7XXXXXXXXXX)';
+      return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
   }
 
   String? _validateFirstName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите имя';
+      return AppLocalizations.of(context)!.enterFirstName;
     }
     if (value.trim().length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.firstNameMinChars;
     }
     return null;
   }
 
   String? _validateLastName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите фамилию';
+      return AppLocalizations.of(context)!.enterLastName;
     }
     if (value.trim().length < 2) {
-      return 'Фамилия должна содержать минимум 2 символа';
+      return AppLocalizations.of(context)!.lastNameMinChars;
     }
     return null;
   }
@@ -229,27 +230,27 @@ class _SignUpViewState extends State<_SignUpView> {
             children: [
               _buildTextFormField(
                 controller: _usernameC,
-                hintText: 'Введите логин',
+                hintText: AppLocalizations.of(context)!.enterLoginHint,
                 validator: _validateUsername,
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _emailC,
-                hintText: 'Введите почту',
+                hintText: AppLocalizations.of(context)!.enterEmailHint,
                 validator: _validateEmail,
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _passC,
-                hintText: 'Пароль',
+                hintText: AppLocalizations.of(context)!.password,
                 validator: _validatePassword,
                 obscureText: true,
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _samePassC,
-                hintText: 'Повторите пароль',
+                hintText: AppLocalizations.of(context)!.repeatPassword,
                 validator: _validateConfirmPassword,
                 obscureText: true,
               ),
@@ -270,25 +271,25 @@ class _SignUpViewState extends State<_SignUpView> {
             children: [
               _buildTextFormField(
                 controller: _lastNameC,
-                hintText: 'Введите фамилию',
+                hintText: AppLocalizations.of(context)!.enterLastName,
                 validator: _validateLastName,
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _firstNameC,
-                hintText: 'Введите имя',
+                hintText: AppLocalizations.of(context)!.enterFirstName,
                 validator: _validateFirstName,
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _patronomicC,
-                hintText: 'Введите отчество (необязательно)',
+                hintText: AppLocalizations.of(context)!.enterPatronymic,
                 validator: (value) => null, // Optional field
               ),
               SizedBox(height: 16.h),
               _buildTextFormField(
                 controller: _phoneC,
-                hintText: 'Введите номер телефона (7XXXXXXXXXX)',
+                hintText: AppLocalizations.of(context)!.enterPhoneHint,
                 validator: _validatePhone,
                 keyboardType: TextInputType.phone,
               ),
@@ -310,7 +311,7 @@ class _SignUpViewState extends State<_SignUpView> {
                 if (state is SignUpSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Регистрация успешна! Пожалуйста, подтвердите номер телефона'),
+                      content: Text(AppLocalizations.of(context)!.registrationSuccess),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -385,7 +386,7 @@ class _SignUpViewState extends State<_SignUpView> {
                           ),
                           SizedBox(height: 16.h),
                           Text(
-                            "Регистрация",
+                            AppLocalizations.of(context)!.registration,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24.sp,
@@ -473,7 +474,7 @@ class _SignUpViewState extends State<_SignUpView> {
                                           ),
                                         )
                                       : Text(
-                                          indexPage == 1 ? "Зарегистрировать" : "Далее",
+                                          indexPage == 1 ? AppLocalizations.of(context)!.register : AppLocalizations.of(context)!.next,
                                           style: TextStyle(fontSize: 14.sp),
                                         ),
                                 ),
@@ -489,7 +490,7 @@ class _SignUpViewState extends State<_SignUpView> {
                               context.go(AppRouteConstants.SignInPagePath);
                             },
                             child: Text(
-                              'Уже есть аккаунт? Войти',
+                              AppLocalizations.of(context)!.alreadyHaveAccount,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14.sp,

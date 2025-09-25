@@ -1,16 +1,20 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
 
 import '../../../../../core/common/entities/city_entity.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 
-class ProductVariantEntity extends Equatable {
+class ProductVariantEntity extends Equatable with LocalizedTitleEntity {
   final int id;
   final int productId;
   final int? imageId;
   final int? cityId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final String value;
   final String? sku;

@@ -1,9 +1,14 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/mixins/localized_locale_entity.dart';
+
 // Entity для мультиязычных заголовков (остается той же)
-class KffLeagueTitleEntity extends Equatable {
+class KffLeagueTitleEntity extends Equatable with LocalizedLocaleEntity {
+  @override
   final String? ru;
+  @override
   final String? kz;
+  @override
   final String? en;
 
   const KffLeagueTitleEntity({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CountriesErrorWidget extends StatelessWidget {
   final String error;
@@ -26,7 +27,7 @@ class CountriesErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Ошибка загрузки',
+              AppLocalizations.of(context)!.loadingError,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
@@ -53,7 +54,7 @@ class CountriesErrorWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Повторить',
+                AppLocalizations.of(context)!.retry,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

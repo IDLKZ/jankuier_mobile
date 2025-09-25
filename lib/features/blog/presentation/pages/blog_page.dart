@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
-import '../../data/entities/news_entity.dart';
 import '../../domain/parameters/get_news_parameter.dart';
 import '../bloc/get_news/get_news_bloc.dart';
 import '../bloc/get_news/get_news_event.dart';
@@ -108,7 +108,7 @@ class _BlogListPageState extends State<BlogListPage> {
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: PagesCommonAppBar(
-          title: "Новости",
+          title: AppLocalizations.of(context)!.news,
           actionIcon: Icons.notifications_none,
           onActionTap: () {},
         ),
@@ -150,7 +150,7 @@ class _BlogListPageState extends State<BlogListPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Последние новости',
+            AppLocalizations.of(context)!.latestNews,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18.sp,
@@ -227,7 +227,8 @@ class _BlogListPageState extends State<BlogListPage> {
                     margin: EdgeInsets.only(bottom: 12.h),
                     child: NewsCard(
                       imageUrl: news.imageUrl ?? '',
-                      tag: news.categoryTitle ?? 'Новости',
+                      tag: news.categoryTitle ??
+                          AppLocalizations.of(context)!.news,
                       title: news.title,
                       date: _formatDate(news.date),
                       likes: news.views ?? 0,
@@ -339,45 +340,45 @@ class _BlogListPageState extends State<BlogListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Icon(
-            Icons.error_outline,
-            size: 64.sp,
-            color: AppColors.error,
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            'Ошибка загрузки новостей',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+            Icon(
+              Icons.error_outline,
+              size: 64.sp,
+              color: AppColors.error,
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            message ?? 'Неизвестная ошибка',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 24.h),
-          ElevatedButton(
-            onPressed: _loadNews,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.gradientStart,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+            SizedBox(height: 16.h),
+            Text(
+              AppLocalizations.of(context)!.newsLoadError,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
               ),
             ),
-            child: Text(
-              'Повторить',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            SizedBox(height: 8.h),
+            Text(
+              message ?? AppLocalizations.of(context)!.unknownError,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
+            SizedBox(height: 24.h),
+            ElevatedButton(
+              onPressed: _loadNews,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.gradientStart,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.retry,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              ),
+            ),
           ],
         ),
       ),
@@ -391,28 +392,28 @@ class _BlogListPageState extends State<BlogListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Icon(
-            Icons.article_outlined,
-            size: 64.sp,
-            color: AppColors.textSecondary,
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            'Новостей пока нет',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            'Проверьте позже',
-            style: TextStyle(
-              fontSize: 14.sp,
+            Icon(
+              Icons.article_outlined,
+              size: 64.sp,
               color: AppColors.textSecondary,
             ),
-          ),
+            SizedBox(height: 16.h),
+            Text(
+              AppLocalizations.of(context)!.noNewsYet,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              AppLocalizations.of(context)!.checkLater,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: AppColors.textSecondary,
+              ),
+            ),
           ],
         ),
       ),
@@ -444,7 +445,7 @@ class _BlogListPageState extends State<BlogListPage> {
               Padding(
                 padding: EdgeInsets.all(20.w),
                 child: Text(
-                  'Выберите категорию',
+                  AppLocalizations.of(context)!.selectCategory,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 18.sp,
@@ -497,17 +498,17 @@ class _BlogListPageState extends State<BlogListPage> {
   }
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'Дата не указана';
+    if (date == null) return AppLocalizations.of(context)!.dateNotSpecified;
 
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Сегодня, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${AppLocalizations.of(context)!.today}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays == 1) {
-      return 'Вчера, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${AppLocalizations.of(context)!.yesterday}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} дн. назад';
+      return '${difference.inDays} ${AppLocalizations.of(context)!.daysAgo}';
     } else {
       return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
     }

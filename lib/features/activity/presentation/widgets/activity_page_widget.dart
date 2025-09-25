@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/Achievement.dart';
 import '../../domain/entities/Leader.dart';
 
@@ -25,9 +26,10 @@ class ActivityPageWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 0, left: 16, right: 16),
-              child: MainTitleWidget(title: 'Активность'),
+              child: MainTitleWidget(
+                  title: AppLocalizations.of(context)!.activity),
             ),
             SizedBox(height: 10.h),
             // Card: Посещенных матчей
@@ -55,10 +57,10 @@ class ActivityPageWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/icons/activity_main_bg_lines.png'),
-                          fit: BoxFit.fill,
-                          alignment: Alignment.center
-                        ),
+                            image: AssetImage(
+                                'assets/icons/activity_main_bg_lines.png'),
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center),
                       ),
                     ),
                     // Контент
@@ -81,7 +83,7 @@ class ActivityPageWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'посещённых матчей',
+                            AppLocalizations.of(context)!.visitedMatches,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.white,
@@ -98,7 +100,8 @@ class ActivityPageWidget extends StatelessWidget {
             // Мои достижения
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const MainTitleWidget(title: 'Мои достижения'),
+              child: MainTitleWidget(
+                  title: AppLocalizations.of(context)!.myAchievements),
             ),
             SizedBox(height: 10.h),
             Padding(
@@ -117,7 +120,8 @@ class ActivityPageWidget extends StatelessWidget {
                         SizedBox(height: 4.h),
                         Text(
                           a.title,
-                          style: TextStyle(fontSize: 12.sp, color: Colors.black),
+                          style:
+                              TextStyle(fontSize: 12.sp, color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -130,11 +134,12 @@ class ActivityPageWidget extends StatelessWidget {
             // Список лидеров
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const MainTitleWidget(title: 'Список лидеров'),
+              child: MainTitleWidget(
+                  title: AppLocalizations.of(context)!.leaderBoard),
             ),
             SizedBox(height: 10.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: ListView.builder(
                   itemCount: leaders.length,
                   shrinkWrap: true,
@@ -143,7 +148,8 @@ class ActivityPageWidget extends StatelessWidget {
                     final e = leaders[index];
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 4.h),
-                      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.h, horizontal: 14.w),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(11),
@@ -153,20 +159,18 @@ class ActivityPageWidget extends StatelessWidget {
                           Text(
                             e.position.toString(),
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp,
-                              color: Colors.black
-                            ),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: Colors.black),
                           ),
                           SizedBox(width: 16.w),
                           Expanded(
                             child: Text(
                               e.name,
                               style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black
-                              ),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
                             ),
                           ),
                           Image.asset(
@@ -178,8 +182,7 @@ class ActivityPageWidget extends StatelessWidget {
                       ),
                     );
                   },
-                )
-            ),
+                )),
             SizedBox(height: 32.h),
           ],
         ),

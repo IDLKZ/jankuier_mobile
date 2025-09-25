@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_state.dart';
@@ -41,12 +42,12 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
 
   String? _validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Введите номер телефона';
+      return AppLocalizations.of(context)!.enterPhone;
     }
     final phone = value.trim();
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
-      return 'Номер должен начинаться с 7 и содержать 11 цифр (7XXXXXXXXXX)';
+      return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
   }
@@ -109,7 +110,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                 );
               } else {
                 Fluttertoast.showToast(
-                    msg: state.result.message ?? "Что-то пошло не так");
+                    msg: state.result.message ?? AppLocalizations.of(context)!.somethingWentWrong);
               }
             } else if (state is SendVerifyCodeFailure) {
               Fluttertoast.showToast(msg: state.message);
@@ -173,7 +174,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                               height: 16.h,
                             ),
                             Text(
-                              "Ввод номера телефона для кода подтверждения",
+                              AppLocalizations.of(context)!.enterPhoneForVerification,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24.sp,
@@ -185,7 +186,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                             // Поле Телефон
                             _buildTextFormField(
                               controller: _phoneC,
-                              hintText: 'Введите номер телефона (7XXXXXXXXXX)',
+                              hintText: AppLocalizations.of(context)!.enterPhoneHint,
                               validator: _validatePhone,
                               keyboardType: TextInputType.phone,
                             ),
@@ -212,7 +213,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                   }
                                 },
                                 child: Text(
-                                  'Отправить SMS код',
+                                  AppLocalizations.of(context)!.sendSMSCode,
                                   style: TextStyle(fontSize: 14.sp),
                                 ),
                               ),
@@ -224,7 +225,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                 context.go(AppRouteConstants.SignInPagePath);
                               },
                               child: Text(
-                                'У меня есть аккаунт',
+                                AppLocalizations.of(context)!.iHaveAccount,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 14.sp),
                               ),

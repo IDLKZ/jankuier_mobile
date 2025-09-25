@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 import '../../../../core/common/entities/sota_pagination_entity.dart';
 
@@ -37,10 +38,13 @@ class CountryEntity extends Equatable {
   List<Object?> get props => [id, name, flagImage, code];
 }
 
-class LocalCountryEntity extends Equatable {
+class LocalCountryEntity extends Equatable with LocalizedTitleEntity {
   final int id;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final String? sotaCode;
   final String? sotaFlagImage;

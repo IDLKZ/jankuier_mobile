@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/services/main_selection_service.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../domain/parameters/get_country_parameter.dart';
@@ -27,7 +28,7 @@ class CountriesPage extends StatelessWidget {
       if (!context.mounted) return;
       
       Fluttertoast.showToast(
-        msg: 'Выбрана страна: ${country.name}',
+        msg: '${AppLocalizations.of(context)!.selectedCountry}: ${country.name}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -37,7 +38,7 @@ class CountriesPage extends StatelessWidget {
       if (!context.mounted) return;
       
       Fluttertoast.showToast(
-        msg: 'Ошибка сохранения страны',
+        msg: AppLocalizations.of(context)!.saveCountryError,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -55,7 +56,7 @@ class CountriesPage extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           title: Text(
-            'Страны',
+            AppLocalizations.of(context)!.countries,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,

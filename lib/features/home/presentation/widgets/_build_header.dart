@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
-Widget buildHeader() {
+Widget buildHeader(BuildContext context) {
   return Container(
     height: 120.h,
     decoration: const BoxDecoration(
@@ -21,7 +22,7 @@ Widget buildHeader() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Главная',
+              AppLocalizations.of(context)!.home,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 24.sp,

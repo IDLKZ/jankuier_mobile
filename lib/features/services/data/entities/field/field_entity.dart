@@ -1,24 +1,38 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_address_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_description_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 import '../../../../../core/common/entities/city_entity.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 
-class FieldEntity extends Equatable {
+class FieldEntity extends Equatable
+    with
+        LocalizedTitleEntity,
+        LocalizedDescriptionEntity,
+        LocalizedAddressEntity {
   final int id;
   final int? imageId;
   final int? cityId;
-
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
 
+  @override
   final String? descriptionRu;
+  @override
   final String? descriptionKk;
+  @override
   final String? descriptionEn;
 
   final String value;
-
+  @override
   final String? addressRu;
+  @override
   final String? addressEn;
+  @override
   final String? addressKk;
 
   final String? latitude;

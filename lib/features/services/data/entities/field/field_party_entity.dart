@@ -1,15 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 import 'field_entity.dart';
 import 'field_party_schedule_settings_entity.dart';
 
-class FieldPartyEntity extends Equatable {
+class FieldPartyEntity extends Equatable with LocalizedTitleEntity {
   final int id;
   final int? imageId;
   final int fieldId;
-
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
 
   final String value;

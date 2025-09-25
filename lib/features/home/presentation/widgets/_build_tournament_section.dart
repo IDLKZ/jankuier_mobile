@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,15 +10,18 @@ import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_blo
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_state.dart';
 import '_build_league_carousel.dart';
 
-Widget buildTournamentSection(TournamentEntity? selectedTournament,
-    void Function(TournamentEntity) onTournamentSelected) {
+Widget buildTournamentSection(
+  BuildContext context,
+  TournamentEntity? selectedTournament,
+  void Function(TournamentEntity) onTournamentSelected
+) {
   return Container(
     padding: EdgeInsets.all(20.w),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Турниры',
+          AppLocalizations.of(context)!.tournaments,
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 18.sp,
@@ -53,7 +57,7 @@ Widget _buildTournamentCarousel(TournamentEntity? selectedTournament,
             .toList();
 
         if (tournaments.isEmpty) {
-          return _buildEmptyState();
+          return _buildEmptyState(context);
         }
 
         // Auto-select first tournament if none selected
@@ -65,7 +69,7 @@ Widget _buildTournamentCarousel(TournamentEntity? selectedTournament,
 
         return buildLeagueCarousel(tournaments, selectedTournament, onTournamentSelected);
       } else if (state is GetTournamentStateFailedState) {
-        return _buildErrorState();
+        return _buildErrorState(context);
       }
       return const SizedBox();
     },
@@ -99,12 +103,12 @@ Widget _buildLoadingCarousel() {
   );
 }
 
-Widget _buildEmptyState() {
+Widget _buildEmptyState(BuildContext context) {
   return SizedBox(
     height: 70.h,
     child: Center(
       child: Text(
-        'Турниры не найдены',
+        AppLocalizations.of(context)!.tournamentsNotFound,
         style: TextStyle(
           fontSize: 14.sp,
           color: Colors.grey,
@@ -114,12 +118,12 @@ Widget _buildEmptyState() {
   );
 }
 
-Widget _buildErrorState() {
+Widget _buildErrorState(BuildContext context) {
   return SizedBox(
     height: 70.h,
     child: Center(
       child: Text(
-        'Ошибка загрузки турниров',
+        AppLocalizations.of(context)!.tournamentsLoadError,
         style: TextStyle(
           fontSize: 14.sp,
           color: Colors.red,

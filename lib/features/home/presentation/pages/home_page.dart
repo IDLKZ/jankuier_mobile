@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/home/presentation/widgets/_build_future_club_match_widget.dart';
-import 'package:jankuier_mobile/features/kff/presentation/bloc/get_past_matches/get_past_matches_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/main_selection_service.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_bloc.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_event.dart';
-import '../../../kff/presentation/bloc/get_past_matches/get_past_matches_event.dart';
 import '../../../kff_league/domain/parameters/kff_league_match_parameter.dart';
 import '../../../kff_league/presentation/bloc/matches/matches_bloc.dart';
 import '../../../kff_league/presentation/bloc/matches/matches_event.dart';
@@ -178,7 +177,7 @@ class _HomePageState extends State<HomePage>
         body: Column(
           children: [
             // Blue header
-            buildHeader(),
+            buildHeader(context),
             // Content with scroll
             Expanded(
               child: SingleChildScrollView(
@@ -186,14 +185,14 @@ class _HomePageState extends State<HomePage>
                   children: [
                     // Tournament selection section
                     buildTournamentSection(
-                        _selectedTournament, _onTournamentSelected),
+                        context, _selectedTournament, _onTournamentSelected),
                     // Main tournament card
                     if (_selectedTournament != null)
-                      buildMainTournamentCard(_selectedTournament),
+                      buildMainTournamentCard(context, _selectedTournament),
                     // Tabs and content
                     _selectedTournament != null
                         ? buildTabsSectionWithScroll(
-                            _tabController, () => setState(() {}))
+                            context, _tabController, () => setState(() {}))
                         : _buildSelectTournamentMessage(),
                     // Future Match
                     if (_selectedTournament != null)
@@ -246,7 +245,7 @@ class _HomePageState extends State<HomePage>
           ),
           SizedBox(height: 24.h),
           Text(
-            'Загрузка турниров...',
+            AppLocalizations.of(context)!.loadingTournaments,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18.sp,
@@ -256,7 +255,7 @@ class _HomePageState extends State<HomePage>
           ),
           SizedBox(height: 8.h),
           Text(
-            'Пожалуйста, подождите',
+            AppLocalizations.of(context)!.pleaseWait,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 14.sp,

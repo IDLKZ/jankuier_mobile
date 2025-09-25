@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 import '../../../features/countries/data/entities/country_entity.dart';
 
-class CityEntity extends Equatable {
+class CityEntity extends Equatable with LocalizedTitleEntity {
   final int id;
   final int countryId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final int? ticketonCityId;
   final String? ticketonTag;

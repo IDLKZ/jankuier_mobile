@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_in_bloc/sign_in_state.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_in_bloc/sign_in_event.dart';
@@ -67,7 +68,7 @@ class _SignInPageState extends State<SignInPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content:
-                            Text('Требуется подтверждение номера телефона'),
+                            Text(AppLocalizations.of(context)!.phoneVerificationRequired),
                         backgroundColor: Colors.orange,
                       ),
                     );
@@ -152,7 +153,7 @@ class _SignInPageState extends State<SignInPage> {
                                 height: 16.h,
                               ),
                               Text(
-                                "Добро пожаловать!",
+                                AppLocalizations.of(context)!.welcome,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 24.sp,
@@ -168,7 +169,7 @@ class _SignInPageState extends State<SignInPage> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.transparent,
-                                  hintText: 'Логин',
+                                  hintText: AppLocalizations.of(context)!.login,
                                   hintStyle:
                                       const TextStyle(color: AppColors.white),
                                   // цвет подсказки
@@ -185,12 +186,12 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                                 validator: (v) {
                                   if (v == null || v.trim().isEmpty)
-                                    return 'Введите username';
+                                    return AppLocalizations.of(context)!.enterUsername;
                                   final username = v.trim();
                                   final re = RegExp(
                                       FormValidationConstant.UserNameRegExp);
                                   if (!re.hasMatch(username))
-                                    return 'Некорректный ';
+                                    return AppLocalizations.of(context)!.incorrectFormat;
                                   return null; // ok
                                 },
                               ),
@@ -202,15 +203,15 @@ class _SignInPageState extends State<SignInPage> {
                                 controller: _passC,
                                 validator: (v) {
                                   if (v == null || v.isEmpty)
-                                    return 'Введите пароль';
-                                  if (v.length < 3) return 'Минимум 3 символов';
+                                    return AppLocalizations.of(context)!.enterPassword;
+                                  if (v.length < 3) return AppLocalizations.of(context)!.minimumThreeChars;
                                   return null;
                                 },
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.transparent,
-                                  hintText: 'Пароль',
+                                  hintText: AppLocalizations.of(context)!.password,
                                   hintStyle: TextStyle(color: AppColors.white),
                                   // цвет подсказки
                                   enabledBorder: OutlineInputBorder(
@@ -229,7 +230,7 @@ class _SignInPageState extends State<SignInPage> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  "Забыли пароль?",
+                                  AppLocalizations.of(context)!.forgotPassword,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 12.sp),
                                 ),
@@ -252,7 +253,7 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                   onPressed: () => _submitForm(context),
                                   child: Text(
-                                    'Войти',
+                                    AppLocalizations.of(context)!.signIn,
                                     style: TextStyle(fontSize: 14.sp),
                                   ),
                                 ),
@@ -266,7 +267,7 @@ class _SignInPageState extends State<SignInPage> {
                                   context.go(AppRouteConstants.SignUpPagePath);
                                 },
                                 child: Text(
-                                  'Регистрация',
+                                  AppLocalizations.of(context)!.registration,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 14.sp),
                                 ),
@@ -278,7 +279,7 @@ class _SignInPageState extends State<SignInPage> {
                                       .go(AppRouteConstants.EnterPhonePagePath);
                                 },
                                 child: Text(
-                                  'Пройти верификацию',
+                                  AppLocalizations.of(context)!.goVerification,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 14.sp),
                                 ),

@@ -1,13 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/permission_entity.dart';
 
-class RoleEntity extends Equatable {
+import '../../../../core/mixins/localized_description_mixin.dart';
+import '../../../../core/mixins/localized_title_mixin.dart';
+
+class RoleEntity extends Equatable
+    with LocalizedTitleEntity, LocalizedDescriptionEntity {
   final int id;
+  @override
   final String titleRu;
+  @override
   final String titleKk;
+  @override
   final String? titleEn;
+  @override
   final String? descriptionRu;
+  @override
   final String? descriptionKk;
+  @override
   final String? descriptionEn;
   final String value;
   final bool isActive;

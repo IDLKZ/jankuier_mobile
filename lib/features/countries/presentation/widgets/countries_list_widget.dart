@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/common/entities/sota_pagination_entity.dart';
 import '../../data/entities/country_entity.dart';
@@ -20,7 +21,7 @@ class CountriesListWidget extends StatelessWidget {
     if (countries.results.isEmpty) {
       return Center(
         child: Text(
-          'Нет данных о странах',
+          AppLocalizations.of(context)!.noCountriesData,
           style: TextStyle(
             fontSize: 16.sp,
             color: Colors.grey[600],

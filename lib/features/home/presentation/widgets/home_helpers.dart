@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
+
 String formatDate(String dateString) {
   try {
     // Преобразуем строку в объект DateTime.
@@ -17,20 +20,20 @@ String formatDate(String dateString) {
   }
 }
 
-String formatNewsDate(String dateString) {
+String formatNewsDate(BuildContext context, String dateString) {
   try {
     final dateTime = DateTime.parse(dateString);
     final now = DateTime.now();
     final difference = now.difference(dateTime);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays} дн. назад';
+      return '${difference.inDays} ${AppLocalizations.of(context)!.daysAgoShort}';
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} ч. назад';
+      return '${difference.inHours} ${AppLocalizations.of(context)!.hoursAgoShort}';
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} мин. назад';
+      return '${difference.inMinutes} ${AppLocalizations.of(context)!.minutesAgoShort}';
     } else {
-      return 'Только что';
+      return AppLocalizations.of(context)!.justNow;
     }
   } catch (e) {
     return dateString;

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/user_verification_parameter.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart';
@@ -113,10 +114,10 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                       _currentVerificationResult = state.result;
                       _isTimerExpired = false;
                     });
-                    Fluttertoast.showToast(msg: "Код повторно отправлен");
+                    Fluttertoast.showToast(msg: AppLocalizations.of(context)!.codeResentSuccessfully);
                   } else {
                     Fluttertoast.showToast(
-                        msg: state.result.message ?? "Ошибка отправки кода");
+                        msg: state.result.message ?? AppLocalizations.of(context)!.codeResendError);
                   }
                 } else if (state is SendVerifyCodeFailure) {
                   Fluttertoast.showToast(msg: state.message);
@@ -127,11 +128,11 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is VerifyCodeSuccess) {
                   if (state.result.result == true) {
-                    Fluttertoast.showToast(msg: "Код подтвержден успешно!");
+                    Fluttertoast.showToast(msg: AppLocalizations.of(context)!.codeVerifiedSuccessfully);
                     context.go(AppRouteConstants.SignInPagePath);
                   } else {
                     Fluttertoast.showToast(
-                        msg: state.result.message ?? "Неверный код");
+                        msg: state.result.message ?? AppLocalizations.of(context)!.invalidCode);
                   }
                 } else if (state is VerifyCodeFailure) {
                   Fluttertoast.showToast(msg: state.message);
@@ -204,7 +205,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                     ),
                                     SizedBox(height: 16.h),
                                     Text(
-                                      "Введите код подтверждения",
+                                      AppLocalizations.of(context)!.enterVerificationCode,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 24.sp,
@@ -214,7 +215,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                     ),
                                     SizedBox(height: 8.h),
                                     Text(
-                                      "Код отправлен на номер ${widget.phone}",
+                                      "${AppLocalizations.of(context)!.codeSentToPhone} ${widget.phone}",
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.8),
                                         fontSize: 16.sp,
@@ -272,8 +273,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                             _isTimerExpired = true;
                                           });
                                           Fluttertoast.showToast(
-                                            msg:
-                                                "Время истекло. Запросите новый код",
+                                            msg: AppLocalizations.of(context)!.timeExpiredRequestNew,
                                           );
                                         },
                                       ),
@@ -308,7 +308,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                             ),
                                           ),
                                           child: Text(
-                                            'Верифицировать',
+                                            AppLocalizations.of(context)!.verify,
                                             style: TextStyle(
                                               color: const Color(0xFF0148C9),
                                               fontSize: 16.sp,
@@ -333,7 +333,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                                             widget.phone));
                                               },
                                         child: Text(
-                                          'Отправить код повторно',
+                                          AppLocalizations.of(context)!.resendCode,
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 14.sp,
@@ -353,7 +353,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                             AppRouteConstants.SignInPagePath);
                                       },
                                       child: Text(
-                                        'Назад к входу',
+                                        AppLocalizations.of(context)!.backToLogin,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14.sp,

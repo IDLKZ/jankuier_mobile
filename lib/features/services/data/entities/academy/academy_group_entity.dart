@@ -1,16 +1,22 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_description_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_price_per_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 import '../../../../../core/common/entities/file_entity.dart';
 import 'academy_entity.dart';
 
-class AcademyGroupEntity extends Equatable {
+class AcademyGroupEntity extends Equatable
+    with LocalizedDescriptionEntity, LocalizedPricePerEntity {
   final int id;
   final int academyId;
   final int? imageId;
 
   final String name;
-
+  @override
   final String? descriptionRu;
+  @override
   final String? descriptionKk;
+  @override
   final String? descriptionEn;
 
   final String value;
@@ -26,9 +32,11 @@ class AcademyGroupEntity extends Equatable {
   final int freeSpace;
 
   final double? price;
-
+  @override
   final String? pricePerRu;
+  @override
   final String? pricePerKk;
+  @override
   final String? pricePerEn;
 
   final int? averageTrainingTimeInMinute;

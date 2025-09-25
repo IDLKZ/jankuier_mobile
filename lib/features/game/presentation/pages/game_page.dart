@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/standings/data/entities/match_entity.dart';
-
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/match_lineup_entity.dart';
 import '../../data/entities/player_stat_entity.dart';
 import '../../data/entities/team_stat_entity.dart';
@@ -144,7 +144,7 @@ class _GamePageViewState extends State<_GamePageView>
               ),
               Expanded(
                 child: Text(
-                  'Тур ${widget.match.tour}',
+                  '${AppLocalizations.of(context)!.round} ${widget.match.tour}',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 24.sp,
@@ -179,7 +179,6 @@ class _GamePageViewState extends State<_GamePageView>
       ),
       child: Column(
         children: [
-
           // Match info
           Row(
             children: [
@@ -298,21 +297,21 @@ class _GamePageViewState extends State<_GamePageView>
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: _tabController.index == 0 
-                    ? const Color(0xFF1E4B9B) 
-                    : Colors.white,
+                  color: _tabController.index == 0
+                      ? const Color(0xFF1E4B9B)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
                   child: Text(
-                    'Статистика',
+                    AppLocalizations.of(context)!.statistics,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      color: _tabController.index == 0 
-                        ? Colors.white
-                        : const Color(0xFF1E4B9B),
+                      color: _tabController.index == 0
+                          ? Colors.white
+                          : const Color(0xFF1E4B9B),
                     ),
                   ),
                 ),
@@ -329,21 +328,21 @@ class _GamePageViewState extends State<_GamePageView>
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: _tabController.index == 1 
-                    ? const Color(0xFF1E4B9B) 
-                    : Colors.white,
+                  color: _tabController.index == 1
+                      ? const Color(0xFF1E4B9B)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
                   child: Text(
-                    'Состав',
+                    AppLocalizations.of(context)!.lineup,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      color: _tabController.index == 1 
-                        ? Colors.white
-                        : const Color(0xFF1E4B9B),
+                      color: _tabController.index == 1
+                          ? Colors.white
+                          : const Color(0xFF1E4B9B),
                     ),
                   ),
                 ),
@@ -360,21 +359,21 @@ class _GamePageViewState extends State<_GamePageView>
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: _tabController.index == 2 
-                    ? const Color(0xFF1E4B9B) 
-                    : Colors.white,
+                  color: _tabController.index == 2
+                      ? const Color(0xFF1E4B9B)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
                   child: Text(
-                    'Игроки',
+                    AppLocalizations.of(context)!.players,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      color: _tabController.index == 2 
-                        ? Colors.white
-                        : const Color(0xFF1E4B9B),
+                      color: _tabController.index == 2
+                          ? Colors.white
+                          : const Color(0xFF1E4B9B),
                     ),
                   ),
                 ),
@@ -395,7 +394,8 @@ class _GamePageViewState extends State<_GamePageView>
           return _buildTeamStatsContent(state.result);
         } else if (state is GetTeamStatsByGameIdFailedState) {
           return Center(
-            child: Text("Ошибка загрузки: ${state.failureData.message}"),
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
           );
         }
         return const SizedBox();
@@ -426,123 +426,123 @@ class _GamePageViewState extends State<_GamePageView>
       ),
       child: SingleChildScrollView(
         child: Column(
-        children: [
-          // Team names
-          Row(
-            children: [
-              // Home team logo and name
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      width: 24.w,
-                      height: 24.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+          children: [
+            // Team names
+            Row(
+              children: [
+                // Home team logo and name
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 20.sp,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.sports_soccer,
-                        color: Colors.grey,
-                        size: 20.sp,
+                      SizedBox(width: 8.w),
+                      Text(
+                        widget.match.homeTeam.name,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      widget.match.homeTeam.name,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                '-',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                Text(
+                  '-',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              // Away team logo and name
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.match.awayTeam.name,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                // Away team logo and name
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        widget.match.awayTeam.name,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Container(
-                      width: 24.w,
-                      height: 24.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                      SizedBox(width: 8.w),
+                      Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 20.sp,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.sports_soccer,
-                        color: Colors.grey,
-                        size: 20.sp,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          // Statistics
-          Column(
-            children: [
-              _buildStatRow(
-                  "Владение мячом",
-                  "${homeTeam.stats.possession.toInt()}%",
-                  "${awayTeam.stats.possession.toInt()}%",
-                  homeTeam.stats.possession,
-                  awayTeam.stats.possession),
-              _buildStatRow(
-                  "Удары",
-                  "${homeTeam.stats.shot}",
-                  "${awayTeam.stats.shot}",
-                  homeTeam.stats.shot.toDouble(),
-                  awayTeam.stats.shot.toDouble()),
-              _buildStatRow(
-                  "Удары в створ",
-                  "${homeTeam.stats.shotsOnGoal}",
-                  "${awayTeam.stats.shotsOnGoal}",
-                  homeTeam.stats.shotsOnGoal.toDouble(),
-                  awayTeam.stats.shotsOnGoal.toDouble()),
-              _buildStatRow(
-                  "Удары мимо",
-                  "${homeTeam.stats.shotsOffGoal}",
-                  "${awayTeam.stats.shotsOffGoal}",
-                  homeTeam.stats.shotsOffGoal.toDouble(),
-                  awayTeam.stats.shotsOffGoal.toDouble()),
-              _buildStatRow(
-                  "Фолы",
-                  "${homeTeam.stats.foul}",
-                  "${awayTeam.stats.foul}",
-                  homeTeam.stats.foul.toDouble(),
-                  awayTeam.stats.foul.toDouble()),
-              _buildStatRow(
-                  "Желтые карточки",
-                  "${homeTeam.stats.yellowCards}",
-                  "${awayTeam.stats.yellowCards}",
-                  homeTeam.stats.yellowCards.toDouble(),
-                  awayTeam.stats.yellowCards.toDouble()),
-            ],
-          ),
-        ],
+              ],
+            ),
+            SizedBox(height: 20.h),
+            // Statistics
+            Column(
+              children: [
+                _buildStatRow(
+                    AppLocalizations.of(context)!.ballPossession,
+                    "${homeTeam.stats.possession.toInt()}%",
+                    "${awayTeam.stats.possession.toInt()}%",
+                    homeTeam.stats.possession,
+                    awayTeam.stats.possession),
+                _buildStatRow(
+                    AppLocalizations.of(context)!.shots,
+                    "${homeTeam.stats.shot}",
+                    "${awayTeam.stats.shot}",
+                    homeTeam.stats.shot.toDouble(),
+                    awayTeam.stats.shot.toDouble()),
+                _buildStatRow(
+                    AppLocalizations.of(context)!.shotsOnGoal,
+                    "${homeTeam.stats.shotsOnGoal}",
+                    "${awayTeam.stats.shotsOnGoal}",
+                    homeTeam.stats.shotsOnGoal.toDouble(),
+                    awayTeam.stats.shotsOnGoal.toDouble()),
+                _buildStatRow(
+                    AppLocalizations.of(context)!.shotsOffGoal,
+                    "${homeTeam.stats.shotsOffGoal}",
+                    "${awayTeam.stats.shotsOffGoal}",
+                    homeTeam.stats.shotsOffGoal.toDouble(),
+                    awayTeam.stats.shotsOffGoal.toDouble()),
+                _buildStatRow(
+                    AppLocalizations.of(context)!.fouls,
+                    "${homeTeam.stats.foul}",
+                    "${awayTeam.stats.foul}",
+                    homeTeam.stats.foul.toDouble(),
+                    awayTeam.stats.foul.toDouble()),
+                _buildStatRow(
+                    AppLocalizations.of(context)!.yellowCards,
+                    "${homeTeam.stats.yellowCards}",
+                    "${awayTeam.stats.yellowCards}",
+                    homeTeam.stats.yellowCards.toDouble(),
+                    awayTeam.stats.yellowCards.toDouble()),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -564,20 +564,20 @@ class _GamePageViewState extends State<_GamePageView>
               Text(leftValue,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 14.sp, 
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                   )),
               Text(title,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 12.sp, 
+                    fontSize: 12.sp,
                     color: Colors.grey[600],
                   )),
               Text(rightValue,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 14.sp, 
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                   )),
@@ -641,11 +641,12 @@ class _GamePageViewState extends State<_GamePageView>
           return _buildLineupContent(state.result);
         } else if (state is GetMatchLineUpStatsByGameIdFailedState) {
           return Center(
-            child: Text("Ошибка загрузки: ${state.failureData.message}"),
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
           );
         }
-        return const Center(
-          child: Text("Выберите вкладку 'Состав' для загрузки состава"),
+        return Center(
+          child: Text(AppLocalizations.of(context)!.selectLineupTabToLoad),
         );
       },
     );
@@ -668,22 +669,24 @@ class _GamePageViewState extends State<_GamePageView>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Судейская бригада",
+                  AppLocalizations.of(context)!.refereeTeam,
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 12.h),
                 if (lineup.referees.main != null)
-                  _buildRefereeRow("Главный судья:", lineup.referees.main!),
+                  _buildRefereeRow(AppLocalizations.of(context)!.mainReferee,
+                      lineup.referees.main!),
                 if (lineup.referees.firstAssistant != null)
-                  _buildRefereeRow(
-                      "1-й помощник:", lineup.referees.firstAssistant!),
+                  _buildRefereeRow(AppLocalizations.of(context)!.firstAssistant,
+                      lineup.referees.firstAssistant!),
                 if (lineup.referees.secondAssistant != null)
                   _buildRefereeRow(
-                      "2-й помощник:", lineup.referees.secondAssistant!),
+                      AppLocalizations.of(context)!.secondAssistant,
+                      lineup.referees.secondAssistant!),
                 if (lineup.referees.fourthReferee != null)
-                  _buildRefereeRow(
-                      "4-й судья:", lineup.referees.fourthReferee!),
+                  _buildRefereeRow(AppLocalizations.of(context)!.fourthReferee,
+                      lineup.referees.fourthReferee!),
               ],
             ),
           ),
@@ -769,16 +772,17 @@ class _GamePageViewState extends State<_GamePageView>
           ),
           SizedBox(height: 12.h),
           Text(
-            "Тренерский штаб",
+            AppLocalizations.of(context)!.coachingStaff,
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 8.h),
-          _buildCoachRow("Главный тренер", team.coach.fullName),
-          _buildCoachRow("Ассистенты",
+          _buildCoachRow(
+              AppLocalizations.of(context)!.headCoach, team.coach.fullName),
+          _buildCoachRow(AppLocalizations.of(context)!.assistants,
               "${team.firstAssistant.fullName}, ${team.secondAssistant.fullName}"),
           SizedBox(height: 16.h),
           Text(
-            "Игроки",
+            AppLocalizations.of(context)!.players,
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 8.h),
@@ -869,14 +873,16 @@ class _GamePageViewState extends State<_GamePageView>
                     if (player.isGk) ...[
                       SizedBox(width: 4.w),
                       Text(
-                        "ВР",
+                        AppLocalizations.of(context)!.goalkeeper,
                         style: TextStyle(fontSize: 10.sp, color: Colors.orange),
                       ),
                     ],
                   ],
                 ),
                 Text(
-                  player.isGk ? "Вратарь" : "Полевой игрок",
+                  player.isGk
+                      ? AppLocalizations.of(context)!.goalkeeperFull
+                      : AppLocalizations.of(context)!.fieldPlayer,
                   style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
                 ),
               ],
@@ -896,11 +902,12 @@ class _GamePageViewState extends State<_GamePageView>
           return _buildPlayerStatsContent(state.result);
         } else if (state is GetPlayerStatsByGameIdFailedState) {
           return Center(
-            child: Text("Ошибка загрузки: ${state.failureData.message}"),
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
           );
         }
-        return const Center(
-          child: Text("Выберите вкладку 'Статистика игроков' для загрузки"),
+        return Center(
+          child: Text(AppLocalizations.of(context)!.selectPlayersTabToLoad),
         );
       },
     );
@@ -1055,7 +1062,7 @@ class _GamePageViewState extends State<_GamePageView>
                           child: _buildKeyStatItem(
                             "⚽",
                             "${player.stats.shot}",
-                            "Удары",
+                            AppLocalizations.of(context)!.shots,
                             const Color(0xFF4CAF50),
                           ),
                         ),
@@ -1063,7 +1070,7 @@ class _GamePageViewState extends State<_GamePageView>
                           child: _buildKeyStatItem(
                             "🎯",
                             "${player.stats.shotsOnGoal}",
-                            "В створ",
+                            AppLocalizations.of(context)!.onTarget,
                             const Color(0xFF2196F3),
                           ),
                         ),
@@ -1071,7 +1078,7 @@ class _GamePageViewState extends State<_GamePageView>
                           child: _buildKeyStatItem(
                             "📊",
                             "${player.stats.pass}",
-                            "Передачи",
+                            AppLocalizations.of(context)!.passes,
                             const Color(0xFF9C27B0),
                           ),
                         ),
@@ -1090,7 +1097,8 @@ class _GamePageViewState extends State<_GamePageView>
     );
   }
 
-  Widget _buildKeyStatItem(String emoji, String value, String label, Color color) {
+  Widget _buildKeyStatItem(
+      String emoji, String value, String label, Color color) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
       margin: EdgeInsets.symmetric(horizontal: 4.w),
@@ -1135,11 +1143,31 @@ class _GamePageViewState extends State<_GamePageView>
 
   Widget _buildAdditionalStats(PlayerEntity player) {
     final stats = [
-      {"label": "Мимо створа", "value": "${player.stats.shotsOffGoal}", "icon": "❌"},
-      {"label": "Фолы", "value": "${player.stats.foul}", "icon": "⚠️"},
-      {"label": "Желтые", "value": "${player.stats.yellowCards}", "icon": "🟨"},
-      {"label": "Офсайды", "value": "${player.stats.offside}", "icon": "🚩"},
-      {"label": "Угловые", "value": "${player.stats.corner}", "icon": "📐"},
+      {
+        "label": AppLocalizations.of(context)!.offTarget,
+        "value": "${player.stats.shotsOffGoal}",
+        "icon": "❌"
+      },
+      {
+        "label": AppLocalizations.of(context)!.fouls,
+        "value": "${player.stats.foul}",
+        "icon": "⚠️"
+      },
+      {
+        "label": AppLocalizations.of(context)!.yellows,
+        "value": "${player.stats.yellowCards}",
+        "icon": "🟨"
+      },
+      {
+        "label": AppLocalizations.of(context)!.offsides,
+        "value": "${player.stats.offside}",
+        "icon": "🚩"
+      },
+      {
+        "label": AppLocalizations.of(context)!.corners,
+        "value": "${player.stats.corner}",
+        "icon": "📐"
+      },
     ];
 
     return Container(
@@ -1152,7 +1180,7 @@ class _GamePageViewState extends State<_GamePageView>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Дополнительная статистика",
+            AppLocalizations.of(context)!.additionalStats,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.sp,
@@ -1224,9 +1252,7 @@ class _GamePageViewState extends State<_GamePageView>
   void main() {
     var originalDate = "2024-07-26";
     var formattedDate = _formatDate(originalDate);
-    print(formattedDate); // Вывод: 26.07.2024
 
     var anotherDate = "2025-01-05";
-    print(_formatDate(anotherDate)); // Вывод: 05.01.2025
   }
 }

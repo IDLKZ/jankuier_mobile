@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ Widget buildNewsSection(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Последние новости',
+                AppLocalizations.of(context)!.latestNews,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,
@@ -38,7 +39,7 @@ Widget buildNewsSection(BuildContext context) {
                   context.push(AppRouteConstants.BlogListPagePath);
                 },
                 child: Text(
-                  'Все новости',
+                  AppLocalizations.of(context)!.allNews,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14.sp,
@@ -66,7 +67,7 @@ Widget buildNewsSection(BuildContext context) {
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Center(
                     child: Text(
-                      'Новости не найдены',
+                      AppLocalizations.of(context)!.newsNotFound,
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey,
@@ -97,7 +98,7 @@ Widget buildNewsSection(BuildContext context) {
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Center(
                   child: Text(
-                    'Ошибка загрузки новостей',
+                    AppLocalizations.of(context)!.newsLoadError,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: Colors.red,
@@ -197,7 +198,7 @@ Widget _buildNewsCard(News news, BuildContext context) {
                       ),
                       SizedBox(width: 4.w),
                       Text(
-                        formatNewsDate(news.date?.toIso8601String() ?? ''),
+                        formatNewsDate(context, news.date?.toIso8601String() ?? ''),
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12.sp,

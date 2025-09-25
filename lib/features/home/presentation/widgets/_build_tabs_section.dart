@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,8 @@ import '../../../standings/presentation/bloc/standing_state.dart';
 import '../../../standings/presentation/widgets/team_table_item_widget.dart';
 import 'home_helpers.dart';
 
-Widget buildTabsSectionWithScroll(TabController tabController, VoidCallback onRefresh) {
+Widget buildTabsSectionWithScroll(
+    BuildContext context, TabController tabController, VoidCallback onRefresh) {
   return Column(
     children: [
       // Tab bar
@@ -37,14 +39,12 @@ Widget buildTabsSectionWithScroll(TabController tabController, VoidCallback onRe
                     gradient: tabController.index == 0
                         ? AppColors.primaryGradient
                         : null,
-                    color: tabController.index == 0
-                        ? null
-                        : Colors.white,
+                    color: tabController.index == 0 ? null : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      'Таблица',
+                      AppLocalizations.of(context)!.table,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14.sp,
@@ -71,14 +71,12 @@ Widget buildTabsSectionWithScroll(TabController tabController, VoidCallback onRe
                     gradient: tabController.index == 1
                         ? AppColors.primaryGradient
                         : null,
-                    color: tabController.index == 1
-                        ? null
-                        : Colors.white,
+                    color: tabController.index == 1 ? null : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      'Результаты',
+                      AppLocalizations.of(context)!.results,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14.sp,
@@ -113,7 +111,7 @@ Widget _buildTableTabWithoutExpanded() {
           child: const Center(child: CircularProgressIndicator()),
         );
       } else if (state is GetStandingsTableFromSotaLoadedState) {
-        return _buildStandingsTableWithoutExpanded(state.result);
+        return _buildStandingsTableWithoutExpanded(state.result, context);
       } else if (state is GetStandingsTableFromSotaFailedState) {
         return Container(
           height: 200.h,
@@ -128,7 +126,7 @@ Widget _buildTableTabWithoutExpanded() {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  "Ошибка загрузки турнирной таблицы",
+                  AppLocalizations.of(context)!.tableLoadError,
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: Colors.red[600],
@@ -136,7 +134,8 @@ Widget _buildTableTabWithoutExpanded() {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  state.failureData.message ?? 'Неизвестная ошибка',
+                  state.failureData.message ??
+                      AppLocalizations.of(context)!.unknownError,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.grey[600],
@@ -177,7 +176,7 @@ Widget _buildResultsTabWithoutExpanded() {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  "Ошибка загрузки результатов матчей",
+                  AppLocalizations.of(context)!.matchesLoadError,
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: Colors.red[600],
@@ -185,7 +184,8 @@ Widget _buildResultsTabWithoutExpanded() {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  state.failureData.message ?? 'Неизвестная ошибка',
+                  state.failureData.message ??
+                      AppLocalizations.of(context)!.unknownError,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.grey[600],
@@ -199,15 +199,16 @@ Widget _buildResultsTabWithoutExpanded() {
       }
       return SizedBox(
         height: 100.h,
-        child: const Center(
-          child: Text("Выберите вкладку 'Результаты' для загрузки матчей"),
+        child: Center(
+          child: Text(AppLocalizations.of(context)!.selectResultsTab),
         ),
       );
     },
   );
 }
 
-Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
+Widget _buildStandingsTableWithoutExpanded(
+    List<ScoreTableTeamEntity> teams, BuildContext context) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w),
     decoration: BoxDecoration(
@@ -238,7 +239,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
               SizedBox(
                 width: 20.w,
                 child: Text(
-                  "№",
+                  AppLocalizations.of(context)!.position,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500,
@@ -249,7 +250,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
               ),
               Expanded(
                 child: Text(
-                  "Команда",
+                  AppLocalizations.of(context)!.team,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500,
@@ -261,7 +262,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
               SizedBox(
                 width: 30.w,
                 child: Text(
-                  "И",
+                  AppLocalizations.of(context)!.matchesPlayed,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Inter',
@@ -274,7 +275,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
               SizedBox(
                 width: 50.w,
                 child: Text(
-                  "Г",
+                  AppLocalizations.of(context)!.goalsScored,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Inter',
@@ -287,7 +288,7 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
               SizedBox(
                 width: 20.w,
                 child: Text(
-                  "О",
+                  AppLocalizations.of(context)!.points,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Inter',
@@ -314,7 +315,8 @@ Widget _buildStandingsTableWithoutExpanded(List<ScoreTableTeamEntity> teams) {
   );
 }
 
-Widget _buildMatchesListWithoutExpanded(List<MatchEntity> matches, BuildContext context) {
+Widget _buildMatchesListWithoutExpanded(
+    List<MatchEntity> matches, BuildContext context) {
   final groupedMatches = <int, List<MatchEntity>>{};
 
   for (final match in matches) {
@@ -338,7 +340,7 @@ Widget _buildMatchesListWithoutExpanded(List<MatchEntity> matches, BuildContext 
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h),
               child: Text(
-                "Тур $tour",
+                "${AppLocalizations.of(context)!.round} $tour",
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,
@@ -348,7 +350,8 @@ Widget _buildMatchesListWithoutExpanded(List<MatchEntity> matches, BuildContext 
               ),
             ),
             // Matches for this tour
-            ...tourMatches.map((match) => _buildMatchCardWithoutMargin(match, context)),
+            ...tourMatches
+                .map((match) => _buildMatchCardWithoutMargin(match, context)),
             SizedBox(height: 16.h),
           ],
         );

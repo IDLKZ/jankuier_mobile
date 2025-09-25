@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_html/flutter_html.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
@@ -331,7 +332,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Ошибка загрузки новости',
+              AppLocalizations.of(context)!.singleNewsLoadError,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
@@ -340,7 +341,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             ),
             SizedBox(height: 8.h),
             Text(
-              message ?? 'Неизвестная ошибка',
+              message ?? AppLocalizations.of(context)!.unknownError,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.textSecondary,
@@ -359,7 +360,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 ),
               ),
               child: Text(
-                'Назад',
+                AppLocalizations.of(context)!.back,
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
             ),
@@ -383,7 +384,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Новость не найдена',
+              AppLocalizations.of(context)!.newsNotFound,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
@@ -392,7 +393,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Попробуйте позже',
+              AppLocalizations.of(context)!.tryLater,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.textSecondary,
@@ -405,17 +406,17 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   }
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'Дата не указана';
+    if (date == null) return AppLocalizations.of(context)!.dateNotSpecified;
 
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Сегодня, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${AppLocalizations.of(context)!.today}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays == 1) {
-      return 'Вчера, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${AppLocalizations.of(context)!.yesterday}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} дн. назад';
+      return '${difference.inDays} ${AppLocalizations.of(context)!.daysAgo}';
     } else {
       return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
     }

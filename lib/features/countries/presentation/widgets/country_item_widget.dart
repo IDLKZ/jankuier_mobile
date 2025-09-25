@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../data/entities/country_entity.dart';
 
@@ -64,7 +65,7 @@ class CountryItemWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  'Сборная ${country.name}',
+                  '${AppLocalizations.of(context)!.nationalTeam} ${country.name}',
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.grey[600],

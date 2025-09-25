@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,7 @@ Widget buildFutureMatch(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Игры сборной',
+              AppLocalizations.of(context)!.nationalTeamGames,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 18.sp,
@@ -32,7 +33,7 @@ Widget buildFutureMatch(BuildContext context) {
                 context.push(AppRouteConstants.KffMatchesPagePath);
               },
               child: Text(
-                'Все игры',
+                AppLocalizations.of(context)!.allGames,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14.sp,
@@ -50,11 +51,11 @@ Widget buildFutureMatch(BuildContext context) {
           if (state is GetFutureMatchesLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is GetFutureMatchesSuccessState) {
-            return homebuildMatchesList(state.matches, true);
+            return homebuildMatchesList(state.matches, true, context);
           } else if (state is GetFutureMatchesFailedState) {
             return Center(
               child: Text(
-                'Ошибка загрузки: ${state.failure.message}',
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failure.message}',
                 style: TextStyle(fontSize: 16.sp, color: AppColors.error),
               ),
             );
@@ -67,10 +68,10 @@ Widget buildFutureMatch(BuildContext context) {
   );
 }
 
-Widget homebuildMatchesList(dynamic matches, bool isFuture) {
+Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context) {
   if (matches.isEmpty) {
-    return homebuildEmptyContentState(
-      isFuture ? 'Нет предстоящих матчей' : 'Нет прошедших матчей',
+    return homebuildEmptyContentState(context,
+      isFuture ? AppLocalizations.of(context)!.noUpcomingMatches : AppLocalizations.of(context)!.noPastMatches,
       isFuture ? Icons.schedule : Icons.history,
     );
   }
@@ -101,7 +102,7 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture) {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  match.championship?.title ?? 'Турнир не указан',
+                  match.championship?.title ?? AppLocalizations.of(context)!.tournamentNotSpecified,
                   style: TextStyle(
                     fontSize: 11.sp,
                     color: AppColors.primary,
@@ -147,7 +148,7 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture) {
                         ),
                         SizedBox(height: 12.h),
                         Text(
-                          match.team1?.title ?? 'Команда 1',
+                          match.team1?.title ?? AppLocalizations.of(context)!.team1,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -227,7 +228,7 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture) {
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Text(
-                            'ТУР ${match.tour}',
+                            '${AppLocalizations.of(context)!.round.toUpperCase()} ${match.tour}',
                             style: TextStyle(
                               fontSize: 10.sp,
                               color: AppColors.textSecondary,
@@ -271,7 +272,7 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture) {
                         ),
                         SizedBox(height: 12.h),
                         Text(
-                          match.team2?.title ?? 'Команда 2',
+                          match.team2?.title ?? AppLocalizations.of(context)!.team2,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -294,7 +295,7 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture) {
   );
 }
 
-Widget homebuildEmptyContentState(String message, IconData icon) {
+Widget homebuildEmptyContentState(BuildContext context, String message, IconData icon) {
   return Container(
     padding: EdgeInsets.all(40.w),
     child: Column(
@@ -328,11 +329,11 @@ Widget homebuildEmptyContentState(String message, IconData icon) {
 }
 
 String _formatDateTime(String? dateTime) {
-  if (dateTime == null) return 'Время не указано';
+  if (dateTime == null) return 'Время не указано'; // TODO: локализовать позже
   try {
     final dt = DateTime.parse(dateTime);
     return '${dt.day}.${dt.month.toString().padLeft(2, '0')}.${dt.year}\n${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
   } catch (e) {
-    return 'Неверный формат';
+    return 'Неверный формат'; // TODO: локализовать позже
   }
 }

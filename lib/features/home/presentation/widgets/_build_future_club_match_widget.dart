@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,7 @@ Widget buildFutureClubMatch(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Клубные игры',
+                AppLocalizations.of(context)!.clubGames,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,
@@ -36,7 +37,7 @@ Widget buildFutureClubMatch(BuildContext context) {
                   context.push(AppRouteConstants.KffLeagueClubPagePath);
                 },
                 child: Text(
-                  'Все игры',
+                  AppLocalizations.of(context)!.allGames,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14.sp,
@@ -71,7 +72,7 @@ Widget buildFutureClubMatch(BuildContext context) {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        'Ошибка загрузки матчей',
+                        AppLocalizations.of(context)!.matchesLoadError,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -123,8 +124,8 @@ Widget buildFutureClubMatch(BuildContext context) {
                         SizedBox(height: 16.h),
                         Text(
                           isFuture
-                              ? 'Нет предстоящих матчей'
-                              : 'Нет прошедших матчей',
+                              ? AppLocalizations.of(context)!.noUpcomingMatches
+                              : AppLocalizations.of(context)!.noPastMatches,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -133,7 +134,7 @@ Widget buildFutureClubMatch(BuildContext context) {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'Матчи будут отображены, когда станут доступны',
+                          AppLocalizations.of(context)!.matchesWillBeDisplayed,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.textSecondary,

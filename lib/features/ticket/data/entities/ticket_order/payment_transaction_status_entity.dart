@@ -1,11 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
-class PaymentTransactionStatusEntity extends Equatable {
+class PaymentTransactionStatusEntity extends Equatable
+    with LocalizedTitleEntity {
   final int id;
   final int? previousId;
   final int? nextId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final bool isFirst;
   final bool isActive;

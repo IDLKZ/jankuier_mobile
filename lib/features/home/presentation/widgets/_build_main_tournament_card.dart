@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../tournament/data/entities/tournament_entity.dart';
 import '_build_league_carousel.dart';
 
-Widget buildMainTournamentCard(TournamentEntity? selectedTournament) {
+Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedTournament) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
     padding: EdgeInsets.all(20.w),
@@ -56,7 +57,7 @@ Widget buildMainTournamentCard(TournamentEntity? selectedTournament) {
                 ),
               )
                   : Text(
-                'ПРЕМЬЕР ЛИГА',
+                AppLocalizations.of(context)!.premierLeague,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 20.sp,
@@ -65,7 +66,7 @@ Widget buildMainTournamentCard(TournamentEntity? selectedTournament) {
                 ),
               ),
               Text(
-                'Казахстана',
+                AppLocalizations.of(context)!.ofKazakhstan,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,

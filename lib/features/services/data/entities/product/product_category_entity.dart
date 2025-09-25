@@ -1,15 +1,24 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_description_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 import '../../../../../core/common/entities/file_entity.dart';
 
-class ProductCategoryEntity extends Equatable {
+class ProductCategoryEntity extends Equatable
+    with LocalizedTitleEntity, LocalizedDescriptionEntity {
   final int id;
   final int? imageId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
+  @override
   final String? descriptionRu;
+  @override
   final String? descriptionKk;
+  @override
   final String? descriptionEn;
   final String value;
   final bool isActive;

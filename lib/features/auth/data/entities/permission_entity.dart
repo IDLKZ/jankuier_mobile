@@ -1,9 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
-class PermissionEntity extends Equatable {
+import '../../../../core/mixins/localized_title_mixin.dart';
+import '../../../../l10n/app_localizations.dart';
+
+class PermissionEntity extends Equatable with LocalizedTitleEntity {
   final int id;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final String value;
   final DateTime createdAt;
@@ -34,6 +41,20 @@ class PermissionEntity extends Equatable {
           ? DateTime.parse(json['deleted_at'])
           : null,
     );
+  }
+
+  /// Возвращает локализованный заголовок
+  String localizedTitle(BuildContext context) {
+    final locale = AppLocalizations.of(context)?.localeName;
+    switch (locale) {
+      case 'kk':
+        return titleKk ?? titleRu;
+      case 'en':
+        return titleEn ?? titleRu;
+      case 'ru':
+      default:
+        return titleRu;
+    }
   }
 
   @override
