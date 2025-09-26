@@ -31,7 +31,7 @@ android {
     defaultConfig {
         applicationId = "kz.kff.jankuier_mobile"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
