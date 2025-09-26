@@ -12,3 +12,9 @@ class GetCoachesRequestEvent extends GetCoachesEvent {
   @override
   List<Object?> get props => [leagueId];
 }
+
+/// Обновить тренеров при смене языка
+class RefreshCoachesContentEvent extends GetCoachesEvent {
+  @override
+  List<Object?> get props => [];
+}

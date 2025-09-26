@@ -19,3 +19,8 @@ class LoadMatchesFromSotaEvent extends StandingEvent {
   @override
   List<Object?> get props => [parameter];
 }
+
+/// Обновить данные турнирной таблицы и матчей при смене языка
+class RefreshStandingsContentEvent extends StandingEvent {
+  const RefreshStandingsContentEvent();
+}

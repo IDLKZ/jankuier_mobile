@@ -9,3 +9,8 @@ class GetTournamentEvent extends GetTournamentBaseEvent {
   final GetTournamentParameter parameter;
   GetTournamentEvent(this.parameter);
 }
+
+/// Обновить турниры при смене языка
+class RefreshTournamentsContentEvent extends GetTournamentBaseEvent {
+  RefreshTournamentsContentEvent();
+}

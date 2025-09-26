@@ -8,3 +8,9 @@ class GetAllLeagueRequestEvent extends GetAllLeagueEvent {
   @override
   List<Object?> get props => [];
 }
+
+/// Обновить лиги при смене языка
+class RefreshAllLeagueContentEvent extends GetAllLeagueEvent {
+  @override
+  List<Object?> get props => [];
+}

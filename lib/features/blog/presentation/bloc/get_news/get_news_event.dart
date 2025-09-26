@@ -27,3 +27,8 @@ class LoadMoreNewsFromKffLeagueEvent extends GetNewsBaseEvent {
   final GetNewsParameter parameter;
   LoadMoreNewsFromKffLeagueEvent(this.parameter);
 }
+
+/// Обновить контент при смене языка
+class RefreshNewsContentEvent extends GetNewsBaseEvent {
+  RefreshNewsContentEvent();
+}

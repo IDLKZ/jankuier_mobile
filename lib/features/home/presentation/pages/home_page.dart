@@ -21,6 +21,7 @@ import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_eve
 import '../../../blog/domain/parameters/get_news_parameter.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_event.dart';
+import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_state.dart';
 import '../widgets/_build_future_match_widget.dart';
 import '../widgets/_build_header.dart';
 import '../widgets/_build_main_tournament_card.dart';
@@ -172,39 +173,55 @@ class _HomePageState extends State<HomePage>
         BlocProvider.value(value: _futureMatchesBloc),
         BlocProvider.value(value: _futureClubMatches),
       ],
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: Column(
-          children: [
-            // Blue header
-            buildHeader(context),
-            // Content with scroll
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // Tournament selection section
-                    buildTournamentSection(
-                        context, _selectedTournament, _onTournamentSelected),
-                    // Main tournament card
-                    if (_selectedTournament != null)
-                      buildMainTournamentCard(context, _selectedTournament),
-                    // Tabs and content
-                    _selectedTournament != null
-                        ? buildTabsSectionWithScroll(
-                            context, _tabController, () => setState(() {}))
-                        : _buildSelectTournamentMessage(),
-                    // Future Match
-                    if (_selectedTournament != null)
-                      buildFutureClubMatch(context),
-                    if (_selectedTournament != null) buildFutureMatch(context),
-                    // News section
-                    if (_selectedTournament != null) buildNewsSection(context),
-                  ],
+      child: BlocListener<GetTournamentBloc, GetTournamentStateState>(
+        listener: (context, state) {
+          // Обновляем выбранный турнир при получении новых данных (например, при смене языка)
+          if (state is GetTournamentStateSuccessState && _selectedTournament != null) {
+            final updatedTournament = state.tournaments.results.firstWhere(
+              (tournament) => tournament.id == _selectedTournament!.id,
+              orElse: () => _selectedTournament!,
+            );
+            if (updatedTournament != _selectedTournament) {
+              setState(() {
+                _selectedTournament = updatedTournament;
+              });
+            }
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: Column(
+            children: [
+              // Blue header
+              buildHeader(context),
+              // Content with scroll
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Tournament selection section
+                      buildTournamentSection(
+                          context, _selectedTournament, _onTournamentSelected),
+                      // Main tournament card
+                      if (_selectedTournament != null)
+                        buildMainTournamentCard(context, _selectedTournament),
+                      // Tabs and content
+                      _selectedTournament != null
+                          ? buildTabsSectionWithScroll(
+                              context, _tabController, () => setState(() {}))
+                          : _buildSelectTournamentMessage(),
+                      // Future Match
+                      if (_selectedTournament != null)
+                        buildFutureClubMatch(context),
+                      if (_selectedTournament != null) buildFutureMatch(context),
+                      // News section
+                      if (_selectedTournament != null) buildNewsSection(context),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

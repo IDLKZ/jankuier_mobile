@@ -48,7 +48,10 @@ Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedT
             children: [
               selectedTournament?.name != null
                   ? Text(
-                selectedTournament!.name,
+                // Для казахского языка показываем "Қазақстанның" перед названием турнира
+                Localizations.localeOf(context).languageCode == 'kk'
+                    ? '${AppLocalizations.of(context)!.ofKazakhstan} ${selectedTournament!.name}'
+                    : selectedTournament!.name,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 18.sp,
@@ -65,15 +68,17 @@ Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedT
                   color: Colors.white,
                 ),
               ),
-              Text(
-                AppLocalizations.of(context)!.ofKazakhstan,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+              // Для казахского языка не показываем отдельную строку "Қазақстанның"
+              if (Localizations.localeOf(context).languageCode != 'kk')
+                Text(
+                  AppLocalizations.of(context)!.ofKazakhstan,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

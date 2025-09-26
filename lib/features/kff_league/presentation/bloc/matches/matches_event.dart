@@ -47,3 +47,13 @@ class LoadMoreMatches extends MatchesEvent {
   @override
   List<Object?> get props => [parameter];
 }
+
+/// Обновить матчи при смене языка
+class RefreshMatchesContentEvent extends MatchesEvent {
+  final KffLeagueClubMatchParameters parameter;
+
+  const RefreshMatchesContentEvent(this.parameter);
+
+  @override
+  List<Object?> get props => [parameter];
+}

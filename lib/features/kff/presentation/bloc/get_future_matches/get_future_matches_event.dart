@@ -12,3 +12,9 @@ class GetFutureMatchesRequestEvent extends GetFutureMatchesEvent {
   @override
   List<Object?> get props => [leagueId];
 }
+
+/// Обновить будущие матчи при смене языка
+class RefreshFutureMatchesContentEvent extends GetFutureMatchesEvent {
+  @override
+  List<Object?> get props => [];
+}
