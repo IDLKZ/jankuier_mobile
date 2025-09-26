@@ -220,8 +220,8 @@ class AppRouter {
                 return BlocProvider(
                   create: (BuildContext context) {
                     return getIt<TicketonShowsBloc>()
-                      ..add(const LoadTicketonShowsEvent(
-                          parameter: TicketonGetShowsParameter()));
+                      ..add(LoadTicketonShowsEvent(
+                          parameter: TicketonGetShowsParameter.withCurrentLocale()));
                   },
                   child: const TicketsPage(),
                 );

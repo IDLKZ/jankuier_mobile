@@ -16,3 +16,9 @@ class LoadTicketonShowsEvent extends TicketonShowsEvent {
   @override
   List<Object?> get props => [parameter];
 }
+
+/// Обновить билеты при смене языка
+class RefreshTicketonShowsContentEvent extends TicketonShowsEvent {
+  @override
+  List<Object?> get props => [];
+}

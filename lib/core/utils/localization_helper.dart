@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import '../services/localization_service.dart';
+import '../di/injection.dart';
 
 /// Helper класс для автоматического выбора локализованного контента
 class LocalizationHelper {
@@ -129,6 +131,45 @@ class LocalizationHelper {
       ru: entity.pricePerRu ?? '',
       en: entity.pricePerEn,
     );
+  }
+
+  /// Получает текущий язык приложения без BuildContext
+  static String getCurrentLanguageCode() {
+    try {
+      // Проверяем, что getIt готов к работе и сервис зарегистрирован
+      if (!getIt.isRegistered<LocalizationService>()) {
+        print('LocalizationHelper: LocalizationService not registered, using ru as fallback');
+        return 'ru'; // Fallback если сервис не зарегистрирован
+      }
+
+      final localizationService = getIt.get<LocalizationService>();
+      final languageCode = localizationService.currentLocale.languageCode;
+      print('LocalizationHelper: Current language code: $languageCode');
+      return languageCode;
+    } catch (e) {
+      // Fallback на русский язык если сервис недоступен
+      print('LocalizationHelper: Error getting language code: $e, using ru as fallback');
+      return 'ru';
+    }
+  }
+
+  /// Получает локализованный текст на основе текущего языка приложения (без контекста)
+  static String getLocalizedTextFromApp({
+    String? kk,
+    required String ru,
+    String? en,
+  }) {
+    final languageCode = getCurrentLanguageCode();
+
+    switch (languageCode) {
+      case 'kk':
+        return kk ?? ru;
+      case 'en':
+        return en ?? ru;
+      case 'ru':
+      default:
+        return ru;
+    }
   }
 }
 
