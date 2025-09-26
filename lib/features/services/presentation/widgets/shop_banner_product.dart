@@ -53,50 +53,60 @@ class ShopBannerProduct extends StatelessWidget {
                       left: 16.w,
                       right: 16.w,
                       bottom: 16.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          // Текст
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "${productEntity.titleRu}",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                "${productEntity.basePrice} KZT",
-                                style: TextStyle(
-                                  fontFamily: "Inter",
-                                  fontSize: 12.sp,
-                                  color: Colors.white,
-                                ),
+                              // Текст
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${productEntity.localizedTitle(context)}",
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    "${productEntity.basePrice} KZT",
+                                    style: TextStyle(
+                                      fontFamily: "Inter",
+                                      fontSize: 12.sp,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          // Кнопка
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.white),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
+                          SizedBox(
+                            height: 8.h,
+                          ),
+                          Align(
+                            alignment: Alignment(-1, -1),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.white),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
                               ),
+                              onPressed: () {
+                                context.push(
+                                    "${AppRouteConstants.SingleProductPagePath}${productEntity.id}");
+                              },
+                              child: Text(AppLocalizations.of(context)!.buy),
                             ),
-                            onPressed: () {
-                              context.push(
-                                  "${AppRouteConstants.SingleProductPagePath}${productEntity.id}");
-                            },
-                            child: Text(AppLocalizations.of(context)!.buy),
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    // Кнопка
                   ],
                 ),
               ),
