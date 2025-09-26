@@ -9,6 +9,7 @@ class PaginateTicketOrderBloc extends Bloc<PaginateTicketOrderBaseEvent, Paginat
   PaginateTicketOrderBloc({required this.paginateTicketOrderUseCase})
       : super(PaginateTicketOrderInitialState()) {
     on<PaginateTicketOrderEvent>(_onPaginateTicketOrders);
+    on<RefreshTicketOrderEvent>(_onRefreshTicketOrders);
   }
 
   Future<void> _onPaginateTicketOrders(
@@ -52,6 +53,35 @@ class PaginateTicketOrderBloc extends Bloc<PaginateTicketOrderBaseEvent, Paginat
       );
     } catch (e, stackTrace) {
       print('❌ CRITICAL ERROR in PaginateTicketOrderBloc: $e');
+      print('📚 Stack trace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<void> _onRefreshTicketOrders(
+    RefreshTicketOrderEvent event,
+    Emitter<PaginateTicketOrderState> emit,
+  ) async {
+    try {
+      print('🔄 PaginateTicketOrderBloc: Refreshing ticket orders');
+
+      emit(PaginateTicketOrderLoadingState());
+
+      final result = await paginateTicketOrderUseCase.call(event.parameter);
+
+      result.fold(
+        (failure) {
+          print('❌ PaginateTicketOrderBloc: Failed to refresh orders - ${failure.message}');
+          emit(PaginateTicketOrderFailedState(failure));
+        },
+        (data) {
+          print('✅ PaginateTicketOrderBloc: Refreshed with ${data.items.length} orders');
+          // Для refresh не накапливаем старые данные, а заменяем полностью
+          emit(PaginateTicketOrderLoadedState(data, data.items));
+        },
+      );
+    } catch (e, stackTrace) {
+      print('❌ CRITICAL ERROR in refresh PaginateTicketOrderBloc: $e');
       print('📚 Stack trace: $stackTrace');
       rethrow;
     }

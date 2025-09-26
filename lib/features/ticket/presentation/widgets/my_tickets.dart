@@ -26,20 +26,28 @@ class MyTicketsWidget extends StatefulWidget {
 }
 
 class _MyTicketsWidgetState extends State<MyTicketsWidget> {
+  late final PaginateTicketOrderBloc _bloc;
   bool isAuthenticated = false;
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _bloc = getIt<PaginateTicketOrderBloc>();
     _checkAuthentication();
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Проверяем авторизацию при каждом возврате на экран
-    _checkAuthentication();
+    _checkAuthenticationAndRefresh();
   }
 
   Future<void> _checkAuthentication() async {
@@ -47,15 +55,51 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       final hiveUtils = getIt<HiveUtils>();
       final token = await hiveUtils.getAccessToken();
 
-      setState(() {
-        isAuthenticated = token != null && token.isNotEmpty;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isAuthenticated = token != null && token.isNotEmpty;
+          isLoading = false;
+        });
+
+        if (isAuthenticated) {
+          _bloc.add(RefreshTicketOrderEvent(myTicketParameter));
+        }
+      }
     } catch (e) {
-      setState(() {
-        isAuthenticated = false;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isAuthenticated = false;
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _checkAuthenticationAndRefresh() async {
+    try {
+      final hiveUtils = getIt<HiveUtils>();
+      final token = await hiveUtils.getAccessToken();
+      final wasAuthenticated = isAuthenticated;
+
+      if (mounted) {
+        setState(() {
+          isAuthenticated = token != null && token.isNotEmpty;
+          isLoading = false;
+        });
+
+        // Обновляем данные только если статус авторизации изменился на "авторизован"
+        // или если пользователь уже был авторизован (для refresh при возврате на экран)
+        if (isAuthenticated && (!wasAuthenticated || wasAuthenticated)) {
+          _bloc.add(RefreshTicketOrderEvent(myTicketParameter));
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isAuthenticated = false;
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -147,11 +191,8 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       );
     }
 
-    return BlocProvider(
-      create: (BuildContext context) {
-        return getIt<PaginateTicketOrderBloc>()
-          ..add(PaginateTicketOrderEvent(myTicketParameter));
-      },
+    return BlocProvider.value(
+      value: _bloc,
       child: BlocBuilder<PaginateTicketOrderBloc, PaginateTicketOrderState>(
           builder: (context, state) {
         if (state is PaginateTicketOrderLoadedState) {
@@ -190,9 +231,7 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              context
-                  .read<PaginateTicketOrderBloc>()
-                  .add(PaginateTicketOrderEvent(myTicketParameter));
+              _bloc.add(RefreshTicketOrderEvent(myTicketParameter));
             },
             child: ListView.builder(
               padding: EdgeInsets.all(16.w),
@@ -249,9 +288,7 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
                 SizedBox(height: 16.h),
                 ElevatedButton(
                   onPressed: () {
-                    context
-                        .read<PaginateTicketOrderBloc>()
-                        .add(PaginateTicketOrderEvent(myTicketParameter));
+                    _bloc.add(RefreshTicketOrderEvent(myTicketParameter));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
