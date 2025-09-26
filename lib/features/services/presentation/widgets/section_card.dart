@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/data/entities/academy/academy_entity.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -48,7 +49,7 @@ class SectionCardWidget extends StatelessWidget {
 
           // 🏷 Название и описание
           Text(
-            "${entity.titleRu}",
+            context.localizedDirectTitle(entity),
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -57,7 +58,7 @@ class SectionCardWidget extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
           Text(
-            "${entity.descriptionRu}",
+            context.localizedDirectDescription(entity),
             style: TextStyle(
               fontSize: 12.sp,
               color: Colors.black,
@@ -69,17 +70,17 @@ class SectionCardWidget extends StatelessWidget {
           // ⏱ Длительность и возраст
           Row(
             children: [
-              Icon(Icons.access_time, size: 14.sp, color: Color(0xFF838383)),
+              Icon(Icons.access_time, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${entity.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
-                  style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
+                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
               SizedBox(width: 12.w),
-              Icon(Icons.person, size: 14.sp, color: Color(0xFF838383)),
+              Icon(Icons.person, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${entity.minAge}-${entity.maxAge} ${AppLocalizations.of(context)!.years}",
-                  style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
+                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
             ],
           ),
 
@@ -101,7 +102,7 @@ class SectionCardWidget extends StatelessWidget {
                 onPressed: onTap,
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFF0247C3)),
-                  foregroundColor: Color(0xFF0247C3),
+                  foregroundColor: const Color(0xFF0247C3),
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   shape: RoundedRectangleBorder(
@@ -117,7 +118,7 @@ class SectionCardWidget extends StatelessWidget {
           SizedBox(height: 12.h),
           Container(
             decoration: BoxDecoration(
-                color: Color(0x80EDF0F9),
+                color: const Color(0x80EDF0F9),
                 borderRadius: BorderRadius.circular(5.r)),
             padding:
                 EdgeInsetsGeometry.symmetric(horizontal: 10.h, vertical: 10.w),
@@ -125,14 +126,14 @@ class SectionCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.location_on_outlined,
-                    size: 14.sp, color: Color(0xFF838383)),
+                    size: 14.sp, color: const Color(0xFF838383)),
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    "${entity.addressRu}",
+                    context.localizedDirectAddress(entity),
                     style: TextStyle(
                       fontSize: 11.sp,
-                      color: Color(0xFF838383),
+                      color: const Color(0xFF838383),
                     ),
                   ),
                 )

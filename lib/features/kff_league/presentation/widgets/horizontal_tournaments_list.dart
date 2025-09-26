@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/kff_league/data/entities/kff_league_tournament_entity.dart';
 
 import '../../../../l10n/app_localizations.dart';
@@ -84,8 +85,10 @@ class HorizontalTournamentsList extends StatelessWidget {
 
                     // Tournament Title
                     AutoSizeText(
-                      firstSeason.title?.ru ??
-                          AppLocalizations.of(context)!.tournament,
+                      () {
+                        final title = context.localizedTitle(firstSeason.title);
+                        return title.isNotEmpty ? title : AppLocalizations.of(context)!.tournament;
+                      }(),
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight:

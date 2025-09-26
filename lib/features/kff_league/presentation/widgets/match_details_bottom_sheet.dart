@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/kff_league/data/entities/kff_league_match_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -108,8 +109,10 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  match.tournament?.title?.ru ??
-                      AppLocalizations.of(context)!.tournament,
+                 () {
+                    final title = context.localizedTitle(match.tournament?.title);
+                    return title.isNotEmpty ? title : AppLocalizations.of(context)!.tournament;
+                  }(),
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -118,7 +121,10 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                 ),
                 if (match.stage != null)
                   Text(
-                    match.stage!.title?.ru ?? '',
+                    () {
+                      final title = context.localizedTitle(match.stage?.title);
+                      return title.isNotEmpty ? title : '';
+                    }(),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: AppColors.white.withValues(alpha: 0.8),
@@ -172,7 +178,10 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               Text(
-                match.team1?.title?.ru ?? AppLocalizations.of(context)!.team1,
+                () {
+                  final title = context.localizedTitle(match.team1?.title);
+                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team1;
+                }(),
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -282,7 +291,10 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               Text(
-                match.team2?.title?.ru ?? AppLocalizations.of(context)!.team2,
+                () {
+                  final title = context.localizedTitle(match.team2?.title);
+                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team2;
+                }(),
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -584,24 +596,16 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      stadium.title?.ru ??
-                          AppLocalizations.of(context)!.notSpecified,
+                      () {
+                        final title = context.localizedTitle(stadium.title);
+                        return title.isNotEmpty ? title : AppLocalizations.of(context)!.notSpecified;
+                      }(),
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
-                    ),
-                    if (stadium.title?.ru != null) ...[
-                      SizedBox(height: 4.h),
-                      Text(
-                        'г. ${stadium.title!.ru}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
+                    )
                   ],
                 ),
               ),

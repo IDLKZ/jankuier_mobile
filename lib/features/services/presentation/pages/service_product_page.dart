@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/full_product_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/modification_type_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/modification_value_entity.dart';
@@ -529,11 +530,11 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           topLeft: Radius.circular(24.r),
           topRight: Radius.circular(24.r),
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: 10,
-            offset: const Offset(0, -2),
+            offset: Offset(0, -2),
           ),
         ],
       ),
@@ -567,11 +568,11 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MainTitleWidget(
-            title: widget.fullProductEntity.product.titleRu ?? AppLocalizations.of(context)!.untitled),
+            title: context.localizedDirectTitle(widget.fullProductEntity.product) ?? AppLocalizations.of(context)!.untitled),
         SizedBox(height: 12.h),
         if (widget.fullProductEntity.product.descriptionRu?.isNotEmpty == true)
           Text(
-            widget.fullProductEntity.product.descriptionRu!,
+            context.localizedDirectDescription(widget.fullProductEntity.product),
             style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.textSecondary,
@@ -588,7 +589,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       spacing: 12.w,
       runSpacing: 8.h,
       children: [
-        if (widget.fullProductEntity.product.category?.titleRu?.isNotEmpty ==
+        if (widget.fullProductEntity.product.category?.titleRu.isNotEmpty ==
             true)
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -597,7 +598,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Text(
-              widget.fullProductEntity.product.category!.titleRu!,
+              context.localizedDirectTitle(widget.fullProductEntity.product.category),
               style: TextStyle(
                 color: AppColors.primary,
                 fontSize: 12.sp,
@@ -753,7 +754,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            type.titleRu,
+            context.localizedDirectTitle(type),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -778,7 +779,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
     final isSelected = _selectedModifications[typeId] == value.id;
 
     return FilterChip(
-      label: Text(value.titleRu),
+      label: Text(context.localizedDirectTitle(value)),
       selected: isSelected,
       onSelected: (selected) =>
           _handleModificationSelection(typeId, value.id, selected),

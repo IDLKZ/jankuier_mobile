@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/domain/parameters/paginate_academy_parameter.dart';
 import 'package:jankuier_mobile/features/services/domain/use_cases/academy/paginate_academy_case.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/academy/academy_bloc.dart';
@@ -48,7 +49,7 @@ class _SectionMainState extends State<SectionMain>
   int _selectedGender = 0; // 0-любой, 1-мужской, 2-женский
 
   final dropDownKey = GlobalKey<DropdownSearchState>();
-  PaginateAcademyParameter _params = PaginateAcademyParameter(perPage: 12);
+  PaginateAcademyParameter _params = const PaginateAcademyParameter(perPage: 12);
 
   late final AcademyBloc _bloc;
 
@@ -272,32 +273,17 @@ class _SectionMainState extends State<SectionMain>
                                                               });
                                                             },
                                                             itemAsString:
-                                                                (city) => city
-                                                                    .titleRu,
-                                                            compareFn: (item1,
-                                                                    item2) =>
-                                                                item1.id ==
-                                                                item2.id,
-                                                            filterFn: (CityEntity
-                                                                    city,
+                                                                (city) => context.localizedDirectTitle(city),
+                                                            compareFn: (item1, item2) =>
+                                                                item1.id == item2.id,
+                                                            filterFn: (CityEntity city,
                                                                 String filter) {
                                                               final query = filter
                                                                   .toLowerCase();
-                                                              return (city
-                                                                      .titleRu
+                                                              return (
+                                                                      context.localizedDirectTitle(city)
                                                                       .toLowerCase()
-                                                                      .contains(
-                                                                          query)) ||
-                                                                  ((city.titleKk ??
-                                                                          "")
-                                                                      .toLowerCase()
-                                                                      .contains(
-                                                                          query)) ||
-                                                                  ((city.titleEn ??
-                                                                          "")
-                                                                      .toLowerCase()
-                                                                      .contains(
-                                                                          query));
+                                                                      .contains(query));
                                                             },
                                                             items: (filter,
                                                                     infiniteScrollProps) =>
@@ -306,14 +292,12 @@ class _SectionMainState extends State<SectionMain>
                                                                 DropDownDecoratorProps(
                                                               decoration:
                                                                   InputDecoration(
-                                                                labelText: AppLocalizations.of(
-                                                                        context)!
+                                                                labelText: AppLocalizations.of(context)!
                                                                     .selectCity,
                                                                 border:
-                                                                    OutlineInputBorder(),
+                                                                    const OutlineInputBorder(),
                                                                 prefixIcon:
-                                                                    Icon(Icons
-                                                                        .location_city),
+                                                                    const Icon(Icons.location_city),
                                                                 filled: true,
                                                                 fillColor:
                                                                     Colors
@@ -324,8 +308,7 @@ class _SectionMainState extends State<SectionMain>
                                                                 PopupProps.menu(
                                                               constraints:
                                                                   BoxConstraints(
-                                                                      maxHeight:
-                                                                          200.h),
+                                                                      maxHeight: 200.h),
                                                               showSelectedItems:
                                                                   false,
                                                               showSearchBox:
@@ -342,7 +325,7 @@ class _SectionMainState extends State<SectionMain>
                                                                         .all(
                                                                         12.0),
                                                                 child: Text(
-                                                                  item.titleRu,
+                                                                  context.localizedDirectTitle(item),
                                                                   style: TextStyle(
                                                                       fontSize:
                                                                           14.sp),
@@ -365,13 +348,13 @@ class _SectionMainState extends State<SectionMain>
                                                           AppLocalizations.of(
                                                                   context)!
                                                               .gender,
-                                                      labelStyle: TextStyle(
+                                                      labelStyle: const TextStyle(
                                                           color:
                                                               AppColors.black),
                                                       border:
-                                                          OutlineInputBorder(),
+                                                          const OutlineInputBorder(),
                                                       prefixIcon:
-                                                          Icon(Icons.person),
+                                                          const Icon(Icons.person),
                                                       filled: true,
                                                       fillColor: Colors.white,
                                                     ),
@@ -432,7 +415,7 @@ class _SectionMainState extends State<SectionMain>
                                                                         context)!
                                                                     .from,
                                                             border:
-                                                                OutlineInputBorder(),
+                                                                const OutlineInputBorder(),
                                                             isDense: true,
                                                             filled: true,
                                                             fillColor:
@@ -446,16 +429,13 @@ class _SectionMainState extends State<SectionMain>
                                                           controller:
                                                               _maxAgeController,
                                                           keyboardType:
-                                                              TextInputType
-                                                                  .number,
+                                                              TextInputType.number,
                                                           decoration:
                                                               InputDecoration(
                                                             labelText:
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .to,
+                                                                AppLocalizations.of(context)!.to,
                                                             border:
-                                                                OutlineInputBorder(),
+                                                                const OutlineInputBorder(),
                                                             isDense: true,
                                                             filled: true,
                                                             fillColor:
@@ -469,9 +449,7 @@ class _SectionMainState extends State<SectionMain>
 
                                                   // Price range
                                                   Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .averagePrice,
+                                                    AppLocalizations.of(context)!.averagePrice,
                                                     style: TextStyle(
                                                         fontSize: 16.sp,
                                                         fontWeight:
@@ -497,7 +475,7 @@ class _SectionMainState extends State<SectionMain>
                                                                         context)!
                                                                     .priceFrom,
                                                             border:
-                                                                OutlineInputBorder(),
+                                                                const OutlineInputBorder(),
                                                             isDense: true,
                                                             suffixText: '₸',
                                                             filled: true,
@@ -523,7 +501,7 @@ class _SectionMainState extends State<SectionMain>
                                                                         context)!
                                                                     .priceTo,
                                                             border:
-                                                                OutlineInputBorder(),
+                                                                const OutlineInputBorder(),
                                                             isDense: true,
                                                             suffixText: '₸',
                                                             filled: true,

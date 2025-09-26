@@ -7,26 +7,26 @@ class KffLeagueTitleEntity extends Equatable with LocalizedLocaleEntity {
   @override
   final String? ru;
   @override
-  final String? kz;
+  final String? kk;
   @override
   final String? en;
 
   const KffLeagueTitleEntity({
     this.ru,
-    this.kz,
+    this.kk,
     this.en,
   });
 
   factory KffLeagueTitleEntity.fromJson(Map<String, dynamic> json) {
     return KffLeagueTitleEntity(
       ru: json['ru'],
-      kz: json['kz'],
+      kk: json['kz'],
       en: json['en'],
     );
   }
 
   @override
-  List<Object?> get props => [ru, kz, en];
+  List<Object?> get props => [ru, kk, en];
 }
 
 // Entity для турнира/лиги

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalizationService extends ChangeNotifier {
   static const String _localeKey = 'selected_locale';
 
-  Locale _currentLocale = const Locale('ru'); // Default to Russian
+  Locale _currentLocale = const Locale('kk'); // Default to Russian
 
   Locale get currentLocale => _currentLocale;
 

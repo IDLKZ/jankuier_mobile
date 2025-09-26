@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_category_entity.dart';
 
 import '../../../../core/constants/api_constants.dart';
@@ -21,7 +22,7 @@ class ProductCategoryBottomScheet extends StatefulWidget {
   final Function(List<int> categoryIds, int? minPrice, int? maxPrice)?
       onFiltersApplied;
 
-  ProductCategoryBottomScheet({
+  const ProductCategoryBottomScheet({
     super.key,
     this.onFiltersApplied,
   });
@@ -173,7 +174,7 @@ class _ProductCategoryBottomScheetState
                                                     ),
                                                     const SizedBox(height: 8),
                                                     Text(
-                                                      pc.titleRu,
+                                                      context.localizedDirectTitle(pc),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(

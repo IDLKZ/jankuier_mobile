@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/features/kff_league/data/entities/kff_league_match_entity.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/utils/localization_helper.dart';
 import 'match_details_bottom_sheet.dart';
 
 class MatchCardWidget extends StatelessWidget {
@@ -67,8 +68,10 @@ class MatchCardWidget extends StatelessWidget {
                     ),
                   Expanded(
                     child: Text(
-                      match.tournament?.title?.ru ??
-                          AppLocalizations.of(context)!.tournament,
+                      () {
+                        final title = context.localizedTitle(match.tournament?.title);
+                        return title.isNotEmpty ? title : AppLocalizations.of(context)!.tournament;
+                      }(),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -85,7 +88,7 @@ class MatchCardWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        match.stage!.title?.ru ?? '',
+                        context.localizedTitle(match.stage!.title),
                         style: TextStyle(
                           fontSize: 10.sp,
                           color: AppColors.primary,
@@ -142,8 +145,10 @@ class MatchCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: 8.h),
                             Text(
-                              match.team1?.title?.ru ??
-                                  AppLocalizations.of(context)!.team1,
+                               () {
+                                  final title = context.localizedTitle(match.team1?.title);
+                                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team1;
+                                }(),
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
@@ -254,8 +259,10 @@ class MatchCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: 8.h),
                             Text(
-                              match.team2?.title?.ru ??
-                                  AppLocalizations.of(context)!.team2,
+                             () {
+                                final title = context.localizedTitle(match.team2?.title);
+                                return title.isNotEmpty ? title : AppLocalizations.of(context)!.team2;
+                              }(),
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
@@ -290,9 +297,10 @@ class MatchCardWidget extends StatelessWidget {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            match.stadiumObj?.title?.ru ??
-                                AppLocalizations.of(context)!
-                                    .stadiumNotSpecified,
+                                () {
+                              final title = context.localizedTitle(match.stadiumObj?.title);
+                              return title.isNotEmpty ? title : AppLocalizations.of(context)!.stadiumNotSpecified;
+                            }(),
                             style: TextStyle(
                               fontSize: 11.sp,
                               color: AppColors.textSecondary,

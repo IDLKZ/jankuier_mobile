@@ -446,7 +446,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get untitled => 'Атаусыз';
 
   @override
-  String get future => 'Болашақ';
+  String get future => 'Алдағы';
 
   @override
   String get past => 'Өткен';

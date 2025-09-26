@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/common/entities/city_entity.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/countries/domain/use_cases/get_cities_case.dart';
 import 'package:jankuier_mobile/features/countries/presentation/bloc/get_cities_bloc/get_cities_bloc.dart';
 import 'package:jankuier_mobile/features/countries/presentation/bloc/get_cities_bloc/get_cities_event.dart';
@@ -34,7 +35,7 @@ class _FieldsMainState extends State<FieldsMain>
   late final FieldPartyBloc _bloc;
   late final GetCitiesBloc _getCitiesBloc;
   final dropDownKey = GlobalKey<DropdownSearchState>();
-  PaginateFieldPartyParameter _params = PaginateFieldPartyParameter(
+  PaginateFieldPartyParameter _params = const PaginateFieldPartyParameter(
       orderBy: "field_id", orderDirection: "desc", perPage: 12);
 
   // Controllers and state for filters
@@ -237,7 +238,7 @@ class _FieldsMainState extends State<FieldsMain>
                                               _selectedCity = item;
                                             });
                                           },
-                                          itemAsString: (city) => city.titleRu,
+                                          itemAsString: (city) => context.localizedDirectTitle(city),
                                           compareFn: (item1, item2) =>
                                               item1.id == item2.id,
                                           filterFn:
@@ -262,9 +263,9 @@ class _FieldsMainState extends State<FieldsMain>
                                               labelText:
                                                   AppLocalizations.of(context)!
                                                       .selectCity,
-                                              border: OutlineInputBorder(),
+                                              border: const OutlineInputBorder(),
                                               prefixIcon:
-                                                  Icon(Icons.location_city),
+                                                  const Icon(Icons.location_city),
                                               filled: true,
                                               fillColor: Colors.white,
                                             ),

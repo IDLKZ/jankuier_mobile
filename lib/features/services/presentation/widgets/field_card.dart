@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/data/entities/field/field_party_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/field_party_schedule_preview/field_party_schedule_preview_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -57,7 +58,7 @@ class FieldCard extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Text(
-            fieldPartyEntity.field?.titleRu ?? fieldPartyEntity.titleRu,
+            fieldPartyEntity.field != null ? context.localizedDirectTitle(fieldPartyEntity.field) : '',
             style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
@@ -65,7 +66,7 @@ class FieldCard extends StatelessWidget {
           ),
           SizedBox(height: 2.h),
           Text(
-            fieldPartyEntity.titleRu,
+            context.localizedDirectTitle(fieldPartyEntity),
             style: TextStyle(
               fontSize: 12.sp,
               color: Colors.grey,
@@ -178,7 +179,7 @@ class _IconText extends StatelessWidget {
         SizedBox(width: 4.w),
         Text(
           text,
-          style: TextStyle(fontSize: 11.sp, color: Color(0xFF838383)),
+          style: TextStyle(fontSize: 11.sp, color: const Color(0xFF838383)),
         ),
       ],
     );
@@ -283,13 +284,13 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${widget.fieldPartyEntity.titleRu}",
+                Text(context.localizedDirectTitle(widget.fieldPartyEntity),
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.black)),
                 SizedBox(height: 2.h),
-                Text("${widget.fieldPartyEntity.field?.titleRu}",
+                Text(widget.fieldPartyEntity.field != null ? context.localizedDirectTitle(widget.fieldPartyEntity.field) : '',
                     style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
 
                 SizedBox(height: 5.h),

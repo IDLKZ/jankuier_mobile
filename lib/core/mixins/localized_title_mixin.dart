@@ -14,6 +14,7 @@ mixin LocalizedTitleEntity {
       case 'en':
         return titleEn ?? titleRu;
       case 'ru':
+        return titleRu;
       default:
         return titleRu;
     }

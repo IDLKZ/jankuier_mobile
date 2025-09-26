@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/services/data/entities/academy/get_full_academy_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_state.dart';
@@ -122,7 +123,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                                       color:
                                           Colors.black.withValues(alpha: 0.1),
                                       blurRadius: 0.2,
-                                      offset: Offset(1, 2), // Shadow position
+                                      offset: const Offset(1, 2), // Shadow position
                                     ),
                                   ],
                                 ),
@@ -157,7 +158,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -219,7 +220,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
         children: [
           /// Title
           Text(
-            widget.entity.academy.titleRu,
+            context.localizedDirectTitle(widget.entity.academy),
             style: TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w700,
@@ -231,7 +232,7 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
 
           /// Description
           Text(
-            "${widget.entity.academy.descriptionRu}",
+            context.localizedDirectDescription(widget.entity.academy),
             style: TextStyle(
               fontSize: 12.sp,
               color: const Color(0xFF7D7D7E),
@@ -241,17 +242,17 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
 
           Row(
             children: [
-              Icon(Icons.access_time, size: 14.sp, color: Color(0xFF838383)),
+              Icon(Icons.access_time, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${widget.entity.academy.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
-                  style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
+                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
               SizedBox(width: 12.w),
-              Icon(Icons.person, size: 14.sp, color: Color(0xFF838383)),
+              Icon(Icons.person, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${widget.entity.academy.minAge} - ${widget.entity.academy.maxAge} ${AppLocalizations.of(context)!.years}",
-                  style: TextStyle(fontSize: 12.sp, color: Color(0xFF838383))),
+                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
             ],
           ),
           SizedBox(height: 12.h),
@@ -404,7 +405,7 @@ class AcademyGroupCard extends StatelessWidget {
           // 🔹 Краткое описание
           if (group.descriptionRu != null)
             Text(
-              group.descriptionRu!,
+              context.localizedDirectDescription(group),
               style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
 
@@ -415,7 +416,7 @@ class AcademyGroupCard extends StatelessWidget {
             children: [
               Text(
                 group.price != null
-                    ? "${group.price?.toStringAsFixed(0)} ₸/${group.pricePerRu ?? AppLocalizations.of(context)!.month}"
+                    ? "${group.price?.toStringAsFixed(0)} ₸/${context.localizedDirectPricePer(group) ?? AppLocalizations.of(context)!.month}"
                     : AppLocalizations.of(context)!.free,
                 style: TextStyle(
                   fontSize: 13.sp,
@@ -434,7 +435,7 @@ class AcademyGroupCard extends StatelessWidget {
               Icon(Icons.group, size: 16.sp, color: Colors.grey),
               SizedBox(width: 4.w),
               Text(
-                "${group.bookedSpace}/${totalPlaces}",
+                "${group.bookedSpace}/$totalPlaces",
                 style: TextStyle(fontSize: 12.sp, color: Colors.black87),
               ),
               SizedBox(width: 12.w),
@@ -511,7 +512,7 @@ class AcademyGroupScheduleCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "${group?.name ?? "Группа"}",
+                        group?.name ?? "Группа",
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,

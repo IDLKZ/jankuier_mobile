@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 mixin LocalizedLocaleEntity {
   String? get ru;
-  String? get kz;
+  String? get kk;
   String? get en;
 
   String localizedLocale(BuildContext context) {
@@ -10,7 +10,7 @@ mixin LocalizedLocaleEntity {
 
     switch (locale.languageCode) {
       case 'kk':
-        return kz ?? ru ?? "-";
+        return kk ?? ru ?? "-";
       case 'en':
         return en ?? ru ?? "-";
       case 'ru':
