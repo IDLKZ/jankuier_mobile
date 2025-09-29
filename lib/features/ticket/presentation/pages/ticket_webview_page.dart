@@ -253,20 +253,6 @@ class _TicketWebViewPageState extends State<TicketWebViewPage> {
                   }, { passive: true });
                 }
 
-                // Добавляем обработчик для gesturestart/gesturechange (iOS/Android)
-                if (typeof document.ontouchstart !== 'undefined') {
-                  document.addEventListener('gesturestart', function(e) {
-                    e.preventDefault();
-                  });
-
-                  document.addEventListener('gesturechange', function(e) {
-                    e.preventDefault();
-                  });
-
-                  document.addEventListener('gestureend', function(e) {
-                    e.preventDefault();
-                  });
-                }
 
                 // Принудительно включаем zoom для всех элементов
                 document.documentElement.style.zoom = 'normal';
