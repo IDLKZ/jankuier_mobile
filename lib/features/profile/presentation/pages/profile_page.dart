@@ -118,6 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
         maxWidth: 800,
         maxHeight: 800,
         imageQuality: 85,
+        requestFullMetadata: false,
       );
 
       if (pickedFile != null) {
@@ -141,9 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         String errorMessage =
             AppLocalizations.of(context)!.errorAccessingCameraGallery;
-        if (e.code == 'photo_access_denied') {
-          errorMessage = AppLocalizations.of(context)!.photoAccessDenied;
-        } else if (e.code == 'camera_access_denied') {
+        if (e.code == 'camera_access_denied') {
           errorMessage = AppLocalizations.of(context)!.cameraAccessDenied;
         } else if (e.message?.contains('channel-error') == true) {
           errorMessage = AppLocalizations.of(context)!.cameraConnectionError;

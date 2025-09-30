@@ -5,12 +5,6 @@
     <!-- Permissions for image_picker -->
     <!-- Разрешение на использование камеры для создания фото профиля -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Разрешение на чтение файлов из внешнего хранилища для выбора изображений -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- Разрешение на запись файлов во внешнее хранилище -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Для Android 13+ (API 33+) - разрешение на доступ к медиафайлам -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:label="Jankuier"

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Конфигурация путей для FileProvider -->
-<!-- Определяет, к каким директориям приложение может предоставлять доступ -->
+<!-- Определяет пути только для камеры, без доступа к внешнему хранилищу -->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Внешнее хранилище -->
-    <external-path name="external_files" path="."/>
-    <!-- Кэш внешнего хранилища -->
-    <external-cache-path name="external_cache" path="."/>
-    <!-- Внутренний кэш приложения -->
+    <!-- Внутренний кэш приложения для временных файлов камеры -->
     <cache-path name="cache" path="."/>
     <!-- Внутренние файлы приложения -->
     <files-path name="files" path="."/>
