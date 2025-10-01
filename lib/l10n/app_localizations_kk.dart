@@ -1116,4 +1116,20 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get touchScreenToSkip => 'Өткізіп жіберу үшін экранға тегіңіз';
+
+  @override
+  String get deleteAccountConfirmation => 'Аккаунтты жою растауы';
+
+  @override
+  String get deleteAccountWarning =>
+      'Сіз өз аккаунтыңызды жойғыңыз келе ме? Бұл әрекетті кері қайтару мүмкін емес.';
+
+  @override
+  String get deleteAccountPermanently => 'Мәңгілікке жою';
+
+  @override
+  String get accountDeleted => 'Аккаунт сәтті жойылды';
+
+  @override
+  String get accountDeletionFailed => 'Аккаунтты жою қатесі';
 }

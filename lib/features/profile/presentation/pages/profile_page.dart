@@ -14,6 +14,9 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_p
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_state.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_account_bloc/delete_account_bloc.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_account_bloc/delete_account_event.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_account_bloc/delete_account_state.dart';
 import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/constants/app_route_constants.dart';
@@ -35,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late GetMeBloc _getMeBloc;
   late UpdateProfilePhotoBloc _updateProfilePhotoBloc;
   late DeleteProfilePhotoBloc _deleteProfilePhotoBloc;
+  late DeleteAccountBloc _deleteAccountBloc;
 
   @override
   void initState() {
@@ -42,7 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _getMeBloc = getIt<GetMeBloc>();
     _updateProfilePhotoBloc = getIt<UpdateProfilePhotoBloc>();
     _deleteProfilePhotoBloc = getIt<DeleteProfilePhotoBloc>();
-    _getMeBloc.add(LoadUserProfile());
+    _deleteAccountBloc = getIt<DeleteAccountBloc>();
+    _getMeBloc.add(const LoadUserProfile());
   }
 
   Future<void> _showPhotoOptions(BuildContext context, bool hasImage) async {
@@ -203,6 +208,35 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _showDeleteAccountConfirmation() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.deleteAccountConfirmation),
+          content: Text(AppLocalizations.of(context)!.deleteAccountWarning),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(AppLocalizations.of(context)!.deleteAccountPermanently),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      _deleteAccountBloc.add(const DeleteAccountSubmitted());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundColor: Colors.green,
                   ),
                 );
-                _getMeBloc.add(LoadUserProfile());
+                _getMeBloc.add(const LoadUserProfile());
               } else if (state is UpdateProfilePhotoFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -256,12 +290,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundColor: Colors.green,
                   ),
                 );
-                _getMeBloc.add(LoadUserProfile());
+                _getMeBloc.add(const LoadUserProfile());
               } else if (state is DeleteProfilePhotoFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
                         '${AppLocalizations.of(context)!.unknownError}: ${state.message}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<DeleteAccountBloc, DeleteAccountState>(
+            bloc: _deleteAccountBloc,
+            listener: (context, state) {
+              if (state is DeleteAccountSuccess) {
+                // Clear all user data from Hive
+                final hiveUtils = getIt<HiveUtils>();
+                hiveUtils.clearAccessToken();
+                hiveUtils.clearCurrentUser();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.accountDeleted),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+
+                // Navigate to SignIn page
+                context.go(AppRouteConstants.SignInPagePath);
+              } else if (state is DeleteAccountFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        '${AppLocalizations.of(context)!.accountDeletionFailed}: ${state.message}'),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -286,6 +349,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   context.push(AppRouteConstants.EditPasswordPagePath);
                 },
                 onLogout: _onLogout,
+                onDeleteAccount: _showDeleteAccountConfirmation,
               );
             }
             return const SizedBox.expand(

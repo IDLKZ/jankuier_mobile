@@ -2295,6 +2295,36 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Коснитесь экрана, чтобы пропустить'**
   String get touchScreenToSkip;
+
+  /// No description provided for @deleteAccountConfirmation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтверждение удаления аккаунта'**
+  String get deleteAccountConfirmation;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @deleteAccountPermanently.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить навсегда'**
+  String get deleteAccountPermanently;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In ru, this message translates to:
+  /// **'Аккаунт успешно удален'**
+  String get accountDeleted;
+
+  /// No description provided for @accountDeletionFailed.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка удаления аккаунта'**
+  String get accountDeletionFailed;
 }
 
 class _AppLocalizationsDelegate

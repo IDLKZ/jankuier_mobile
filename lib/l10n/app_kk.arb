@@ -395,5 +395,10 @@
   "femaleTournaments": "Әйелдер",
   "tournamentsNotFound": "Турнирлер табылмады",
   "tryChangeSearchFilters": "Іздеу сүзгілерін өзгертуге тырысыңыз",
-  "touchScreenToSkip": "Өткізіп жіберу үшін экранға тегіңіз"
+  "touchScreenToSkip": "Өткізіп жіберу үшін экранға тегіңіз",
+  "deleteAccountConfirmation": "Аккаунтты жою растауы",
+  "deleteAccountWarning": "Сіз өз аккаунтыңызды жойғыңыз келе ме? Бұл әрекетті кері қайтару мүмкін емес.",
+  "deleteAccountPermanently": "Мәңгілікке жою",
+  "accountDeleted": "Аккаунт сәтті жойылды",
+  "accountDeletionFailed": "Аккаунтты жою қатесі"
 }

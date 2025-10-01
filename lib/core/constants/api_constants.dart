@@ -85,6 +85,7 @@ class ApiConstant {
   static const String UpdatePasswordUrl = "${BaseURL}auth/update-password";
   static const String UpdateProfilePhoto =
       "${BaseURL}auth/update-profile-photo";
+  static const String DeleteAccountUrl = "${BaseURL}auth/delete-account";
 
   // Verify
   static const String SendVerificationCodeUrl =

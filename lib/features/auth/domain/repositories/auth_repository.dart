@@ -26,4 +26,5 @@ abstract class AuthRepository {
       String phone);
   Future<Either<Failure, UserCodeVerificationResultEntity>> verifyCode(
       UserCodeVerificationParameter parameter);
+  Future<Either<Failure, bool>> deleteAccount();
 }

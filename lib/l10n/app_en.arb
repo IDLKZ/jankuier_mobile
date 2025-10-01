@@ -396,5 +396,10 @@
   "femaleTournaments": "Female",
   "tournamentsNotFound": "Tournaments not found",
   "tryChangeSearchFilters": "Try changing search filters",
-  "touchScreenToSkip": "Touch screen to skip"
+  "touchScreenToSkip": "Touch screen to skip",
+  "deleteAccountConfirmation": "Delete Account Confirmation",
+  "deleteAccountWarning": "Are you sure you want to delete your account? This action cannot be undone.",
+  "deleteAccountPermanently": "Delete Permanently",
+  "accountDeleted": "Account successfully deleted",
+  "accountDeletionFailed": "Account deletion failed"
 }

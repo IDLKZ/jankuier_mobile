@@ -12,6 +12,7 @@ class EditProfilePage extends StatelessWidget {
   final VoidCallback? onPersonalDataTap;
   final VoidCallback? onSecurityTap;
   final VoidCallback? onLogout;
+  final VoidCallback? onDeleteAccount;
 
   const EditProfilePage({
     Key? key,
@@ -21,6 +22,7 @@ class EditProfilePage extends StatelessWidget {
     this.onPersonalDataTap,
     this.onSecurityTap,
     this.onLogout,
+    this.onDeleteAccount,
   }) : super(key: key);
 
   @override
@@ -96,34 +98,26 @@ class EditProfilePage extends StatelessWidget {
                   text: AppLocalizations.of(context)!.security,
                   onTap: onSecurityTap,
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 8.h),
                 // Выход
-                GestureDetector(
+                _ProfileTile(
+                  icon: Icons.logout_rounded,
+                  text: AppLocalizations.of(context)!.logout,
                   onTap: onLogout,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.logout, color: Color(0xFFFF4C4C)),
-                        SizedBox(width: 12.w),
-                        Text(
-                          AppLocalizations.of(context)!.logout,
-                          style: TextStyle(
-                            color: const Color(0xFFFF4C4C),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  textColor: const Color(0xFFFF4C4C),
+                  iconColor: const Color(0xFFFF4C4C),
                 ),
+                if (onDeleteAccount != null) ...[
+                  SizedBox(height: 8.h),
+                  // Удаление аккаунта
+                  _ProfileTile(
+                    icon: Icons.delete_forever_rounded,
+                    text: AppLocalizations.of(context)!.deleteAccount,
+                    onTap: onDeleteAccount,
+                    textColor: const Color(0xFFDC3545),
+                    iconColor: const Color(0xFFDC3545),
+                  ),
+                ],
                 const SizedBox(height: 32),
               ],
             ),
@@ -139,12 +133,16 @@ class _ProfileTile extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback? onTap;
+  final Color? textColor;
+  final Color? iconColor;
 
   const _ProfileTile({
     Key? key,
     required this.icon,
     required this.text,
     this.onTap,
+    this.textColor,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -160,13 +158,13 @@ class _ProfileTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFFBDBDBD)),
+            Icon(icon, color: iconColor ?? const Color(0xFFBDBDBD)),
             const SizedBox(width: 12),
             Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: Color(0xFF212121),
+                color: textColor ?? const Color(0xFF212121),
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -395,5 +395,10 @@
   "femaleTournaments": "Женские",
   "tournamentsNotFound": "Турниры не найдены",
   "tryChangeSearchFilters": "Попробуйте изменить фильтры поиска",
-  "touchScreenToSkip": "Коснитесь экрана, чтобы пропустить"
+  "touchScreenToSkip": "Коснитесь экрана, чтобы пропустить",
+  "deleteAccountConfirmation": "Подтверждение удаления аккаунта",
+  "deleteAccountWarning": "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
+  "deleteAccountPermanently": "Удалить навсегда",
+  "accountDeleted": "Аккаунт успешно удален",
+  "accountDeletionFailed": "Ошибка удаления аккаунта"
 }

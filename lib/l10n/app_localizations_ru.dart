@@ -1120,4 +1120,20 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get touchScreenToSkip => 'Коснитесь экрана, чтобы пропустить';
+
+  @override
+  String get deleteAccountConfirmation => 'Подтверждение удаления аккаунта';
+
+  @override
+  String get deleteAccountWarning =>
+      'Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.';
+
+  @override
+  String get deleteAccountPermanently => 'Удалить навсегда';
+
+  @override
+  String get accountDeleted => 'Аккаунт успешно удален';
+
+  @override
+  String get accountDeletionFailed => 'Ошибка удаления аккаунта';
 }

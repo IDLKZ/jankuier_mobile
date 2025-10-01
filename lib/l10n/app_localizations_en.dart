@@ -1117,4 +1117,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get touchScreenToSkip => 'Touch screen to skip';
+
+  @override
+  String get deleteAccountConfirmation => 'Delete Account Confirmation';
+
+  @override
+  String get deleteAccountWarning =>
+      'Are you sure you want to delete your account? This action cannot be undone.';
+
+  @override
+  String get deleteAccountPermanently => 'Delete Permanently';
+
+  @override
+  String get accountDeleted => 'Account successfully deleted';
+
+  @override
+  String get accountDeletionFailed => 'Account deletion failed';
 }

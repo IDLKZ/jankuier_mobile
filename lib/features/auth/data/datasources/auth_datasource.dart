@@ -26,6 +26,7 @@ abstract class AuthDSInterface {
   Future<UserCodeVerificationResultEntity> sendVerifyCode(String phone);
   Future<UserCodeVerificationResultEntity> verifyCode(
       UserCodeVerificationParameter parameter);
+  Future<bool> deleteAccount();
 }
 
 @Injectable(as: AuthDSInterface)
@@ -161,6 +162,18 @@ class AuthDSImpl implements AuthDSInterface {
           await httpUtils.delete(ApiConstant.DeleteProfilePhotoUrl);
       final result = UserEntity.fromJson(response);
       return result;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<bool> deleteAccount() async {
+    try {
+      final response = await httpUtils.delete(ApiConstant.DeleteAccountUrl);
+      return response ?? true;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
     } on Exception catch (e) {
