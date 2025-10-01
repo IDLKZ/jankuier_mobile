@@ -112,6 +112,17 @@ import '../../features/kff_league/presentation/bloc/championships/championships_
 import '../../features/kff_league/presentation/bloc/tournaments/tournaments_bloc.dart';
 import '../../features/kff_league/presentation/bloc/matches/matches_bloc.dart';
 import '../network/sota_dio_client.dart';
+import '../../features/cart/data/datasources/cart_datasource.dart';
+import '../../features/cart/data/repositories/cart_repository_impl.dart';
+import '../../features/cart/domain/repositories/cart_repository.dart';
+import '../../features/cart/domain/usecases/add_to_cart_usecase.dart';
+import '../../features/cart/domain/usecases/update_cart_item_usecase.dart';
+import '../../features/cart/domain/usecases/clear_cart_usecase.dart';
+import '../../features/cart/domain/usecases/get_my_cart_usecase.dart';
+import '../../features/cart/presentation/bloc/add_to_cart/add_to_cart_bloc.dart';
+import '../../features/cart/presentation/bloc/update_cart_item/update_cart_item_bloc.dart';
+import '../../features/cart/presentation/bloc/clear_cart/clear_cart_bloc.dart';
+import '../../features/cart/presentation/bloc/my_cart/my_cart_bloc.dart';
 import 'injection.config.dart';
 
 final getIt = GetIt.instance;
@@ -322,4 +333,26 @@ Future<void> configureDependencies() async {
     ),
   );
 
+  // Cart
+  getIt.registerLazySingleton<CartDSInterface>(() => CartDSImpl());
+  getIt
+      .registerLazySingleton<CartRepository>(() => CartRepositoryImpl(getIt()));
+  getIt.registerLazySingleton(() => AddToCartUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateCartItemUseCase(getIt()));
+  getIt.registerLazySingleton(() => ClearCartUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetMyCartUseCase(getIt()));
+
+  // Cart BLoCs
+  getIt.registerFactory<AddToCartBloc>(
+    () => AddToCartBloc(getIt<AddToCartUseCase>()),
+  );
+  getIt.registerFactory<UpdateCartItemBloc>(
+    () => UpdateCartItemBloc(getIt<UpdateCartItemUseCase>()),
+  );
+  getIt.registerFactory<ClearCartBloc>(
+    () => ClearCartBloc(getIt<ClearCartUseCase>()),
+  );
+  getIt.registerFactory<MyCartBloc>(
+    () => MyCartBloc(getIt<GetMyCartUseCase>()),
+  );
 }

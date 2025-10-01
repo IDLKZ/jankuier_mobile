@@ -92,4 +92,38 @@ class ApiConstant {
       "${BaseURL}user-code-verification/send-code";
   static const String VerifyCodeUrl =
       "${BaseURL}user-code-verification/verify-code";
+
+  //Cart
+  static const String addToCart = "${BaseURL}cart/add-to-cart";
+  static const String updateCartItem = "${BaseURL}cart/update-cart-item";
+  static const String clearCart = "${BaseURL}cart/clear-cart/";
+  static const String myCart = "${BaseURL}cart/my-cart";
+  //ProductOrder
+  static const String allProductOrderStatusGet =
+      "${BaseURL}product-order-status";
+
+  static const String allProductOrderItemStatusGet =
+      "${BaseURL}product-order-item-status";
+
+  static const String createProductOrderFromCartPost =
+      "${BaseURL}product-order/create-order-from-cart";
+
+  static const String paginateMyProductOrdersGet =
+      "${BaseURL}product-order/client-my-orders";
+
+  static String GetMyProductOrderByOrderIdGet(int productOrderId) {
+    return "${BaseURL}product-order/client-my-order/${productOrderId}";
+  }
+
+  static String GetMyProductOrderItemsByOrderIdGet(int productOrderId) {
+    return "${BaseURL}product-order/client-my-order-items/${productOrderId}";
+  }
+
+  static String CancelOrDeleteProductOrderByIdDelete(int productOrderId) {
+    return "${BaseURL}product-order/client-cancel-or-delete-order/${productOrderId}";
+  }
+
+  static String CancelProductOrderItemByIdPost(int productOrderItemId) {
+    return "${BaseURL}product-order/client-cancel-order-item/${productOrderItemId}";
+  }
 }
