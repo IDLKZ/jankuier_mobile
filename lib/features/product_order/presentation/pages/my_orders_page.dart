@@ -58,7 +58,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
   }
 
   void _onTabChanged(int index) {
-    _scrollController.jumpTo(0);
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(0);
+    }
     switch (index) {
       case 0: // Ожидают оплаты
         _loadOrders([1], reset: true);
@@ -116,7 +118,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: PagesCommonAppBar(
-        title: "Мои заказы",
+        title: AppLocalizations.of(context)!.myOrders,
         actionIcon: Icons.add_shopping_cart,
         onActionTap: () {},
         leadingIcon: Icons.arrow_back_ios_new,
@@ -243,7 +245,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                             ),
                             SizedBox(height: 8.h),
                             Text(
-                              AppLocalizations.of(context)!.placeFirstOrderInShop,
+                              AppLocalizations.of(context)!
+                                  .placeFirstOrderInShop,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: colorScheme.onSurfaceVariant,
@@ -621,7 +624,8 @@ class _OrderCard extends StatelessWidget {
     String statusText;
 
     if (order.status != null) {
-      statusText = order.status?.localizedTitle(context) ?? AppLocalizations.of(context)!.unknown;
+      statusText = order.status?.localizedTitle(context) ??
+          AppLocalizations.of(context)!.unknown;
     } else {
       statusText = AppLocalizations.of(context)!.unknown;
     }

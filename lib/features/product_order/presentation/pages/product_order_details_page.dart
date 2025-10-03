@@ -289,7 +289,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: PagesCommonAppBar(
-        title: '${AppLocalizations.of(context)!.orderDetails} #${widget.orderId}',
+        title: AppLocalizations.of(context)!.myOrders,
         leadingIcon: Icons.arrow_back_ios_new,
         actionIcon: Icons.shopping_cart,
         onActionTap: () {
@@ -375,7 +375,8 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                         if (order == null) {
                           return Center(
                             child: Text(
-                              AppLocalizations.of(context)!.orderDataNotAvailable,
+                              AppLocalizations.of(context)!
+                                  .orderDataNotAvailable,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: AppColors.textSecondary,
@@ -566,7 +567,8 @@ class _OrderSummaryCard extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Flexible(
                   child: Text(
-                    order.status?.localizedTitle(context) ?? AppLocalizations.of(context)!.unknown,
+                    order.status?.localizedTitle(context) ??
+                        AppLocalizations.of(context)!.unknown,
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w700,
@@ -583,9 +585,11 @@ class _OrderSummaryCard extends StatelessWidget {
           SizedBox(height: 16.h),
 
           // Информация о заказе
-          _buildInfoRow(AppLocalizations.of(context)!.createdDate, dateFormat.format(order.createdAt)),
+          _buildInfoRow(AppLocalizations.of(context)!.createdDate,
+              dateFormat.format(order.createdAt)),
           if (order.paidAt != null)
-            _buildInfoRow(AppLocalizations.of(context)!.paymentDate, dateFormat.format(order.paidAt!)),
+            _buildInfoRow(AppLocalizations.of(context)!.paymentDate,
+                dateFormat.format(order.paidAt!)),
           if (order.paidUntil != null && !order.isPaid)
             _buildInfoRow(
               AppLocalizations.of(context)!.payBefore,
@@ -593,7 +597,8 @@ class _OrderSummaryCard extends StatelessWidget {
               valueColor: AppColors.warning,
             ),
           if (order.email != null) _buildInfoRow('Email', order.email!),
-          if (order.phone != null) _buildInfoRow(AppLocalizations.of(context)!.phone, order.phone!),
+          if (order.phone != null)
+            _buildInfoRow(AppLocalizations.of(context)!.phone, order.phone!),
 
           SizedBox(height: 16.h),
 
@@ -794,7 +799,8 @@ class _OrderItemCard extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  product?.localizedTitle(context) ?? AppLocalizations.of(context)!.product,
+                                  product?.localizedTitle(context) ??
+                                      AppLocalizations.of(context)!.product,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,

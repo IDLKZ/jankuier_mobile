@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -71,8 +72,10 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                           SizedBox(width: 8.w),
                         ],
-                        Text(
+                        AutoSizeText(
                           title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w600,
