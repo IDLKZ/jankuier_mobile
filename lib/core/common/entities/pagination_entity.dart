@@ -49,4 +49,16 @@ class Pagination<T> {
       'items': items.map(toJsonT).toList(),
     };
   }
+
+  // Метод для добавления новых элементов (для scroll pagination)
+  Pagination<T> copyWithAppendedItems(Pagination<T> newPagination) {
+    return Pagination<T>(
+      currentPage: newPagination.currentPage,
+      perPage: newPagination.perPage,
+      lastPage: newPagination.lastPage,
+      totalPages: newPagination.totalPages,
+      totalItems: newPagination.totalItems,
+      items: [...items, ...newPagination.items],
+    );
+  }
 }

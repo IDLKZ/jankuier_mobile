@@ -2,9 +2,12 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:jankuier_mobile/core/common/entities/city_entity.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
+import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 import 'package:jankuier_mobile/core/utils/localization_helper.dart';
 import 'package:jankuier_mobile/features/countries/domain/use_cases/get_cities_case.dart';
 import 'package:jankuier_mobile/features/countries/presentation/bloc/get_cities_bloc/get_cities_bloc.dart';
@@ -136,6 +139,7 @@ class _FieldsMainState extends State<FieldsMain>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const _MyBookingsBanner(),
                     _buildHeader(context),
                     SizedBox(height: 15.h),
                     _buildFieldList(fieldParties, state),
@@ -393,4 +397,111 @@ class _FieldsMainState extends State<FieldsMain>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _MyBookingsBanner extends StatefulWidget {
+  const _MyBookingsBanner();
+
+  @override
+  State<_MyBookingsBanner> createState() => _MyBookingsBannerState();
+}
+
+class _MyBookingsBannerState extends State<_MyBookingsBanner> {
+  final HiveUtils _hiveUtils = getIt<HiveUtils>();
+  bool _hasUser = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
+
+  Future<void> _checkUser() async {
+    final user = await _hiveUtils.getCurrentUser();
+    if (mounted) {
+      setState(() {
+        _hasUser = user != null;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_hasUser) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 12.h),
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            context.push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+          },
+          borderRadius: BorderRadius.circular(16.r),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.white,
+                    size: 28.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.myBookings,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        AppLocalizations.of(context)!.viewMyBookings,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

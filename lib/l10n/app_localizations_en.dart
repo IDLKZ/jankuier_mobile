@@ -981,7 +981,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderedTicketsWillAppearHere => 'Ordered tickets will appear here';
 
   @override
-  String get orderDetails => 'Order Details #';
+  String get orderDetails => 'Order details #';
 
   @override
   String get genre => 'Genre:';
@@ -1056,7 +1056,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventPass => 'Event Pass';
 
   @override
-  String get order => 'Order #';
+  String get order => 'Order';
 
   @override
   String get loadingPass => 'Loading pass...';
@@ -1072,6 +1072,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get amount => 'Amount';
+
+  @override
+  String get success => 'Success';
 
   @override
   String get ticketsCount => 'Tickets';
@@ -1133,4 +1136,166 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Account deletion failed';
+
+  @override
+  String get myBookings => 'My Bookings';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get bookingCancelledSuccessfully => 'Booking cancelled successfully';
+
+  @override
+  String get repeat => 'Repeat';
+
+  @override
+  String get noBookings => 'No bookings';
+
+  @override
+  String get bookingDetails => 'Booking Details';
+
+  @override
+  String get field => 'Field';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get cancelBooking => 'Cancel booking';
+
+  @override
+  String get cancelBookingTitle => 'Cancel booking?';
+
+  @override
+  String get cancelBookingConfirmation =>
+      'Are you sure you want to cancel this booking? This action cannot be undone.';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get yesCancel => 'Yes, cancel';
+
+  @override
+  String get pleaseLogin => 'Please log in';
+
+  @override
+  String get addedToCart => 'Added to cart';
+
+  @override
+  String get selectQuantity => 'Select quantity';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get myOrders => 'My Orders';
+
+  @override
+  String get viewPurchaseHistory => 'View purchase history';
+
+  @override
+  String get viewMyBookings => 'View my bookings';
+
+  @override
+  String get authorizationRequired => 'Authorization required';
+
+  @override
+  String get loginFirstToBook => 'Please log in first to make a booking';
+
+  @override
+  String get bookingRequestCreated => 'Booking request created';
+
+  @override
+  String get cartCleared => 'Cart cleared';
+
+  @override
+  String get cartEmpty => 'Cart is empty';
+
+  @override
+  String get addItemsToCheckout => 'Add items to checkout';
+
+  @override
+  String get clearCartQuestion => 'Clear cart?';
+
+  @override
+  String get allItemsWillBeRemoved => 'All items will be removed from cart';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get product => 'Product';
+
+  @override
+  String get totalToPay => 'Total to pay:';
+
+  @override
+  String get proceedToPayment => 'Proceed to payment';
+
+  @override
+  String get awaitingPayment => 'Awaiting';
+
+  @override
+  String get noOrdersYet => 'No orders yet';
+
+  @override
+  String get placeFirstOrderInShop => 'Place your first order in the shop';
+
+  @override
+  String get paidOn => 'Paid';
+
+  @override
+  String get payBefore => 'Pay before';
+
+  @override
+  String get cancelOrderConfirmation =>
+      'Are you sure you want to cancel this order? Funds will be refunded to your account after admin confirmation.';
+
+  @override
+  String get deleteOrder => 'Delete order';
+
+  @override
+  String get deleteOrderConfirmation =>
+      'Are you sure you want to delete this order? This action cannot be undone.';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get orderDataNotAvailable => 'Order data not available';
+
+  @override
+  String get itemsInOrder => 'Items in order';
+
+  @override
+  String get noItemsInOrder => 'No items in order';
+
+  @override
+  String get createdDate => 'Created date';
+
+  @override
+  String get paymentDate => 'Payment date';
+
+  @override
+  String get quantity => 'Qty';
+
+  @override
+  String get statusHistory => 'Status history';
 }

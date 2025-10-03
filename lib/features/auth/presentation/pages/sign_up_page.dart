@@ -40,7 +40,8 @@ class _SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<_SignUpView> {
-  FlutterCarouselController buttonCarouselController = FlutterCarouselController();
+  FlutterCarouselController buttonCarouselController =
+      FlutterCarouselController();
   int indexPage = 0;
 
   // Form keys for each page
@@ -99,11 +100,20 @@ class _SignUpViewState extends State<_SignUpView> {
   }
 
   String? _validatePassword(String? value) {
+    final passwordPattern =
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).{8,}$';
+    final regex = RegExp(passwordPattern);
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(context)!.enterPassword;
     }
     if (value.length < 6) {
       return AppLocalizations.of(context)!.passwordMinSixChars;
+    }
+    if (!regex.hasMatch(value)) {
+      return "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол";
+      //return AppLocalizations.of(context)!.invalidPasswordFormat;
+      // Создай ключ в локализациях типа: "Пароль должен содержать
+      // минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол"
     }
     return null;
   }
@@ -172,7 +182,8 @@ class _SignUpViewState extends State<_SignUpView> {
         password: _passC.text,
         firstName: _firstNameC.text.trim(),
         lastName: _lastNameC.text.trim(),
-        patronymic: _patronomicC.text.trim().isEmpty ? null : _patronomicC.text.trim(),
+        patronymic:
+            _patronomicC.text.trim().isEmpty ? null : _patronomicC.text.trim(),
         phone: _phoneC.text.trim(),
       );
 
@@ -305,207 +316,216 @@ class _SignUpViewState extends State<_SignUpView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: MultiBlocListener(
-          listeners: [
-            BlocListener<SignUpBloc, SignUpState>(
-              listener: (context, state) {
-                if (state is SignUpSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)!.registrationSuccess),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  // Navigate to EnterPhonePage with phone from UserEntity
-                  context.pushNamed(
-                    AppRouteConstants.EnterPhonePageName,
-                    queryParameters: {'phone': state.user.phone},
-                  );
-                } else if (state is SignUpFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
+        listeners: [
+          BlocListener<SignUpBloc, SignUpState>(
+            listener: (context, state) {
+              if (state is SignUpSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        Text(AppLocalizations.of(context)!.registrationSuccess),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+                // Navigate to EnterPhonePage with phone from UserEntity
+                context.pushNamed(
+                  AppRouteConstants.EnterPhonePageName,
+                  queryParameters: {'phone': state.user.phone},
+                );
+              } else if (state is SignUpFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF004AD0),
+                    Color(0xFF0A388C),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ),
-          ],
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF004AD0),
-                      Color(0xFF0A388C),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+            Image.asset(
+              "assets/images/circle_vector.png",
+              fit: BoxFit.fill,
+              colorBlendMode: BlendMode.darken,
+            ),
+            Positioned(
+              top: 40.h,
+              left: 25.w,
+              child: GestureDetector(
+                onTap: () => context.go(AppRouteConstants.SignInPagePath),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
                   ),
-                ),
-              ),
-              Image.asset(
-                "assets/images/circle_vector.png",
-                fit: BoxFit.fill,
-                colorBlendMode: BlendMode.darken,
-              ),
-              Positioned(
-                top: 40.h,
-                left: 25.w,
-                child: GestureDetector(
-                  onTap: () => context.go(AppRouteConstants.SignInPagePath),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 20.sp,
-                        color: Color(0xFF0148C9),
-                      ),
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      size: 20.sp,
+                      color: Color(0xFF0148C9),
                     ),
                   ),
                 ),
               ),
-              Positioned.fill(
-                child: SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20.h),
-                          Image.asset(
-                            "assets/images/kff_logo.png",
-                            width: 120.w,
+            ),
+            Positioned.fill(
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20.h),
+                        Image.asset(
+                          "assets/images/kff_logo.png",
+                          width: 120.w,
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          AppLocalizations.of(context)!.registration,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w700,
                           ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            AppLocalizations.of(context)!.registration,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
+                        ),
+                        SizedBox(height: 16.h),
 
-                          // Page indicator
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: indexPage == 0 ? Colors.white : Colors.white.withOpacity(0.5),
-                                  shape: BoxShape.circle,
-                                ),
+                        // Page indicator
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: indexPage == 0
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.5),
+                                shape: BoxShape.circle,
                               ),
-                              SizedBox(width: 8),
-                              Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: indexPage == 1 ? Colors.white : Colors.white.withOpacity(0.5),
-                                  shape: BoxShape.circle,
-                                ),
+                            ),
+                            SizedBox(width: 8),
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: indexPage == 1
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.5),
+                                shape: BoxShape.circle,
                               ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+
+                        // Form carousel
+                        SizedBox(
+                          height: 300.h,
+                          child: FlutterCarousel(
+                            options: FlutterCarouselOptions(
+                              height: 300.h,
+                              initialPage: 0,
+                              showIndicator: false,
+                              viewportFraction: 1,
+                              controller: buttonCarouselController,
+                              onPageChanged: (int index, func) {
+                                setState(() {
+                                  indexPage = index;
+                                });
+                              },
+                            ),
+                            items: [
+                              _buildFirstPage(),
+                              _buildSecondPage(),
                             ],
                           ),
-                          SizedBox(height: 16.h),
+                        ),
 
-                          // Form carousel
-                          SizedBox(
-                            height: 300.h,
-                            child: FlutterCarousel(
-                              options: FlutterCarouselOptions(
-                                height: 300.h,
-                                initialPage: 0,
-                                showIndicator: false,
-                                viewportFraction: 1,
-                                controller: buttonCarouselController,
-                                onPageChanged: (int index, func) {
-                                  setState(() {
-                                    indexPage = index;
-                                  });
-                                },
-                              ),
-                              items: [
-                                _buildFirstPage(),
-                                _buildSecondPage(),
-                              ],
-                            ),
-                          ),
+                        SizedBox(height: 16.h),
 
-                          SizedBox(height: 16.h),
-
-                          // Action button
-                          BlocBuilder<SignUpBloc, SignUpState>(
-                            builder: (context, state) {
-                              final isLoading = state is SignUpLoading;
-                              return SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.yellow[700],
-                                    foregroundColor: Color(0xFF0148C9),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 14,
-                                      vertical: 10,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                        // Action button
+                        BlocBuilder<SignUpBloc, SignUpState>(
+                          builder: (context, state) {
+                            final isLoading = state is SignUpLoading;
+                            return SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.yellow[700],
+                                  foregroundColor: Color(0xFF0148C9),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 10,
                                   ),
-                                  onPressed: isLoading ? null : _nextPage,
-                                  child: isLoading
-                                      ? SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Color(0xFF0148C9),
-                                          ),
-                                        )
-                                      : Text(
-                                          indexPage == 1 ? AppLocalizations.of(context)!.register : AppLocalizations.of(context)!.next,
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-
-                          SizedBox(height: 16.h),
-
-                          // Sign in link
-                          TextButton(
-                            onPressed: () {
-                              context.go(AppRouteConstants.SignInPagePath);
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.alreadyHaveAccount,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
+                                onPressed: isLoading ? null : _nextPage,
+                                child: isLoading
+                                    ? SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Color(0xFF0148C9),
+                                        ),
+                                      )
+                                    : Text(
+                                        indexPage == 1
+                                            ? AppLocalizations.of(context)!
+                                                .register
+                                            : AppLocalizations.of(context)!
+                                                .next,
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
                               ),
+                            );
+                          },
+                        ),
+
+                        SizedBox(height: 16.h),
+
+                        // Sign in link
+                        TextButton(
+                          onPressed: () {
+                            context.go(AppRouteConstants.SignInPagePath);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.alreadyHaveAccount,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
                             ),
                           ),
-                          SizedBox(height: 20.h),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 20.h),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }

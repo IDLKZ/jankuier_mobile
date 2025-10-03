@@ -126,4 +126,19 @@ class ApiConstant {
   static String CancelProductOrderItemByIdPost(int productOrderItemId) {
     return "${BaseURL}product-order/client-cancel-order-item/${productOrderItemId}";
   }
+
+  //Booking Field Party
+  static const String bookingFieldPartyRequestClientCreatePost =
+      "${BaseURL}booking-field-party-request/client/create";
+
+  static const String allMyBookingFieldPartyRequestClientGet =
+      "${BaseURL}booking-field-party-request/client/my";
+
+  static String getMyBookingFieldPartyRequestClientGet(int id) {
+    return "${BaseURL}booking-field-party-request/client/my/${id}";
+  }
+
+  static String deleteMyBookingFieldPartyRequestClientDelete(int id) {
+    return "${BaseURL}booking-field-party-request/client/my/delete/${id}";
+  }
 }

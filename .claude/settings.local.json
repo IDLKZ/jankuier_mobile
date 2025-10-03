@@ -14,7 +14,10 @@
       "Bash(flutter build:*)",
       "Bash(findstr:*)",
       "Bash(rd:*)",
-      "Bash(del \"E:\\Projects\\jankuier_mobile\\lib\\features\\profile\\presentation\\pages\\profile_photo_page.dart\")"
+      "Bash(del \"E:\\Projects\\jankuier_mobile\\lib\\features\\profile\\presentation\\pages\\profile_photo_page.dart\")",
+      "Bash(flutter clean:*)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(copy:*)"
     ],
     "deny": [],
     "ask": [],

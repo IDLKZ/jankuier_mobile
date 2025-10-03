@@ -23,7 +23,7 @@ class CartActionResponseEntity extends Equatable {
               .map((item) => CartItemEntity.fromJson(item))
               .toList()
           : null,
-      totalPrice: (json['total_price'] ?? 0.0).toDouble(),
+      totalPrice: double.tryParse((json['total_price'] ?? 0).toString()) ?? 0.0,
     );
   }
 

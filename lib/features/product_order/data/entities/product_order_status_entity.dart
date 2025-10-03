@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 // Entity для статуса заказа продукта (из ProductOrderStatusWithRelationsRDTO)
-class ProductOrderStatusEntity extends Equatable {
+class ProductOrderStatusEntity extends Equatable with LocalizedTitleEntity {
   final int id;
   final int? previousId;
   final int? nextId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final bool isFirst;
   final bool isActive;

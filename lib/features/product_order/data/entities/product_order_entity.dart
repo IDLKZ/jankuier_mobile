@@ -71,10 +71,10 @@ class ProductOrderEntity extends Equatable {
       statusId: json['status_id'],
       canceledById: json['canceled_by_id'],
       paymentTransactionId: json['payment_transaction_id'],
-      shippingTotalPrice: (json['shipping_total_price'] ?? 0).toDouble(),
-      taxesPrice: (json['taxes_price'] ?? 0).toDouble(),
-      totalPrice: (json['total_price'] ?? 0).toDouble(),
-      refundedTotal: (json['refunded_total'] ?? 0).toDouble(),
+      shippingTotalPrice: _parseDouble(json['shipping_total_price']),
+      taxesPrice: _parseDouble(json['taxes_price']),
+      totalPrice: _parseDouble(json['total_price']),
+      refundedTotal: _parseDouble(json['refunded_total']),
       isActive: json['is_active'] ?? true,
       isCanceled: json['is_canceled'] ?? false,
       isPaid: json['is_paid'] ?? false,
@@ -137,6 +137,14 @@ class ProductOrderEntity extends Equatable {
         status,
         paymentTransaction,
       ];
+
+  static double _parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
 }
 
 // Список Entity

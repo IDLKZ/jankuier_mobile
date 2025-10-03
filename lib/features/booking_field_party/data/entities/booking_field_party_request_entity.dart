@@ -79,7 +79,7 @@ class BookingFieldPartyRequestEntity extends Equatable {
       fieldId: json['field_id'],
       fieldPartyId: json['field_party_id'],
       paymentTransactionId: json['payment_transaction_id'],
-      totalPrice: (json['total_price'] ?? 0).toDouble(),
+      totalPrice: double.tryParse((json['total_price'] ?? 0).toString()) ?? 0.0,
       isActive: json['is_active'] ?? true,
       isCanceled: json['is_canceled'] ?? false,
       isPaid: json['is_paid'] ?? false,

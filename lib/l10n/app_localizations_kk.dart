@@ -1055,7 +1055,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get eventPass => 'Оқиғаға құжат';
 
   @override
-  String get order => 'Тапсырыс #';
+  String get order => 'Тапсырыс';
 
   @override
   String get loadingPass => 'Құжат жүктелуде...';
@@ -1073,10 +1073,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get amount => 'Сома';
 
   @override
+  String get success => 'Сәтті орындалды';
+
+  @override
   String get ticketsCount => 'Билеттер';
 
   @override
-  String get details => 'Мәліметтер';
+  String get details => 'Толығырақ';
 
   @override
   String get selectCountryFirst => 'Алдымен елді таңдаңыз';
@@ -1132,4 +1135,167 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Аккаунтты жою қатесі';
+
+  @override
+  String get myBookings => 'Менің брондарым';
+
+  @override
+  String get pending => 'Күтуде';
+
+  @override
+  String get paid => 'Төленді';
+
+  @override
+  String get cancelled => 'Болдырылмаған';
+
+  @override
+  String get bookingCancelledSuccessfully => 'Бронь сәтті болдырылмады';
+
+  @override
+  String get repeat => 'Қайталау';
+
+  @override
+  String get noBookings => 'Брондар жоқ';
+
+  @override
+  String get bookingDetails => 'Бронь мәліметтері';
+
+  @override
+  String get field => 'Алаң';
+
+  @override
+  String get date => 'Күн';
+
+  @override
+  String get time => 'Уақыт';
+
+  @override
+  String get total => 'Сомма';
+
+  @override
+  String get address => 'Мекен-жай';
+
+  @override
+  String get cancelBooking => 'Брондауды болдырмау';
+
+  @override
+  String get cancelBookingTitle => 'Брондауды болдырмау?';
+
+  @override
+  String get cancelBookingConfirmation =>
+      'Сіз бұл брондауды болдырмағыңыз келе ме? Бұл әрекетті кері қайтару мүмкін емес.';
+
+  @override
+  String get no => 'Жоқ';
+
+  @override
+  String get yesCancel => 'Иә, болдырмау';
+
+  @override
+  String get pleaseLogin => 'Кіруді орындаңыз';
+
+  @override
+  String get addedToCart => 'Себетке қосылды';
+
+  @override
+  String get selectQuantity => 'Санын таңдаңыз';
+
+  @override
+  String get confirm => 'Растау';
+
+  @override
+  String get myOrders => 'Менің тапсырыстарым';
+
+  @override
+  String get viewPurchaseHistory => 'Сатып алу тарихын қарау';
+
+  @override
+  String get viewMyBookings => 'Менің брондауларымды қарау';
+
+  @override
+  String get authorizationRequired => 'Авторизация қажет';
+
+  @override
+  String get loginFirstToBook => 'Брондау үшін алдымен аккаунтқа кіріңіз';
+
+  @override
+  String get bookingRequestCreated => 'Брондау сұрауы жасалды';
+
+  @override
+  String get cartCleared => 'Себет тазартылды';
+
+  @override
+  String get cartEmpty => 'Себет бос';
+
+  @override
+  String get addItemsToCheckout =>
+      'Тапсырысты рәсімдеу үшін тауарларды қосыңыз';
+
+  @override
+  String get clearCartQuestion => 'Себетті тазарту?';
+
+  @override
+  String get allItemsWillBeRemoved => 'Барлық тауарлар себеттен жойылады';
+
+  @override
+  String get clear => 'Тазарту';
+
+  @override
+  String get product => 'Тауар';
+
+  @override
+  String get totalToPay => 'Барлығы төлеуге:';
+
+  @override
+  String get proceedToPayment => 'Төлемге өту';
+
+  @override
+  String get awaitingPayment => 'Күтуде';
+
+  @override
+  String get noOrdersYet => 'Әзірге тапсырыстар жоқ';
+
+  @override
+  String get placeFirstOrderInShop => 'Дүкенде бірінші тапсырысты рәсімдеңіз';
+
+  @override
+  String get paidOn => 'Төленді';
+
+  @override
+  String get payBefore => 'Төлеу мерзімі';
+
+  @override
+  String get cancelOrderConfirmation =>
+      'Сіз бұл тапсырысты болдырмағыңыз келе ме? Әкімшілік растағаннан кейін қаражат сіздің шотыңызға қайтарылады.';
+
+  @override
+  String get deleteOrder => 'Тапсырысты жою';
+
+  @override
+  String get deleteOrderConfirmation =>
+      'Сіз бұл тапсырысты жойғыңыз келе ме? Бұл әрекетті кері қайтару мүмкін емес.';
+
+  @override
+  String get delete => 'Жою';
+
+  @override
+  String get orderDataNotAvailable => 'Тапсырыс деректері қолжетімді емес';
+
+  @override
+  String get itemsInOrder => 'Тапсырыстағы тауарлар';
+
+  @override
+  String get noItemsInOrder => 'Тапсырыста тауарлар жоқ';
+
+  @override
+  String get createdDate => 'Жасалған күні';
+
+  @override
+  String get paymentDate => 'Төлем күні';
+
+  @override
+  String get quantity => 'Саны';
+
+  @override
+  String get statusHistory => 'Күй тарихы';
 }

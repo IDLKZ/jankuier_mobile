@@ -11,7 +11,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const PagesCommonAppBar({
     super.key,
-    this.commonHeight = 100,
+    this.commonHeight = 120,
     this.leadingIcon,
     required this.title,
     required this.actionIcon,
@@ -85,7 +85,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                     // 🔧 Действие или пустой SizedBox
                     GestureDetector(
-                        onTap: onActionTap,
+                        onTap: () => onActionTap,
                         child: Container(
                           width: 50,
                           height: 50,
@@ -97,7 +97,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 size: 30,
                                 color: Colors.white.withValues(alpha: 0.7)),
                             onPressed: () {
-                              // действие при нажатии
+                              onActionTap();
                             },
                           ),
                         ))

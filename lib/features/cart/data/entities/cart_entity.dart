@@ -26,7 +26,7 @@ class CartEntity extends Equatable {
     return CartEntity(
       id: json['id'] ?? 0,
       userId: json['user_id'] ?? 0,
-      totalPrice: (json['total_price'] ?? 0).toDouble(),
+      totalPrice: double.tryParse((json['total_price'] ?? 0).toString()) ?? 0.0,
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime.now(),
       deletedAt: json['deleted_at'] != null

@@ -5,13 +5,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
+import 'package:jankuier_mobile/core/di/injection.dart';
+import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 import 'package:jankuier_mobile/core/utils/localization_helper.dart';
+import 'package:jankuier_mobile/features/cart/domain/parameters/add_to_cart_parameter.dart';
+import 'package:jankuier_mobile/features/cart/presentation/bloc/add_to_cart/add_to_cart_bloc.dart';
+import 'package:jankuier_mobile/features/cart/presentation/bloc/add_to_cart/add_to_cart_event.dart';
+import 'package:jankuier_mobile/features/cart/presentation/bloc/add_to_cart/add_to_cart_state.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/full_product_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/modification_type_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/modification_value_entity.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_variant_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
+import 'package:jankuier_mobile/shared/widgets/input_qty.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -35,6 +43,9 @@ class ServiceProductPage extends StatefulWidget {
 class _ServiceProductPageState extends State<ServiceProductPage> {
   /// Состояние избранного товара
   bool _isFavorite = false;
+
+  /// Состояние добавления в корзину (заменяет избранное после добавления)
+  bool _isAddedToCart = false;
 
   /// Текущий индекс изображения в галерее
   int _currentImageIndex = 0;
@@ -70,7 +81,8 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
     }
 
     if (state is GetFullProductFailedState) {
-      return _buildErrorState(state.failure.message ?? AppLocalizations.of(context)!.errorOccurred);
+      return _buildErrorState(
+          state.failure.message ?? AppLocalizations.of(context)!.errorOccurred);
     }
 
     if (state is GetFullProductLoadedState) {
@@ -151,6 +163,11 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
           _ProductDetailCard(
             fullProductEntity: product,
             onAddToCart: _handleAddToCart,
+            onCartAdded: () {
+              setState(() {
+                _isAddedToCart = true;
+              });
+            },
           ),
         ],
       ),
@@ -308,10 +325,11 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
             onTap: () => context.pop(),
           ),
           _buildCircularButton(
-            icon: _isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: AppColors.error,
-            onTap: _toggleFavorite,
-          ),
+              icon: Icons.shopping_cart,
+              color: AppColors.primary,
+              onTap: () {
+                context.push(AppRouteConstants.MyCartPagePath);
+              }),
         ],
       ),
     );
@@ -452,8 +470,9 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
     // Показываем снэкбар с обратной связью
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-            _isFavorite ? AppLocalizations.of(context)!.addedToFavorites : AppLocalizations.of(context)!.removedFromFavorites),
+        content: Text(_isFavorite
+            ? AppLocalizations.of(context)!.addedToFavorites
+            : AppLocalizations.of(context)!.removedFromFavorites),
         backgroundColor: _isFavorite ? AppColors.success : AppColors.info,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -474,7 +493,8 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
           children: [
             const Icon(Icons.shopping_cart, color: AppColors.white),
             SizedBox(width: 8.w),
-            Expanded(child: Text(AppLocalizations.of(context)!.productAddedToCart)),
+            Expanded(
+                child: Text(AppLocalizations.of(context)!.productAddedToCart)),
           ],
         ),
         backgroundColor: AppColors.success,
@@ -505,9 +525,13 @@ class _ProductDetailCard extends StatefulWidget {
   /// Callback для добавления в корзину
   final VoidCallback onAddToCart;
 
+  /// Callback после успешного добавления в корзину
+  final VoidCallback onCartAdded;
+
   const _ProductDetailCard({
     required this.fullProductEntity,
     required this.onAddToCart,
+    required this.onCartAdded,
   });
 
   @override
@@ -520,6 +544,15 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
 
   /// Выбранный вариант продукта
   ProductVariantEntity? _selectedProductVariant;
+
+  /// HiveUtils для проверки авторизации
+  late final HiveUtils _hiveUtils;
+
+  @override
+  void initState() {
+    super.initState();
+    _hiveUtils = HiveUtils();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -568,11 +601,15 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MainTitleWidget(
-            title: context.localizedDirectTitle(widget.fullProductEntity.product) ?? AppLocalizations.of(context)!.untitled),
+            title: context
+                    .localizedDirectTitle(widget.fullProductEntity.product) ??
+                AppLocalizations.of(context)!.untitled),
         SizedBox(height: 12.h),
-        if (widget.fullProductEntity.product.descriptionRu?.isNotEmpty == true)
+        if (widget.fullProductEntity.product.localizedDescription(context) !=
+            null)
           Text(
-            context.localizedDirectDescription(widget.fullProductEntity.product),
+            context
+                .localizedDirectDescription(widget.fullProductEntity.product),
             style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.textSecondary,
@@ -589,7 +626,9 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       spacing: 12.w,
       runSpacing: 8.h,
       children: [
-        if (widget.fullProductEntity.product.category?.titleRu.isNotEmpty ==
+        if (widget.fullProductEntity.product.category
+                ?.localizedTitle(context)
+                .isNotEmpty ==
             true)
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -598,7 +637,8 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Text(
-              context.localizedDirectTitle(widget.fullProductEntity.product.category),
+              context.localizedDirectTitle(
+                  widget.fullProductEntity.product.category),
               style: TextStyle(
                 color: AppColors.primary,
                 fontSize: 12.sp,
@@ -703,7 +743,9 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           ),
           SizedBox(width: 12.w),
           Text(
-            isInStock ? '${AppLocalizations.of(context)!.inStock} ($stock шт.)' : AppLocalizations.of(context)!.outOfStock,
+            isInStock
+                ? '${AppLocalizations.of(context)!.inStock} ($stock шт.)'
+                : AppLocalizations.of(context)!.outOfStock,
             style: TextStyle(
               color: isInStock ? AppColors.success : AppColors.error,
               fontSize: 15.sp,
@@ -742,11 +784,10 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
 
   /// Строит секцию типа модификации
   Widget _buildModificationTypeSection(ModificationTypeEntity type) {
-    final values = widget.fullProductEntity.modificationValues
-        .where((value) => value.modificationTypeId == type.id)
-        .toList();
+    // Получаем доступные значения модификаций с учетом уже выбранных
+    final availableValues = _getAvailableModificationValues(type.id);
 
-    if (values.isEmpty) return const SizedBox.shrink();
+    if (availableValues.isEmpty) return const SizedBox.shrink();
 
     return Padding(
       padding: EdgeInsets.only(bottom: 20.h),
@@ -765,7 +806,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           Wrap(
             spacing: 8.w,
             runSpacing: 8.h,
-            children: values
+            children: availableValues
                 .map((value) => _buildModificationChip(type.id, value))
                 .toList(),
           ),
@@ -833,36 +874,55 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
         ),
         SizedBox(width: 20.w),
         Expanded(
-          child: ElevatedButton(
-            onPressed: isAvailable ? widget.onAddToCart : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              disabledBackgroundColor: AppColors.grey300,
-              foregroundColor: AppColors.white,
-              disabledForegroundColor: AppColors.textDisabled,
-              padding: EdgeInsets.symmetric(vertical: 18.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              elevation: 0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  isAvailable ? Icons.shopping_cart_outlined : Icons.block,
-                  size: 20.sp,
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  isAvailable ? AppLocalizations.of(context)!.add : AppLocalizations.of(context)!.outOfStock,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
+          child: FutureBuilder(
+            future: _hiveUtils.getCurrentUser(),
+            builder: (context, snapshot) {
+              final isUserLoggedIn = snapshot.data != null;
+
+              return ElevatedButton(
+                onPressed: isAvailable && isUserLoggedIn
+                    ? () => _showQuantityBottomSheet()
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  disabledBackgroundColor: AppColors.grey300,
+                  foregroundColor: AppColors.white,
+                  disabledForegroundColor: AppColors.textDisabled,
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r),
                   ),
+                  elevation: 0,
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      !isAvailable
+                          ? Icons.block
+                          : (isUserLoggedIn
+                              ? Icons.shopping_cart_outlined
+                              : Icons.login),
+                      size: 20.sp,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      !isAvailable
+                          ? AppLocalizations.of(context)!.outOfStock
+                          : (isUserLoggedIn
+                              ? AppLocalizations.of(context)!.add
+                              : AppLocalizations.of(context)!.pleaseLogin),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -904,10 +964,70 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
     _selectedProductVariant = null;
   }
 
+  /// Получает доступные значения модификаций для данного типа
+  /// с учетом уже выбранных модификаций других типов
+  List<ModificationValueEntity> _getAvailableModificationValues(int typeId) {
+    // Все значения для данного типа модификации
+    final allValuesForType = widget.fullProductEntity.modificationValues
+        .where((value) => value.modificationTypeId == typeId)
+        .toList();
+
+    // Если ничего не выбрано, показываем все
+    if (_selectedModifications.isEmpty) {
+      return allValuesForType;
+    }
+
+    // Если выбран этот тип, показываем все (чтобы можно было сменить выбор)
+    if (_selectedModifications.containsKey(typeId)) {
+      return allValuesForType;
+    }
+
+    // Получаем выбранные значения других типов
+    final selectedValues = _selectedModifications.values.toSet();
+
+    // Фильтруем: оставляем только те значения, которые встречаются
+    // в вариантах вместе с уже выбранными модификациями
+    final availableValues = <ModificationValueEntity>[];
+
+    for (final value in allValuesForType) {
+      // Проверяем, существует ли вариант с этим значением и выбранными модификациями
+      final hasCompatibleVariant =
+          widget.fullProductEntity.variants.any((variant) {
+        final variantModifications = widget
+            .fullProductEntity.productVariantModifications
+            .where((pvm) => pvm.variantId == variant.id)
+            .map((pvm) => pvm.modificationValueId)
+            .toSet();
+
+        // Вариант должен содержать все выбранные значения И текущее проверяемое значение
+        return variantModifications.containsAll(selectedValues) &&
+            variantModifications.contains(value.id);
+      });
+
+      if (hasCompatibleVariant) {
+        availableValues.add(value);
+      }
+    }
+
+    return availableValues;
+  }
+
   /// Получает текущую цену
   double _getCurrentPrice() {
-    final basePrice = widget.fullProductEntity.product.basePrice;
-    final priceDelta = _selectedProductVariant?.priceDelta ?? 0;
+    // Безопасное получение basePrice
+    final basePriceValue = widget.fullProductEntity.product.basePrice;
+    final basePrice = basePriceValue is double
+        ? basePriceValue
+        : double.tryParse(basePriceValue.toString()) ?? 0.0;
+
+    // Безопасное получение priceDelta
+    final priceDeltaValue = _selectedProductVariant?.priceDelta;
+    final priceDelta = priceDeltaValue == null
+        ? 0.0
+        : (priceDeltaValue is double
+            ? priceDeltaValue
+            : double.tryParse(priceDeltaValue.toString()) ?? 0.0);
+
     return basePrice + priceDelta;
   }
 
@@ -921,8 +1041,15 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
   /// Строит теги цен с учетом скидок
   List<Widget> _buildPriceTags(ProductVariantEntity? selectedProductVariant) {
     final double totalPrice = _getCurrentPrice();
-    final double? oldPrice =
-        widget.fullProductEntity.product.oldPrice?.toDouble();
+
+    // Безопасное получение oldPrice
+    final oldPriceValue = widget.fullProductEntity.product.oldPrice;
+    final double? oldPrice = oldPriceValue == null
+        ? null
+        : (oldPriceValue is double
+            ? oldPriceValue
+            : double.tryParse(oldPriceValue.toString()));
+
     final bool hasOldPrice = oldPrice != null && oldPrice > totalPrice;
 
     double? discountPercent;
@@ -982,5 +1109,157 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       default:
         return AppLocalizations.of(context)!.unisex;
     }
+  }
+
+  /// Показывает bottom sheet с выбором количества
+  void _showQuantityBottomSheet() {
+    // Захватываем значения до открытия bottom sheet
+    final stock = _selectedProductVariant?.stock ??
+        widget.fullProductEntity.product.stock;
+    final variantId = _selectedProductVariant?.id;
+    final productId = widget.fullProductEntity.product.id;
+    int selectedQuantity = 1;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext bottomSheetContext) {
+        return BlocProvider(
+          create: (context) => getIt<AddToCartBloc>(),
+          child: BlocListener<AddToCartBloc, AddToCartState>(
+            listener: (context, state) {
+              if (state is AddToCartSuccess) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.addedToCart),
+                    backgroundColor: AppColors.success,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    duration: const Duration(milliseconds: 1500),
+                  ),
+                );
+                widget.onCartAdded();
+              } else if (state is AddToCartError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: AppColors.error,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24.r),
+                  topRight: Radius.circular(24.r),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                left: 24.w,
+                right: 24.w,
+                top: 24.h,
+                bottom:
+                    MediaQuery.of(bottomSheetContext).viewInsets.bottom + 24.h,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.selectQuantity,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(bottomSheetContext),
+                        icon: const Icon(Icons.close),
+                        color: AppColors.textSecondary,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Center(
+                    child: InputQty(
+                      maxVal: stock,
+                      initVal: 1,
+                      minVal: 1,
+                      steps: 1,
+                      onQtyChanged: (value) {
+                        selectedQuantity = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 32.h),
+                  BlocBuilder<AddToCartBloc, AddToCartState>(
+                    builder: (context, state) {
+                      final isLoading = state is AddToCartLoading;
+
+                      return SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                                  final parameter = AddToCartParameter(
+                                    productId: productId,
+                                    qty: selectedQuantity,
+                                    variantId: variantId,
+                                  );
+                                  context.read<AddToCartBloc>().add(
+                                        AddToCartRequested(parameter),
+                                      );
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.white,
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: isLoading
+                              ? SizedBox(
+                                  height: 24.h,
+                                  width: 24.w,
+                                  child: const CircularProgressIndicator(
+                                    color: AppColors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)!.confirm,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

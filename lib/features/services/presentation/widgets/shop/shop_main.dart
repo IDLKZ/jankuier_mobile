@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product/product_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/product_category/product_category_bloc.dart';
@@ -9,7 +10,10 @@ import 'package:jankuier_mobile/features/services/presentation/widgets/product_c
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import '../../../../../l10n/app_localizations.dart';
 
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/app_route_constants.dart';
 import '../../../../../core/di/injection.dart';
+import '../../../../../core/utils/hive_utils.dart';
 import '../../../domain/parameters/all_product_category_parameter.dart';
 import '../../../domain/parameters/paginate_product_parameter.dart';
 import '../../bloc/product/product_event.dart';
@@ -30,10 +34,10 @@ class _ShopMainState extends State<ShopMain>
   AllProductCategoryParameter allProductCategoryParameter =
       const AllProductCategoryParameter(isActive: true, isShowDeleted: false);
   PaginateProductParameter paginateProductParameter =
-      const PaginateProductParameter(perPage: 2);
+      const PaginateProductParameter(perPage: 20);
   PaginateProductParameter recommendedProductParameter =
       const PaginateProductParameter(
-          perPage: 1, page: 1, isActive: true, isRecommended: true);
+          perPage: 20, page: 1, isActive: true, isRecommended: true);
   final ScrollController scrollController = ScrollController();
   ProductBloc? productBloc;
 
@@ -88,6 +92,7 @@ class _ShopMainState extends State<ShopMain>
 
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -115,9 +120,11 @@ class _ShopMainState extends State<ShopMain>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const _MyOrdersBanner(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: MainTitleWidget(title: AppLocalizations.of(context)!.shop),
+                child:
+                    MainTitleWidget(title: AppLocalizations.of(context)!.shop),
               ),
               const ShopBannerProduct(),
               ProductCategoryBottomScheet(
@@ -128,6 +135,113 @@ class _ShopMainState extends State<ShopMain>
           ),
         );
       }),
+    );
+  }
+}
+
+class _MyOrdersBanner extends StatefulWidget {
+  const _MyOrdersBanner();
+
+  @override
+  State<_MyOrdersBanner> createState() => _MyOrdersBannerState();
+}
+
+class _MyOrdersBannerState extends State<_MyOrdersBanner> {
+  final HiveUtils _hiveUtils = getIt<HiveUtils>();
+  bool _hasUser = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
+
+  Future<void> _checkUser() async {
+    final user = await _hiveUtils.getCurrentUser();
+    if (mounted) {
+      setState(() {
+        _hasUser = user != null;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_hasUser) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 12.h),
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            context.push(AppRouteConstants.MyProductOrdersPagePath);
+          },
+          borderRadius: BorderRadius.circular(16.r),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                    color: Colors.white,
+                    size: 28.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.myOrders,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        AppLocalizations.of(context)!.viewPurchaseHistory,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

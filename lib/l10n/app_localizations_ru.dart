@@ -553,7 +553,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get stadium => 'Стадион';
 
   @override
-  String get notSpecified => 'Не указан';
+  String get notSpecified => 'Не указано';
 
   @override
   String get stadiumNameNotSpecified => 'Название не указано';
@@ -1035,7 +1035,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cancellationReason => 'Причина отмены';
 
   @override
-  String get cancelOrder => 'Отменить заказ';
+  String get cancelOrder => 'Отмена заказа';
 
   @override
   String get payOrder => 'Оплатить заказ';
@@ -1059,7 +1059,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get eventPass => 'Пропуск на мероприятие';
 
   @override
-  String get order => 'Заказ #';
+  String get order => 'Заказ';
 
   @override
   String get loadingPass => 'Загрузка пропуска...';
@@ -1077,10 +1077,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get amount => 'Сумма';
 
   @override
+  String get success => 'Выполнено успешно';
+
+  @override
   String get ticketsCount => 'Билетов';
 
   @override
-  String get details => 'Детали';
+  String get details => 'Подробнее';
 
   @override
   String get selectCountryFirst => 'Сначала выберите страну';
@@ -1136,4 +1139,166 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Ошибка удаления аккаунта';
+
+  @override
+  String get myBookings => 'Мои брони';
+
+  @override
+  String get pending => 'Ожидает';
+
+  @override
+  String get paid => 'Оплачено';
+
+  @override
+  String get cancelled => 'Отмененные';
+
+  @override
+  String get bookingCancelledSuccessfully => 'Бронь успешно отменена';
+
+  @override
+  String get repeat => 'Повторить';
+
+  @override
+  String get noBookings => 'Нет броней';
+
+  @override
+  String get bookingDetails => 'Детали брони';
+
+  @override
+  String get field => 'Поле';
+
+  @override
+  String get date => 'Дата';
+
+  @override
+  String get time => 'Время';
+
+  @override
+  String get total => 'Сумма';
+
+  @override
+  String get address => 'Адрес';
+
+  @override
+  String get cancelBooking => 'Отменить бронь';
+
+  @override
+  String get cancelBookingTitle => 'Отменить бронь?';
+
+  @override
+  String get cancelBookingConfirmation =>
+      'Вы уверены, что хотите отменить эту бронь? Это действие нельзя отменить.';
+
+  @override
+  String get no => 'Нет';
+
+  @override
+  String get yesCancel => 'Да, отменить';
+
+  @override
+  String get pleaseLogin => 'Выполните вход';
+
+  @override
+  String get addedToCart => 'Добавлено в корзину';
+
+  @override
+  String get selectQuantity => 'Выберите количество';
+
+  @override
+  String get confirm => 'Подтвердить';
+
+  @override
+  String get myOrders => 'Мои заказы';
+
+  @override
+  String get viewPurchaseHistory => 'Посмотреть историю покупок';
+
+  @override
+  String get viewMyBookings => 'Посмотреть мои бронирования';
+
+  @override
+  String get authorizationRequired => 'Требуется авторизация';
+
+  @override
+  String get loginFirstToBook => 'Сначала войдите в аккаунт для бронирования';
+
+  @override
+  String get bookingRequestCreated => 'Запрос на бронирование создан';
+
+  @override
+  String get cartCleared => 'Корзина очищена';
+
+  @override
+  String get cartEmpty => 'Корзина пуста';
+
+  @override
+  String get addItemsToCheckout => 'Добавьте товары для оформления заказа';
+
+  @override
+  String get clearCartQuestion => 'Очистить корзину?';
+
+  @override
+  String get allItemsWillBeRemoved => 'Все товары будут удалены из корзины';
+
+  @override
+  String get clear => 'Очистить';
+
+  @override
+  String get product => 'Товар';
+
+  @override
+  String get totalToPay => 'Итого к оплате:';
+
+  @override
+  String get proceedToPayment => 'Перейти к оплате';
+
+  @override
+  String get awaitingPayment => 'Ожидают';
+
+  @override
+  String get noOrdersYet => 'Заказов пока нет';
+
+  @override
+  String get placeFirstOrderInShop => 'Оформите первый заказ в магазине';
+
+  @override
+  String get paidOn => 'Оплачено';
+
+  @override
+  String get payBefore => 'Оплатить до';
+
+  @override
+  String get cancelOrderConfirmation =>
+      'Вы уверены, что хотите отменить этот заказ? Средства будут возвращены на ваш счет после подтверждения администрацией.';
+
+  @override
+  String get deleteOrder => 'Удаление заказа';
+
+  @override
+  String get deleteOrderConfirmation =>
+      'Вы уверены, что хотите удалить этот заказ? Это действие нельзя отменить.';
+
+  @override
+  String get delete => 'Удалить';
+
+  @override
+  String get orderDataNotAvailable => 'Данные заказа отсутствуют';
+
+  @override
+  String get itemsInOrder => 'Товары в заказе';
+
+  @override
+  String get noItemsInOrder => 'Нет товаров в заказе';
+
+  @override
+  String get createdDate => 'Дата создания';
+
+  @override
+  String get paymentDate => 'Дата оплаты';
+
+  @override
+  String get quantity => 'Кол-во';
+
+  @override
+  String get statusHistory => 'История статусов';
 }

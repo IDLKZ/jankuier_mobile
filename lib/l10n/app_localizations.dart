@@ -1171,7 +1171,7 @@ abstract class AppLocalizations {
   /// No description provided for @notSpecified.
   ///
   /// In ru, this message translates to:
-  /// **'Не указан'**
+  /// **'Не указано'**
   String get notSpecified;
 
   /// No description provided for @stadiumNameNotSpecified.
@@ -2125,7 +2125,7 @@ abstract class AppLocalizations {
   /// No description provided for @cancelOrder.
   ///
   /// In ru, this message translates to:
-  /// **'Отменить заказ'**
+  /// **'Отмена заказа'**
   String get cancelOrder;
 
   /// No description provided for @payOrder.
@@ -2173,7 +2173,7 @@ abstract class AppLocalizations {
   /// No description provided for @order.
   ///
   /// In ru, this message translates to:
-  /// **'Заказ #'**
+  /// **'Заказ'**
   String get order;
 
   /// No description provided for @loadingPass.
@@ -2206,6 +2206,12 @@ abstract class AppLocalizations {
   /// **'Сумма'**
   String get amount;
 
+  /// No description provided for @success.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выполнено успешно'**
+  String get success;
+
   /// No description provided for @ticketsCount.
   ///
   /// In ru, this message translates to:
@@ -2215,7 +2221,7 @@ abstract class AppLocalizations {
   /// No description provided for @details.
   ///
   /// In ru, this message translates to:
-  /// **'Детали'**
+  /// **'Подробнее'**
   String get details;
 
   /// No description provided for @selectCountryFirst.
@@ -2325,6 +2331,324 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Ошибка удаления аккаунта'**
   String get accountDeletionFailed;
+
+  /// No description provided for @myBookings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мои брони'**
+  String get myBookings;
+
+  /// No description provided for @pending.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ожидает'**
+  String get pending;
+
+  /// No description provided for @paid.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплачено'**
+  String get paid;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отмененные'**
+  String get cancelled;
+
+  /// No description provided for @bookingCancelledSuccessfully.
+  ///
+  /// In ru, this message translates to:
+  /// **'Бронь успешно отменена'**
+  String get bookingCancelledSuccessfully;
+
+  /// No description provided for @repeat.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторить'**
+  String get repeat;
+
+  /// No description provided for @noBookings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет броней'**
+  String get noBookings;
+
+  /// No description provided for @bookingDetails.
+  ///
+  /// In ru, this message translates to:
+  /// **'Детали брони'**
+  String get bookingDetails;
+
+  /// No description provided for @field.
+  ///
+  /// In ru, this message translates to:
+  /// **'Поле'**
+  String get field;
+
+  /// No description provided for @date.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата'**
+  String get date;
+
+  /// No description provided for @time.
+  ///
+  /// In ru, this message translates to:
+  /// **'Время'**
+  String get time;
+
+  /// No description provided for @total.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сумма'**
+  String get total;
+
+  /// No description provided for @address.
+  ///
+  /// In ru, this message translates to:
+  /// **'Адрес'**
+  String get address;
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отменить бронь'**
+  String get cancelBooking;
+
+  /// No description provided for @cancelBookingTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отменить бронь?'**
+  String get cancelBookingTitle;
+
+  /// No description provided for @cancelBookingConfirmation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы уверены, что хотите отменить эту бронь? Это действие нельзя отменить.'**
+  String get cancelBookingConfirmation;
+
+  /// No description provided for @no.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет'**
+  String get no;
+
+  /// No description provided for @yesCancel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Да, отменить'**
+  String get yesCancel;
+
+  /// No description provided for @pleaseLogin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выполните вход'**
+  String get pleaseLogin;
+
+  /// No description provided for @addedToCart.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавлено в корзину'**
+  String get addedToCart;
+
+  /// No description provided for @selectQuantity.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите количество'**
+  String get selectQuantity;
+
+  /// No description provided for @confirm.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердить'**
+  String get confirm;
+
+  /// No description provided for @myOrders.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мои заказы'**
+  String get myOrders;
+
+  /// No description provided for @viewPurchaseHistory.
+  ///
+  /// In ru, this message translates to:
+  /// **'Посмотреть историю покупок'**
+  String get viewPurchaseHistory;
+
+  /// No description provided for @viewMyBookings.
+  ///
+  /// In ru, this message translates to:
+  /// **'Посмотреть мои бронирования'**
+  String get viewMyBookings;
+
+  /// No description provided for @authorizationRequired.
+  ///
+  /// In ru, this message translates to:
+  /// **'Требуется авторизация'**
+  String get authorizationRequired;
+
+  /// No description provided for @loginFirstToBook.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сначала войдите в аккаунт для бронирования'**
+  String get loginFirstToBook;
+
+  /// No description provided for @bookingRequestCreated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запрос на бронирование создан'**
+  String get bookingRequestCreated;
+
+  /// No description provided for @cartCleared.
+  ///
+  /// In ru, this message translates to:
+  /// **'Корзина очищена'**
+  String get cartCleared;
+
+  /// No description provided for @cartEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Корзина пуста'**
+  String get cartEmpty;
+
+  /// No description provided for @addItemsToCheckout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавьте товары для оформления заказа'**
+  String get addItemsToCheckout;
+
+  /// No description provided for @clearCartQuestion.
+  ///
+  /// In ru, this message translates to:
+  /// **'Очистить корзину?'**
+  String get clearCartQuestion;
+
+  /// No description provided for @allItemsWillBeRemoved.
+  ///
+  /// In ru, this message translates to:
+  /// **'Все товары будут удалены из корзины'**
+  String get allItemsWillBeRemoved;
+
+  /// No description provided for @clear.
+  ///
+  /// In ru, this message translates to:
+  /// **'Очистить'**
+  String get clear;
+
+  /// No description provided for @product.
+  ///
+  /// In ru, this message translates to:
+  /// **'Товар'**
+  String get product;
+
+  /// No description provided for @totalToPay.
+  ///
+  /// In ru, this message translates to:
+  /// **'Итого к оплате:'**
+  String get totalToPay;
+
+  /// No description provided for @proceedToPayment.
+  ///
+  /// In ru, this message translates to:
+  /// **'Перейти к оплате'**
+  String get proceedToPayment;
+
+  /// No description provided for @awaitingPayment.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ожидают'**
+  String get awaitingPayment;
+
+  /// No description provided for @noOrdersYet.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заказов пока нет'**
+  String get noOrdersYet;
+
+  /// No description provided for @placeFirstOrderInShop.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оформите первый заказ в магазине'**
+  String get placeFirstOrderInShop;
+
+  /// No description provided for @paidOn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплачено'**
+  String get paidOn;
+
+  /// No description provided for @payBefore.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплатить до'**
+  String get payBefore;
+
+  /// No description provided for @cancelOrderConfirmation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы уверены, что хотите отменить этот заказ? Средства будут возвращены на ваш счет после подтверждения администрацией.'**
+  String get cancelOrderConfirmation;
+
+  /// No description provided for @deleteOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удаление заказа'**
+  String get deleteOrder;
+
+  /// No description provided for @deleteOrderConfirmation.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы уверены, что хотите удалить этот заказ? Это действие нельзя отменить.'**
+  String get deleteOrderConfirmation;
+
+  /// No description provided for @delete.
+  ///
+  /// In ru, this message translates to:
+  /// **'Удалить'**
+  String get delete;
+
+  /// No description provided for @orderDataNotAvailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Данные заказа отсутствуют'**
+  String get orderDataNotAvailable;
+
+  /// No description provided for @itemsInOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Товары в заказе'**
+  String get itemsInOrder;
+
+  /// No description provided for @noItemsInOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет товаров в заказе'**
+  String get noItemsInOrder;
+
+  /// No description provided for @createdDate.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата создания'**
+  String get createdDate;
+
+  /// No description provided for @paymentDate.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата оплаты'**
+  String get paymentDate;
+
+  /// No description provided for @quantity.
+  ///
+  /// In ru, this message translates to:
+  /// **'Кол-во'**
+  String get quantity;
+
+  /// No description provided for @statusHistory.
+  ///
+  /// In ru, this message translates to:
+  /// **'История статусов'**
+  String get statusHistory;
 }
 
 class _AppLocalizationsDelegate

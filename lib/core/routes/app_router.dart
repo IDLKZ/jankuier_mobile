@@ -7,10 +7,13 @@ import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.da
 import 'package:jankuier_mobile/features/auth/presentation/pages/enter_phone_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/verify_code_page.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
+import 'package:jankuier_mobile/features/booking_field_party/presentation/pages/my_booking_field_parties_page.dart';
+import 'package:jankuier_mobile/features/cart/presentation/pages/my_cart_page.dart';
 import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart';
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:jankuier_mobile/features/kff/presentation/pages/kff_matches_page.dart';
 import 'package:jankuier_mobile/features/kff_league/presentation/pages/kff_league_club_page.dart';
+import 'package:jankuier_mobile/features/product_order/presentation/pages/product_order_details_page.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_event.dart';
@@ -23,6 +26,9 @@ import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/countries/presentation/pages/countries_page.dart';
 import '../../features/matches/presentation/pages/matches_page.dart';
+import '../../features/product_order/presentation/bloc/get_my_product_order_by_id/get_my_product_order_by_id_bloc.dart';
+import '../../features/product_order/presentation/bloc/get_my_product_order_by_id/get_my_product_order_by_id_event.dart';
+import '../../features/product_order/presentation/pages/my_orders_page.dart';
 import '../../features/profile/presentation/pages/edit_account_page.dart';
 import '../../features/profile/presentation/pages/edit_password_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -84,7 +90,8 @@ class AppRouter {
         name: AppRouteConstants.VerifyCodePageName,
         builder: (context, state) {
           final phone = state.uri.queryParameters['phone'] ?? '';
-          final verificationResult = state.extra as UserCodeVerificationResultEntity;
+          final verificationResult =
+              state.extra as UserCodeVerificationResultEntity;
           return VerifyCodePage(
             phone: phone,
             verificationResult: verificationResult,
@@ -119,6 +126,39 @@ class AppRouter {
               path: AppRouteConstants.ServicesPagePath,
               name: AppRouteConstants.ServicesPageName,
               builder: (context, state) => const ServicesPage(),
+            ),
+            GoRoute(
+              path: AppRouteConstants.MyProductOrdersPagePath,
+              name: AppRouteConstants.MyProductOrdersPageName,
+              builder: (context, state) => const MyOrdersPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
+            ),
+            GoRoute(
+              path:
+                  "${AppRouteConstants.MySingleProductOrderPagePath}:productOrderId",
+              name: AppRouteConstants.MySingleProductOrderPageName,
+              builder: (context, state) {
+                int productOrderId = int.tryParse(
+                        state.pathParameters['productOrderId'] ?? "0") ??
+                    0;
+                return ProductOrderDetailsPage(orderId: productOrderId);
+              },
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
+            ),
+            GoRoute(
+              path: AppRouteConstants.MyBookingFieldRequestsPagePath,
+              name: AppRouteConstants.MyBookingFieldRequestsPageName,
+              builder: (context, state) => const MyBookingFieldPartiesPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
             ),
             GoRoute(
               path: AppRouteConstants.ActivityPagePath,
@@ -157,6 +197,15 @@ class AppRouter {
                   },
                   child: ServiceProductPage(productId: productId),
                 );
+              },
+            ),
+            GoRoute(
+              path: AppRouteConstants.MyCartPagePath,
+              name: AppRouteConstants.MyCartPageName,
+              builder: (context, state) => const MyCartPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
               },
             ),
             GoRoute(
@@ -221,7 +270,8 @@ class AppRouter {
                   create: (BuildContext context) {
                     return getIt<TicketonShowsBloc>()
                       ..add(LoadTicketonShowsEvent(
-                          parameter: TicketonGetShowsParameter.withCurrentLocale()));
+                          parameter:
+                              TicketonGetShowsParameter.withCurrentLocale()));
                   },
                   child: const TicketsPage(),
                 );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/features/services/presentation/widgets/fields/fields_main.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
 
@@ -39,8 +41,10 @@ class _ServicesPageState extends State<ServicesPage>
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.services,
-        actionIcon: Icons.notifications_none,
-        onActionTap: () {},
+        actionIcon: Icons.shopping_cart,
+        onActionTap: () {
+          context.push(AppRouteConstants.MyCartPagePath);
+        },
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.h),
@@ -51,9 +55,15 @@ class _ServicesPageState extends State<ServicesPage>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  ShopMain(key: PageStorageKey(ProductCategoryConstants.shopPageStorageKey)),
-                  FieldsMain(key: PageStorageKey(ProductCategoryConstants.fieldsPageStorageKey)),
-                  SectionMain(key: PageStorageKey(ProductCategoryConstants.sectionsPageStorageKey)),
+                  ShopMain(
+                      key: PageStorageKey(
+                          ProductCategoryConstants.shopPageStorageKey)),
+                  FieldsMain(
+                      key: PageStorageKey(
+                          ProductCategoryConstants.fieldsPageStorageKey)),
+                  SectionMain(
+                      key: PageStorageKey(
+                          ProductCategoryConstants.sectionsPageStorageKey)),
                 ],
               ),
             ),

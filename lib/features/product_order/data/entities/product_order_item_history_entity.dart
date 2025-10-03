@@ -1,17 +1,22 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_message_mixin.dart';
 import 'package:jankuier_mobile/features/product_order/data/entities/product_order_item_entity.dart';
 import 'package:jankuier_mobile/features/product_order/data/entities/product_order_item_status_entity.dart';
 
 import '../../../auth/data/entities/user_entity.dart';
 
 // Entity для истории элемента заказа (из ProductOrderItemHistoryWithRelationsRDTO)
-class ProductOrderItemHistoryEntity extends Equatable {
+class ProductOrderItemHistoryEntity extends Equatable
+    with LocalizedMessageEntity {
   final int id;
   final int orderItemId;
   final int? statusId;
   final int? responsibleUserId;
+  @override
   final String? messageRu;
+  @override
   final String? messageKk;
+  @override
   final String? messageEn;
   final bool? isPassed;
   final String? cancelReason;

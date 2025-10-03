@@ -48,4 +48,16 @@ class AppRouteConstants {
   static const String KffMatchesPageName = "Kff Matches Page Path";
   static const String KffLeagueClubPagePath = "/kff-league-club";
   static const String KffLeagueClubPageName = "Kff League Club Page";
+  static const String MyProductOrdersPagePath = "/my-product-orders-page-path";
+  static const String MyProductOrdersPageName = "My Product Orders Page";
+  static const String MySingleProductOrderPagePath =
+      "/my-product-order-page-path/";
+  static const String MySingleProductOrderPageName = "My Product Order Page";
+
+  static const String MyCartPagePath = "/my-cart";
+  static const String MyCartPageName = "My Cart Page";
+  static const String MyBookingFieldRequestsPagePath =
+      "/my-booking-field-requests";
+  static const String MyBookingFieldRequestsPageName =
+      "My Booking Field Requests";
 }

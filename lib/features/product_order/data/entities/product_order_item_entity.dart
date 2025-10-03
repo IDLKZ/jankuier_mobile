@@ -94,12 +94,12 @@ class ProductOrderItemEntity extends Equatable {
       toCityId: json['to_city_id'],
       qty: json['qty'] ?? 0,
       sku: json['sku'],
-      productPrice: (json['product_price'] ?? 0).toDouble(),
-      deltaPrice: (json['delta_price'] ?? 0).toDouble(),
-      shippingPrice: (json['shipping_price'] ?? 0).toDouble(),
-      unitPrice: (json['unit_price'] ?? 0).toDouble(),
-      totalPrice: (json['total_price'] ?? 0).toDouble(),
-      refundedTotal: (json['refunded_total'] ?? 0).toDouble(),
+      productPrice: _parseDouble(json['product_price']),
+      deltaPrice: _parseDouble(json['delta_price']),
+      shippingPrice: _parseDouble(json['shipping_price']),
+      unitPrice: _parseDouble(json['unit_price']),
+      totalPrice: _parseDouble(json['total_price']),
+      refundedTotal: _parseDouble(json['refunded_total']),
       isActive: json['is_active'] ?? true,
       isCanceled: json['is_canceled'] ?? false,
       isPaid: json['is_paid'] ?? false,
@@ -140,6 +140,14 @@ class ProductOrderItemEntity extends Equatable {
               .toList()
           : null,
     );
+  }
+
+  static double _parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
   }
 
   @override

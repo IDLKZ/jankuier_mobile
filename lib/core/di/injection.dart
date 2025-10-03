@@ -123,13 +123,51 @@ import '../../features/cart/presentation/bloc/add_to_cart/add_to_cart_bloc.dart'
 import '../../features/cart/presentation/bloc/update_cart_item/update_cart_item_bloc.dart';
 import '../../features/cart/presentation/bloc/clear_cart/clear_cart_bloc.dart';
 import '../../features/cart/presentation/bloc/my_cart/my_cart_bloc.dart';
+import '../../features/product_order/data/datasources/product_order_datasource.dart';
+import '../../features/product_order/data/repositories/product_order_repository_impl.dart';
+import '../../features/product_order/domain/repositories/product_order_repository.dart';
+import '../../features/product_order/domain/usecases/get_my_product_orders_usecase.dart';
+import '../../features/product_order/domain/usecases/get_my_product_order_by_id_usecase.dart';
+import '../../features/product_order/domain/usecases/get_my_product_order_items_by_id_usecase.dart';
+import '../../features/product_order/domain/usecases/create_product_order_from_cart_usecase.dart';
+import '../../features/product_order/domain/usecases/cancel_or_delete_product_order_usecase.dart';
+import '../../features/product_order/domain/usecases/cancel_order_item_usecase.dart';
+import '../../features/product_order/domain/usecases/get_all_product_order_status_usecase.dart';
+import '../../features/product_order/domain/usecases/get_all_product_order_item_status_usecase.dart';
+import '../../features/product_order/presentation/bloc/get_my_product_orders/get_my_product_orders_bloc.dart';
+import '../../features/product_order/presentation/bloc/get_my_product_order_by_id/get_my_product_order_by_id_bloc.dart';
+import '../../features/product_order/presentation/bloc/get_my_product_order_items_by_id/get_my_product_order_items_by_id_bloc.dart';
+import '../../features/product_order/presentation/bloc/create_product_order_from_cart/create_product_order_from_cart_bloc.dart';
+import '../../features/product_order/presentation/bloc/cancel_or_delete_product_order/cancel_or_delete_product_order_bloc.dart';
+import '../../features/product_order/presentation/bloc/cancel_order_item/cancel_order_item_bloc.dart';
+import '../../features/product_order/presentation/bloc/get_all_product_order_status/get_all_product_order_status_bloc.dart';
+import '../../features/product_order/presentation/bloc/get_all_product_order_item_status/get_all_product_order_item_status_bloc.dart';
+// Booking Field Party imports
+import '../../features/booking_field_party/data/datasources/booking_field_party_datasource.dart';
+import '../../features/booking_field_party/data/repositories/booking_field_party_repository_impl.dart';
+import '../../features/booking_field_party/domain/repositories/booking_field_party_repository.dart';
+import '../../features/booking_field_party/domain/usecases/create_booking_field_party_request.dart';
+import '../../features/booking_field_party/domain/usecases/get_my_field_party_request_by_id.dart';
+import '../../features/booking_field_party/domain/usecases/get_all_my_field_party_request.dart';
+import '../../features/booking_field_party/domain/usecases/delete_my_field_party_request_by_id.dart';
+import '../../features/booking_field_party/presentation/bloc/create_booking_field_party_request/create_booking_field_party_request_bloc.dart';
+import '../../features/booking_field_party/presentation/bloc/get_my_field_party_request_by_id/get_my_field_party_request_by_id_bloc.dart';
+import '../../features/booking_field_party/presentation/bloc/get_all_my_field_party_request/get_all_my_field_party_request_bloc.dart';
+import '../../features/booking_field_party/presentation/bloc/delete_my_field_party_request_by_id/delete_my_field_party_request_by_id_bloc.dart';
 import 'injection.config.dart';
 
 final getIt = GetIt.instance;
 
 @InjectableInit()
 Future<void> configureDependencies() async {
-  // Initialize injectable dependencies first
+  // Register datasources BEFORE getIt.init() to avoid conflicts
+  getIt.registerLazySingleton<CartDSInterface>(() => CartDSImpl());
+  getIt.registerLazySingleton<ProductOrderDSInterface>(
+      () => ProductOrderDSImpl());
+  getIt.registerLazySingleton<BookingFieldPartyDSInterface>(
+      () => BookingFieldPartyDSImpl());
+
+  // Initialize injectable dependencies
   getIt.init();
 
   // Register Dio instances with names for convenience
@@ -331,28 +369,5 @@ Future<void> configureDependencies() async {
     () => TicketonOrderCheckBloc(
       ticketonOrderCheckUseCase: getIt<TicketonOrderCheckUseCase>(),
     ),
-  );
-
-  // Cart
-  getIt.registerLazySingleton<CartDSInterface>(() => CartDSImpl());
-  getIt
-      .registerLazySingleton<CartRepository>(() => CartRepositoryImpl(getIt()));
-  getIt.registerLazySingleton(() => AddToCartUseCase(getIt()));
-  getIt.registerLazySingleton(() => UpdateCartItemUseCase(getIt()));
-  getIt.registerLazySingleton(() => ClearCartUseCase(getIt()));
-  getIt.registerLazySingleton(() => GetMyCartUseCase(getIt()));
-
-  // Cart BLoCs
-  getIt.registerFactory<AddToCartBloc>(
-    () => AddToCartBloc(getIt<AddToCartUseCase>()),
-  );
-  getIt.registerFactory<UpdateCartItemBloc>(
-    () => UpdateCartItemBloc(getIt<UpdateCartItemUseCase>()),
-  );
-  getIt.registerFactory<ClearCartBloc>(
-    () => ClearCartBloc(getIt<ClearCartUseCase>()),
-  );
-  getIt.registerFactory<MyCartBloc>(
-    () => MyCartBloc(getIt<GetMyCartUseCase>()),
   );
 }

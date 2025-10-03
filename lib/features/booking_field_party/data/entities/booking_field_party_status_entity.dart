@@ -1,13 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 // Entity для статуса бронирования площадки (из BookingFieldPartyStatusWithRelationsRDTO)
-class BookingFieldPartyStatusEntity extends Equatable {
+class BookingFieldPartyStatusEntity extends Equatable
+    with LocalizedTitleEntity {
   final int id;
   final int? previousId;
   final int? nextId;
   final String value;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
   final bool isFirst;
   final bool isActive;

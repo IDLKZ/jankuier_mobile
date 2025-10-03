@@ -67,7 +67,7 @@ class CartDSImpl implements CartDSInterface {
   Future<CartActionResponseEntity> updateCartItem(
       UpdateOrRemoveFromCartParameter parameter) async {
     try {
-      final response = await httpUtils.post(ApiConstant.updateCartItem,
+      final response = await httpUtils.put(ApiConstant.updateCartItem,
           data: parameter.toJson());
       final result = CartActionResponseEntity.fromJson(response);
       return result;
