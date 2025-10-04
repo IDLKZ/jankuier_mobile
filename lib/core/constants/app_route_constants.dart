@@ -60,4 +60,7 @@ class AppRouteConstants {
       "/my-booking-field-requests";
   static const String MyBookingFieldRequestsPageName =
       "My Booking Field Requests";
+
+  static const String MyNotificationsPagePath = "/my-notifications-path";
+  static const String MyNotificationsPageName = "My Notifications Page";
 }

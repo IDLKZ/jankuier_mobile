@@ -1,9 +1,9 @@
 class ApiConstant {
   //Base URL to Sota
-  // static const String BaseURL = "http://10.0.2.2:8000/api/";
-  // static const String ImageURL = "http://10.0.2.2:8000/";
-  static const String BaseURL = "https://api.jankuier.kz/api/";
-  static const String ImageURL = "https://api.jankuier.kz/";
+  static const String BaseURL = "http://10.0.2.2:8000/api/";
+  static const String ImageURL = "http://10.0.2.2:8000/";
+  // static const String BaseURL = "https://api.jankuier.kz/api/";
+  // static const String ImageURL = "https://api.jankuier.kz/";
   static const String WebFrameGetShowURL =
       "https://jankuier.kz/web-frame-ticket/get-show/";
   static const String WebFrameRecreateOrderURL =
@@ -141,4 +141,17 @@ class ApiConstant {
   static String deleteMyBookingFieldPartyRequestClientDelete(int id) {
     return "${BaseURL}booking-field-party-request/client/my/delete/${id}";
   }
+
+  //Notifications
+
+  static String getNotificationById(int id) {
+    return "${BaseURL}notification/client/get/${id}";
+  }
+
+  static const String paginateMyNotifications = "${BaseURL}notification/client";
+
+  static const String getMyFirebaseToken =
+      "${BaseURL}firebase-notification/client/get";
+  static const String createOrUpdateMyFirebaseToken =
+      "${BaseURL}firebase-notification/client/create-or-update";
 }

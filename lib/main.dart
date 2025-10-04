@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:jankuier_mobile/core/api_client/sota_api_client.dart';
+import 'package:jankuier_mobile/core/services/firebase_notification_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'core/adapters/file_entity_adapter.dart';
@@ -16,6 +19,7 @@ import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
 import 'features/tournament/data/entities/tournament_entity.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 import 'shared/theme/app_theme.dart';
 
@@ -55,6 +59,20 @@ void main() async {
 
   // Initialize LocalizationService (already initialized by dependency injection)
   await getIt.isReady<LocalizationService>();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Setup Firebase background message handler
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // Initialize Firebase Notification Service
+  await FirebaseNotificationService.instance.initialize();
+
+  // Subscribe to default topic
+  await FirebaseNotificationService.instance.subscribeToTopic("all_users");
 
   await SotaApiClient().getSotaToken();
   runApp(const MyApp());

@@ -84,6 +84,9 @@ dependencies:
   input_quantity: ^2.5.0
   #Local Storage
   hive: ^2.2.3
+  #Firebase
+  firebase_core: ^4.1.1
+  firebase_messaging: ^16.0.2
 
 
   # Debugging and Toaster
@@ -91,6 +94,7 @@ dependencies:
   talker_flutter: ^5.0.0
   fluttertoast: ^8.2.12
   flutter_inappwebview: ^6.1.5
+  flutter_local_notifications: ^19.4.2
 
 
 dev_dependencies:

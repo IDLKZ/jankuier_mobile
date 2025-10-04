@@ -53,5 +53,12 @@
 	<string>Это приложение использует галерею фотографий для выбора изображений профиля.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Это приложение может использовать микрофон для записи видео.</string>
+
+	<!-- Firebase Notifications -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

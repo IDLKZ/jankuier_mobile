@@ -17,7 +17,8 @@
       "Bash(del \"E:\\Projects\\jankuier_mobile\\lib\\features\\profile\\presentation\\pages\\profile_photo_page.dart\")",
       "Bash(flutter clean:*)",
       "Bash(flutter gen-l10n:*)",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "Bash(dart pub global activate:*)"
     ],
     "deny": [],
     "ask": [],

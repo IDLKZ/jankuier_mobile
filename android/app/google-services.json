@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "735180603337",
+    "project_id": "kz-kff-jankuier-mobile",
+    "storage_bucket": "kz-kff-jankuier-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735180603337:android:d6e236ff3a468b7bceb218",
+        "android_client_info": {
+          "package_name": "kz.kff.jankuier_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCf0CD-x_DsRu9ecN-oxdgQv6wwhSNiwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

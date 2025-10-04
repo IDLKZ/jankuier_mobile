@@ -29,8 +29,12 @@ mixin _$TaskModel {
   TaskPriority get priority => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
 
+  /// Serializes this TaskModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TaskModelCopyWith<TaskModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,6 +65,8 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,6 +143,8 @@ class __$$TaskModelImplCopyWithImpl<$Res>
       _$TaskModelImpl _value, $Res Function(_$TaskModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -253,7 +261,7 @@ class _$TaskModelImpl implements _TaskModel {
             const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -266,7 +274,9 @@ class _$TaskModelImpl implements _TaskModel {
       priority,
       const DeepCollectionEquality().hash(_tags));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TaskModelImplCopyWith<_$TaskModelImpl> get copyWith =>
@@ -310,8 +320,11 @@ abstract class _TaskModel implements TaskModel {
   TaskPriority get priority;
   @override
   List<String> get tags;
+
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TaskModelImplCopyWith<_$TaskModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

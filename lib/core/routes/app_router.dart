@@ -13,6 +13,7 @@ import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart'
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:jankuier_mobile/features/kff/presentation/pages/kff_matches_page.dart';
 import 'package:jankuier_mobile/features/kff_league/presentation/pages/kff_league_club_page.dart';
+import 'package:jankuier_mobile/features/notifications/presentation/pages/my_notification_page.dart';
 import 'package:jankuier_mobile/features/product_order/presentation/pages/product_order_details_page.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_detail_state.dart';
@@ -47,7 +48,7 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRouteConstants.WelcomePagePath,
+    initialLocation: AppRouteConstants.MyNotificationsPagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(
@@ -164,6 +165,15 @@ class AppRouter {
               path: AppRouteConstants.ActivityPagePath,
               name: AppRouteConstants.ActivityPageName,
               builder: (context, state) => const ActivityPage(),
+            ),
+            GoRoute(
+              path: AppRouteConstants.MyNotificationsPagePath,
+              name: AppRouteConstants.MyNotificationsPageName,
+              builder: (context, state) => const MyNotificationPage(),
+              redirect: (BuildContext context, GoRouterState state) async {
+                return await AppRouteMiddleware()
+                    .checkAuthMiddleware(context, state);
+              },
             ),
             GoRoute(
               path: AppRouteConstants.ProfilePagePath,
