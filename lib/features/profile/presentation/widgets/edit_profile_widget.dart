@@ -11,6 +11,9 @@ class EditProfilePage extends StatelessWidget {
   final VoidCallback? onAvatarTap;
   final VoidCallback? onPersonalDataTap;
   final VoidCallback? onSecurityTap;
+  final VoidCallback? onMyOrdersTap;
+  final VoidCallback? onMyBookingsTap;
+  final VoidCallback? onCartTap;
   final VoidCallback? onLogout;
   final VoidCallback? onDeleteAccount;
 
@@ -21,6 +24,9 @@ class EditProfilePage extends StatelessWidget {
     this.onAvatarTap,
     this.onPersonalDataTap,
     this.onSecurityTap,
+    this.onMyOrdersTap,
+    this.onMyBookingsTap,
+    this.onCartTap,
     this.onLogout,
     this.onDeleteAccount,
   }) : super(key: key);
@@ -97,6 +103,27 @@ class EditProfilePage extends StatelessWidget {
                   icon: Icons.lock_outline,
                   text: AppLocalizations.of(context)!.security,
                   onTap: onSecurityTap,
+                ),
+                SizedBox(height: 8.h),
+                // Мои заказы
+                _ProfileTile(
+                  icon: Icons.shopping_bag_outlined,
+                  text: AppLocalizations.of(context)!.myOrders,
+                  onTap: onMyOrdersTap,
+                ),
+                SizedBox(height: 8.h),
+                // Мои брони
+                _ProfileTile(
+                  icon: Icons.event_note_outlined,
+                  text: AppLocalizations.of(context)!.myBookings,
+                  onTap: onMyBookingsTap,
+                ),
+                SizedBox(height: 8.h),
+                // Корзина
+                _ProfileTile(
+                  icon: Icons.shopping_cart_outlined,
+                  text: AppLocalizations.of(context)!.cart,
+                  onTap: onCartTap,
                 ),
                 SizedBox(height: 8.h),
                 // Выход

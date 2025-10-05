@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:jankuier_mobile/core/constants/ticketon_api_constants.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/bloc/shows/ticketon_event.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/bloc/shows/ticketon_state.dart';
 import '../../../domain/use_cases/get_ticketon_shows_use_case.dart';
@@ -64,7 +65,8 @@ class TicketonShowsBloc extends Bloc<TicketonShowsEvent, TicketonShowsState> {
       emit(const TicketonShowsLoading());
 
       // Используем базовые параметры с текущим языком
-      final parameter = TicketonGetShowsParameter.withCurrentLocale();
+      final parameter = TicketonGetShowsParameter.withCurrentLocale(
+          place: TicketonApiConstant.PlaceId);
       add(LoadTicketonShowsEvent(parameter: parameter));
     }
   }

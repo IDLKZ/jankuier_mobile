@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CustomNavBarWidgetV2 extends StatelessWidget {
   final NavBarConfig navBarConfig;
 
   const CustomNavBarWidgetV2({
-    Key? key,
+    super.key,
     required this.navBarConfig,
-  }) : super(key: key);
+  });
 
   Widget _buildItem(ItemConfig item, bool isSelected) {
     return Column(
@@ -61,7 +59,7 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
                   color: Colors.transparent,
                   child: GestureDetector(
                     onTap: () {
-                      _navigateToTab(context, idx);
+                      navBarConfig.onItemSelected(idx);
                     },
                     behavior: HitTestBehavior.opaque,
                     child: _buildItem(item, isSelected),
@@ -71,12 +69,5 @@ class CustomNavBarWidgetV2 extends StatelessWidget {
             }).toList(),
       ),
     );
-  }
-
-  void _navigateToTab(BuildContext context, int index) {
-    final routes = ['/', '/tickets', '/services', '/blog', '/profile'];
-    if (index < routes.length) {
-      context.go(routes[index]);
-    }
   }
 }

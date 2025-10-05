@@ -463,5 +463,51 @@
   "createdDate": "Created date",
   "paymentDate": "Payment date",
   "quantity": "Qty",
-  "statusHistory": "Status history"
+  "statusHistory": "Status history",
+  "notifications": "Notifications",
+  "stayUpdated": "Stay updated",
+  "active": "Active",
+  "newNotifications": "New",
+  "readNotifications": "Read",
+  "somethingWentWrong": "Something went wrong",
+  "tryAgain": "Try Again",
+  "noReadNotifications": "No read notifications",
+  "allCaughtUp": "All caught up!",
+  "noReadNotificationsYet": "You haven't read any notifications yet",
+  "noNewNotifications": "You have no new notifications",
+  "justNow": "Just now",
+  "error": "Error",
+  "created": "Created",
+  "updated": "Updated",
+  "openLink": "Open Link",
+  "navigate": "Navigate",
+  "newNotification": "New notification",
+  "tapToView": "Tap to view",
+  "daysAgo": "{days}d ago",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours}h ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesAgo": "{minutes}m ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "myOrders": "My Orders",
+  "myBookings": "My Bookings",
+  "cart": "Cart"
 }

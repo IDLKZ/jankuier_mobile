@@ -6,48 +6,31 @@ import '../../l10n/app_localizations.dart';
 import 'custom_navbar.dart';
 
 class MainNavigation extends StatelessWidget {
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
   const MainNavigation({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    required this.navigationShell,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final currentRoute = GoRouterState.of(context).uri.toString();
-    final currentIndex = _getIndexFromRoute(currentRoute);
-
     return Scaffold(
-      body: child,
+      body: navigationShell,
       backgroundColor: Colors.white,
       bottomNavigationBar: CustomNavBarWidgetV2(
         navBarConfig: NavBarConfig(
-          selectedIndex: currentIndex,
+          selectedIndex: navigationShell.currentIndex,
           onItemSelected: (index) {
-            // Navigation handled in CustomNavBarWidgetV2
+            navigationShell.goBranch(
+              index,
+              initialLocation: index == navigationShell.currentIndex,
+            );
           },
           items: _buildNavItems(context),
         ),
       ),
     );
-  }
-
-  int _getIndexFromRoute(String route) {
-    switch (route) {
-      case '/':
-        return 0;
-      case '/tickets':
-        return 1;
-      case '/services':
-        return 2;
-      case '/blog':
-        return 3;
-      case '/profile':
-        return 4;
-      default:
-        return 0;
-    }
   }
 
   List<ItemConfig> _buildNavItems(BuildContext context) {

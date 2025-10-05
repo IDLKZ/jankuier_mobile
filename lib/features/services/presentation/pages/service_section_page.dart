@@ -106,38 +106,7 @@ class _ServiceSectionSinglePageState extends State<ServiceSectionSinglePage> {
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isFavorite = !isFavorite;
-                                });
-                              },
-                              child: Container(
-                                width: 35.w,
-                                height: 35.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:
-                                          Colors.black.withValues(alpha: 0.1),
-                                      blurRadius: 0.2,
-                                      offset: const Offset(1, 2), // Shadow position
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    isFavorite == true
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: const Color(0xFFEE120B),
-                                    size: 20.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            const SizedBox(),
                           ],
                         ),
                       )
@@ -242,17 +211,20 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
 
           Row(
             children: [
-              Icon(Icons.access_time, size: 14.sp, color: const Color(0xFF838383)),
+              Icon(Icons.access_time,
+                  size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${widget.entity.academy.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
+                  style: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xFF838383))),
               SizedBox(width: 12.w),
               Icon(Icons.person, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${widget.entity.academy.minAge} - ${widget.entity.academy.maxAge} ${AppLocalizations.of(context)!.years}",
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
+                  style: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xFF838383))),
             ],
           ),
           SizedBox(height: 12.h),

@@ -8,6 +8,7 @@ import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.
 import 'package:jankuier_mobile/features/auth/data/entities/user_entity.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/login_parameter.dart';
+import 'package:jankuier_mobile/features/auth/domain/parameters/refresh_token_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/register_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_profile_parameter.dart';
@@ -46,6 +47,17 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> me() async {
     try {
       final result = await _dataSource.me();
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BearerTokenEntity>> refreshToken(
+      RefreshTokenParameter parameter) async {
+    try {
+      final result = await _dataSource.refreshToken(parameter);
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

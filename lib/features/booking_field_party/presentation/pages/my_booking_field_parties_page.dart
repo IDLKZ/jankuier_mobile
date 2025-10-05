@@ -138,7 +138,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.bookingCancelledSuccessfully),
+                content: Text(
+                    AppLocalizations.of(context)!.bookingCancelledSuccessfully),
                 backgroundColor: AppColors.success,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
@@ -166,6 +167,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
             title: AppLocalizations.of(context)!.myBookings,
             actionIcon: Icons.sports_soccer,
             onActionTap: () {},
+            leadingIcon: Icons.arrow_back_ios_new,
           ),
           body: Column(
             children: [
@@ -372,7 +374,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  booking.field?.localizedTitle(context) ?? AppLocalizations.of(context)!.field,
+                  booking.field?.localizedTitle(context) ??
+                      AppLocalizations.of(context)!.field,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20.sp,
@@ -422,7 +425,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        booking.status?.localizedTitle(context) ?? AppLocalizations.of(context)!.status,
+                        booking.status?.localizedTitle(context) ??
+                            AppLocalizations.of(context)!.status,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 13.sp,
@@ -734,7 +738,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                                         ),
                                         SizedBox(width: 8.w),
                                         Text(
-                                          AppLocalizations.of(context)!.cancelBooking,
+                                          AppLocalizations.of(context)!
+                                              .cancelBooking,
                                           style: TextStyle(
                                             fontFamily: 'Inter',
                                             fontSize: 16.sp,

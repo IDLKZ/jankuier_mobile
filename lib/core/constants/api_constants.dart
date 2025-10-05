@@ -77,6 +77,7 @@ class ApiConstant {
   static const String GetMeUrl = "${BaseURL}auth/me";
   static const String RegisterUrl = "${BaseURL}auth/register";
   static const String LoginUrl = "${BaseURL}auth/login";
+  static const String RefreshTokenUrl = "${BaseURL}auth/refresh-token";
 
   //User Update Profile, Password, Avatar
   static const String UpdateProfileUrl = "${BaseURL}auth/update-profile";

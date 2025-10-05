@@ -487,8 +487,8 @@ abstract class AppLocalizations {
   /// No description provided for @daysAgo.
   ///
   /// In ru, this message translates to:
-  /// **'дн. назад'**
-  String get daysAgo;
+  /// **'{days} д. назад'**
+  String daysAgo(int days);
 
   /// No description provided for @singleNewsLoadError.
   ///
@@ -2649,6 +2649,120 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'История статусов'**
   String get statusHistory;
+
+  /// No description provided for @notifications.
+  ///
+  /// In ru, this message translates to:
+  /// **'Уведомления'**
+  String get notifications;
+
+  /// No description provided for @stayUpdated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Будьте в курсе событий'**
+  String get stayUpdated;
+
+  /// No description provided for @active.
+  ///
+  /// In ru, this message translates to:
+  /// **'Активно'**
+  String get active;
+
+  /// No description provided for @newNotifications.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новые'**
+  String get newNotifications;
+
+  /// No description provided for @readNotifications.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прочитанные'**
+  String get readNotifications;
+
+  /// No description provided for @noReadNotifications.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет прочитанных уведомлений'**
+  String get noReadNotifications;
+
+  /// No description provided for @allCaughtUp.
+  ///
+  /// In ru, this message translates to:
+  /// **'Всё прочитано!'**
+  String get allCaughtUp;
+
+  /// No description provided for @noReadNotificationsYet.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вы ещё не прочитали ни одного уведомления'**
+  String get noReadNotificationsYet;
+
+  /// No description provided for @noNewNotifications.
+  ///
+  /// In ru, this message translates to:
+  /// **'У вас нет новых уведомлений'**
+  String get noNewNotifications;
+
+  /// No description provided for @error.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка'**
+  String get error;
+
+  /// No description provided for @created.
+  ///
+  /// In ru, this message translates to:
+  /// **'Создано'**
+  String get created;
+
+  /// No description provided for @updated.
+  ///
+  /// In ru, this message translates to:
+  /// **'Обновлено'**
+  String get updated;
+
+  /// No description provided for @openLink.
+  ///
+  /// In ru, this message translates to:
+  /// **'Открыть ссылку'**
+  String get openLink;
+
+  /// No description provided for @navigate.
+  ///
+  /// In ru, this message translates to:
+  /// **'Перейти'**
+  String get navigate;
+
+  /// No description provided for @newNotification.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новое уведомление'**
+  String get newNotification;
+
+  /// No description provided for @tapToView.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нажмите для просмотра'**
+  String get tapToView;
+
+  /// No description provided for @hoursAgo.
+  ///
+  /// In ru, this message translates to:
+  /// **'{hours} ч. назад'**
+  String hoursAgo(int hours);
+
+  /// No description provided for @minutesAgo.
+  ///
+  /// In ru, this message translates to:
+  /// **'{minutes} мин. назад'**
+  String minutesAgo(int minutes);
+
+  /// No description provided for @cart.
+  ///
+  /// In ru, this message translates to:
+  /// **'Корзина'**
+  String get cart;
 }
 
 class _AppLocalizationsDelegate

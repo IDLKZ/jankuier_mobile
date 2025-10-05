@@ -462,5 +462,51 @@
   "createdDate": "Дата создания",
   "paymentDate": "Дата оплаты",
   "quantity": "Кол-во",
-  "statusHistory": "История статусов"
+  "statusHistory": "История статусов",
+  "notifications": "Уведомления",
+  "stayUpdated": "Будьте в курсе событий",
+  "active": "Активно",
+  "newNotifications": "Новые",
+  "readNotifications": "Прочитанные",
+  "somethingWentWrong": "Что-то пошло не так",
+  "tryAgain": "Попробовать снова",
+  "noReadNotifications": "Нет прочитанных уведомлений",
+  "allCaughtUp": "Всё прочитано!",
+  "noReadNotificationsYet": "Вы ещё не прочитали ни одного уведомления",
+  "noNewNotifications": "У вас нет новых уведомлений",
+  "justNow": "Только что",
+  "error": "Ошибка",
+  "created": "Создано",
+  "updated": "Обновлено",
+  "openLink": "Открыть ссылку",
+  "navigate": "Перейти",
+  "newNotification": "Новое уведомление",
+  "tapToView": "Нажмите для просмотра",
+  "daysAgo": "{days} д. назад",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} ч. назад",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesAgo": "{minutes} мин. назад",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "myOrders": "Мои заказы",
+  "myBookings": "Мои брони",
+  "cart": "Корзина"
 }

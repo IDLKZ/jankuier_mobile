@@ -141,6 +141,7 @@ class FieldCard extends StatelessWidget {
                               child: SingleChildScrollView(
                                 controller: scrollController,
                                 child: FieldBookingCard(
+                                  showModalContext: context,
                                   fieldPartyEntity: fieldPartyEntity,
                                 ),
                               ),
@@ -197,9 +198,11 @@ class _IconText extends StatelessWidget {
 
 class FieldBookingCard extends StatefulWidget {
   final FieldPartyEntity fieldPartyEntity;
+  final BuildContext showModalContext;
 
   const FieldBookingCard({
     super.key,
+    required this.showModalContext,
     required this.fieldPartyEntity,
   });
 
@@ -258,7 +261,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
     ));
   }
 
-  Future<void> _handlePayment() async {
+  Future<void> _handlePayment(BuildContext context) async {
     // Check if user is authenticated
     final hiveUtils = getIt<HiveUtils>();
     final user = await hiveUtils.getCurrentUser();
@@ -281,7 +284,7 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
       );
       return;
     }
-
+    Navigator.pop(context);
     // Create booking request
     _createBookingRequest(user);
   }
@@ -582,7 +585,10 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                                                             6.r),
                                                   ),
                                                 ),
-                                                onPressed: _handlePayment,
+                                                onPressed: () {
+                                                  _handlePayment(context =
+                                                      widget.showModalContext);
+                                                },
                                                 child: Text(
                                                   AppLocalizations.of(context)!
                                                       .pay,

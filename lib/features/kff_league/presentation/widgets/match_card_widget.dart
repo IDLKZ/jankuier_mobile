@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
@@ -69,8 +70,11 @@ class MatchCardWidget extends StatelessWidget {
                   Expanded(
                     child: Text(
                       () {
-                        final title = context.localizedTitle(match.tournament?.title);
-                        return title.isNotEmpty ? title : AppLocalizations.of(context)!.tournament;
+                        final title =
+                            context.localizedTitle(match.tournament?.title);
+                        return title.isNotEmpty
+                            ? title
+                            : AppLocalizations.of(context)!.tournament;
                       }(),
                       style: TextStyle(
                         fontSize: 12.sp,
@@ -144,11 +148,14 @@ class MatchCardWidget extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 8.h),
-                            Text(
-                               () {
-                                  final title = context.localizedTitle(match.team1?.title);
-                                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team1;
-                                }(),
+                            AutoSizeText(
+                              () {
+                                final title =
+                                    context.localizedTitle(match.team1?.title);
+                                return title.isNotEmpty
+                                    ? title
+                                    : AppLocalizations.of(context)!.team1;
+                              }(),
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
@@ -258,10 +265,13 @@ class MatchCardWidget extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 8.h),
-                            Text(
-                             () {
-                                final title = context.localizedTitle(match.team2?.title);
-                                return title.isNotEmpty ? title : AppLocalizations.of(context)!.team2;
+                            AutoSizeText(
+                              () {
+                                final title =
+                                    context.localizedTitle(match.team2?.title);
+                                return title.isNotEmpty
+                                    ? title
+                                    : AppLocalizations.of(context)!.team2;
                               }(),
                               style: TextStyle(
                                 fontSize: 12.sp,
@@ -297,9 +307,13 @@ class MatchCardWidget extends StatelessWidget {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                                () {
-                              final title = context.localizedTitle(match.stadiumObj?.title);
-                              return title.isNotEmpty ? title : AppLocalizations.of(context)!.stadiumNotSpecified;
+                            () {
+                              final title = context
+                                  .localizedTitle(match.stadiumObj?.title);
+                              return title.isNotEmpty
+                                  ? title
+                                  : AppLocalizations.of(context)!
+                                      .stadiumNotSpecified;
                             }(),
                             style: TextStyle(
                               fontSize: 11.sp,

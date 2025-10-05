@@ -207,7 +207,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yesterday => 'Yesterday';
 
   @override
-  String get daysAgo => 'days ago';
+  String daysAgo(int days) {
+    return '${days}d ago';
+  }
 
   @override
   String get singleNewsLoadError => 'Error loading news article';
@@ -945,7 +947,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get httpError => 'HTTP error';
 
   @override
-  String get tryAgain => 'Try again';
+  String get tryAgain => 'Try Again';
 
   @override
   String get repeatPayment => 'Repeat Payment';
@@ -1298,4 +1300,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusHistory => 'Status history';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get stayUpdated => 'Stay updated';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get newNotifications => 'New';
+
+  @override
+  String get readNotifications => 'Read';
+
+  @override
+  String get noReadNotifications => 'No read notifications';
+
+  @override
+  String get allCaughtUp => 'All caught up!';
+
+  @override
+  String get noReadNotificationsYet =>
+      'You haven\'t read any notifications yet';
+
+  @override
+  String get noNewNotifications => 'You have no new notifications';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get created => 'Created';
+
+  @override
+  String get updated => 'Updated';
+
+  @override
+  String get openLink => 'Open Link';
+
+  @override
+  String get navigate => 'Navigate';
+
+  @override
+  String get newNotification => 'New notification';
+
+  @override
+  String get tapToView => 'Tap to view';
+
+  @override
+  String hoursAgo(int hours) {
+    return '${hours}h ago';
+  }
+
+  @override
+  String minutesAgo(int minutes) {
+    return '${minutes}m ago';
+  }
+
+  @override
+  String get cart => 'Cart';
 }

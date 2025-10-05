@@ -59,22 +59,9 @@ class _MyCartPageContentState extends State<_MyCartPageContent> {
       backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
           title: "Корзина",
-          actionIcon: Iconsax.trash,
+          actionIcon: Iconsax.bag,
           onActionTap: () {
-            BlocBuilder<MyCartBloc, MyCartState>(
-              builder: (context, state) {
-                if (state is MyCartLoaded &&
-                    state.response.cartItems != null &&
-                    state.response.cartItems!.isNotEmpty) {
-                  return IconButton(
-                    icon: const Icon(Icons.delete_outline,
-                        color: AppColors.error),
-                    onPressed: () => _showClearCartDialog(context, state),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            );
+            context.go(AppRouteConstants.MyProductOrdersPagePath);
           }),
       body: MultiBlocListener(
         listeners: [
@@ -394,7 +381,8 @@ class _CartItemCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product?.localizedTitle(context) ?? AppLocalizations.of(context)!.product,
+                          product?.localizedTitle(context) ??
+                              AppLocalizations.of(context)!.product,
                           style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w600,

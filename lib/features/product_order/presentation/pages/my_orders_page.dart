@@ -116,11 +116,13 @@ class _MyOrdersPageState extends State<MyOrdersPage>
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.myOrders,
-        actionIcon: Icons.add_shopping_cart,
-        onActionTap: () {},
+        actionIcon: Icons.shopping_cart,
+        onActionTap: () {
+          context.go(AppRouteConstants.MyCartPagePath);
+        },
         leadingIcon: Icons.arrow_back_ios_new,
       ),
       body: Column(
@@ -285,6 +287,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                           return _OrderCard(
                             order: order,
                             onTap: () {
+                              print(
+                                  '${AppRouteConstants.MySingleProductOrderPagePath}${order.id}');
                               context.push(
                                   '${AppRouteConstants.MySingleProductOrderPagePath}${order.id}');
                             },

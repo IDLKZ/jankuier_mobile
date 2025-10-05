@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -68,10 +69,14 @@ Widget buildFutureMatch(BuildContext context) {
   );
 }
 
-Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context) {
+Widget homebuildMatchesList(
+    dynamic matches, bool isFuture, BuildContext context) {
   if (matches.isEmpty) {
-    return homebuildEmptyContentState(context,
-      isFuture ? AppLocalizations.of(context)!.noUpcomingMatches : AppLocalizations.of(context)!.noPastMatches,
+    return homebuildEmptyContentState(
+      context,
+      isFuture
+          ? AppLocalizations.of(context)!.noUpcomingMatches
+          : AppLocalizations.of(context)!.noPastMatches,
       isFuture ? Icons.schedule : Icons.history,
     );
   }
@@ -102,7 +107,8 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  match.championship?.title ?? AppLocalizations.of(context)!.tournamentNotSpecified,
+                  match.championship?.title ??
+                      AppLocalizations.of(context)!.tournamentNotSpecified,
                   style: TextStyle(
                     fontSize: 11.sp,
                     color: AppColors.primary,
@@ -147,10 +153,11 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        Text(
-                          match.team1?.title ?? AppLocalizations.of(context)!.team1,
+                        AutoSizeText(
+                          match.team1?.title ??
+                              AppLocalizations.of(context)!.team1,
                           style: TextStyle(
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                           ),
@@ -271,10 +278,11 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        Text(
-                          match.team2?.title ?? AppLocalizations.of(context)!.team2,
+                        AutoSizeText(
+                          match.team2?.title ??
+                              AppLocalizations.of(context)!.team2,
                           style: TextStyle(
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                           ),
@@ -295,7 +303,8 @@ Widget homebuildMatchesList(dynamic matches, bool isFuture, BuildContext context
   );
 }
 
-Widget homebuildEmptyContentState(BuildContext context, String message, IconData icon) {
+Widget homebuildEmptyContentState(
+    BuildContext context, String message, IconData icon) {
   return Container(
     padding: EdgeInsets.all(40.w),
     child: Column(

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -149,7 +150,7 @@ Widget _buildMatchesList(dynamic matches, bool isFuture, BuildContext context) {
                           ),
                         ),
                         SizedBox(height: 8.h),
-                        Text(
+                        AutoSizeText(
                           match.team1?.title ??
                               AppLocalizations.of(context)!.team1,
                           style: TextStyle(
@@ -250,7 +251,7 @@ Widget _buildMatchesList(dynamic matches, bool isFuture, BuildContext context) {
                           ),
                         ),
                         SizedBox(height: 8.h),
-                        Text(
+                        AutoSizeText(
                           match.team2?.title ??
                               AppLocalizations.of(context)!.team2,
                           style: TextStyle(

@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:jankuier_mobile/core/di/injection.dart';
+import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 
 /// Top-level function for handling background messages
 @pragma('vm:entry-point')
@@ -230,17 +232,52 @@ class FirebaseNotificationService {
       print('Navigate to: ${data['screen'] ?? 'notifications'}');
       print('Notification data: $data');
     }
-
-    // Example navigation logic:
-    // - data['screen'] = 'notification_details', data['id'] = '123'
-    // - data['screen'] = 'profile'
-    // - data['action_url'] = 'https://example.com'
-    // - data['inner_action_url'] = '/services/field/123'
   }
 
   /// Get FCM token
   Future<String?> getToken() async {
     return await _firebaseMessaging.getToken();
+  }
+
+  /// Get FCM token with user validation
+  Future<String?> getTokenWithUserValidation() async {
+    try {
+      final hiveUtils = getIt<HiveUtils>();
+      final currentUser = await hiveUtils.getCurrentUser();
+
+      if (currentUser == null) {
+        if (kDebugMode) {
+          print('No current user found, skipping FCM token retrieval');
+        }
+        return null;
+      }
+
+      final token = await _firebaseMessaging.getToken();
+      if (kDebugMode) {
+        print('FCM token retrieved for user ${currentUser.id}: $token');
+      }
+
+      return token;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting FCM token: $e');
+      }
+      return null;
+    }
+  }
+
+  /// Delete FCM token (for logout)
+  Future<void> deleteToken() async {
+    try {
+      await _firebaseMessaging.deleteToken();
+      if (kDebugMode) {
+        print('FCM token deleted successfully');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting FCM token: $e');
+      }
+    }
   }
 
   /// Subscribe to topic

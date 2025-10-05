@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
+import 'package:jankuier_mobile/core/services/firebase_notification_service.dart';
 import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_me_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_photo_bloc/update_profile_photo_bloc.dart';
@@ -186,6 +187,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _onLogout() async {
     try {
+      // Delete FCM token before logout
+      await FirebaseNotificationService.instance.deleteToken();
+
       // Clear all user data from Hive
       final hiveUtils = getIt<HiveUtils>();
       await hiveUtils.clearAccessToken();
@@ -225,7 +229,8 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
               ),
-              child: Text(AppLocalizations.of(context)!.deleteAccountPermanently),
+              child:
+                  Text(AppLocalizations.of(context)!.deleteAccountPermanently),
             ),
           ],
         );
@@ -244,7 +249,9 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.profile,
         actionIcon: Icons.notifications_none,
-        onActionTap: () {},
+        onActionTap: () {
+          context.go(AppRouteConstants.MyNotificationsPagePath);
+        },
       ),
       body: MultiBlocListener(
         listeners: [
@@ -347,6 +354,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 onSecurityTap: () {
                   context.push(AppRouteConstants.EditPasswordPagePath);
+                },
+                onMyOrdersTap: () {
+                  context.push(AppRouteConstants.MyProductOrdersPagePath);
+                },
+                onMyBookingsTap: () {
+                  context.push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+                },
+                onCartTap: () {
+                  context.push(AppRouteConstants.MyCartPagePath);
                 },
                 onLogout: _onLogout,
                 onDeleteAccount: _showDeleteAccountConfirmation,

@@ -11,10 +11,9 @@ import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_sta
 import '_build_league_carousel.dart';
 
 Widget buildTournamentSection(
-  BuildContext context,
-  TournamentEntity? selectedTournament,
-  void Function(TournamentEntity) onTournamentSelected
-) {
+    BuildContext context,
+    TournamentEntity? selectedTournament,
+    void Function(TournamentEntity) onTournamentSelected) {
   return Container(
     padding: EdgeInsets.all(20.w),
     child: Column(
@@ -44,16 +43,16 @@ Widget _buildTournamentCarousel(TournamentEntity? selectedTournament,
         return _buildLoadingCarousel();
       } else if (state is GetTournamentStateSuccessState) {
         // Filter only football tournaments with seasons (like in tournament_selection_grid.dart)
-        const excludedSeasonIds = [92, 71, 24, 108, 17];
+        const excludedSeasonIds = [71, 92, 24, 108, 17];
         final tournaments = state.tournaments.results
             .where((tournament) =>
-        tournament.sport == SotaApiConstant.FootballID &&
-            tournament.seasons.isNotEmpty &&
-            tournament.image != null &&
-            tournament.image!.isNotEmpty &&
-            !tournament.seasons.any((season) => excludedSeasonIds.contains(season.id))
-        )
-        // .take(6) // Limit to 6 tournaments for carousel
+                tournament.sport == SotaApiConstant.FootballID &&
+                tournament.seasons.isNotEmpty &&
+                tournament.image != null &&
+                tournament.image!.isNotEmpty &&
+                !tournament.seasons
+                    .any((season) => excludedSeasonIds.contains(season.id)))
+            // .take(6) // Limit to 6 tournaments for carousel
             .toList();
 
         if (tournaments.isEmpty) {
@@ -67,7 +66,8 @@ Widget _buildTournamentCarousel(TournamentEntity? selectedTournament,
           });
         }
 
-        return buildLeagueCarousel(tournaments, selectedTournament, onTournamentSelected);
+        return buildLeagueCarousel(
+            tournaments, selectedTournament, onTournamentSelected);
       } else if (state is GetTournamentStateFailedState) {
         return _buildErrorState(context);
       }

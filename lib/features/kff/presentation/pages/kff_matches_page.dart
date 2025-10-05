@@ -124,13 +124,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
-                  // Содержимое табов - ConstrainedBox для ограничения высоты в SingleChildScrollView
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height * 0.6,
-                      maxHeight: MediaQuery.of(context).size.height * 0.8,
-                    ),
-                    child: MultiBlocProvider(
+                  // Содержимое табов - без ограничений высоты для полной прокрутки
+                  MultiBlocProvider(
                       providers: [
                         // BLoC для получения списка всех лиг
                         BlocProvider<GetAllLeagueBloc>(
@@ -187,7 +182,6 @@ class _KffMatchesPageState extends State<KffMatchesPage>
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -426,7 +420,8 @@ class _KffMatchesPageState extends State<KffMatchesPage>
         SizedBox(height: 12.h),
 
         // Содержимое табов данных - BLoC'и уже доступны из верхнего уровня
-        Expanded(
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.6,
           child: TabBarView(
             controller: _dataTabController,
             children: [

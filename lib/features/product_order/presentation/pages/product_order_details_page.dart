@@ -287,7 +287,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: AppColors.background,
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.myOrders,
         leadingIcon: Icons.arrow_back_ios_new,

@@ -36,7 +36,9 @@ class _TicketsPageState extends State<TicketsPage>
     return Scaffold(
       backgroundColor: AppColors.grey100,
       appBar: PagesCommonAppBar(
-          title: AppLocalizations.of(context)!.tickets, actionIcon: Iconsax.ticket, onActionTap: () {}),
+          title: AppLocalizations.of(context)!.tickets,
+          actionIcon: Iconsax.ticket,
+          onActionTap: () {}),
       body: Padding(
         padding: const EdgeInsets.symmetric(),
         child: Column(
@@ -44,6 +46,7 @@ class _TicketsPageState extends State<TicketsPage>
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 15.w,
+                vertical: 20.h,
               ),
               child: Container(
                 decoration: BoxDecoration(

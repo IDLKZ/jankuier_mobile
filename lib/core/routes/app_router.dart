@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jankuier_mobile/core/constants/app_constants.dart';
+import 'package:jankuier_mobile/core/constants/ticketon_api_constants.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.dart';
@@ -48,7 +50,7 @@ import 'app_route_middleware.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppRouteConstants.MyNotificationsPagePath,
+    initialLocation: AppRouteConstants.WelcomePagePath,
     routes: [
       // Welcome video page (outside shell to show fullscreen)
       GoRoute(
@@ -103,200 +105,249 @@ class AppRouter {
               .checkGuestMiddleware(context, state);
         },
       ),
-      ShellRoute(
-          builder: (context, state, child) {
-            return MainNavigation(child: child);
-          },
-          routes: [
-            GoRoute(
-              path: AppRouteConstants.HomePagePath,
-              name: AppRouteConstants.HomePageName,
-              builder: (context, state) => const HomePage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.TasksPagePath,
-              name: AppRouteConstants.TasksPageName,
-              builder: (context, state) => const TasksPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.MatchesPagePath,
-              name: AppRouteConstants.MatchesPageName,
-              builder: (context, state) => const MatchesPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.ServicesPagePath,
-              name: AppRouteConstants.ServicesPageName,
-              builder: (context, state) => const ServicesPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.MyProductOrdersPagePath,
-              name: AppRouteConstants.MyProductOrdersPageName,
-              builder: (context, state) => const MyOrdersPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path:
-                  "${AppRouteConstants.MySingleProductOrderPagePath}:productOrderId",
-              name: AppRouteConstants.MySingleProductOrderPageName,
-              builder: (context, state) {
-                int productOrderId = int.tryParse(
-                        state.pathParameters['productOrderId'] ?? "0") ??
-                    0;
-                return ProductOrderDetailsPage(orderId: productOrderId);
-              },
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.MyBookingFieldRequestsPagePath,
-              name: AppRouteConstants.MyBookingFieldRequestsPageName,
-              builder: (context, state) => const MyBookingFieldPartiesPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.ActivityPagePath,
-              name: AppRouteConstants.ActivityPageName,
-              builder: (context, state) => const ActivityPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.MyNotificationsPagePath,
-              name: AppRouteConstants.MyNotificationsPageName,
-              builder: (context, state) => const MyNotificationPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.ProfilePagePath,
-              name: AppRouteConstants.ProfilePageName,
-              builder: (context, state) => const ProfilePage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.KffMatchesPagePath,
-              name: AppRouteConstants.KffMatchesPageName,
-              builder: (context, state) => const KffMatchesPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.KffLeagueClubPagePath,
-              name: AppRouteConstants.KffLeagueClubPageName,
-              builder: (context, state) => const KffLeagueClubPage(),
-            ),
-            GoRoute(
-              path: "${AppRouteConstants.SingleProductPagePath}:productId",
-              name: AppRouteConstants.SingleProductPageName,
-              builder: (context, state) {
-                int productId =
-                    int.tryParse(state.pathParameters['productId'] ?? "0") ?? 0;
-                return BlocProvider(
-                  create: (BuildContext context) {
-                    return getIt<FullProductBloc>()
-                      ..add(GetFullProductEvent(productId));
-                  },
-                  child: ServiceProductPage(productId: productId),
-                );
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.MyCartPagePath,
-              name: AppRouteConstants.MyCartPageName,
-              builder: (context, state) => const MyCartPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path:
-                  "${AppRouteConstants.ServiceSectionSinglePagePath}:academyId",
-              name: AppRouteConstants.ServiceSectionSinglePageName,
-              builder: (context, state) {
-                int academyId =
-                    int.tryParse(state.pathParameters['academyId'] ?? "0") ?? 0;
-                return BlocProvider(
-                  create: (BuildContext context) {
-                    return getIt<GetFullAcademyDetailBloc>()
-                      ..add(GetFullAcademyEvent(academyId));
-                  },
-                  child: ServiceSectionSinglePage(academyId: academyId),
-                );
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.EditAccountPagePath,
-              name: AppRouteConstants.EditAccountPageName,
-              builder: (context, state) => const EditAccountPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.EditPasswordPagePath,
-              name: AppRouteConstants.EditPasswordPageName,
-              builder: (context, state) => const EditPasswordPage(),
-              redirect: (BuildContext context, GoRouterState state) async {
-                return await AppRouteMiddleware()
-                    .checkAuthMiddleware(context, state);
-              },
-            ),
-            GoRoute(
-              path: AppRouteConstants.BlogListPagePath,
-              name: AppRouteConstants.BlogListPageName,
-              builder: (context, state) => const BlogListPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.CountryListPagePath,
-              name: AppRouteConstants.CountryListPageName,
-              builder: (context, state) => const CountriesPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.TournamentSelectionPagePath,
-              name: AppRouteConstants.TournamentSelectionPageName,
-              builder: (context, state) => const TournamentSelectionPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.StandingsPagePath,
-              name: AppRouteConstants.StandingsPageName,
-              builder: (context, state) => const StandingsPage(),
-            ),
-            GoRoute(
-              path: AppRouteConstants.TicketPagePath,
-              name: AppRouteConstants.TicketPageName,
-              builder: (context, state) {
-                return BlocProvider(
-                  create: (BuildContext context) {
-                    return getIt<TicketonShowsBloc>()
-                      ..add(LoadTicketonShowsEvent(
-                          parameter:
-                              TicketonGetShowsParameter.withCurrentLocale()));
-                  },
-                  child: const TicketsPage(),
-                );
-              },
-            ),
-            GoRoute(
-              path: "${AppRouteConstants.GameStatPagePath}:gameId",
-              name: AppRouteConstants.GameStatPageName,
-              builder: (context, state) {
-                final match = state.extra as MatchEntity;
-                String gameId = state.pathParameters['gameId'] ?? "0";
-                return GamePage(gameId: gameId, match: match);
-              },
-            ),
-          ])
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainNavigation(navigationShell: navigationShell);
+        },
+        branches: [
+          // Branch 0: Home
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouteConstants.HomePagePath,
+                name: AppRouteConstants.HomePageName,
+                builder: (context, state) => const HomePage(),
+                routes: [
+                  GoRoute(
+                    path: AppRouteConstants.TasksCleanPagePath,
+                    name: AppRouteConstants.TasksPageName,
+                    builder: (context, state) => const TasksPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.MatchesCleanPagePath,
+                    name: AppRouteConstants.MatchesPageName,
+                    builder: (context, state) => const MatchesPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.KffMatchesCleanPagePath,
+                    name: AppRouteConstants.KffMatchesPageName,
+                    builder: (context, state) => const KffMatchesPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.KffLeagueClubCleanPagePath,
+                    name: AppRouteConstants.KffLeagueClubPageName,
+                    builder: (context, state) => const KffLeagueClubPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.CountryListCleanPagePath,
+                    name: AppRouteConstants.CountryListPageName,
+                    builder: (context, state) => const CountriesPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.TournamentSelectionCleanPagePath,
+                    name: AppRouteConstants.TournamentSelectionPageName,
+                    builder: (context, state) =>
+                        const TournamentSelectionPage(),
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.StandingsCleanPagePath,
+                    name: AppRouteConstants.StandingsPageName,
+                    builder: (context, state) => const StandingsPage(),
+                  ),
+                  GoRoute(
+                    path: '${AppRouteConstants.GameStatPagePath}:gameId',
+                    name: AppRouteConstants.GameStatPageName,
+                    builder: (context, state) {
+                      final match = state.extra as MatchEntity;
+                      String gameId = state.pathParameters['gameId'] ?? "0";
+                      return GamePage(gameId: gameId, match: match);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.ActivityPagePath,
+                    name: AppRouteConstants.ActivityPageName,
+                    builder: (context, state) => const ActivityPage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Branch 1: Tickets
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouteConstants.TicketPagePath,
+                name: AppRouteConstants.TicketPageName,
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (BuildContext context) {
+                      return getIt<TicketonShowsBloc>()
+                        ..add(LoadTicketonShowsEvent(
+                            parameter:
+                                TicketonGetShowsParameter.withCurrentLocale(
+                                    place: TicketonApiConstant.PlaceId)));
+                    },
+                    child: const TicketsPage(),
+                  );
+                },
+              ),
+            ],
+          ),
+          // Branch 2: Services
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouteConstants.ServicesPagePath,
+                name: AppRouteConstants.ServicesPageName,
+                builder: (context, state) => const ServicesPage(),
+                routes: [
+                  GoRoute(
+                    path:
+                        '${AppRouteConstants.SingleProductCleanPagePath}:productId',
+                    name: AppRouteConstants.SingleProductPageName,
+                    builder: (context, state) {
+                      int productId = int.tryParse(
+                              state.pathParameters['productId'] ?? "0") ??
+                          0;
+                      return BlocProvider(
+                        create: (BuildContext context) {
+                          return getIt<FullProductBloc>()
+                            ..add(GetFullProductEvent(productId));
+                        },
+                        child: ServiceProductPage(productId: productId),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path:
+                        '${AppRouteConstants.ServiceSectionSingleCleanPagePath}:academyId',
+                    name: AppRouteConstants.ServiceSectionSinglePageName,
+                    builder: (context, state) {
+                      int academyId = int.tryParse(
+                              state.pathParameters['academyId'] ?? "0") ??
+                          0;
+                      return BlocProvider(
+                        create: (BuildContext context) {
+                          return getIt<GetFullAcademyDetailBloc>()
+                            ..add(GetFullAcademyEvent(academyId));
+                        },
+                        child: ServiceSectionSinglePage(academyId: academyId),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.MyCartCleanPagePath,
+                    name: AppRouteConstants.MyCartPageName,
+                    builder: (context, state) => const MyCartPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.MyProductOrdersCleanPagePath,
+                    name: AppRouteConstants.MyProductOrdersPageName,
+                    builder: (context, state) => const MyOrdersPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                    routes: [
+                      GoRoute(
+                        path:
+                            "${AppRouteConstants.MySingleProductOrderCleanPagePath}:productOrderId",
+                        name: AppRouteConstants.MySingleProductOrderPageName,
+                        builder: (context, state) {
+                          int productOrderId = int.tryParse(
+                                  state.pathParameters['productOrderId'] ??
+                                      "0") ??
+                              0;
+                          return ProductOrderDetailsPage(
+                              orderId: productOrderId);
+                        },
+                        redirect:
+                            (BuildContext context, GoRouterState state) async {
+                          return await AppRouteMiddleware()
+                              .checkAuthMiddleware(context, state);
+                        },
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.MyBookingFieldRequestsCleanPagePath,
+                    name: AppRouteConstants.MyBookingFieldRequestsPageName,
+                    builder: (context, state) =>
+                        const MyBookingFieldPartiesPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Branch 3: Blog
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouteConstants.BlogListPagePath,
+                name: AppRouteConstants.BlogListPageName,
+                builder: (context, state) => const BlogListPage(),
+              ),
+            ],
+          ),
+          // Branch 4: Profile
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouteConstants.ProfilePagePath,
+                name: AppRouteConstants.ProfilePageName,
+                builder: (context, state) => const ProfilePage(),
+                redirect: (BuildContext context, GoRouterState state) async {
+                  return await AppRouteMiddleware()
+                      .checkAuthMiddleware(context, state);
+                },
+                routes: [
+                  GoRoute(
+                    path: AppRouteConstants.EditAccountCleanPagePath,
+                    name: AppRouteConstants.EditAccountPageName,
+                    builder: (context, state) => const EditAccountPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.EditPasswordCleanPagePath,
+                    name: AppRouteConstants.EditPasswordPageName,
+                    builder: (context, state) => const EditPasswordPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.MyNotificationsCleanPagePath,
+                    name: AppRouteConstants.MyNotificationsPageName,
+                    builder: (context, state) => const MyNotificationPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       appBar: AppBar(

@@ -34,6 +34,8 @@ import 'package:jankuier_mobile/features/auth/domain/usecases/delete_profile_pho
     as _i189;
 import 'package:jankuier_mobile/features/auth/domain/usecases/get_me_usecase.dart'
     as _i477;
+import 'package:jankuier_mobile/features/auth/domain/usecases/refresh_token_usecase.dart'
+    as _i391;
 import 'package:jankuier_mobile/features/auth/domain/usecases/send_verify_code_usecase.dart'
     as _i398;
 import 'package:jankuier_mobile/features/auth/domain/usecases/sign_in_usecase.dart'
@@ -54,6 +56,8 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_p
     as _i732;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_me_bloc.dart'
     as _i278;
+import 'package:jankuier_mobile/features/auth/presentation/bloc/refresh_token_bloc/refresh_token_bloc.dart'
+    as _i604;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart'
     as _i59;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart'
@@ -436,6 +440,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i189.DeleteProfilePhotoUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i477.GetMeUseCase>(
         () => _i477.GetMeUseCase(gh<_i106.AuthRepository>()));
+    gh.factory<_i391.RefreshTokenUseCase>(
+        () => _i391.RefreshTokenUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i398.SendVerifyCodeUseCase>(
         () => _i398.SendVerifyCodeUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i2.SignInUseCase>(
@@ -550,6 +556,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i897.GetAllProductOrderStatusBloc>(() =>
         _i897.GetAllProductOrderStatusBloc(
             gh<_i887.GetAllProductOrderStatusUseCase>()));
+    gh.factory<_i604.RefreshTokenBloc>(() => _i604.RefreshTokenBloc(
+          gh<_i391.RefreshTokenUseCase>(),
+          gh<_i854.HiveUtils>(),
+        ));
     gh.factory<_i1056.TaskBloc>(() => _i1056.TaskBloc(
           getTasks: gh<_i575.GetTasks>(),
           createTask: gh<_i631.CreateTask>(),

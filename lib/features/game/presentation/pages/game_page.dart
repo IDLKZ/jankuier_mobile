@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/standings/data/entities/match_entity.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/match_lineup_entity.dart';
@@ -79,7 +80,7 @@ class _GamePageViewState extends State<_GamePageView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           // Blue header
@@ -97,9 +98,9 @@ class _GamePageViewState extends State<_GamePageView>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      _buildTeamStatsTab(),
-                      _buildLineupTab(),
-                      _buildPlayerStatsTab(),
+                      _TeamStatsTabView(gameId: widget.gameId),
+                      _LineupTabView(gameId: widget.gameId),
+                      _PlayerStatsTabView(gameId: widget.gameId, match: widget.match),
                     ],
                   ),
                 ),
@@ -1254,5 +1255,991 @@ class _GamePageViewState extends State<_GamePageView>
     var formattedDate = _formatDate(originalDate);
 
     var anotherDate = "2025-01-05";
+  }
+}
+
+// Wrapper widgets with AutomaticKeepAliveClientMixin for TabBarView
+
+class _TeamStatsTabView extends StatefulWidget {
+  final String gameId;
+
+  const _TeamStatsTabView({required this.gameId});
+
+  @override
+  State<_TeamStatsTabView> createState() => _TeamStatsTabViewState();
+}
+
+class _TeamStatsTabViewState extends State<_TeamStatsTabView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocBuilder<GameBloc, GetGameState>(
+      builder: (context, state) {
+        if (state is GetTeamStatsByGameIdLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is GetTeamStatsByGameIdLoadedState) {
+          return _TeamStatsContent(
+            statsResponse: state.result,
+          );
+        } else if (state is GetTeamStatsByGameIdFailedState) {
+          return Center(
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+class _TeamStatsContent extends StatelessWidget {
+  final TeamsStatsResponseEntity statsResponse;
+
+  const _TeamStatsContent({required this.statsResponse});
+
+  @override
+  Widget build(BuildContext context) {
+    final teams = statsResponse.data.teams;
+    if (teams.length < 2) return const SizedBox();
+
+    final homeTeam = teams[0];
+    final awayTeam = teams[1];
+
+    // Get match info from parent
+    final gamePageState = context.findAncestorStateOfType<_GamePageViewState>()!;
+    final match = gamePageState.widget.match;
+
+    return Container(
+      margin: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Team names
+            Row(
+              children: [
+                // Home team logo and name
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 20.sp,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        match.homeTeam.name,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  '-',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+                // Away team logo and name
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        match.awayTeam.name,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 20.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            // Statistics
+            _StatRow(
+                title: AppLocalizations.of(context)!.ballPossession,
+                leftValue: "${homeTeam.stats.possession.toInt()}%",
+                rightValue: "${awayTeam.stats.possession.toInt()}%",
+                leftPercent: homeTeam.stats.possession,
+                rightPercent: awayTeam.stats.possession),
+            _StatRow(
+                title: AppLocalizations.of(context)!.shots,
+                leftValue: "${homeTeam.stats.shot}",
+                rightValue: "${awayTeam.stats.shot}",
+                leftPercent: homeTeam.stats.shot.toDouble(),
+                rightPercent: awayTeam.stats.shot.toDouble()),
+            _StatRow(
+                title: AppLocalizations.of(context)!.shotsOnGoal,
+                leftValue: "${homeTeam.stats.shotsOnGoal}",
+                rightValue: "${awayTeam.stats.shotsOnGoal}",
+                leftPercent: homeTeam.stats.shotsOnGoal.toDouble(),
+                rightPercent: awayTeam.stats.shotsOnGoal.toDouble()),
+            _StatRow(
+                title: AppLocalizations.of(context)!.shotsOffGoal,
+                leftValue: "${homeTeam.stats.shotsOffGoal}",
+                rightValue: "${awayTeam.stats.shotsOffGoal}",
+                leftPercent: homeTeam.stats.shotsOffGoal.toDouble(),
+                rightPercent: awayTeam.stats.shotsOffGoal.toDouble()),
+            _StatRow(
+                title: AppLocalizations.of(context)!.fouls,
+                leftValue: "${homeTeam.stats.foul}",
+                rightValue: "${awayTeam.stats.foul}",
+                leftPercent: homeTeam.stats.foul.toDouble(),
+                rightPercent: awayTeam.stats.foul.toDouble()),
+            _StatRow(
+                title: AppLocalizations.of(context)!.yellowCards,
+                leftValue: "${homeTeam.stats.yellowCards}",
+                rightValue: "${awayTeam.stats.yellowCards}",
+                leftPercent: homeTeam.stats.yellowCards.toDouble(),
+                rightPercent: awayTeam.stats.yellowCards.toDouble()),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatRow extends StatelessWidget {
+  final String title;
+  final String leftValue;
+  final String rightValue;
+  final double leftPercent;
+  final double rightPercent;
+
+  const _StatRow({
+    required this.title,
+    required this.leftValue,
+    required this.rightValue,
+    required this.leftPercent,
+    required this.rightPercent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final maxValue = leftPercent > rightPercent ? leftPercent : rightPercent;
+    final leftWidth = maxValue > 0 ? (leftPercent / maxValue) : 0.0;
+    final rightWidth = maxValue > 0 ? (rightPercent / maxValue) : 0.0;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(leftValue,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  )),
+              Text(title,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                  )),
+              Text(rightValue,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 6.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE5E5E5),
+                    borderRadius: BorderRadius.circular(3.r),
+                  ),
+                  child: FractionallySizedBox(
+                    widthFactor: leftWidth,
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E4B9B),
+                        borderRadius: BorderRadius.circular(3.r),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Container(
+                  height: 6.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE5E5E5),
+                    borderRadius: BorderRadius.circular(3.r),
+                  ),
+                  child: FractionallySizedBox(
+                    widthFactor: rightWidth,
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E4B9B),
+                        borderRadius: BorderRadius.circular(3.r),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LineupTabView extends StatefulWidget {
+  final String gameId;
+
+  const _LineupTabView({required this.gameId});
+
+  @override
+  State<_LineupTabView> createState() => _LineupTabViewState();
+}
+
+class _LineupTabViewState extends State<_LineupTabView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocBuilder<GameBloc, GetGameState>(
+      builder: (context, state) {
+        if (state is GetMatchLineUpStatsByGameIdLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is GetMatchLineUpStatsByGameIdLoadedState) {
+          return _LineupContent(lineup: state.result);
+        } else if (state is GetMatchLineUpStatsByGameIdFailedState) {
+          return Center(
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
+          );
+        }
+        return Center(
+          child: Text(AppLocalizations.of(context)!.selectLineupTabToLoad),
+        );
+      },
+    );
+  }
+}
+
+class _LineupContent extends StatelessWidget {
+  final MatchLineupEntity lineup;
+
+  const _LineupContent({required this.lineup});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Информация о судьях
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.refereeTeam,
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 12.h),
+                if (lineup.referees.main != null)
+                  _buildRefereeRow(AppLocalizations.of(context)!.mainReferee,
+                      lineup.referees.main!),
+                if (lineup.referees.firstAssistant != null)
+                  _buildRefereeRow(AppLocalizations.of(context)!.firstAssistant,
+                      lineup.referees.firstAssistant!),
+                if (lineup.referees.secondAssistant != null)
+                  _buildRefereeRow(
+                      AppLocalizations.of(context)!.secondAssistant,
+                      lineup.referees.secondAssistant!),
+                if (lineup.referees.fourthReferee != null)
+                  _buildRefereeRow(AppLocalizations.of(context)!.fourthReferee,
+                      lineup.referees.fourthReferee!),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.h),
+
+          // Составы команд
+          _TeamLineupWidget(teamLineup: lineup.homeTeam),
+          SizedBox(height: 16.h),
+          _TeamLineupWidget(teamLineup: lineup.awayTeam),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRefereeRow(String title, String name) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 4.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120.w,
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              name,
+              style: TextStyle(fontSize: 12.sp),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TeamLineupWidget extends StatelessWidget {
+  final TeamLineupEntity teamLineup;
+
+  const _TeamLineupWidget({required this.teamLineup});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (teamLineup.basLogoPath != null)
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                )
+              else
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  child: Icon(
+                    Icons.sports_soccer,
+                    size: 16.w,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              SizedBox(width: 8.w),
+              Text(
+                teamLineup.name,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            AppLocalizations.of(context)!.coachingStaff,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 8.h),
+          _buildCoachRow(AppLocalizations.of(context)!.headCoach,
+              teamLineup.coach.fullName),
+          _buildCoachRow(AppLocalizations.of(context)!.assistants,
+              "${teamLineup.firstAssistant.fullName}, ${teamLineup.secondAssistant.fullName}"),
+          SizedBox(height: 16.h),
+          Text(
+            AppLocalizations.of(context)!.players,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 8.h),
+          ...teamLineup.lineup.map((player) => _PlayerRowWidget(player: player)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCoachRow(String role, String name) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 4.h),
+      child: Row(
+        children: [
+          Icon(Icons.person, size: 16.w, color: Colors.grey[600]),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(role,
+                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[600])),
+                Text(name, style: TextStyle(fontSize: 12.sp)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PlayerRowWidget extends StatelessWidget {
+  final LineupPlayerEntity player;
+
+  const _PlayerRowWidget({required this.player});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(6.r),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 24.w,
+            height: 24.w,
+            decoration: BoxDecoration(
+              color: player.isGk ? Colors.orange : Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                "${player.number}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      player.fullName,
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.w500),
+                    ),
+                    if (player.isCaptain) ...[
+                      SizedBox(width: 4.w),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 1.h),
+                        decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.circular(2.r),
+                        ),
+                        child: Text(
+                          "C",
+                          style: TextStyle(
+                              fontSize: 8.sp, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                    if (player.isGk) ...[
+                      SizedBox(width: 4.w),
+                      Text(
+                        AppLocalizations.of(context)!.goalkeeper,
+                        style: TextStyle(fontSize: 10.sp, color: Colors.orange),
+                      ),
+                    ],
+                  ],
+                ),
+                Text(
+                  player.isGk
+                      ? AppLocalizations.of(context)!.goalkeeperFull
+                      : AppLocalizations.of(context)!.fieldPlayer,
+                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PlayerStatsTabView extends StatefulWidget {
+  final String gameId;
+  final MatchEntity match;
+
+  const _PlayerStatsTabView({required this.gameId, required this.match});
+
+  @override
+  State<_PlayerStatsTabView> createState() => _PlayerStatsTabViewState();
+}
+
+class _PlayerStatsTabViewState extends State<_PlayerStatsTabView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocBuilder<GameBloc, GetGameState>(
+      builder: (context, state) {
+        if (state is GetPlayerStatsByGameIdLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is GetPlayerStatsByGameIdLoadedState) {
+          return _PlayerStatsContent(statsResponse: state.result);
+        } else if (state is GetPlayerStatsByGameIdFailedState) {
+          return Center(
+            child: Text(
+                '${AppLocalizations.of(context)!.loadingErrorWithMessage}: ${state.failureData.message}'),
+          );
+        }
+        return Center(
+          child: Text(AppLocalizations.of(context)!.selectPlayersTabToLoad),
+        );
+      },
+    );
+  }
+}
+
+class _PlayerStatsContent extends StatelessWidget {
+  final PlayersStatsResponseEntity statsResponse;
+
+  const _PlayerStatsContent({required this.statsResponse});
+
+  @override
+  Widget build(BuildContext context) {
+    final teamNames = statsResponse.data.teamNames;
+
+    return DefaultTabController(
+      length: teamNames.length,
+      child: Column(
+        children: [
+          if (teamNames.isNotEmpty)
+            Container(
+              color: Colors.white,
+              child: TabBar(
+                tabs: teamNames.map((teamName) => Tab(text: teamName)).toList(),
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: const Color(0xFF4B79CF),
+              ),
+            ),
+          Expanded(
+            child: TabBarView(
+              children: teamNames.map((teamName) {
+                final teamPlayers =
+                    statsResponse.data.getPlayersByTeam(teamName);
+                return _TeamPlayerStats(players: teamPlayers);
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TeamPlayerStats extends StatelessWidget {
+  final List<PlayerEntity> players;
+
+  const _TeamPlayerStats({required this.players});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+      itemCount: players.length,
+      itemBuilder: (context, index) {
+        final player = players[index];
+        return _PlayerStatCard(player: player);
+      },
+    );
+  }
+}
+
+class _PlayerStatCard extends StatelessWidget {
+  final PlayerEntity player;
+
+  const _PlayerStatCard({required this.player});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Player Header
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF1E4B9B),
+                  const Color(0xFF2E5BA8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Row(
+              children: [
+                // Player Number Circle
+                Container(
+                  width: 48.w,
+                  height: 48.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${player.number}",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        color: const Color(0xFF1E4B9B),
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                // Player Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        player.fullName,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.sports_soccer,
+                            size: 14.sp,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            player.team,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white.withValues(alpha: 0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Player Statistics
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              children: [
+                // Key Stats Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: _KeyStatItem(
+                        emoji: "⚽",
+                        value: "${player.stats.shot}",
+                        label: AppLocalizations.of(context)!.shots,
+                        color: const Color(0xFF4CAF50),
+                      ),
+                    ),
+                    Expanded(
+                      child: _KeyStatItem(
+                        emoji: "🎯",
+                        value: "${player.stats.shotsOnGoal}",
+                        label: AppLocalizations.of(context)!.onTarget,
+                        color: const Color(0xFF2196F3),
+                      ),
+                    ),
+                    Expanded(
+                      child: _KeyStatItem(
+                        emoji: "📊",
+                        value: "${player.stats.pass}",
+                        label: AppLocalizations.of(context)!.passes,
+                        color: const Color(0xFF9C27B0),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                // Additional Stats Grid
+                _AdditionalStats(player: player),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _KeyStatItem extends StatelessWidget {
+  final String emoji;
+  final String value;
+  final String label;
+  final Color color;
+
+  const _KeyStatItem({
+    required this.emoji,
+    required this.value,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            emoji,
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AdditionalStats extends StatelessWidget {
+  final PlayerEntity player;
+
+  const _AdditionalStats({required this.player});
+
+  @override
+  Widget build(BuildContext context) {
+    final stats = [
+      {
+        "label": AppLocalizations.of(context)!.offTarget,
+        "value": "${player.stats.shotsOffGoal}",
+        "icon": "❌"
+      },
+      {
+        "label": AppLocalizations.of(context)!.fouls,
+        "value": "${player.stats.foul}",
+        "icon": "⚠️"
+      },
+      {
+        "label": AppLocalizations.of(context)!.yellows,
+        "value": "${player.stats.yellowCards}",
+        "icon": "🟨"
+      },
+      {
+        "label": AppLocalizations.of(context)!.offsides,
+        "value": "${player.stats.offside}",
+        "icon": "🚩"
+      },
+      {
+        "label": AppLocalizations.of(context)!.corners,
+        "value": "${player.stats.corner}",
+        "icon": "📐"
+      },
+    ];
+
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.additionalStats,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: stats.map((stat) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.grey.withValues(alpha: 0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      stat["icon"]!,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      "${stat["value"]} ${stat["label"]}",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
   }
 }

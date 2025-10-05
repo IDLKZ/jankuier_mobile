@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/login_parameter.dart';
+import 'package:jankuier_mobile/features/auth/domain/parameters/refresh_token_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/register_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_profile_parameter.dart';
@@ -19,6 +20,7 @@ abstract class AuthDSInterface {
   Future<BearerTokenEntity> signIn(LoginParameter parameter);
   Future<UserEntity> signUp(RegisterParameter parameter);
   Future<UserEntity> me();
+  Future<BearerTokenEntity> refreshToken(RefreshTokenParameter parameter);
   Future<bool> updatePassword(UpdatePasswordParameter parameter);
   Future<UserEntity> updateProfile(UpdateProfileParameter parameter);
   Future<UserEntity> updateProfilePhoto(File file);
@@ -174,6 +176,21 @@ class AuthDSImpl implements AuthDSInterface {
     try {
       final response = await httpUtils.delete(ApiConstant.DeleteAccountUrl);
       return response ?? true;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<BearerTokenEntity> refreshToken(
+      RefreshTokenParameter parameter) async {
+    try {
+      final response = await httpUtils.post(ApiConstant.RefreshTokenUrl,
+          data: parameter.toJson());
+      final result = BearerTokenEntity.fromJson(response);
+      return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
     } on Exception catch (e) {

@@ -138,7 +138,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get iHaveAccount => 'Менде тіркелгі бар';
 
   @override
-  String get somethingWentWrong => 'Бірдеңе дұрыс емес';
+  String get somethingWentWrong => 'Бірдеңе дұрыс болмады';
 
   @override
   String get codeResentSuccessfully => 'Код қайта жіберілді';
@@ -204,7 +204,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get yesterday => 'Кеше';
 
   @override
-  String get daysAgo => 'күн бұрын';
+  String daysAgo(int days) {
+    return '$days күн бұрын';
+  }
 
   @override
   String get singleNewsLoadError => 'Жаңалықты жүктеу қатесі';
@@ -431,7 +433,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get minutesAgoShort => 'мин бұрын';
 
   @override
-  String get justNow => 'Қазір ғана';
+  String get justNow => 'Жаңа ғана';
 
   @override
   String get nationalTeamMatches => 'Құрама матчтары';
@@ -943,7 +945,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get httpError => 'HTTP қатесі';
 
   @override
-  String get tryAgain => 'Қайта көру';
+  String get tryAgain => 'Қайталап көріңіз';
 
   @override
   String get repeatPayment => 'Қайталап төлеу';
@@ -1298,4 +1300,66 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get statusHistory => 'Күй тарихы';
+
+  @override
+  String get notifications => 'Хабарландырулар';
+
+  @override
+  String get stayUpdated => 'Жаңалықтардан хабардар болыңыз';
+
+  @override
+  String get active => 'Белсенді';
+
+  @override
+  String get newNotifications => 'Жаңа';
+
+  @override
+  String get readNotifications => 'Оқылған';
+
+  @override
+  String get noReadNotifications => 'Оқылған хабарландырулар жоқ';
+
+  @override
+  String get allCaughtUp => 'Бәрін оқып шықтыңыз!';
+
+  @override
+  String get noReadNotificationsYet =>
+      'Сіз әлі ешбір хабарландыруды оқыған жоқсыз';
+
+  @override
+  String get noNewNotifications => 'Сізде жаңа хабарландырулар жоқ';
+
+  @override
+  String get error => 'Қате';
+
+  @override
+  String get created => 'Жасалды';
+
+  @override
+  String get updated => 'Жаңартылды';
+
+  @override
+  String get openLink => 'Сілтемені ашу';
+
+  @override
+  String get navigate => 'Өту';
+
+  @override
+  String get newNotification => 'Жаңа хабарландыру';
+
+  @override
+  String get tapToView => 'Көру үшін басыңыз';
+
+  @override
+  String hoursAgo(int hours) {
+    return '$hours сағат бұрын';
+  }
+
+  @override
+  String minutesAgo(int minutes) {
+    return '$minutes минут бұрын';
+  }
+
+  @override
+  String get cart => 'Себет';
 }

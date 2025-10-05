@@ -462,5 +462,51 @@
   "createdDate": "Жасалған күні",
   "paymentDate": "Төлем күні",
   "quantity": "Саны",
-  "statusHistory": "Күй тарихы"
+  "statusHistory": "Күй тарихы",
+  "notifications": "Хабарландырулар",
+  "stayUpdated": "Жаңалықтардан хабардар болыңыз",
+  "active": "Белсенді",
+  "newNotifications": "Жаңа",
+  "readNotifications": "Оқылған",
+  "somethingWentWrong": "Бірдеңе дұрыс болмады",
+  "tryAgain": "Қайталап көріңіз",
+  "noReadNotifications": "Оқылған хабарландырулар жоқ",
+  "allCaughtUp": "Бәрін оқып шықтыңыз!",
+  "noReadNotificationsYet": "Сіз әлі ешбір хабарландыруды оқыған жоқсыз",
+  "noNewNotifications": "Сізде жаңа хабарландырулар жоқ",
+  "justNow": "Жаңа ғана",
+  "error": "Қате",
+  "created": "Жасалды",
+  "updated": "Жаңартылды",
+  "openLink": "Сілтемені ашу",
+  "navigate": "Өту",
+  "newNotification": "Жаңа хабарландыру",
+  "tapToView": "Көру үшін басыңыз",
+  "daysAgo": "{days} күн бұрын",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} сағат бұрын",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesAgo": "{minutes} минут бұрын",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "myOrders": "Менің тапсырыстарым",
+  "myBookings": "Менің брондарым",
+  "cart": "Себет"
 }

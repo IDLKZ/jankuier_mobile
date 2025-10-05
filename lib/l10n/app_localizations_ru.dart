@@ -207,7 +207,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get yesterday => 'Вчера';
 
   @override
-  String get daysAgo => 'дн. назад';
+  String daysAgo(int days) {
+    return '$days д. назад';
+  }
 
   @override
   String get singleNewsLoadError => 'Ошибка загрузки новости';
@@ -1301,4 +1303,66 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get statusHistory => 'История статусов';
+
+  @override
+  String get notifications => 'Уведомления';
+
+  @override
+  String get stayUpdated => 'Будьте в курсе событий';
+
+  @override
+  String get active => 'Активно';
+
+  @override
+  String get newNotifications => 'Новые';
+
+  @override
+  String get readNotifications => 'Прочитанные';
+
+  @override
+  String get noReadNotifications => 'Нет прочитанных уведомлений';
+
+  @override
+  String get allCaughtUp => 'Всё прочитано!';
+
+  @override
+  String get noReadNotificationsYet =>
+      'Вы ещё не прочитали ни одного уведомления';
+
+  @override
+  String get noNewNotifications => 'У вас нет новых уведомлений';
+
+  @override
+  String get error => 'Ошибка';
+
+  @override
+  String get created => 'Создано';
+
+  @override
+  String get updated => 'Обновлено';
+
+  @override
+  String get openLink => 'Открыть ссылку';
+
+  @override
+  String get navigate => 'Перейти';
+
+  @override
+  String get newNotification => 'Новое уведомление';
+
+  @override
+  String get tapToView => 'Нажмите для просмотра';
+
+  @override
+  String hoursAgo(int hours) {
+    return '$hours ч. назад';
+  }
+
+  @override
+  String minutesAgo(int minutes) {
+    return '$minutes мин. назад';
+  }
+
+  @override
+  String get cart => 'Корзина';
 }
