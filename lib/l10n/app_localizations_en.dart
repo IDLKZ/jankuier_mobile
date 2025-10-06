@@ -941,6 +941,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buyTickets => 'Buy Tickets';
 
   @override
+  String get buyBooking => 'Buy Booking';
+
+  @override
+  String get payOrder => 'Pay order';
+
+  @override
   String get loading => 'Loading...';
 
   @override
@@ -1035,9 +1041,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelOrder => 'Cancel order';
-
-  @override
-  String get payOrder => 'Pay order';
 
   @override
   String get showPass => 'Show pass';

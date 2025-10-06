@@ -330,6 +330,8 @@
   "firstLeague": "First League",
   "activeTickets": "Active Tickets",
   "buyTickets": "Buy Tickets",
+  "buyBooking": "Buy Booking",
+  "payOrder": "Pay Order",
   "loading": "Loading...",
   "httpError": "HTTP error",
   "tryAgain": "Try again",

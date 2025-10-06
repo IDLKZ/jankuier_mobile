@@ -1,13 +1,17 @@
 class ApiConstant {
   //Base URL to Sota
-  static const String BaseURL = "http://10.0.2.2:8000/api/";
-  static const String ImageURL = "http://10.0.2.2:8000/";
-  // static const String BaseURL = "https://api.jankuier.kz/api/";
-  // static const String ImageURL = "https://api.jankuier.kz/";
+  // static const String BaseURL = "http://10.0.2.2:8000/api/";
+  // static const String ImageURL = "http://10.0.2.2:8000/";
+  static const String BaseURL = "https://api.jankuier.kz/api/";
+  static const String ImageURL = "https://api.jankuier.kz/";
   static const String WebFrameGetShowURL =
       "https://jankuier.kz/web-frame-ticket/get-show/";
   static const String WebFrameRecreateOrderURL =
       "https://jankuier.kz/web-frame-ticket/get-widget/";
+  static const String WebFrameGetBookingURL =
+      "https://jankuier.kz/web-frame-ticket/get-booking/";
+  static const String WebFrameGetMerchURL =
+      "https://jankuier.kz/web-frame-ticket/get-product-order/";
   //Get Cities URL
   static const String GetAllCitiesUrl = "${BaseURL}city/all/";
   //Get Product URL

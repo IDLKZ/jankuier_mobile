@@ -943,6 +943,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get buyTickets => 'Купить билеты';
 
   @override
+  String get buyBooking => 'Купить бронь';
+
+  @override
+  String get payOrder => 'Оплатить заказ';
+
+  @override
   String get loading => 'Загрузка...';
 
   @override
@@ -1038,9 +1044,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cancelOrder => 'Отмена заказа';
-
-  @override
-  String get payOrder => 'Оплатить заказ';
 
   @override
   String get showPass => 'Показать пропуск';

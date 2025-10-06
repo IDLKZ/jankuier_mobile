@@ -330,6 +330,8 @@
   "firstLeague": "Первая лига",
   "activeTickets": "Активные билеты",
   "buyTickets": "Купить билеты",
+  "buyBooking": "Купить бронь",
+  "payOrder": "Оплатить заказ",
   "loading": "Загрузка...",
   "httpError": "HTTP ошибка",
   "tryAgain": "Попробовать снова",

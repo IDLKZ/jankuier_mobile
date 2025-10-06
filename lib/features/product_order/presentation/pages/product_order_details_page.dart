@@ -9,6 +9,8 @@ import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/utils/hive_utils.dart';
+import 'product_webview_page.dart';
 import '../bloc/cancel_or_delete_product_order/cancel_or_delete_product_order_bloc.dart';
 import '../bloc/cancel_or_delete_product_order/cancel_or_delete_product_order_event.dart';
 import '../bloc/cancel_or_delete_product_order/cancel_or_delete_product_order_state.dart';
@@ -123,7 +125,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                       onPressed: () => Navigator.pop(dialogContext),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textSecondary,
-                        side: BorderSide(color: AppColors.grey300),
+                        side: const BorderSide(color: AppColors.grey300),
                         padding: EdgeInsets.symmetric(vertical: 14.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
@@ -233,7 +235,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                       onPressed: () => Navigator.pop(dialogContext),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textSecondary,
-                        side: BorderSide(color: AppColors.grey300),
+                        side: const BorderSide(color: AppColors.grey300),
                         padding: EdgeInsets.symmetric(vertical: 14.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
@@ -340,7 +342,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                         return Center(
                           child: Padding(
                             padding: EdgeInsets.all(32.h),
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               color: AppColors.primary,
                             ),
                           ),
@@ -387,6 +389,25 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
 
                         return _OrderSummaryCard(
                           order: order,
+                          // Кнопка "Оплатить" доступна для неоплаченных заказов
+                          onPay: !order.isPaid
+                              ? () async {
+                                  final hiveUtils = getIt<HiveUtils>();
+                                  final token = await hiveUtils.getAccessToken();
+                                  if (token == null) {
+                                    context.go(AppRouteConstants.SignInPagePath);
+                                  } else {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductWebViewPage(
+                                          orderId: order.id.toString(),
+                                          token: token,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }
+                              : null,
                           // Кнопка "Отменить" доступна только для статуса 2
                           onCancel: order.statusId == 2
                               ? () => _showCancelDialog(order)
@@ -423,7 +444,7 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                         return Center(
                           child: Padding(
                             padding: EdgeInsets.all(32.h),
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               color: AppColors.primary,
                             ),
                           ),
@@ -496,10 +517,14 @@ class _OrderSummaryCard extends StatelessWidget {
   /// Callback для удаления заказа (для статуса 1)
   final VoidCallback? onDelete;
 
+  /// Callback для оплаты заказа (для неоплаченных заказов)
+  final VoidCallback? onPay;
+
   const _OrderSummaryCard({
     required this.order,
     this.onCancel,
     this.onDelete,
+    this.onPay,
   });
 
   /// Определяет цвет статуса заказа
@@ -524,7 +549,7 @@ class _OrderSummaryCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Colors.white, AppColors.grey50],
@@ -623,7 +648,7 @@ class _OrderSummaryCard extends StatelessWidget {
                 Text(
                   '${_formatPrice(order.totalPrice)} ₸',
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
@@ -631,6 +656,27 @@ class _OrderSummaryCard extends StatelessWidget {
               ],
             ),
           ),
+
+          // Кнопка оплаты (для неоплаченных заказов)
+          if (onPay != null) ...[
+            SizedBox(height: 16.h),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: onPay,
+                icon: Icon(Icons.payment, size: 18.sp),
+                label: Text(AppLocalizations.of(context)!.payOrder),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.success,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+              ),
+            ),
+          ],
 
           // Кнопки действий (Удалить для статуса 1, Отменить для статуса 2)
           if (onCancel != null || onDelete != null) ...[
@@ -876,7 +922,7 @@ class _OrderItemCard extends StatelessWidget {
 
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 14.w),
-            child: Divider(height: 1, color: AppColors.grey200),
+            child: const Divider(height: 1, color: AppColors.grey200),
           ),
 
           // Статус товара

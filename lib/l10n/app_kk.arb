@@ -329,6 +329,8 @@
   "firstLeague": "Бірінші лига",
   "activeTickets": "Белсенді билеттер",
   "buyTickets": "Билет сатып алу",
+  "buyBooking": "Бронь сатып алу",
+  "payOrder": "Тапсырысты төлеу",
   "loading": "Жүктелуде...",
   "httpError": "HTTP қатесі",
   "tryAgain": "Қайта көру",

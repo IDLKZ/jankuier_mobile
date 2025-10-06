@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/utils/hive_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
+import 'booking_webview_page.dart';
 import '../../data/entities/booking_field_party_request_entity.dart';
 import '../../domain/parameters/booking_field_party_request_pagination_parameter.dart';
 import '../bloc/delete_my_field_party_request_by_id/delete_my_field_party_request_by_id_bloc.dart';
@@ -191,10 +195,10 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
 
   Widget _buildTabBar() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
         gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(8.r),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
@@ -210,7 +214,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
         },
         indicator: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
@@ -219,12 +223,12 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
         labelStyle: TextStyle(
           fontFamily: 'Inter',
           fontWeight: FontWeight.w600,
-          fontSize: 14.sp,
+          fontSize: 12.sp,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: 'Inter',
           fontWeight: FontWeight.w500,
-          fontSize: 14.sp,
+          fontSize: 12.sp,
         ),
         padding: EdgeInsets.all(4.w),
         tabs: [
@@ -349,7 +353,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: statusColor.withOpacity(0.2),
           width: 2.w,
@@ -378,8 +382,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                       AppLocalizations.of(context)!.field,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                     letterSpacing: -0.5,
                   ),
@@ -387,7 +391,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                 SizedBox(height: 12.h),
                 Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 14.w,
+                    horizontal: 12.w,
                     vertical: 8.h,
                   ),
                   decoration: BoxDecoration(
@@ -429,8 +433,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                             AppLocalizations.of(context)!.status,
                         style: TextStyle(
                           fontFamily: 'Inter',
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
                           color: statusColor,
                           letterSpacing: 0.2,
                         ),
@@ -438,29 +442,29 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                     ],
                   ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 14.h),
                 _buildInfoRow(
                   Icons.calendar_today_rounded,
                   dateFormat.format(booking.startAt),
                   statusColor,
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 6.h),
                 _buildInfoRow(
                   Icons.access_time_rounded,
                   '${timeFormat.format(booking.startAt)} - ${timeFormat.format(booking.endAt)}',
                   statusColor,
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 6.h),
                 _buildInfoRow(
                   Icons.payments_rounded,
                   '${booking.totalPrice.toStringAsFixed(0)} ₸',
                   statusColor,
                 ),
                 if (booking.field?.localizedAddress(context) != null) ...[
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 6.h),
                   _buildInfoRow(
                     Icons.location_on_rounded,
-                    booking.field!.localizedAddress(context)!,
+                    booking.field!.localizedAddress(context),
                     statusColor,
                   ),
                 ],
@@ -493,8 +497,8 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
             text,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
               color: AppColors.textPrimary,
               letterSpacing: -0.2,
             ),
@@ -537,21 +541,42 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 30,
+            offset: const Offset(0, -10),
+          ),
+        ],
       ),
       child: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: BlocBuilder<GetMyFieldPartyRequestByIdBloc,
               GetMyFieldPartyRequestByIdState>(
             builder: (context, state) {
               if (state is GetMyFieldPartyRequestByIdLoading) {
                 return SizedBox(
-                  height: 300.h,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  height: 400.h,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          strokeWidth: 3,
+                          valueColor: AlwaysStoppedAnimation(Colors.blue.shade600),
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          'Загрузка...',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }
@@ -562,201 +587,413 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
 
               final statusColor = _getStatusColor(displayBooking.statusId);
 
-              return Padding(
-                padding: EdgeInsets.all(24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40.w,
-                        height: 4.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.grey300,
-                          borderRadius: BorderRadius.circular(2.r),
-                        ),
-                      ),
+              return Column(
+                children: [
+                  // Handle
+                  Container(
+                    margin: EdgeInsets.only(top: 12.h),
+                    width: 40.w,
+                    height: 4.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2.r),
                     ),
-                    SizedBox(height: 24.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+
+                  // Header with status
+                  Container(
+                    margin: EdgeInsets.all(24.w),
+                    padding: EdgeInsets.all(24.w),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          statusColor.withOpacity(0.8),
+                          statusColor.withOpacity(0.6),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(24.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: statusColor.withOpacity(0.3),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Icon(
+                                _getStatusIcon(displayBooking.statusId),
+                                color: Colors.white,
+                                size: 16.sp,
+                              ),
+                            ),
+                            SizedBox(width: 16.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Бронирование',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    displayBooking.status?.localizedTitle(context) ?? 'Статус',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Main info cards
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.bookingDetails,
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
+                          child: _buildMainInfoCard(
+                            icon: Icons.sports_soccer,
+                            title: 'Поле',
+                            value: displayBooking.field?.localizedTitle(context) ?? 'Не указано',
+                            color: Colors.blue.shade600,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: _buildMainInfoCard(
+                            icon: Icons.payments,
+                            title: 'Стоимость',
+                            value: '${displayBooking.totalPrice.toStringAsFixed(0)} ₸',
+                            color: Colors.green.shade600,
                           ),
                         ),
                       ],
                     ),
+                  ),
+
+                  SizedBox(height: 16.h),
+
+                  // Date and time section
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24.w),
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.purple.shade50,
+                          Colors.blue.shade50,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        color: Colors.purple.shade100,
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10.w),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade100,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Icon(
+                                Icons.access_time,
+                                color: Colors.purple.shade700,
+                                size: 20.sp,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              'Время бронирования',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.purple.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Дата',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey.shade600,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    dateFormat.format(displayBooking.startAt),
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey.shade800,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 1,
+                              height: 40.h,
+                              color: Colors.purple.shade200,
+                            ),
+                            SizedBox(width: 16.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Время',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey.shade600,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '${timeFormat.format(displayBooking.startAt)} - ${timeFormat.format(displayBooking.endAt)}',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey.shade800,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 16.h),
+
+                  // Additional info
+                  if (displayBooking.field?.localizedAddress(context) != null ||
+                      displayBooking.phone != null ||
+                      displayBooking.email != null) ...[
                     Padding(
-                      padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 8.h,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              statusColor.withOpacity(0.2),
-                              statusColor.withOpacity(0.1),
-                            ],
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Дополнительная информация',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade800,
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(
-                            color: statusColor.withOpacity(0.3),
-                            width: 1.5.w,
-                          ),
-                        ),
-                        child: Text(
-                          displayBooking.status?.localizedTitle(context) ??
-                              AppLocalizations.of(context)!.status,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700,
-                            color: statusColor,
-                          ),
-                        ),
+                          SizedBox(height: 16.h),
+                          if (displayBooking.field?.localizedAddress(context) != null)
+                            _buildInfoTile(
+                              icon: Icons.location_on,
+                              title: 'Адрес',
+                              value: displayBooking.field!.localizedAddress(context),
+                              color: Colors.red.shade400,
+                            ),
+                          if (displayBooking.phone != null)
+                            _buildInfoTile(
+                              icon: Icons.phone,
+                              title: 'Телефон',
+                              value: displayBooking.phone!,
+                              color: Colors.blue.shade400,
+                            ),
+                          if (displayBooking.email != null)
+                            _buildInfoTile(
+                              icon: Icons.email,
+                              title: 'Email',
+                              value: displayBooking.email!,
+                              color: Colors.orange.shade400,
+                            ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 24.h),
-                    _buildDetailCard(
-                      context: context,
-                      icon: Icons.stadium,
-                      title: AppLocalizations.of(context)!.field,
-                      value: displayBooking.field?.localizedTitle(context) ??
-                          AppLocalizations.of(context)!.notSpecified,
-                      statusColor: statusColor,
+                  ],
+
+                  // Purchase button
+                  if (displayBooking.statusId == 1) ...[
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Container(
+                        width: double.infinity,
+                        height: 32.h,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(8.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.gradientStart.withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final hiveUtils = getIt<HiveUtils>();
+                            final token = await hiveUtils.getAccessToken();
+                            if (token == null) {
+                              context.go(AppRouteConstants.SignInPagePath);
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BookingWebViewPage(
+                                    bookingId: displayBooking.id.toString(),
+                                    token: token,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28.r),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.shopping_cart_outlined,
+                                color: Colors.white,
+                                size: 22.sp,
+                              ),
+                              SizedBox(width: 12.w),
+                              Text(
+                                AppLocalizations.of(context)!.buyBooking,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 12.h),
-                    _buildDetailCard(
-                      context: context,
-                      icon: Icons.calendar_today,
-                      title: AppLocalizations.of(context)!.date,
-                      value: dateFormat.format(displayBooking.startAt),
-                      statusColor: statusColor,
-                    ),
-                    SizedBox(height: 12.h),
-                    _buildDetailCard(
-                      context: context,
-                      icon: Icons.access_time,
-                      title: AppLocalizations.of(context)!.time,
-                      value:
-                          '${timeFormat.format(displayBooking.startAt)} - ${timeFormat.format(displayBooking.endAt)}',
-                      statusColor: statusColor,
-                    ),
-                    SizedBox(height: 12.h),
-                    _buildDetailCard(
-                      context: context,
-                      icon: Icons.attach_money,
-                      title: AppLocalizations.of(context)!.total,
-                      value:
-                          '${displayBooking.totalPrice.toStringAsFixed(0)} ₸',
-                      statusColor: statusColor,
-                    ),
-                    if (displayBooking.field?.localizedAddress(context) !=
-                        null) ...[
-                      SizedBox(height: 12.h),
-                      _buildDetailCard(
-                        context: context,
-                        icon: Icons.location_on,
-                        title: AppLocalizations.of(context)!.address,
-                        value: displayBooking.field!.localizedAddress(context)!,
-                        statusColor: statusColor,
-                      ),
-                    ],
-                    if (displayBooking.phone != null) ...[
-                      SizedBox(height: 12.h),
-                      _buildDetailCard(
-                        context: context,
-                        icon: Icons.phone,
-                        title: AppLocalizations.of(context)!.phone,
-                        value: displayBooking.phone!,
-                        statusColor: statusColor,
-                      ),
-                    ],
-                    if (displayBooking.email != null) ...[
-                      SizedBox(height: 12.h),
-                      _buildDetailCard(
-                        context: context,
-                        icon: Icons.email,
-                        title: AppLocalizations.of(context)!.email,
-                        value: displayBooking.email!,
-                        statusColor: statusColor,
-                      ),
-                    ],
-                    if (displayBooking.statusId == 1) ...[
-                      SizedBox(height: 24.h),
-                      BlocBuilder<DeleteMyFieldPartyRequestByIdBloc,
+                  ],
+
+                  // Cancel button
+                  if (displayBooking.statusId == 1) ...[
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: BlocBuilder<DeleteMyFieldPartyRequestByIdBloc,
                           DeleteMyFieldPartyRequestByIdState>(
                         builder: (context, deleteState) {
-                          final isLoading = deleteState
-                              is DeleteMyFieldPartyRequestByIdLoading;
+                          final isLoading = deleteState is DeleteMyFieldPartyRequestByIdLoading;
 
-                          return SizedBox(
+                          return Container(
                             width: double.infinity,
-                            height: 56.h,
-                            child: ElevatedButton(
-                              onPressed: isLoading
-                                  ? null
-                                  : () => _showCancelDialog(
-                                      context, displayBooking.id),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.error,
-                                disabledBackgroundColor:
-                                    AppColors.error.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.r),
+                            height: 32.h,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.red.shade400,
+                                  Colors.red.shade600,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(8.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.red.withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
                                 ),
-                                elevation: 0,
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: isLoading ? null : () => _showCancelDialog(context, displayBooking.id),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(28.r),
+                                ),
                               ),
                               child: isLoading
                                   ? SizedBox(
-                                      width: 24.w,
-                                      height: 24.h,
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
+                                width: 24.w,
+                                height: 24.h,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
                                   : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.cancel,
-                                          size: 20.sp,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(width: 8.w),
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .cancelBooking,
-                                          style: TextStyle(
-                                            fontFamily: 'Inter',
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.cancel_outlined,
+                                    color: Colors.white,
+                                    size: 22.sp,
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Text(
+                                    AppLocalizations.of(context)!.cancelBooking,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
                       ),
-                    ],
-                    SizedBox(height: 16.h),
+                    ),
                   ],
-                ),
+
+                  SizedBox(height: 24.h),
+                ],
               );
             },
           ),
@@ -765,38 +1002,104 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailCard({
-    required BuildContext context,
+  Widget _buildMainInfoCard({
     required IconData icon,
     required String title,
     required String value,
-    required Color statusColor,
+    required Color color,
   }) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: AppColors.grey50,
-        borderRadius: BorderRadius.circular(12.r),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
+          ),
+        ],
         border: Border.all(
-          color: AppColors.grey200,
-          width: 1.w,
+          color: color.withOpacity(0.1),
+          width: 1,
         ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 20.sp,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoTile({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.all(10.w),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10.r),
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(
               icon,
-              size: 20.sp,
-              color: statusColor,
+              color: color,
+              size: 14.sp,
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: 14.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -804,20 +1107,18 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'Inter',
                     fontSize: 12.sp,
+                    color: Colors.grey.shade600,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textSecondary,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: 2.h),
                 Text(
                   value,
                   style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade800,
                   ),
                 ),
               ],
@@ -828,18 +1129,33 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(int? statusId) {
+  IconData _getStatusIcon(int? statusId) {
     switch (statusId) {
       case 1:
-        return AppColors.warning;
+        return Icons.schedule;
       case 2:
-        return AppColors.success;
+        return Icons.check_circle;
       case 3:
       case 4:
       case 5:
-        return AppColors.error;
+        return Icons.cancel;
       default:
-        return AppColors.grey500;
+        return Icons.help;
+    }
+  }
+
+  Color _getStatusColor(int? statusId) {
+    switch (statusId) {
+      case 1:
+        return Colors.orange.shade600;
+      case 2:
+        return Colors.green.shade600;
+      case 3:
+      case 4:
+      case 5:
+        return Colors.red.shade600;
+      default:
+        return Colors.grey.shade500;
     }
   }
 
@@ -848,72 +1164,94 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(8.r),
         ),
-        title: Row(
+        backgroundColor: Colors.white,
+        title: Column(
           children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: AppColors.warning,
-              size: 28.sp,
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red.shade600,
+                size: 32.sp,
+              ),
             ),
-            SizedBox(width: 12.w),
+            SizedBox(height: 16.h),
             Text(
               AppLocalizations.of(context)!.cancelBookingTitle,
               style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
         content: Text(
           AppLocalizations.of(context)!.cancelBookingConfirmation,
           style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14.sp,
-            color: AppColors.textSecondary,
+            fontSize: 16.sp,
+            color: Colors.grey.shade600,
+            height: 1.4,
           ),
+          textAlign: TextAlign.center,
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: Text(
-              AppLocalizations.of(context)!.no,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textSecondary,
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.no,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              context.read<DeleteMyFieldPartyRequestByIdBloc>().add(
-                    DeleteMyFieldPartyRequestByIdStarted(id: bookingId),
-                  );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                    context.read<DeleteMyFieldPartyRequestByIdBloc>().add(
+                      DeleteMyFieldPartyRequestByIdStarted(id: bookingId),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red.shade600,
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.yesCancel,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Text(
-              AppLocalizations.of(context)!.yesCancel,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 }
+

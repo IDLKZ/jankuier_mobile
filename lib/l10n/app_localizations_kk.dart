@@ -939,6 +939,12 @@ class AppLocalizationsKk extends AppLocalizations {
   String get buyTickets => 'Билет сатып алу';
 
   @override
+  String get buyBooking => 'Бронь сатып алу';
+
+  @override
+  String get payOrder => 'Тапсырыс үшін төлеу';
+
+  @override
   String get loading => 'Жүктелуде...';
 
   @override
@@ -1034,9 +1040,6 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get cancelOrder => 'Тапсырысты болдырмау';
-
-  @override
-  String get payOrder => 'Тапсырыс үшін төлеу';
 
   @override
   String get showPass => 'Өту құжатын көрсету';

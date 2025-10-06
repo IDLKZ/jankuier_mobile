@@ -1936,6 +1936,18 @@ abstract class AppLocalizations {
   /// **'Купить билеты'**
   String get buyTickets;
 
+  /// No description provided for @buyBooking.
+  ///
+  /// In ru, this message translates to:
+  /// **'Купить бронь'**
+  String get buyBooking;
+
+  /// No description provided for @payOrder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оплатить заказ'**
+  String get payOrder;
+
   /// No description provided for @loading.
   ///
   /// In ru, this message translates to:
@@ -2127,12 +2139,6 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Отмена заказа'**
   String get cancelOrder;
-
-  /// No description provided for @payOrder.
-  ///
-  /// In ru, this message translates to:
-  /// **'Оплатить заказ'**
-  String get payOrder;
 
   /// No description provided for @showPass.
   ///

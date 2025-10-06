@@ -276,7 +276,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                             return Center(
                               child: Padding(
                                 padding: EdgeInsets.all(16.h),
-                                child: CircularProgressIndicator(
+                                child: const CircularProgressIndicator(
                                   color: AppColors.primary,
                                 ),
                               ),
@@ -326,7 +326,7 @@ class _OrderCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -481,15 +481,15 @@ class _OrderCard extends StatelessWidget {
                   ),
                 ),
 
-                if (order.isPaid != null) ...[
-                  SizedBox(height: 10.h),
-                  _buildInfoChip(
-                    icon: Icons.check_circle_rounded,
-                    label: AppLocalizations.of(context)!.paidOn,
-                    value: dateFormat.format(order.paidAt ?? DateTime.now()),
-                    color: AppColors.primary,
-                  ),
-                ],
+                ...[
+                SizedBox(height: 10.h),
+                _buildInfoChip(
+                  icon: Icons.check_circle_rounded,
+                  label: AppLocalizations.of(context)!.paidOn,
+                  value: dateFormat.format(order.paidAt ?? DateTime.now()),
+                  color: AppColors.primary,
+                ),
+              ],
 
                 if (order.paidUntil != null && !order.isPaid) ...[
                   SizedBox(height: 10.h),
