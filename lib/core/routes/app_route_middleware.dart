@@ -97,12 +97,12 @@ class AppRouteMiddleware {
 
   Future<String?> setLocalAuthBefore(BuildContext context, GoRouterState state,
       LocalAuthInterface authInterface) async {
-    String way = AppRouteConstants.MyFirstLocalAuthPagePath;
+    String? way = AppRouteConstants.MyFirstLocalAuthPagePath;
     Either<Failure, bool> result = await authInterface.getPinHashBefore();
     result.fold(
       (Failure failure) => {},
       (bool result) => {
-        if (result == true) {way = AppRouteConstants.HomePagePath}
+        if (result == true) {way = null}
       },
     );
     return way;

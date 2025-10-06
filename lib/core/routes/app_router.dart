@@ -139,9 +139,12 @@ class AppRouter {
                 path: AppRouteConstants.HomePagePath,
                 name: AppRouteConstants.HomePageName,
                 builder: (context, state) => const HomePage(),
-                redirect: (BuildContext context, GoRouterState state) async {
+                redirect: (context, state) async {
                   return await AppRouteMiddleware().setLocalAuthBefore(
-                      context, state, getIt<LocalAuthInterface>());
+                    context,
+                    state,
+                    getIt<LocalAuthInterface>(),
+                  );
                 },
                 routes: [
                   GoRoute(
