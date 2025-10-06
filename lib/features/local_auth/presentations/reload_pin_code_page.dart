@@ -257,6 +257,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                         ),
                       )
                     : SingleChildScrollView(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Column(
@@ -441,7 +442,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                   );
                                 },
                               ),
-                              SizedBox(height: 24.h),
+                              SizedBox(height: 48.h),
                             ],
                           ),
                         ),

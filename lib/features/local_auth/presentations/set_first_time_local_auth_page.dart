@@ -190,12 +190,15 @@ class _SetFirstTimeLocalAuthTypePageContentState
           child: BlocBuilder<LocalAuthBloc, LocalAuthState>(
             builder: (context, state) {
               final l10n = AppLocalizations.of(context)!;
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+              return SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     // Заголовок
                     Text(
                       l10n.securitySetup,
@@ -301,7 +304,9 @@ class _SetFirstTimeLocalAuthTypePageContentState
                         ),
                       ),
                     ],
-                  ],
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    ],
+                  ),
                 ),
               );
             },

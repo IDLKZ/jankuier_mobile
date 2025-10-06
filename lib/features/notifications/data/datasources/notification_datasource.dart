@@ -36,6 +36,8 @@ class NotificationDSImpl implements NotificationDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }
@@ -49,6 +51,8 @@ class NotificationDSImpl implements NotificationDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }
@@ -65,6 +69,8 @@ class NotificationDSImpl implements NotificationDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }
@@ -78,6 +84,8 @@ class NotificationDSImpl implements NotificationDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }

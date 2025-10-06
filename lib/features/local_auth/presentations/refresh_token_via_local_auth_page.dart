@@ -261,151 +261,161 @@ class _RefreshTokenViaLocalAuthPageContentState
           child: BlocBuilder<LocalAuthBloc, LocalAuthState>(
             builder: (context, state) {
               final l10n = AppLocalizations.of(context)!;
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Заголовок
-                    Text(
-                      _showPinInput ? l10n.enterPinCode : l10n.appLogin,
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 16.h),
-
-                    // Подзаголовок
-                    if (_showPinInput)
-                      Text(
-                        l10n.attemptsRemaining(_maxPinAttempts - _pinAttempts),
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: _pinAttempts > 0
-                              ? AppColors.error
-                              : AppColors.textSecondary,
-                          fontWeight: _pinAttempts > 0
-                              ? FontWeight.w600
-                              : FontWeight.normal,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    else
-                      Text(
-                        l10n.confirmLoginWithBiometrics,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: AppColors.textSecondary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    SizedBox(height: 48.h),
-
-                    // Иконка или индикатор загрузки
-                    if (state is LocalAuthLoading)
-                      CircularProgressIndicator(
-                        color: AppColors.primary,
-                      )
-                    else if (_showPinInput)
-                      Icon(
-                        Icons.lock_outline,
-                        size: 80.sp,
-                        color: AppColors.primary,
-                      )
-                    else
-                      Icon(
-                        Icons.fingerprint,
-                        size: 80.sp,
-                        color: AppColors.primary,
-                      ),
-                    SizedBox(height: 48.h),
-
-                    // PIN input (показываем только если нужен PIN)
-                    if (_showPinInput) ...[
-                      Pinput(
-                        controller: _pinController,
-                        length: 4,
-                        defaultPinTheme: defaultPinTheme,
-                        focusedPinTheme: focusedPinTheme,
-                        submittedPinTheme: submittedPinTheme,
-                        errorPinTheme: _pinAttempts > 0 ? errorPinTheme : null,
-                        obscureText: true,
-                        obscuringCharacter: '●',
-                        onChanged: _onPinChanged,
-                        onCompleted: (pin) {
-                          _handlePinSubmit();
-                        },
-                        keyboardType: TextInputType.number,
-                        hapticFeedbackType: HapticFeedbackType.lightImpact,
-                      ),
-                      SizedBox(height: 32.h),
-
-                      // Кнопка подтверждения PIN
+              return SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
                       SizedBox(
-                        width: double.infinity,
-                        height: 56.h,
-                        child: ElevatedButton(
-                          onPressed: _isPinComplete ? _handlePinSubmit : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.white,
-                            disabledBackgroundColor: AppColors.grey300,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                          ),
-                          child: state is LocalAuthLoading
-                              ? SizedBox(
-                                  height: 24.h,
-                                  width: 24.w,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.white,
-                                  ),
-                                )
-                              : Text(
-                                  l10n.confirmButton,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
-
-                    // Кнопка повторной попытки биометрии
-                    if (_biometricAvailable && _showPinInput) ...[
-                      SizedBox(height: 24.h),
-                      TextButton.icon(
-                        onPressed: () {
-                          _handleBiometricAuthentication();
-                        },
-                        icon: const Icon(Icons.fingerprint),
-                        label: Text(l10n.useBiometrics),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                        ),
-                      ),
-                    ],
-
-                    // Кнопка отмены (переход на SignIn)
-                    SizedBox(height: 16.h),
-                    TextButton(
-                      onPressed: _navigateToSignIn,
-                      child: Text(
-                        l10n.loginWithDifferentAccount,
+                          height: MediaQuery.of(context).size.height * 0.15),
+                      // Заголовок
+                      Text(
+                        _showPinInput ? l10n.enterPinCode : l10n.appLogin,
                         style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.textSecondary,
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Подзаголовок
+                      if (_showPinInput)
+                        Text(
+                          l10n.attemptsRemaining(
+                              _maxPinAttempts - _pinAttempts),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: _pinAttempts > 0
+                                ? AppColors.error
+                                : AppColors.textSecondary,
+                            fontWeight: _pinAttempts > 0
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      else
+                        Text(
+                          l10n.confirmLoginWithBiometrics,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: AppColors.textSecondary,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      SizedBox(height: 48.h),
+
+                      // Иконка или индикатор загрузки
+                      if (state is LocalAuthLoading)
+                        CircularProgressIndicator(
+                          color: AppColors.primary,
+                        )
+                      else if (_showPinInput)
+                        Icon(
+                          Icons.lock_outline,
+                          size: 80.sp,
+                          color: AppColors.primary,
+                        )
+                      else
+                        Icon(
+                          Icons.fingerprint,
+                          size: 80.sp,
+                          color: AppColors.primary,
+                        ),
+                      SizedBox(height: 48.h),
+
+                      // PIN input (показываем только если нужен PIN)
+                      if (_showPinInput) ...[
+                        Pinput(
+                          controller: _pinController,
+                          length: 4,
+                          defaultPinTheme: defaultPinTheme,
+                          focusedPinTheme: focusedPinTheme,
+                          submittedPinTheme: submittedPinTheme,
+                          errorPinTheme:
+                              _pinAttempts > 0 ? errorPinTheme : null,
+                          obscureText: true,
+                          obscuringCharacter: '●',
+                          onChanged: _onPinChanged,
+                          onCompleted: (pin) {
+                            _handlePinSubmit();
+                          },
+                          keyboardType: TextInputType.number,
+                          hapticFeedbackType: HapticFeedbackType.lightImpact,
+                        ),
+                        SizedBox(height: 32.h),
+
+                        // Кнопка подтверждения PIN
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56.h,
+                          child: ElevatedButton(
+                            onPressed: _isPinComplete ? _handlePinSubmit : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.white,
+                              disabledBackgroundColor: AppColors.grey300,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                            ),
+                            child: state is LocalAuthLoading
+                                ? SizedBox(
+                                    height: 24.h,
+                                    width: 24.w,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppColors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    l10n.confirmButton,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+
+                      // Кнопка повторной попытки биометрии
+                      if (_biometricAvailable && _showPinInput) ...[
+                        SizedBox(height: 24.h),
+                        TextButton.icon(
+                          onPressed: () {
+                            _handleBiometricAuthentication();
+                          },
+                          icon: const Icon(Icons.fingerprint),
+                          label: Text(l10n.useBiometrics),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.primary,
+                          ),
+                        ),
+                      ],
+
+                      // Кнопка отмены (переход на SignIn)
+                      SizedBox(height: 16.h),
+                      TextButton(
+                        onPressed: _navigateToSignIn,
+                        child: Text(
+                          l10n.loginWithDifferentAccount,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
+                    ],
+                  ),
                 ),
               );
             },

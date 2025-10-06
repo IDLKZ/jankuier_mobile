@@ -46,7 +46,6 @@ class _TicketsPageState extends State<TicketsPage>
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 15.w,
-                vertical: 20.h,
               ),
               child: Container(
                 decoration: BoxDecoration(

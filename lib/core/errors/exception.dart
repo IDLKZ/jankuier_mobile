@@ -43,7 +43,6 @@ class ApiException extends Equatable implements Exception {
   factory ApiException.fromDioError(DioException dioError) {
     final statusCode = dioError.response?.statusCode ?? 500;
     final data = dioError.response?.data;
-
     // Проверяем структурированный ответ с полем "detail"
     if (data is Map<String, dynamic> && data.containsKey('detail')) {
       final detail = data['detail'];
@@ -76,9 +75,9 @@ class ApiException extends Equatable implements Exception {
 
     if (data is Map<String, dynamic>) {
       message = data["message"]?.toString() ??
-                data["error"]?.toString() ??
-                dioError.message ??
-                "Unknown error";
+          data["error"]?.toString() ??
+          dioError.message ??
+          "Unknown error";
 
       // Проверяем наличие errors или других дополнительных данных
       final errors = data["errors"] as Map<String, dynamic>?;

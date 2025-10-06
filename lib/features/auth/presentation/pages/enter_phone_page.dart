@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_event.dart';
@@ -26,11 +27,23 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   final _formKey = GlobalKey<FormState>();
   final _phoneC = TextEditingController();
 
+  final _phoneMask = MaskTextInputFormatter(
+    mask: '+7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+
   @override
   void initState() {
     super.initState();
     if (widget.phone != null && widget.phone!.isNotEmpty) {
-      _phoneC.text = widget.phone!;
+      // Форматируем существующий номер с маской
+      final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
+      if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
+        _phoneC.text = _phoneMask.maskText(cleanPhone.substring(1));
+      } else {
+        _phoneC.text = widget.phone!;
+      }
     }
   }
 
@@ -44,12 +57,18 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    final phone = value.trim();
-    final re = RegExp(FormValidationConstant.PhoneRegExp);
-    if (!re.hasMatch(phone)) {
+    // Получаем только цифры из маскированного номера
+    final cleanPhone = _phoneMask.getUnmaskedText();
+    // Проверяем что номер состоит из 10 цифр (7 добавится автоматически)
+    if (cleanPhone.length != 10) {
       return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
+  }
+
+  String _getCleanPhone() {
+    final cleanPhone = _phoneMask.getUnmaskedText();
+    return '7$cleanPhone'; // Добавляем 7 в начало
   }
 
   // Widget builders
@@ -59,11 +78,13 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     required String? Function(String?) validator,
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
+    List<MaskTextInputFormatter>? inputFormatters,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       style: TextStyle(color: Colors.white),
       validator: validator,
       decoration: InputDecoration(
@@ -103,14 +124,16 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
             if (state is SendVerifyCodeSuccess) {
               if (state.result.result == true) {
                 // Navigate to VerifyCodePage with phone and verification result
+                final cleanPhone = _getCleanPhone();
                 context.pushNamed(
                   AppRouteConstants.VerifyCodePageName,
-                  queryParameters: {'phone': _phoneC.text.trim()},
+                  queryParameters: {'phone': cleanPhone},
                   extra: state.result,
                 );
               } else {
                 Fluttertoast.showToast(
-                    msg: state.result.message ?? AppLocalizations.of(context)!.somethingWentWrong);
+                    msg: state.result.message ??
+                        AppLocalizations.of(context)!.somethingWentWrong);
               }
             } else if (state is SendVerifyCodeFailure) {
               Fluttertoast.showToast(msg: state.message);
@@ -174,7 +197,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                               height: 16.h,
                             ),
                             Text(
-                              AppLocalizations.of(context)!.enterPhoneForVerification,
+                              AppLocalizations.of(context)!
+                                  .enterPhoneForVerification,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24.sp,
@@ -186,9 +210,11 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                             // Поле Телефон
                             _buildTextFormField(
                               controller: _phoneC,
-                              hintText: AppLocalizations.of(context)!.enterPhoneHint,
+                              hintText:
+                                  AppLocalizations.of(context)!.enterPhoneHint,
                               validator: _validatePhone,
                               keyboardType: TextInputType.phone,
+                              inputFormatters: [_phoneMask],
                             ),
                             SizedBox(height: 16.h),
 
@@ -206,7 +232,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                 ),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    String phone = _phoneC.text.trim();
+                                    String phone = _getCleanPhone();
                                     context
                                         .read<SendVerifyCodeBloc>()
                                         .add(SendVerifyCodeSubmitted(phone));

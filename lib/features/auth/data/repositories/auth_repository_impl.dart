@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:jankuier_mobile/core/errors/exception.dart';
 import 'package:jankuier_mobile/core/errors/failures.dart';
 import 'package:jankuier_mobile/features/auth/data/datasources/auth_datasource.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
@@ -27,8 +28,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.signIn(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -38,8 +41,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.signUp(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -48,8 +53,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.me();
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -59,8 +66,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.refreshToken(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -70,8 +79,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.updatePassword(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -81,8 +92,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.updateProfile(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -91,8 +104,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.updateProfilePhoto(file);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -101,8 +116,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.deleteProfilePhoto();
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -112,8 +129,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.sendVerifyCode(phone);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -123,8 +142,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.verifyCode(parameter);
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -133,8 +154,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final result = await _dataSource.deleteAccount();
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 }
