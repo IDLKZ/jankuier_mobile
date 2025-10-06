@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/constants/form_validation_constants.dart';
@@ -57,6 +58,12 @@ class _SignUpViewState extends State<_SignUpView> {
   final _lastNameC = TextEditingController();
   final _patronomicC = TextEditingController();
   final _phoneC = TextEditingController();
+
+  final _phoneMask = MaskTextInputFormatter(
+    mask: '+7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
 
   @override
   void dispose() {
@@ -132,12 +139,18 @@ class _SignUpViewState extends State<_SignUpView> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    final phone = value.trim();
-    final re = RegExp(FormValidationConstant.PhoneRegExp);
-    if (!re.hasMatch(phone)) {
+    // Получаем только цифры из маскированного номера
+    final cleanPhone = _phoneMask.getUnmaskedText();
+    // Проверяем что номер состоит из 10 цифр (7 добавится автоматически)
+    if (cleanPhone.length != 10) {
       return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
+  }
+
+  String _getCleanPhone() {
+    final cleanPhone = _phoneMask.getUnmaskedText();
+    return '7$cleanPhone'; // Добавляем 7 в начало
   }
 
   String? _validateFirstName(String? value) {
@@ -184,7 +197,7 @@ class _SignUpViewState extends State<_SignUpView> {
         lastName: _lastNameC.text.trim(),
         patronymic:
             _patronomicC.text.trim().isEmpty ? null : _patronomicC.text.trim(),
-        phone: _phoneC.text.trim(),
+        phone: _getCleanPhone(),
       );
 
       context.read<SignUpBloc>().add(SignUpSubmitted(registerParameter));
@@ -198,11 +211,13 @@ class _SignUpViewState extends State<_SignUpView> {
     required String? Function(String?) validator,
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
+    List<MaskTextInputFormatter>? inputFormatters,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       style: TextStyle(color: Colors.white),
       validator: validator,
       decoration: InputDecoration(
@@ -303,6 +318,7 @@ class _SignUpViewState extends State<_SignUpView> {
                 hintText: AppLocalizations.of(context)!.enterPhoneHint,
                 validator: _validatePhone,
                 keyboardType: TextInputType.phone,
+                inputFormatters: [_phoneMask],
               ),
             ],
           ),

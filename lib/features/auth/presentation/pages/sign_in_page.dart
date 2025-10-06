@@ -63,12 +63,11 @@ class _SignInPageState extends State<SignInPage> {
                   // Trigger GetMe after successful sign-in
                   context.read<GetMeBloc>().add(const LoadUserProfile());
                 } else if (state is SignInFailure) {
-                  // Check if it's a 403 error (user needs phone verification)
                   if (state.failure?.statusCode == 403) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.phoneVerificationRequired),
+                        content: Text(AppLocalizations.of(context)!
+                            .phoneVerificationRequired),
                         backgroundColor: Colors.orange,
                       ),
                     );
@@ -77,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(state.message),
+                        content: Text("${state.failure?.message}"),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -185,11 +184,15 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ),
                                 validator: (v) {
-                                  if (v == null || v.trim().isEmpty) return AppLocalizations.of(context)!.enterUsername;
+                                  if (v == null || v.trim().isEmpty)
+                                    return AppLocalizations.of(context)!
+                                        .enterUsername;
                                   final username = v.trim();
                                   final re = RegExp(
                                       FormValidationConstant.UserNameRegExp);
-                                  if (!re.hasMatch(username)) return AppLocalizations.of(context)!.incorrectFormat;
+                                  if (!re.hasMatch(username))
+                                    return AppLocalizations.of(context)!
+                                        .incorrectFormat;
                                   return null; // ok
                                 },
                               ),
@@ -200,20 +203,26 @@ class _SignInPageState extends State<SignInPage> {
                                 obscureText: true,
                                 controller: _passC,
                                 validator: (v) {
-                                  if (v == null || v.isEmpty) return AppLocalizations.of(context)!.enterPassword;
-                                  if (v.length < 3) return AppLocalizations.of(context)!.minimumThreeChars;
+                                  if (v == null || v.isEmpty)
+                                    return AppLocalizations.of(context)!
+                                        .enterPassword;
+                                  if (v.length < 3)
+                                    return AppLocalizations.of(context)!
+                                        .minimumThreeChars;
                                   return null;
                                 },
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.transparent,
-                                  hintText: AppLocalizations.of(context)!.password,
-                                  hintStyle: const TextStyle(color: AppColors.white),
+                                  hintText:
+                                      AppLocalizations.of(context)!.password,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
                                   // цвет подсказки
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: AppColors.white),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.white),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -233,7 +242,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                               ),
 
-                              SizedBox(height: 16.h),
+                              SizedBox(height: 8.h),
 
                               // Кнопка Войти
                               SizedBox(
@@ -257,7 +266,8 @@ class _SignInPageState extends State<SignInPage> {
                                       ? SizedBox(
                                           height: 20.h,
                                           width: 20.w,
-                                          child: const CircularProgressIndicator(
+                                          child:
+                                              const CircularProgressIndicator(
                                             color: Color(0xFF0148C9),
                                             strokeWidth: 2,
                                           ),
@@ -269,7 +279,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                               ),
 
-                              SizedBox(height: 16.h),
+                              SizedBox(height: 8.h),
 
                               // Регистрация
                               TextButton(
@@ -282,7 +292,7 @@ class _SignInPageState extends State<SignInPage> {
                                       color: Colors.white, fontSize: 14.sp),
                                 ),
                               ),
-                              SizedBox(height: 16.h),
+                              SizedBox(height: 8.h),
                               TextButton(
                                 onPressed: () {
                                   context

@@ -15,6 +15,8 @@ import 'package:jankuier_mobile/features/game/presentation/pages/game_page.dart'
 import 'package:jankuier_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:jankuier_mobile/features/kff/presentation/pages/kff_matches_page.dart';
 import 'package:jankuier_mobile/features/kff_league/presentation/pages/kff_league_club_page.dart';
+import 'package:jankuier_mobile/features/local_auth/presentations/refresh_token_via_local_auth_page.dart';
+import 'package:jankuier_mobile/features/local_auth/presentations/reload_pin_code_page.dart';
 import 'package:jankuier_mobile/features/notifications/presentation/pages/my_notification_page.dart';
 import 'package:jankuier_mobile/features/product_order/presentation/pages/product_order_details_page.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/full_product_detail/full_product_bloc.dart';
@@ -28,6 +30,8 @@ import 'package:jankuier_mobile/features/ticket/presentation/pages/tickets_page.
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/countries/presentation/pages/countries_page.dart';
+import '../../features/local_auth/domain/repository/local_auth_interface.dart';
+import '../../features/local_auth/presentations/set_first_time_local_auth_page.dart';
 import '../../features/matches/presentation/pages/matches_page.dart';
 import '../../features/product_order/presentation/bloc/get_my_product_order_by_id/get_my_product_order_by_id_bloc.dart';
 import '../../features/product_order/presentation/bloc/get_my_product_order_by_id/get_my_product_order_by_id_event.dart';
@@ -105,6 +109,24 @@ class AppRouter {
               .checkGuestMiddleware(context, state);
         },
       ),
+      GoRoute(
+        path: AppRouteConstants.MyFirstLocalAuthPagePath,
+        name: AppRouteConstants.MyFirstLocalAuthPageName,
+        builder: (context, state) => const SetFirstTimeLocalAuthTypePage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .setLocalAuthBefore(context, state, getIt<LocalAuthInterface>());
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.RefreshTokenViaLocalAuthPagePath,
+        name: AppRouteConstants.RefreshTokenViaLocalAuthPageName,
+        builder: (context, state) => const RefreshTokenViaLocalAuthPage(),
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware().refreshAuthTokenViaLocalAuth(
+              context, state, getIt<LocalAuthInterface>());
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainNavigation(navigationShell: navigationShell);
@@ -117,6 +139,13 @@ class AppRouter {
                 path: AppRouteConstants.HomePagePath,
                 name: AppRouteConstants.HomePageName,
                 builder: (context, state) => const HomePage(),
+                redirect: (context, state) async {
+                  return await AppRouteMiddleware().setLocalAuthBefore(
+                    context,
+                    state,
+                    getIt<LocalAuthInterface>(),
+                  );
+                },
                 routes: [
                   GoRoute(
                     path: AppRouteConstants.TasksCleanPagePath,
@@ -336,6 +365,16 @@ class AppRouter {
                     path: AppRouteConstants.MyNotificationsCleanPagePath,
                     name: AppRouteConstants.MyNotificationsPageName,
                     builder: (context, state) => const MyNotificationPage(),
+                    redirect:
+                        (BuildContext context, GoRouterState state) async {
+                      return await AppRouteMiddleware()
+                          .checkAuthMiddleware(context, state);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRouteConstants.ReloadPINCodeCleanPath,
+                    name: AppRouteConstants.ReloadPINCodePageName,
+                    builder: (context, state) => const ReloadPinCodePage(),
                     redirect:
                         (BuildContext context, GoRouterState state) async {
                       return await AppRouteMiddleware()

@@ -54,6 +54,10 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Это приложение может использовать микрофон для записи видео.</string>
 
+	<!-- Biometric Authentication -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Это приложение использует Face ID для безопасного входа в систему.</string>
+
 	<!-- Firebase Notifications -->
 	<key>UIBackgroundModes</key>
 	<array>

@@ -2769,6 +2769,180 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Корзина'**
   String get cart;
+
+  /// No description provided for @enterPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите PIN-код'**
+  String get enterPinCode;
+
+  /// No description provided for @appLogin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вход в приложение'**
+  String get appLogin;
+
+  /// No description provided for @attemptsRemaining.
+  ///
+  /// In ru, this message translates to:
+  /// **'Осталось попыток: {count}'**
+  String attemptsRemaining(int count);
+
+  /// No description provided for @confirmLoginWithBiometrics.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердите вход с помощью биометрии'**
+  String get confirmLoginWithBiometrics;
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердить'**
+  String get confirmButton;
+
+  /// No description provided for @useBiometrics.
+  ///
+  /// In ru, this message translates to:
+  /// **'Использовать биометрию'**
+  String get useBiometrics;
+
+  /// No description provided for @loginWithDifferentAccount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Войти с другим аккаунтом'**
+  String get loginWithDifferentAccount;
+
+  /// No description provided for @attemptsExceededLoginAgain.
+  ///
+  /// In ru, this message translates to:
+  /// **'Превышено количество попыток. Войдите заново.'**
+  String get attemptsExceededLoginAgain;
+
+  /// No description provided for @incorrectPinAttemptsRemaining.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неверный PIN-код. Осталось попыток: {count}'**
+  String incorrectPinAttemptsRemaining(int count);
+
+  /// No description provided for @failedToRefreshToken.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось обновить токен'**
+  String get failedToRefreshToken;
+
+  /// No description provided for @changePinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Изменить PIN-код'**
+  String get changePinCode;
+
+  /// No description provided for @createPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Создать PIN-код'**
+  String get createPinCode;
+
+  /// No description provided for @enterOldAndNewPin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите старый PIN-код и новый для изменения'**
+  String get enterOldAndNewPin;
+
+  /// No description provided for @createFourDigitPin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Создайте 4-значный PIN-код для защиты приложения'**
+  String get createFourDigitPin;
+
+  /// No description provided for @oldPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Старый PIN-код'**
+  String get oldPinCode;
+
+  /// No description provided for @newPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новый PIN-код'**
+  String get newPinCode;
+
+  /// No description provided for @pinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'PIN-код'**
+  String get pinCode;
+
+  /// No description provided for @confirmPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердите PIN-код'**
+  String get confirmPinCode;
+
+  /// No description provided for @updatePinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Обновить PIN-код'**
+  String get updatePinCode;
+
+  /// No description provided for @pinCodesDoNotMatch.
+  ///
+  /// In ru, this message translates to:
+  /// **'PIN-коды не совпадают'**
+  String get pinCodesDoNotMatch;
+
+  /// No description provided for @newPinCodesDoNotMatch.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новые PIN-коды не совпадают'**
+  String get newPinCodesDoNotMatch;
+
+  /// No description provided for @pinCodeSuccessfullySet.
+  ///
+  /// In ru, this message translates to:
+  /// **'PIN-код успешно установлен'**
+  String get pinCodeSuccessfullySet;
+
+  /// No description provided for @pinCodeSuccessfullyUpdated.
+  ///
+  /// In ru, this message translates to:
+  /// **'PIN-код успешно обновлен'**
+  String get pinCodeSuccessfullyUpdated;
+
+  /// No description provided for @attemptsExceeded.
+  ///
+  /// In ru, this message translates to:
+  /// **'Превышено количество попыток'**
+  String get attemptsExceeded;
+
+  /// No description provided for @incorrectOldPinAttemptsRemaining.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неверный старый PIN-код. Осталось попыток: {count}'**
+  String incorrectOldPinAttemptsRemaining(int count);
+
+  /// No description provided for @securitySetup.
+  ///
+  /// In ru, this message translates to:
+  /// **'Настройка защиты'**
+  String get securitySetup;
+
+  /// No description provided for @useBiometricsOrCreatePin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Используйте биометрию или создайте PIN-код для защиты приложения'**
+  String get useBiometricsOrCreatePin;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In ru, this message translates to:
+  /// **'Продолжить'**
+  String get continueButton;
+
+  /// No description provided for @giveAccessToData.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дайте доступ к данным'**
+  String get giveAccessToData;
 }
 
 class _AppLocalizationsDelegate

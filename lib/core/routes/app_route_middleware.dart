@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/hive_constants.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_entity.dart';
 import 'package:jankuier_mobile/features/countries/data/entities/country_entity.dart';
 import 'package:jankuier_mobile/features/tournament/data/entities/tournament_entity.dart';
+import '../../features/local_auth/domain/repository/local_auth_interface.dart';
 import '../constants/app_route_constants.dart';
+import '../errors/failures.dart';
 import '../utils/hive_utils.dart';
 
 class AppRouteMiddleware {
@@ -90,5 +93,46 @@ class AppRouteMiddleware {
       return "/";
     }
     return null;
+  }
+
+  Future<String?> setLocalAuthBefore(BuildContext context, GoRouterState state,
+      LocalAuthInterface authInterface) async {
+    String? way = AppRouteConstants.MyFirstLocalAuthPagePath;
+    Either<Failure, bool> result = await authInterface.getPinHashBefore();
+    result.fold(
+      (Failure failure) => {},
+      (bool result) => {
+        if (result == true) {way = null}
+      },
+    );
+    return way;
+  }
+
+  Future<String?> refreshAuthTokenViaLocalAuth(
+    BuildContext context,
+    GoRouterState state,
+    LocalAuthInterface authInterface,
+  ) async {
+    String way = AppRouteConstants.SignInPagePath;
+
+    final Either<Failure, bool> result = await authInterface.getPinHashBefore();
+    final String? refreshToken = await hiveUtils.getRefreshToken();
+
+    if (refreshToken != null) {
+      result.fold(
+        (failure) {
+          debugPrint("Ошибка проверки PIN: ${failure.message}");
+        },
+        (hasPin) {
+          if (hasPin) {
+            way = AppRouteConstants.RefreshTokenViaLocalAuthPagePath;
+          }
+        },
+      );
+    } else {
+      await hiveUtils.clearCurrentUser();
+      await hiveUtils.clearAllTokens();
+    }
+    return way;
   }
 }

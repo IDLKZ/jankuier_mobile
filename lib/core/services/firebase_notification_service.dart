@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -282,17 +283,59 @@ class FirebaseNotificationService {
 
   /// Subscribe to topic
   Future<void> subscribeToTopic(String topic) async {
-    await _firebaseMessaging.subscribeToTopic(topic);
-    if (kDebugMode) {
-      print('Subscribed to topic: $topic');
+    try {
+      // For iOS, ensure APNS token is available before subscribing
+      if (Platform.isIOS) {
+        final apnsToken = await _firebaseMessaging.getAPNSToken();
+        if (apnsToken == null) {
+          if (kDebugMode) {
+            print('APNS token not available yet, waiting...');
+          }
+          // Wait a bit and try again
+          await Future.delayed(const Duration(milliseconds: 500));
+          final retryToken = await _firebaseMessaging.getAPNSToken();
+          if (retryToken == null) {
+            if (kDebugMode) {
+              print('APNS token still not available, skipping topic subscription');
+            }
+            return;
+          }
+        }
+      }
+
+      await _firebaseMessaging.subscribeToTopic(topic);
+      if (kDebugMode) {
+        print('Subscribed to topic: $topic');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error subscribing to topic $topic: $e');
+      }
     }
   }
 
   /// Unsubscribe from topic
   Future<void> unsubscribeFromTopic(String topic) async {
-    await _firebaseMessaging.unsubscribeFromTopic(topic);
-    if (kDebugMode) {
-      print('Unsubscribed from topic: $topic');
+    try {
+      // For iOS, ensure APNS token is available before unsubscribing
+      if (Platform.isIOS) {
+        final apnsToken = await _firebaseMessaging.getAPNSToken();
+        if (apnsToken == null) {
+          if (kDebugMode) {
+            print('APNS token not available, skipping topic unsubscription');
+          }
+          return;
+        }
+      }
+
+      await _firebaseMessaging.unsubscribeFromTopic(topic);
+      if (kDebugMode) {
+        print('Unsubscribed from topic: $topic');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error unsubscribing from topic $topic: $e');
+      }
     }
   }
 

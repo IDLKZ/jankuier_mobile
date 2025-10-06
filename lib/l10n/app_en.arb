@@ -511,5 +511,55 @@
   },
   "myOrders": "My Orders",
   "myBookings": "My Bookings",
-  "cart": "Cart"
+  "cart": "Cart",
+  "enterPinCode": "Enter PIN code",
+  "appLogin": "App Login",
+  "attemptsRemaining": "Attempts remaining: {count}",
+  "@attemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmLoginWithBiometrics": "Confirm login with biometrics",
+  "confirmButton": "Confirm",
+  "useBiometrics": "Use biometrics",
+  "loginWithDifferentAccount": "Login with different account",
+  "attemptsExceededLoginAgain": "Attempts exceeded. Please login again.",
+  "incorrectPinAttemptsRemaining": "Incorrect PIN code. Attempts remaining: {count}",
+  "@incorrectPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToRefreshToken": "Failed to refresh token",
+  "changePinCode": "Change PIN code",
+  "createPinCode": "Create PIN code",
+  "enterOldAndNewPin": "Enter old PIN code and new one to change",
+  "createFourDigitPin": "Create a 4-digit PIN code to protect the app",
+  "oldPinCode": "Old PIN code",
+  "newPinCode": "New PIN code",
+  "pinCode": "PIN code",
+  "confirmPinCode": "Confirm PIN code",
+  "updatePinCode": "Update PIN code",
+  "pinCodesDoNotMatch": "PIN codes do not match",
+  "newPinCodesDoNotMatch": "New PIN codes do not match",
+  "pinCodeSuccessfullySet": "PIN code successfully set",
+  "pinCodeSuccessfullyUpdated": "PIN code successfully updated",
+  "attemptsExceeded": "Attempts exceeded",
+  "incorrectOldPinAttemptsRemaining": "Incorrect old PIN code. Attempts remaining: {count}",
+  "@incorrectOldPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securitySetup": "Security Setup",
+  "useBiometricsOrCreatePin": "Use biometrics or create a PIN code to protect the app",
+  "continueButton": "Continue",
+  "giveAccessToData": "Grant access to data"
 }

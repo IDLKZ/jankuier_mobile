@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/routes/app_router.dart';
-import 'package:jankuier_mobile/core/utils/toasters.dart';
 import 'package:talker/talker.dart';
 import '../di/injection.dart';
 import '../errors/exception.dart';
@@ -107,7 +106,8 @@ class HttpUtil {
     }
 
     // Если это структурированный ответ с полем "detail"
-    if (responseData is Map<String, dynamic> && responseData.containsKey('detail')) {
+    if (responseData is Map<String, dynamic> &&
+        responseData.containsKey('detail')) {
       final detail = responseData['detail'];
 
       if (detail is Map<String, dynamic>) {
@@ -139,15 +139,16 @@ class HttpUtil {
     // Если это простое сообщение об ошибке
     if (responseData is Map<String, dynamic>) {
       final message = responseData['message']?.toString() ??
-                     responseData['error']?.toString() ??
-                     'Server error';
+          responseData['error']?.toString() ??
+          'Server error';
 
       return ApiException.create(
         statusCode: statusCode,
         message: message,
         extra: responseData,
-        isCustom: responseData.containsKey('is_custom') ?
-                  responseData['is_custom'] as bool? ?? true : false,
+        isCustom: responseData.containsKey('is_custom')
+            ? responseData['is_custom'] as bool? ?? true
+            : false,
       );
     }
 
@@ -187,7 +188,9 @@ class HttpUtil {
       case 503:
         return 'Сервис временно недоступен';
       default:
-        return exception.message.isNotEmpty ? exception.message : 'Произошла ошибка';
+        return exception.message.isNotEmpty
+            ? exception.message
+            : 'Произошла ошибка';
     }
   }
 
@@ -195,10 +198,8 @@ class HttpUtil {
     try {
       // Clear user data and token from Hive
       await _hiveUtils.clearAccessToken();
-      await _hiveUtils.clearCurrentUser();
-
       // Navigate to SignIn page using the router
-      AppRouter.router.go(AppRouteConstants.SignInPagePath);
+      AppRouter.router.go(AppRouteConstants.RefreshTokenViaLocalAuthPagePath);
     } catch (e) {
       talker.error('Error handling 401 unauthorized', e);
     }
@@ -239,49 +240,21 @@ class HttpUtil {
 
       // Обрабатываем конкретные статус-коды
       switch (apiException.statusCode) {
-        case 400:
-          // Для ошибок 400 Bad Request показываем toast
-          final userMessage = _getUserFriendlyMessage(apiException);
-          AppToaster.showError(userMessage);
-          break;
         case 401:
           await _handle401Error();
-          AppToaster.showError("Сессия истекла. Войдите заново");
-          break;
-        case 403:
-          AppToaster.showError("Доступ запрещен");
-          break;
-        case 404:
-          AppToaster.showError("Ресурс не найден");
-          break;
-        case 422:
-          // Для ошибок валидации показываем более детальное сообщение
-          final userMessage = _getUserFriendlyMessage(apiException);
-          AppToaster.showError(userMessage);
-          break;
-        case 429:
-          AppToaster.showError("Слишком много запросов. Попробуйте позже");
-          break;
-        case >= 500:
-          // Для серверных ошибок 500+ показываем toast с пользовательским сообщением
-          final userMessage = _getUserFriendlyMessage(apiException);
-          AppToaster.showError(userMessage);
           break;
         default:
-          // Для остальных ошибок используем пользовательское сообщение
-          final userMessage = _getUserFriendlyMessage(apiException);
-          AppToaster.showError(userMessage);
+          // Для всех остальных ошибок просто логируем и пробрасываем дальше
+          break;
       }
 
-      // Выбрасываем исключение для обработки в вызывающем коде
+      // Выбрасываем исключение для обработки в вызывающем коде (BLoC/UseCase)
       throw apiException;
     } catch (e, st) {
       // Обрабатываем неожиданные ошибки
       talker.handle(e, st);
 
       if (e is! ApiException) {
-        AppToaster.showError("Неизвестная ошибка");
-
         // Создаем ApiException для неожиданных ошибок
         throw ApiException.create(
           statusCode: 0,

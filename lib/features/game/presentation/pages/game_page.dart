@@ -100,7 +100,8 @@ class _GamePageViewState extends State<_GamePageView>
                     children: [
                       _TeamStatsTabView(gameId: widget.gameId),
                       _LineupTabView(gameId: widget.gameId),
-                      _PlayerStatsTabView(gameId: widget.gameId, match: widget.match),
+                      _PlayerStatsTabView(
+                          gameId: widget.gameId, match: widget.match),
                     ],
                   ),
                 ),
@@ -1311,7 +1312,8 @@ class _TeamStatsContent extends StatelessWidget {
     final awayTeam = teams[1];
 
     // Get match info from parent
-    final gamePageState = context.findAncestorStateOfType<_GamePageViewState>()!;
+    final gamePageState =
+        context.findAncestorStateOfType<_GamePageViewState>()!;
     final match = gamePageState.widget.match;
 
     return Container(
@@ -1729,7 +1731,8 @@ class _TeamLineupWidget extends StatelessWidget {
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 8.h),
-          ...teamLineup.lineup.map((player) => _PlayerRowWidget(player: player)),
+          ...teamLineup.lineup
+              .map((player) => _PlayerRowWidget(player: player)),
         ],
       ),
     );

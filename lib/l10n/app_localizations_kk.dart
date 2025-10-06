@@ -1365,4 +1365,101 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get cart => 'Себет';
+
+  @override
+  String get enterPinCode => 'PIN кодын енгізіңіз';
+
+  @override
+  String get appLogin => 'Қосымшаға кіру';
+
+  @override
+  String attemptsRemaining(int count) {
+    return 'Қалған әрекеттер: $count';
+  }
+
+  @override
+  String get confirmLoginWithBiometrics => 'Биометрия арқылы кіруді растаңыз';
+
+  @override
+  String get confirmButton => 'Растау';
+
+  @override
+  String get useBiometrics => 'Биометрияны қолдану';
+
+  @override
+  String get loginWithDifferentAccount => 'Басқа тіркелгімен кіру';
+
+  @override
+  String get attemptsExceededLoginAgain =>
+      'Әрекеттер саны асты. Қайта кіріңіз.';
+
+  @override
+  String incorrectPinAttemptsRemaining(int count) {
+    return 'Қате PIN код. Қалған әрекеттер: $count';
+  }
+
+  @override
+  String get failedToRefreshToken => 'Токенді жаңарту сәтсіз аяқталды';
+
+  @override
+  String get changePinCode => 'PIN кодын өзгерту';
+
+  @override
+  String get createPinCode => 'PIN код жасау';
+
+  @override
+  String get enterOldAndNewPin =>
+      'Өзгерту үшін ескі PIN кодын және жаңасын енгізіңіз';
+
+  @override
+  String get createFourDigitPin =>
+      'Қосымшаны қорғау үшін 4 таңбалы PIN код жасаңыз';
+
+  @override
+  String get oldPinCode => 'Ескі PIN код';
+
+  @override
+  String get newPinCode => 'Жаңа PIN код';
+
+  @override
+  String get pinCode => 'PIN код';
+
+  @override
+  String get confirmPinCode => 'PIN кодты растаңыз';
+
+  @override
+  String get updatePinCode => 'PIN кодты жаңарту';
+
+  @override
+  String get pinCodesDoNotMatch => 'PIN кодтар сәйкес келмейді';
+
+  @override
+  String get newPinCodesDoNotMatch => 'Жаңа PIN кодтар сәйкес келмейді';
+
+  @override
+  String get pinCodeSuccessfullySet => 'PIN код сәтті орнатылды';
+
+  @override
+  String get pinCodeSuccessfullyUpdated => 'PIN код сәтті жаңартылды';
+
+  @override
+  String get attemptsExceeded => 'Әрекеттер саны асты';
+
+  @override
+  String incorrectOldPinAttemptsRemaining(int count) {
+    return 'Қате ескі PIN код. Қалған әрекеттер: $count';
+  }
+
+  @override
+  String get securitySetup => 'Қауіпсіздікті баптау';
+
+  @override
+  String get useBiometricsOrCreatePin =>
+      'Қосымшаны қорғау үшін биометрияны қолданыңыз немесе PIN код жасаңыз';
+
+  @override
+  String get continueButton => 'Жалғастыру';
+
+  @override
+  String get giveAccessToData => 'Деректерге қол жеткізуге рұқсат беру';
 }

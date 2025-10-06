@@ -7,6 +7,9 @@
     <!-- Разрешение на использование камеры для создания фото профиля -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Biometric Authentication -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <!-- Firebase Cloud Messaging Permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
