@@ -1362,4 +1362,100 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cart => 'Cart';
+
+  @override
+  String get enterPinCode => 'Enter PIN code';
+
+  @override
+  String get appLogin => 'App Login';
+
+  @override
+  String attemptsRemaining(int count) {
+    return 'Attempts remaining: $count';
+  }
+
+  @override
+  String get confirmLoginWithBiometrics => 'Confirm login with biometrics';
+
+  @override
+  String get confirmButton => 'Confirm';
+
+  @override
+  String get useBiometrics => 'Use biometrics';
+
+  @override
+  String get loginWithDifferentAccount => 'Login with different account';
+
+  @override
+  String get attemptsExceededLoginAgain =>
+      'Attempts exceeded. Please login again.';
+
+  @override
+  String incorrectPinAttemptsRemaining(int count) {
+    return 'Incorrect PIN code. Attempts remaining: $count';
+  }
+
+  @override
+  String get failedToRefreshToken => 'Failed to refresh token';
+
+  @override
+  String get changePinCode => 'Change PIN code';
+
+  @override
+  String get createPinCode => 'Create PIN code';
+
+  @override
+  String get enterOldAndNewPin => 'Enter old PIN code and new one to change';
+
+  @override
+  String get createFourDigitPin =>
+      'Create a 4-digit PIN code to protect the app';
+
+  @override
+  String get oldPinCode => 'Old PIN code';
+
+  @override
+  String get newPinCode => 'New PIN code';
+
+  @override
+  String get pinCode => 'PIN code';
+
+  @override
+  String get confirmPinCode => 'Confirm PIN code';
+
+  @override
+  String get updatePinCode => 'Update PIN code';
+
+  @override
+  String get pinCodesDoNotMatch => 'PIN codes do not match';
+
+  @override
+  String get newPinCodesDoNotMatch => 'New PIN codes do not match';
+
+  @override
+  String get pinCodeSuccessfullySet => 'PIN code successfully set';
+
+  @override
+  String get pinCodeSuccessfullyUpdated => 'PIN code successfully updated';
+
+  @override
+  String get attemptsExceeded => 'Attempts exceeded';
+
+  @override
+  String incorrectOldPinAttemptsRemaining(int count) {
+    return 'Incorrect old PIN code. Attempts remaining: $count';
+  }
+
+  @override
+  String get securitySetup => 'Security Setup';
+
+  @override
+  String get useBiometricsOrCreatePin =>
+      'Use biometrics or create a PIN code to protect the app';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get giveAccessToData => 'Grant access to data';
 }

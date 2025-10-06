@@ -508,5 +508,55 @@
   },
   "myOrders": "Менің тапсырыстарым",
   "myBookings": "Менің брондарым",
-  "cart": "Себет"
+  "cart": "Себет",
+  "enterPinCode": "PIN кодын енгізіңіз",
+  "appLogin": "Қосымшаға кіру",
+  "attemptsRemaining": "Қалған әрекеттер: {count}",
+  "@attemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmLoginWithBiometrics": "Биометрия арқылы кіруді растаңыз",
+  "confirmButton": "Растау",
+  "useBiometrics": "Биометрияны қолдану",
+  "loginWithDifferentAccount": "Басқа тіркелгімен кіру",
+  "attemptsExceededLoginAgain": "Әрекеттер саны асты. Қайта кіріңіз.",
+  "incorrectPinAttemptsRemaining": "Қате PIN код. Қалған әрекеттер: {count}",
+  "@incorrectPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToRefreshToken": "Токенді жаңарту сәтсіз аяқталды",
+  "changePinCode": "PIN кодын өзгерту",
+  "createPinCode": "PIN код жасау",
+  "enterOldAndNewPin": "Өзгерту үшін ескі PIN кодын және жаңасын енгізіңіз",
+  "createFourDigitPin": "Қосымшаны қорғау үшін 4 таңбалы PIN код жасаңыз",
+  "oldPinCode": "Ескі PIN код",
+  "newPinCode": "Жаңа PIN код",
+  "pinCode": "PIN код",
+  "confirmPinCode": "PIN кодты растаңыз",
+  "updatePinCode": "PIN кодты жаңарту",
+  "pinCodesDoNotMatch": "PIN кодтар сәйкес келмейді",
+  "newPinCodesDoNotMatch": "Жаңа PIN кодтар сәйкес келмейді",
+  "pinCodeSuccessfullySet": "PIN код сәтті орнатылды",
+  "pinCodeSuccessfullyUpdated": "PIN код сәтті жаңартылды",
+  "attemptsExceeded": "Әрекеттер саны асты",
+  "incorrectOldPinAttemptsRemaining": "Қате ескі PIN код. Қалған әрекеттер: {count}",
+  "@incorrectOldPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securitySetup": "Қауіпсіздікті баптау",
+  "useBiometricsOrCreatePin": "Қосымшаны қорғау үшін биометрияны қолданыңыз немесе PIN код жасаңыз",
+  "continueButton": "Жалғастыру",
+  "giveAccessToData": "Деректерге қол жеткізуге рұқсат беру"
 }

@@ -114,6 +114,11 @@ class AppRouteConstants {
   static const String MyNotificationsCleanPagePath = "/my-notifications-path";
   static const String MyNotificationsPageName = "My Notifications Page";
 
+  static const String ReloadPINCodePagePath =
+      "${ProfilePagePath}/reload-pin-code";
+  static const String ReloadPINCodeCleanPath = "/reload-pin-code";
+  static const String ReloadPINCodePageName = "Reload Pin Code Page Name";
+
   //Profile Ends
 
   //Out Of ShellRoute
@@ -128,6 +133,15 @@ class AppRouteConstants {
   static const String EnterPhonePageName = "Enter Phone Page";
   static const String VerifyCodePagePath = "/verify-code";
   static const String VerifyCodePageName = "Verify Code Page";
+
+  static const String MyFirstLocalAuthPagePath = "/set-up-local-auth";
+  static const String MyFirstLocalAuthPageName = "Set Up Local Auth";
+
+  static const String RefreshTokenViaLocalAuthPagePath =
+      "/refresh-token-via-local-auth";
+  static const String RefreshTokenViaLocalAuthPageName =
+      "Refresh Token Via Local Auth";
+
 //Auth Ends
 
 //Out Of ShellRoute

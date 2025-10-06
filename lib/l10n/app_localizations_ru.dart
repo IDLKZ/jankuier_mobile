@@ -1365,4 +1365,102 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cart => 'Корзина';
+
+  @override
+  String get enterPinCode => 'Введите PIN-код';
+
+  @override
+  String get appLogin => 'Вход в приложение';
+
+  @override
+  String attemptsRemaining(int count) {
+    return 'Осталось попыток: $count';
+  }
+
+  @override
+  String get confirmLoginWithBiometrics =>
+      'Подтвердите вход с помощью биометрии';
+
+  @override
+  String get confirmButton => 'Подтвердить';
+
+  @override
+  String get useBiometrics => 'Использовать биометрию';
+
+  @override
+  String get loginWithDifferentAccount => 'Войти с другим аккаунтом';
+
+  @override
+  String get attemptsExceededLoginAgain =>
+      'Превышено количество попыток. Войдите заново.';
+
+  @override
+  String incorrectPinAttemptsRemaining(int count) {
+    return 'Неверный PIN-код. Осталось попыток: $count';
+  }
+
+  @override
+  String get failedToRefreshToken => 'Не удалось обновить токен';
+
+  @override
+  String get changePinCode => 'Изменить PIN-код';
+
+  @override
+  String get createPinCode => 'Создать PIN-код';
+
+  @override
+  String get enterOldAndNewPin =>
+      'Введите старый PIN-код и новый для изменения';
+
+  @override
+  String get createFourDigitPin =>
+      'Создайте 4-значный PIN-код для защиты приложения';
+
+  @override
+  String get oldPinCode => 'Старый PIN-код';
+
+  @override
+  String get newPinCode => 'Новый PIN-код';
+
+  @override
+  String get pinCode => 'PIN-код';
+
+  @override
+  String get confirmPinCode => 'Подтвердите PIN-код';
+
+  @override
+  String get updatePinCode => 'Обновить PIN-код';
+
+  @override
+  String get pinCodesDoNotMatch => 'PIN-коды не совпадают';
+
+  @override
+  String get newPinCodesDoNotMatch => 'Новые PIN-коды не совпадают';
+
+  @override
+  String get pinCodeSuccessfullySet => 'PIN-код успешно установлен';
+
+  @override
+  String get pinCodeSuccessfullyUpdated => 'PIN-код успешно обновлен';
+
+  @override
+  String get attemptsExceeded => 'Превышено количество попыток';
+
+  @override
+  String incorrectOldPinAttemptsRemaining(int count) {
+    return 'Неверный старый PIN-код. Осталось попыток: $count';
+  }
+
+  @override
+  String get securitySetup => 'Настройка защиты';
+
+  @override
+  String get useBiometricsOrCreatePin =>
+      'Используйте биометрию или создайте PIN-код для защиты приложения';
+
+  @override
+  String get continueButton => 'Продолжить';
+
+  @override
+  String get giveAccessToData => 'Дайте доступ к данным';
 }

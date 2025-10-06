@@ -508,5 +508,55 @@
   },
   "myOrders": "Мои заказы",
   "myBookings": "Мои брони",
-  "cart": "Корзина"
+  "cart": "Корзина",
+  "enterPinCode": "Введите PIN-код",
+  "appLogin": "Вход в приложение",
+  "attemptsRemaining": "Осталось попыток: {count}",
+  "@attemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmLoginWithBiometrics": "Подтвердите вход с помощью биометрии",
+  "confirmButton": "Подтвердить",
+  "useBiometrics": "Использовать биометрию",
+  "loginWithDifferentAccount": "Войти с другим аккаунтом",
+  "attemptsExceededLoginAgain": "Превышено количество попыток. Войдите заново.",
+  "incorrectPinAttemptsRemaining": "Неверный PIN-код. Осталось попыток: {count}",
+  "@incorrectPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToRefreshToken": "Не удалось обновить токен",
+  "changePinCode": "Изменить PIN-код",
+  "createPinCode": "Создать PIN-код",
+  "enterOldAndNewPin": "Введите старый PIN-код и новый для изменения",
+  "createFourDigitPin": "Создайте 4-значный PIN-код для защиты приложения",
+  "oldPinCode": "Старый PIN-код",
+  "newPinCode": "Новый PIN-код",
+  "pinCode": "PIN-код",
+  "confirmPinCode": "Подтвердите PIN-код",
+  "updatePinCode": "Обновить PIN-код",
+  "pinCodesDoNotMatch": "PIN-коды не совпадают",
+  "newPinCodesDoNotMatch": "Новые PIN-коды не совпадают",
+  "pinCodeSuccessfullySet": "PIN-код успешно установлен",
+  "pinCodeSuccessfullyUpdated": "PIN-код успешно обновлен",
+  "attemptsExceeded": "Превышено количество попыток",
+  "incorrectOldPinAttemptsRemaining": "Неверный старый PIN-код. Осталось попыток: {count}",
+  "@incorrectOldPinAttemptsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securitySetup": "Настройка защиты",
+  "useBiometricsOrCreatePin": "Используйте биометрию или создайте PIN-код для защиты приложения",
+  "continueButton": "Продолжить",
+  "giveAccessToData": "Дайте доступ к данным"
 }

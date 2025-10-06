@@ -190,6 +190,28 @@ import 'package:jankuier_mobile/features/kff_league/presentation/bloc/seasons/se
     as _i1006;
 import 'package:jankuier_mobile/features/kff_league/presentation/bloc/tournaments/tournaments_bloc.dart'
     as _i313;
+import 'package:jankuier_mobile/features/local_auth/data/repository/local_auth_repository.dart'
+    as _i1012;
+import 'package:jankuier_mobile/features/local_auth/domain/repository/local_auth_interface.dart'
+    as _i472;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/check_biometrics_available_usecase.dart'
+    as _i8;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/check_biometrics_data_usecase.dart'
+    as _i877;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/check_pin_code_usecase.dart'
+    as _i64;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/get_local_auth_type_usecase.dart'
+    as _i1067;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/get_pin_hash_before_usecase.dart'
+    as _i1059;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/reload_pin_code_usecase.dart'
+    as _i394;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/set_local_auth_type_usecase.dart'
+    as _i280;
+import 'package:jankuier_mobile/features/local_auth/domain/usecases/set_pin_hash_usecase.dart'
+    as _i454;
+import 'package:jankuier_mobile/features/local_auth/presentation/bloc/local_auth_bloc.dart'
+    as _i962;
 import 'package:jankuier_mobile/features/notifications/data/datasources/notification_datasource.dart'
     as _i972;
 import 'package:jankuier_mobile/features/notifications/data/repositories/notification_repository_impl.dart'
@@ -319,8 +341,26 @@ extension GetItInjectableX on _i174.GetIt {
           ..initialize());
     gh.factory<_i972.NotificationDSInterface>(() => _i972.NotificationDSImpl());
     gh.factory<_i320.KffLeagueDSInterface>(() => _i320.KffLeagueDSImpl());
+    gh.factory<_i472.LocalAuthInterface>(
+        () => _i1012.LocalAuthRepositoryImpl());
     gh.factory<_i259.TicketonDSInterface>(() => _i259.TicketonDSImpl());
     gh.factory<_i644.AuthDSInterface>(() => _i644.AuthDSImpl());
+    gh.factory<_i8.CheckBiometricsAvailableUseCase>(() =>
+        _i8.CheckBiometricsAvailableUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i877.CheckBiometricsDataUseCase>(
+        () => _i877.CheckBiometricsDataUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i64.CheckPinCodeUseCase>(
+        () => _i64.CheckPinCodeUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i1067.GetLocalAuthTypeUseCase>(
+        () => _i1067.GetLocalAuthTypeUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i1059.GetPinHashBeforeUseCase>(
+        () => _i1059.GetPinHashBeforeUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i394.ReloadPinCodeUseCase>(
+        () => _i394.ReloadPinCodeUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i280.SetLocalAuthTypeUseCase>(
+        () => _i280.SetLocalAuthTypeUseCase(gh<_i472.LocalAuthInterface>()));
+    gh.factory<_i454.SetPinHashUseCase>(
+        () => _i454.SetPinHashUseCase(gh<_i472.LocalAuthInterface>()));
     gh.factory<_i888.CartRepository>(
         () => _i648.CartRepositoryImpl(gh<_i948.CartDSInterface>()));
     gh.factory<_i644.TicketonOrderRepository>(() =>
@@ -434,6 +474,16 @@ extension GetItInjectableX on _i174.GetIt {
         _i190.CreateBookingFieldPartyRequestBloc(
             createBookingFieldPartyRequest:
                 gh<_i514.CreateBookingFieldPartyRequest>()));
+    gh.factory<_i962.LocalAuthBloc>(() => _i962.LocalAuthBloc(
+          gh<_i8.CheckBiometricsAvailableUseCase>(),
+          gh<_i877.CheckBiometricsDataUseCase>(),
+          gh<_i64.CheckPinCodeUseCase>(),
+          gh<_i454.SetPinHashUseCase>(),
+          gh<_i1059.GetPinHashBeforeUseCase>(),
+          gh<_i394.ReloadPinCodeUseCase>(),
+          gh<_i1067.GetLocalAuthTypeUseCase>(),
+          gh<_i280.SetLocalAuthTypeUseCase>(),
+        ));
     gh.factory<_i536.DeleteAccountUseCase>(
         () => _i536.DeleteAccountUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i189.DeleteProfilePhotoUseCase>(

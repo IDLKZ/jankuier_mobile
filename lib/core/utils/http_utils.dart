@@ -107,7 +107,8 @@ class HttpUtil {
     }
 
     // Если это структурированный ответ с полем "detail"
-    if (responseData is Map<String, dynamic> && responseData.containsKey('detail')) {
+    if (responseData is Map<String, dynamic> &&
+        responseData.containsKey('detail')) {
       final detail = responseData['detail'];
 
       if (detail is Map<String, dynamic>) {
@@ -139,15 +140,16 @@ class HttpUtil {
     // Если это простое сообщение об ошибке
     if (responseData is Map<String, dynamic>) {
       final message = responseData['message']?.toString() ??
-                     responseData['error']?.toString() ??
-                     'Server error';
+          responseData['error']?.toString() ??
+          'Server error';
 
       return ApiException.create(
         statusCode: statusCode,
         message: message,
         extra: responseData,
-        isCustom: responseData.containsKey('is_custom') ?
-                  responseData['is_custom'] as bool? ?? true : false,
+        isCustom: responseData.containsKey('is_custom')
+            ? responseData['is_custom'] as bool? ?? true
+            : false,
       );
     }
 
@@ -187,7 +189,9 @@ class HttpUtil {
       case 503:
         return 'Сервис временно недоступен';
       default:
-        return exception.message.isNotEmpty ? exception.message : 'Произошла ошибка';
+        return exception.message.isNotEmpty
+            ? exception.message
+            : 'Произошла ошибка';
     }
   }
 
@@ -195,10 +199,8 @@ class HttpUtil {
     try {
       // Clear user data and token from Hive
       await _hiveUtils.clearAccessToken();
-      await _hiveUtils.clearCurrentUser();
-
       // Navigate to SignIn page using the router
-      AppRouter.router.go(AppRouteConstants.SignInPagePath);
+      AppRouter.router.go(AppRouteConstants.RefreshTokenViaLocalAuthPagePath);
     } catch (e) {
       talker.error('Error handling 401 unauthorized', e);
     }
