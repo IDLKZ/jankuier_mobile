@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -71,7 +73,11 @@ void main() async {
   // Initialize Firebase Notification Service
   await FirebaseNotificationService.instance.initialize();
 
-  // Subscribe to default topic
+  // Subscribe to default topic (with delay for iOS to get APNS token)
+  if (Platform.isIOS) {
+    // Wait a bit for APNS token to be available on iOS
+    await Future.delayed(const Duration(seconds: 1));
+  }
   await FirebaseNotificationService.instance.subscribeToTopic("all_users");
 
   await SotaApiClient().getSotaToken();
