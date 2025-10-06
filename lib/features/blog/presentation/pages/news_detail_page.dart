@@ -194,12 +194,15 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                       color: AppColors.textSecondary,
                     ),
                     SizedBox(width: 4.w),
-                    Text(
-                      _formatDate(news.date),
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14.sp,
-                        color: AppColors.textSecondary,
+                    Expanded(
+                      child: Text(
+                        _formatDate(news.date),
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14.sp,
+                          color: AppColors.textSecondary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(width: 16.w),
@@ -416,7 +419,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
     } else if (difference.inDays == 1) {
       return '${AppLocalizations.of(context)!.yesterday}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} ${AppLocalizations.of(context)!.daysAgo}';
+      return AppLocalizations.of(context)!.daysAgo(difference.inDays);
     } else {
       return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
     }

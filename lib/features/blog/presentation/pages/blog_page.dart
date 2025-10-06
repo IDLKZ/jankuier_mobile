@@ -512,7 +512,7 @@ class _BlogListPageState extends State<BlogListPage> {
     } else if (difference.inDays == 1) {
       return '${AppLocalizations.of(context)!.yesterday}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} ${AppLocalizations.of(context)!.daysAgo}';
+      return AppLocalizations.of(context)!.daysAgo(difference.inDays);
     } else {
       return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
     }
