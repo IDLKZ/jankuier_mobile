@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:jankuier_mobile/core/constants/hive_constants.dart';
-import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
+import 'package:jankuier_mobile/core/utils/http_utils.dart';
+import '../../../../core/constants/api_constants.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
-import '../../../../core/utils/sota_http_utils.dart';
 import '../entities/match_lineup_entity.dart';
 import '../entities/player_stat_entity.dart';
 import '../entities/team_stat_entity.dart';
@@ -15,14 +14,14 @@ abstract class GameDSInterface {
 }
 
 class GameDSImpl implements GameDSInterface {
-  final httpUtils = SotaHttpUtil();
+  final httpUtils = HttpUtil();
   final hiveUtils = HiveUtils();
 
   @override
   Future<MatchLineupEntity> GetMatchLineUpStatsByGameId(String gameId) async {
     try {
       final response = await httpUtils
-          .get(SotaApiConstant.GetMatchLineUpStatsByGameIdUrl(gameId));
+          .get(ApiConstant.GetMatchLineUpStatsByGameIdUrl(gameId));
       final result = MatchLineupEntity.fromJson(response);
       return result;
     } on DioException catch (e) {
@@ -36,8 +35,8 @@ class GameDSImpl implements GameDSInterface {
   Future<PlayersStatsResponseEntity> GetPlayerStatsByGameId(
       String gameId) async {
     try {
-      final response = await httpUtils
-          .get(SotaApiConstant.GetPlayerStatsByGameIdUrl(gameId));
+      final response =
+          await httpUtils.get(ApiConstant.GetPlayerStatsByGameIdUrl(gameId));
       final result = PlayersStatsResponseEntity.fromJson(response);
       return result;
     } on DioException catch (e) {
@@ -51,7 +50,7 @@ class GameDSImpl implements GameDSInterface {
   Future<TeamsStatsResponseEntity> GetTeamStatsByGameId(String gameId) async {
     try {
       final response =
-          await httpUtils.get(SotaApiConstant.GetTeamStatsByGameIdUrl(gameId));
+          await httpUtils.get(ApiConstant.GetTeamStatsByGameIdUrl(gameId));
       final result = TeamsStatsResponseEntity.fromJson(response);
       return result;
     } on DioException catch (e) {

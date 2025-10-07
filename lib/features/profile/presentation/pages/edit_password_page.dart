@@ -13,6 +13,8 @@ import '../../../../core/utils/hive_utils.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import '../../../auth/data/entities/user_entity.dart';
 import '../../../auth/presentation/bloc/update_password_bloc/update_password_state.dart';
+import '../../../auth/presentation/bloc/get_me_bloc/get_me_bloc.dart';
+import '../../../auth/presentation/bloc/get_me_bloc/get_me_event.dart';
 
 class EditPasswordPage extends StatefulWidget {
   const EditPasswordPage({super.key});
@@ -24,8 +26,15 @@ class EditPasswordPage extends StatefulWidget {
 class _EditPasswordPageState extends State<EditPasswordPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<UpdatePasswordBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<UpdatePasswordBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<GetMeBloc>(),
+        ),
+      ],
       child: const _EditPasswordView(),
     );
   }
@@ -108,7 +117,9 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
         newPassword: _newPasswordC.text,
       );
 
-      context.read<UpdatePasswordBloc>().add(PasswordUpdateSubmitted(updatePasswordParameter));
+      context
+          .read<UpdatePasswordBloc>()
+          .add(PasswordUpdateSubmitted(updatePasswordParameter));
     }
   }
 
@@ -124,6 +135,10 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
         controller: controller,
         obscureText: true,
         validator: validator,
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 16.sp,
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(color: AppColors.textSecondary),
@@ -169,10 +184,12 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
           if (state is UpdatePasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.passwordSuccessfullyUpdated),
+                content: Text(
+                    AppLocalizations.of(context)!.passwordSuccessfullyUpdated),
                 backgroundColor: Colors.green,
               ),
             );
+            context.read<GetMeBloc>().add(const LoadUserProfile());
             context.go(AppRouteConstants.ProfilePagePath);
           } else if (state is UpdatePasswordFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

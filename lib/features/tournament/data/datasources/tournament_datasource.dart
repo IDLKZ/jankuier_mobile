@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:jankuier_mobile/core/common/entities/sota_pagination_entity.dart';
+import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/hive_constants.dart';
-import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
+import 'package:jankuier_mobile/core/utils/http_utils.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
-import '../../../../core/utils/sota_http_utils.dart';
 import '../../domain/parameters/get_tournament_parameter.dart';
 import '../entities/tournament_entity.dart';
 
@@ -14,7 +14,7 @@ abstract class TournamentDSInterface {
 }
 
 class TournamentDSImpl implements TournamentDSInterface {
-  final httpUtils = SotaHttpUtil();
+  final httpUtils = HttpUtil();
   final hiveUtils = HiveUtils();
 
   @override
@@ -27,13 +27,15 @@ class TournamentDSImpl implements TournamentDSInterface {
       if (selectedCountryId != null) {
         query["country"] = selectedCountryId.toString();
       }
-      final response = await httpUtils.get(SotaApiConstant.GetTournamentURL,
+      final response = await httpUtils.get(ApiConstant.GetTournamentURL,
           queryParameters: query);
       final result = SotaPaginationResponse<TournamentEntity>.fromJson(
           response, TournamentEntity.fromJson);
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }

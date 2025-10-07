@@ -127,10 +127,10 @@ class _RefreshTokenViaLocalAuthPageContentState
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 64.w,
-      height: 64.h,
+      width: 56.w,
+      height: 56.h,
       textStyle: TextStyle(
-        fontSize: 24.sp,
+        fontSize: 20.sp,
         color: AppColors.textPrimary,
         fontWeight: FontWeight.w600,
       ),
@@ -271,18 +271,18 @@ class _RefreshTokenViaLocalAuthPageContentState
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.15),
+                          height: MediaQuery.of(context).size.height * 0.1),
                       // Заголовок
                       Text(
                         _showPinInput ? l10n.enterPinCode : l10n.appLogin,
                         style: TextStyle(
-                          fontSize: 28.sp,
+                          fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 12.h),
 
                       // Подзаголовок
                       if (_showPinInput)
@@ -290,7 +290,7 @@ class _RefreshTokenViaLocalAuthPageContentState
                           l10n.attemptsRemaining(
                               _maxPinAttempts - _pinAttempts),
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             color: _pinAttempts > 0
                                 ? AppColors.error
                                 : AppColors.textSecondary,
@@ -304,12 +304,12 @@ class _RefreshTokenViaLocalAuthPageContentState
                         Text(
                           l10n.confirmLoginWithBiometrics,
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             color: AppColors.textSecondary,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      SizedBox(height: 48.h),
+                      SizedBox(height: 32.h),
 
                       // Иконка или индикатор загрузки
                       if (state is LocalAuthLoading)
@@ -319,16 +319,16 @@ class _RefreshTokenViaLocalAuthPageContentState
                       else if (_showPinInput)
                         Icon(
                           Icons.lock_outline,
-                          size: 80.sp,
+                          size: 60.sp,
                           color: AppColors.primary,
                         )
                       else
                         Icon(
                           Icons.fingerprint,
-                          size: 80.sp,
+                          size: 60.sp,
                           color: AppColors.primary,
                         ),
-                      SizedBox(height: 48.h),
+                      SizedBox(height: 32.h),
 
                       // PIN input (показываем только если нужен PIN)
                       if (_showPinInput) ...[
@@ -349,12 +349,12 @@ class _RefreshTokenViaLocalAuthPageContentState
                           keyboardType: TextInputType.number,
                           hapticFeedbackType: HapticFeedbackType.lightImpact,
                         ),
-                        SizedBox(height: 32.h),
+                        SizedBox(height: 24.h),
 
                         // Кнопка подтверждения PIN
                         SizedBox(
                           width: double.infinity,
-                          height: 56.h,
+                          height: 48.h,
                           child: ElevatedButton(
                             onPressed: _isPinComplete ? _handlePinSubmit : null,
                             style: ElevatedButton.styleFrom(
@@ -367,8 +367,8 @@ class _RefreshTokenViaLocalAuthPageContentState
                             ),
                             child: state is LocalAuthLoading
                                 ? SizedBox(
-                                    height: 24.h,
-                                    width: 24.w,
+                                    height: 20.h,
+                                    width: 20.w,
                                     child: const CircularProgressIndicator(
                                       strokeWidth: 2,
                                       color: AppColors.white,
@@ -377,7 +377,7 @@ class _RefreshTokenViaLocalAuthPageContentState
                                 : Text(
                                     l10n.confirmButton,
                                     style: TextStyle(
-                                      fontSize: 16.sp,
+                                      fontSize: 15.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -387,13 +387,16 @@ class _RefreshTokenViaLocalAuthPageContentState
 
                       // Кнопка повторной попытки биометрии
                       if (_biometricAvailable && _showPinInput) ...[
-                        SizedBox(height: 24.h),
+                        SizedBox(height: 16.h),
                         TextButton.icon(
                           onPressed: () {
                             _handleBiometricAuthentication();
                           },
-                          icon: const Icon(Icons.fingerprint),
-                          label: Text(l10n.useBiometrics),
+                          icon: Icon(Icons.fingerprint, size: 20.sp),
+                          label: Text(
+                            l10n.useBiometrics,
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.primary,
                           ),
@@ -401,19 +404,19 @@ class _RefreshTokenViaLocalAuthPageContentState
                       ],
 
                       // Кнопка отмены (переход на SignIn)
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 12.h),
                       TextButton(
                         onPressed: _navigateToSignIn,
                         child: Text(
                           l10n.loginWithDifferentAccount,
                           style: TextStyle(
-                            fontSize: 14.sp,
+                            fontSize: 13.sp,
                             color: AppColors.textSecondary,
                           ),
                         ),
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1),
+                          height: MediaQuery.of(context).size.height * 0.08),
                     ],
                   ),
                 ),

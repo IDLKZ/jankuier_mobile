@@ -26,12 +26,12 @@ class GetTournamentParameter {
       "page": page.toString(),
       "page_size": pageSize.toString(),
       "country": country.toString(),
-      "is_male": is_male.toString(),
     };
 
     if (id != null) map["id"] = id.toString();
     if (search != null) map["search"] = search!;
     if (team != null) map["team"] = team.toString();
+    if (is_male != null) map["is_male"] = is_male.toString();
 
     return map;
   }

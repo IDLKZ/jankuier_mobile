@@ -2944,6 +2944,12 @@ abstract class AppLocalizations {
   /// **'Дайте доступ к данным'**
   String get giveAccessToData;
 
+  /// No description provided for @resetPinCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сбросить PIN-код'**
+  String get resetPinCode;
+
   /// No description provided for @privacyButton.
   ///
   /// In ru, this message translates to:

@@ -1463,6 +1463,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get giveAccessToData => 'Grant access to data';
 
   @override
+  String get resetPinCode => 'Reset PIN code';
+
+  @override
   String get privacyButton => 'Personal data processing policy';
 
   @override

@@ -1468,6 +1468,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get giveAccessToData => 'Дайте доступ к данным';
 
   @override
+  String get resetPinCode => 'Сбросить PIN-код';
+
+  @override
   String get privacyButton => 'Политика обработки персональных данных';
 
   @override

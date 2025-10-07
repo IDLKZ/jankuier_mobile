@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_event.dart';
 import 'package:jankuier_mobile/features/auth/presentation/bloc/update_profile_bloc/update_profile_state.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/di/injection.dart';
@@ -38,6 +40,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
   final _iinC = TextEditingController();
   UserEntity? currentUser;
 
+  // Phone mask formatter
+  final _phoneMaskFormatter = MaskTextInputFormatter(
+    mask: '7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +61,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
         _firstNameC.text = user.firstName;
         _lastNameC.text = user.lastName;
         _patronomicC.text = user.patronomic ?? '';
-        _phoneC.text = user.phone;
+        // Apply mask to phone number
+        _phoneMaskFormatter.formatEditUpdate(
+          TextEditingValue.empty,
+          TextEditingValue(text: user.phone),
+        );
+        _phoneC.text = _phoneMaskFormatter.getMaskedText();
         _iinC.text = user.iin ?? '';
       });
     }
@@ -87,7 +100,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    final phone = value.trim();
+    // Remove mask formatting
+    final phone = value.replaceAll(RegExp(r'[\s()-]'), '');
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
       return AppLocalizations.of(context)!.phoneFormat;
@@ -117,9 +131,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // Remove mask formatting from phone
+      final cleanPhone = _phoneC.text.replaceAll(RegExp(r'[\s()-]'), '');
+
       final updateProfileParameter = UpdateProfileParameter(
         email: _emailC.text.trim(),
-        phone: _phoneC.text.trim(),
+        phone: cleanPhone,
         firstName: _firstNameC.text.trim(),
         lastName: _lastNameC.text.trim(),
         patronymic:
@@ -139,6 +156,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
     required String labelText,
     required String? Function(String?) validator,
     TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
@@ -146,6 +164,11 @@ class _EditAccountPageState extends State<EditAccountPage> {
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
+        inputFormatters: inputFormatters,
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 16.sp,
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(color: AppColors.textSecondary),
@@ -211,6 +234,12 @@ class _EditAccountViewState extends State<_EditAccountView> {
   final _iinC = TextEditingController();
   UserEntity? currentUser;
 
+  // Phone mask formatter
+  final _phoneMaskFormatter = MaskTextInputFormatter(
+    mask: '7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
   @override
   void initState() {
     super.initState();
@@ -226,7 +255,12 @@ class _EditAccountViewState extends State<_EditAccountView> {
         _firstNameC.text = user.firstName;
         _lastNameC.text = user.lastName;
         _patronomicC.text = user.patronomic ?? '';
-        _phoneC.text = user.phone;
+        // Apply mask to phone number
+        _phoneMaskFormatter.formatEditUpdate(
+          TextEditingValue.empty,
+          TextEditingValue(text: user.phone),
+        );
+        _phoneC.text = _phoneMaskFormatter.getMaskedText();
         _iinC.text = user.iin ?? '';
       });
     }
@@ -260,7 +294,8 @@ class _EditAccountViewState extends State<_EditAccountView> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    final phone = value.trim();
+    // Remove mask formatting
+    final phone = value.replaceAll(RegExp(r'[\s()-]'), '');
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(phone)) {
       return AppLocalizations.of(context)!.phoneFormat;
@@ -290,9 +325,12 @@ class _EditAccountViewState extends State<_EditAccountView> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // Remove mask formatting from phone
+      final cleanPhone = _phoneC.text.replaceAll(RegExp(r'[\s()-]'), '');
+
       final updateProfileParameter = UpdateProfileParameter(
         email: _emailC.text.trim(),
-        phone: _phoneC.text.trim(),
+        phone: cleanPhone,
         firstName: _firstNameC.text.trim(),
         lastName: _lastNameC.text.trim(),
         patronymic:
@@ -312,6 +350,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
     required String labelText,
     required String? Function(String?) validator,
     TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
@@ -319,6 +358,11 @@ class _EditAccountViewState extends State<_EditAccountView> {
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
+        inputFormatters: inputFormatters,
+        style: TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 16.sp,
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(color: AppColors.textSecondary),
@@ -362,15 +406,19 @@ class _EditAccountViewState extends State<_EditAccountView> {
       body: MultiBlocListener(
         listeners: [
           BlocListener<UpdateProfileBloc, UpdateProfileState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is UpdateProfileSuccess) {
+                // Update user in Hive immediately
+                await getIt<HiveUtils>().setCurrentUser(state.updatedUser);
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.profileSuccessfullyUpdated),
+                    content: Text(AppLocalizations.of(context)!
+                        .profileSuccessfullyUpdated),
                     backgroundColor: Colors.green,
                   ),
                 );
-                context.read<GetMeBloc>().add(const RefreshUserProfile());
+                context.read<GetMeBloc>().add(const LoadUserProfile());
                 context.go(AppRouteConstants.ProfilePagePath);
               } else if (state is UpdateProfileFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -436,6 +484,7 @@ class _EditAccountViewState extends State<_EditAccountView> {
                     labelText: AppLocalizations.of(context)!.phoneNumber,
                     validator: _validatePhone,
                     keyboardType: TextInputType.phone,
+                    inputFormatters: [_phoneMaskFormatter],
                   ),
 
                   _buildTextFormField(

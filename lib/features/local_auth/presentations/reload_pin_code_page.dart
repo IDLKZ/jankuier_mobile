@@ -124,10 +124,10 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 64.w,
-      height: 64.h,
+      width: 56.w,
+      height: 56.h,
       textStyle: TextStyle(
-        fontSize: 24.sp,
+        fontSize: 20.sp,
         color: AppColors.textPrimary,
         fontWeight: FontWeight.w600,
       ),
@@ -243,7 +243,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                 title: Text(
                   _pinExists ? l10n.changePinCode : l10n.createPinCode,
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
@@ -257,23 +257,24 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                         ),
                       )
                     : SingleChildScrollView(
-                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 32.h),
+                              SizedBox(height: 24.h),
 
                               // Иконка
                               Center(
                                 child: Icon(
                                   Icons.lock_outline,
-                                  size: 80.sp,
+                                  size: 60.sp,
                                   color: AppColors.primary,
                                 ),
                               ),
-                              SizedBox(height: 32.h),
+                              SizedBox(height: 24.h),
 
                               // Описание
                               Center(
@@ -282,25 +283,25 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                       ? l10n.enterOldAndNewPin
                                       : l10n.createFourDigitPin,
                                   style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     color: AppColors.textSecondary,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              SizedBox(height: 48.h),
+                              SizedBox(height: 32.h),
 
                               // Поле для старого PIN (только если PIN существует)
                               if (_pinExists) ...[
                                 Text(
                                   l10n.oldPinCode,
                                   style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: 13.sp,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
-                                SizedBox(height: 12.h),
+                                SizedBox(height: 10.h),
                                 Center(
                                   child: Pinput(
                                     controller: _oldPinController,
@@ -325,26 +326,26 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                       l10n.attemptsRemaining(
                                           _maxAttempts - _attempts),
                                       style: TextStyle(
-                                        fontSize: 14.sp,
+                                        fontSize: 13.sp,
                                         color: AppColors.error,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
                                 ],
-                                SizedBox(height: 24.h),
+                                SizedBox(height: 20.h),
                               ],
 
                               // Поле для нового PIN
                               Text(
                                 _pinExists ? l10n.newPinCode : l10n.pinCode,
                                 style: TextStyle(
-                                  fontSize: 14.sp,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
                                 ),
                               ),
-                              SizedBox(height: 12.h),
+                              SizedBox(height: 10.h),
                               Center(
                                 child: Pinput(
                                   controller: _newPinController,
@@ -360,18 +361,18 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                       HapticFeedbackType.lightImpact,
                                 ),
                               ),
-                              SizedBox(height: 24.h),
+                              SizedBox(height: 20.h),
 
                               // Поле для подтверждения PIN
                               Text(
                                 l10n.confirmPinCode,
                                 style: TextStyle(
-                                  fontSize: 14.sp,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
                                 ),
                               ),
-                              SizedBox(height: 12.h),
+                              SizedBox(height: 10.h),
                               Center(
                                 child: Pinput(
                                   controller: _confirmPinController,
@@ -387,7 +388,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                       HapticFeedbackType.lightImpact,
                                 ),
                               ),
-                              SizedBox(height: 48.h),
+                              SizedBox(height: 32.h),
 
                               // Кнопка подтверждения
                               BlocBuilder<LocalAuthBloc, LocalAuthState>(
@@ -402,7 +403,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
 
                                   return SizedBox(
                                     width: double.infinity,
-                                    height: 56.h,
+                                    height: 48.h,
                                     child: ElevatedButton(
                                       onPressed: isButtonEnabled && !isLoading
                                           ? (_pinExists
@@ -421,8 +422,8 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                       ),
                                       child: isLoading
                                           ? SizedBox(
-                                              height: 24.h,
-                                              width: 24.w,
+                                              height: 20.h,
+                                              width: 20.w,
                                               child:
                                                   const CircularProgressIndicator(
                                                 strokeWidth: 2,
@@ -434,7 +435,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                                   ? l10n.updatePinCode
                                                   : l10n.createPinCode,
                                               style: TextStyle(
-                                                fontSize: 16.sp,
+                                                fontSize: 15.sp,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -442,7 +443,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                   );
                                 },
                               ),
-                              SizedBox(height: 48.h),
+                              SizedBox(height: 32.h),
                             ],
                           ),
                         ),

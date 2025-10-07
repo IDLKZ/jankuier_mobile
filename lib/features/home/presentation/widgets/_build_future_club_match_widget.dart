@@ -14,7 +14,6 @@ import '../../../kff_league/presentation/widgets/match_card_widget.dart';
 Widget buildFutureClubMatch(BuildContext context) {
   bool isFuture = true;
   return Container(
-    margin: EdgeInsets.only(top: 20.h),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -12,6 +12,7 @@ class EditProfilePage extends StatelessWidget {
   final VoidCallback? onAvatarTap;
   final VoidCallback? onPersonalDataTap;
   final VoidCallback? onSecurityTap;
+  final VoidCallback? onResetPinCodeTap;
   final VoidCallback? onMyOrdersTap;
   final VoidCallback? onMyBookingsTap;
   final VoidCallback? onCartTap;
@@ -25,6 +26,7 @@ class EditProfilePage extends StatelessWidget {
     this.onAvatarTap,
     this.onPersonalDataTap,
     this.onSecurityTap,
+    this.onResetPinCodeTap,
     this.onMyOrdersTap,
     this.onMyBookingsTap,
     this.onCartTap,
@@ -43,7 +45,8 @@ class EditProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MainTitleWidget(title: AppLocalizations.of(context)!.editProfile),
+                MainTitleWidget(
+                    title: AppLocalizations.of(context)!.editProfile),
                 const SizedBox(height: 20),
                 // Avatar + Name Card
                 Container(
@@ -106,6 +109,13 @@ class EditProfilePage extends StatelessWidget {
                   onTap: onSecurityTap,
                 ),
                 SizedBox(height: 8.h),
+                // Сбросить PIN-код
+                _ProfileTile(
+                  icon: Icons.lock_reset,
+                  text: AppLocalizations.of(context)!.resetPinCode,
+                  onTap: onResetPinCodeTap,
+                ),
+                SizedBox(height: 8.h),
                 // Мои заказы
                 _ProfileTile(
                   icon: Icons.shopping_bag_outlined,
@@ -156,34 +166,51 @@ class EditProfilePage extends StatelessWidget {
                         child: Wrap(
                           children: [
                             ListTile(
-                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
-                              title: Text(AppLocalizations.of(context)!.privacyTitle, style: const TextStyle(color: Colors.blue)),
+                              leading: const Icon(Icons.gpp_good_outlined,
+                                  color: Colors.blue),
+                              title: Text(
+                                  AppLocalizations.of(context)!.privacyTitle,
+                                  style: const TextStyle(color: Colors.blue)),
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => const PrivacyWebViewPage(type: 'privacy'),
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(
+                                            type: 'privacy'),
                                   ),
                                 );
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
-                              title: Text(AppLocalizations.of(context)!.publicTitle, style: const TextStyle(color: Colors.blue)),
+                              leading: const Icon(Icons.gpp_good_outlined,
+                                  color: Colors.blue),
+                              title: Text(
+                                  AppLocalizations.of(context)!.publicTitle,
+                                  style: const TextStyle(color: Colors.blue)),
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => const PrivacyWebViewPage(type: 'public'),
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(
+                                            type: 'public'),
                                   ),
                                 );
                               },
                             ),
                             ListTile(
-                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
-                              title: Text(AppLocalizations.of(context)!.publicMobileTitle, style: const TextStyle(color: Colors.blue)),
+                              leading: const Icon(Icons.gpp_good_outlined,
+                                  color: Colors.blue),
+                              title: Text(
+                                  AppLocalizations.of(context)!
+                                      .publicMobileTitle,
+                                  style: const TextStyle(color: Colors.blue)),
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => const PrivacyWebViewPage(type: 'public-mobile',),
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(
+                                      type: 'public-mobile',
+                                    ),
                                   ),
                                 );
                               },
@@ -195,7 +222,10 @@ class EditProfilePage extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(AppLocalizations.of(context)!.privacyButton, style: const TextStyle(color: Colors.blue),),
+                    child: Text(
+                      AppLocalizations.of(context)!.privacyButton,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),

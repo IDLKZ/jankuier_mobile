@@ -562,6 +562,8 @@
   "useBiometricsOrCreatePin": "Use biometrics or create a PIN code to protect the app",
   "continueButton": "Continue",
   "giveAccessToData": "Grant access to data",
+  "resetPinCode": "Reset PIN code",
+  "giveAccessToData": "Grant access to data",
   "privacyButton": "Personal data processing policy",
   "privacyTitle": "Privacy Policy",
   "publicTitle": "Public contract (offer)",

@@ -1464,6 +1464,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get giveAccessToData => 'Деректерге қол жеткізуге рұқсат беру';
 
   @override
+  String get resetPinCode => 'PIN кодты қалпына келтіру';
+
+  @override
   String get privacyButton => 'Жеке деректерді өңдеу саясаты';
 
   @override

@@ -1030,32 +1030,6 @@ class _NotificationDetailModal extends StatelessWidget {
                             ],
                           ),
                         ),
-
-                        if (notification.actionUrl != null ||
-                            notification.innerActionUrl != null) ...[
-                          SizedBox(height: 16.h),
-                          if (notification.actionUrl != null)
-                            _CompactActionButton(
-                              icon: Iconsax.global,
-                              label: AppLocalizations.of(context)!.openLink,
-                              color: topicConfig.color,
-                              onTap: () {
-                                // Handle URL
-                              },
-                            ),
-                          if (notification.innerActionUrl != null) ...[
-                            SizedBox(height: 8.h),
-                            _CompactActionButton(
-                              icon: Iconsax.arrow_right_1,
-                              label: AppLocalizations.of(context)!.navigate,
-                              color: topicConfig.color,
-                              onTap: () {
-                                // Handle navigation
-                              },
-                            ),
-                          ],
-                        ],
-
                         SizedBox(height: 20.h),
                       ],
                     ),

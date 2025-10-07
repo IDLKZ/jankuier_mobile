@@ -1,9 +1,9 @@
 class ApiConstant {
   //Base URL to Sota
-  // static const String BaseURL = "http://10.0.2.2:8000/api/";
-  // static const String ImageURL = "http://10.0.2.2:8000/";
-  static const String BaseURL = "https://api.jankuier.kz/api/";
-  static const String ImageURL = "https://api.jankuier.kz/";
+  static const String BaseURL = "http://10.0.2.2:8000/api/";
+  static const String ImageURL = "http://10.0.2.2:8000/";
+  // static const String BaseURL = "https://api.jankuier.kz/api/";
+  // static const String ImageURL = "https://api.jankuier.kz/";
   static const String WebFrameGetShowURL =
       "https://jankuier.kz/web-frame-ticket/get-show/";
   static const String WebFrameRecreateOrderURL =
@@ -14,8 +14,7 @@ class ApiConstant {
       "https://jankuier.kz/web-frame-ticket/get-product-order/";
   static const String WebFrameGetPrivacyURL =
       "https://jankuier.kz/docs/privacy";
-  static const String WebFrameGetPublicURL =
-      "https://jankuier.kz/docs/public";
+  static const String WebFrameGetPublicURL = "https://jankuier.kz/docs/public";
   static const String WebFrameGetPublicMobileURL =
       "https://jankuier.kz/docs/public-mobile";
   //Get Cities URL
@@ -165,4 +164,28 @@ class ApiConstant {
       "${BaseURL}firebase-notification/client/get";
   static const String createOrUpdateMyFirebaseToken =
       "${BaseURL}firebase-notification/client/create-or-update";
+
+  //Sota
+  static const String GetCountryURL = "${BaseURL}sota/registers/countries/";
+  static const String GetTournamentURL =
+      "${BaseURL}sota/registers/tournaments/";
+  static const String GetGamesURL = "${BaseURL}sota/public/v1/games/";
+  static const String GetPublicTournamentURL =
+      "${BaseURL}sota/public/v1/tournaments/";
+
+  static String GetScoreTableUrl(int seasonId) {
+    return "${BaseURL}sota/public/v1/seasons/$seasonId/score_table/";
+  }
+
+  static String GetTeamStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}sota/public/v1/games/$gameId/teams/";
+  }
+
+  static String GetPlayerStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}sota/public/v1/games/$gameId/players/";
+  }
+
+  static String GetMatchLineUpStatsByGameIdUrl(String gameId) {
+    return "${BaseURL}sota/public/v1/games/$gameId/pre_game_lineup/";
+  }
 }

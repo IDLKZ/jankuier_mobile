@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:jankuier_mobile/core/constants/hive_constants.dart';
-import 'package:jankuier_mobile/core/constants/sota_api_constants.dart';
+import 'package:jankuier_mobile/core/utils/http_utils.dart';
+import '../../../../core/constants/api_constants.dart';
+import '../../../../core/constants/sota_api_constants.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
-import '../../../../core/utils/sota_http_utils.dart';
 import '../../domain/parameters/match_parameter.dart';
 import '../entities/match_entity.dart';
 import '../entities/score_table_team_entity.dart';
@@ -14,7 +15,7 @@ abstract class StandingDSInterface {
 }
 
 class StandingDSImpl implements StandingDSInterface {
-  final httpUtils = SotaHttpUtil();
+  final httpUtils = HttpUtil();
   final hiveUtils = HiveUtils();
 
   // Вспомогательный метод для рекурсивной конвертации Map
@@ -63,7 +64,7 @@ class StandingDSImpl implements StandingDSInterface {
 
       // Данных нет в кэше или они устарели - делаем запрос к API
       final response =
-          await httpUtils.get(SotaApiConstant.GetScoreTableUrl(seasonId));
+          await httpUtils.get(ApiConstant.GetScoreTableUrl(seasonId));
 
       // Сохраняем в кэш на 30 минут
       await hiveUtils.put(
@@ -77,6 +78,8 @@ class StandingDSImpl implements StandingDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }
@@ -100,7 +103,7 @@ class StandingDSImpl implements StandingDSInterface {
       }
 
       // Данных нет в кэше или они устарели - делаем запрос к API
-      final response = await httpUtils.get(SotaApiConstant.GetGamesURL,
+      final response = await httpUtils.get(ApiConstant.GetGamesURL,
           queryParameters: queryMap);
 
       // Сохраняем в кэш на 10 минут
@@ -114,6 +117,8 @@ class StandingDSImpl implements StandingDSInterface {
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
     } on Exception catch (e) {
       throw ApiException(message: e.toString(), statusCode: 500);
     }

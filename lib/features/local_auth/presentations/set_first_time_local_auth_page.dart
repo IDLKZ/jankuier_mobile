@@ -114,10 +114,10 @@ class _SetFirstTimeLocalAuthTypePageContentState
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 64.w,
-      height: 64.h,
+      width: 56.w,
+      height: 56.h,
       textStyle: TextStyle(
-        fontSize: 24.sp,
+        fontSize: 20.sp,
         color: AppColors.textPrimary,
         fontWeight: FontWeight.w600,
       ),
@@ -191,120 +191,126 @@ class _SetFirstTimeLocalAuthTypePageContentState
             builder: (context, state) {
               final l10n = AppLocalizations.of(context)!;
               return SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    // Заголовок
-                    Text(
-                      l10n.securitySetup,
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08),
+                      // Заголовок
+                      Text(
+                        l10n.securitySetup,
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 16.h),
+                      SizedBox(height: 12.h),
 
-                    // Подзаголовок
-                    Text(
-                      _biometricAvailable
-                          ? l10n.useBiometricsOrCreatePin
-                          : l10n.createFourDigitPin,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: AppColors.textSecondary,
+                      // Подзаголовок
+                      Text(
+                        _biometricAvailable
+                            ? l10n.useBiometricsOrCreatePin
+                            : l10n.createFourDigitPin,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColors.textSecondary,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 48.h),
+                      SizedBox(height: 32.h),
 
-                    // Иконка
-                    if (_biometricAvailable)
-                      Icon(
-                        Icons.fingerprint,
-                        size: 80.sp,
-                        color: AppColors.primary,
-                      )
-                    else
-                      Icon(
-                        Icons.lock_outline,
-                        size: 80.sp,
-                        color: AppColors.primary,
+                      // Иконка
+                      if (_biometricAvailable)
+                        Icon(
+                          Icons.fingerprint,
+                          size: 60.sp,
+                          color: AppColors.primary,
+                        )
+                      else
+                        Icon(
+                          Icons.lock_outline,
+                          size: 60.sp,
+                          color: AppColors.primary,
+                        ),
+                      SizedBox(height: 32.h),
+
+                      // PIN input
+                      Pinput(
+                        controller: _pinController,
+                        length: 4,
+                        defaultPinTheme: defaultPinTheme,
+                        focusedPinTheme: focusedPinTheme,
+                        submittedPinTheme: submittedPinTheme,
+                        obscureText: true,
+                        obscuringCharacter: '●',
+                        onChanged: _onPinChanged,
+                        onCompleted: (pin) {
+                          _handlePinSubmit();
+                        },
+                        keyboardType: TextInputType.number,
+                        hapticFeedbackType: HapticFeedbackType.lightImpact,
                       ),
-                    SizedBox(height: 48.h),
+                      SizedBox(height: 24.h),
 
-                    // PIN input
-                    Pinput(
-                      controller: _pinController,
-                      length: 4,
-                      defaultPinTheme: defaultPinTheme,
-                      focusedPinTheme: focusedPinTheme,
-                      submittedPinTheme: submittedPinTheme,
-                      obscureText: true,
-                      obscuringCharacter: '●',
-                      onChanged: _onPinChanged,
-                      onCompleted: (pin) {
-                        _handlePinSubmit();
-                      },
-                      keyboardType: TextInputType.number,
-                      hapticFeedbackType: HapticFeedbackType.lightImpact,
-                    ),
-                    SizedBox(height: 32.h),
+                      // Кнопка подтверждения
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48.h,
+                        child: ElevatedButton(
+                          onPressed: _isPinComplete ? _handlePinSubmit : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.white,
+                            disabledBackgroundColor: AppColors.grey300,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          child: state is LocalAuthLoading
+                              ? SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.white,
+                                  ),
+                                )
+                              : Text(
+                                  l10n.continueButton,
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      ),
 
-                    // Кнопка подтверждения
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56.h,
-                      child: ElevatedButton(
-                        onPressed: _isPinComplete ? _handlePinSubmit : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.white,
-                          disabledBackgroundColor: AppColors.grey300,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                      // Повторная попытка биометрии
+                      if (_biometricAvailable) ...[
+                        SizedBox(height: 16.h),
+                        TextButton.icon(
+                          onPressed: () {
+                            _handleBiometricAuthentication();
+                          },
+                          icon: Icon(Icons.fingerprint, size: 20.sp),
+                          label: Text(
+                            l10n.useBiometrics,
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.primary,
                           ),
                         ),
-                        child: state is LocalAuthLoading
-                            ? SizedBox(
-                                height: 24.h,
-                                width: 24.w,
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: AppColors.white,
-                                ),
-                              )
-                            : Text(
-                                l10n.continueButton,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                      ),
-                    ),
-
-                    // Повторная попытка биометрии
-                    if (_biometricAvailable) ...[
-                      SizedBox(height: 24.h),
-                      TextButton.icon(
-                        onPressed: () {
-                          _handleBiometricAuthentication();
-                        },
-                        icon: const Icon(Icons.fingerprint),
-                        label: Text(l10n.useBiometrics),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      ],
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08),
                     ],
                   ),
                 ),

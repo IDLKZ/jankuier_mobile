@@ -561,6 +561,8 @@
   "useBiometricsOrCreatePin": "Используйте биометрию или создайте PIN-код для защиты приложения",
   "continueButton": "Продолжить",
   "giveAccessToData": "Дайте доступ к данным",
+  "resetPinCode": "Сбросить PIN-код",
+  "giveAccessToData": "Дайте доступ к данным",
   "privacyButton": "Политика обработки персональных данных",
   "privacyTitle": "Политика конфиденциальности",
   "publicTitle": "Публичный договор (оферта)",

@@ -15,6 +15,7 @@ Widget buildFutureMatch(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      SizedBox(height: 10.h),
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Row(

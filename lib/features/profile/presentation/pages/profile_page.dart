@@ -355,11 +355,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 onSecurityTap: () {
                   context.push(AppRouteConstants.EditPasswordPagePath);
                 },
+                onResetPinCodeTap: () {
+                  context.push(AppRouteConstants.ReloadPINCodePagePath);
+                },
                 onMyOrdersTap: () {
                   context.push(AppRouteConstants.MyProductOrdersPagePath);
                 },
                 onMyBookingsTap: () {
-                  context.push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+                  context
+                      .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
                 },
                 onCartTap: () {
                   context.push(AppRouteConstants.MyCartPagePath);

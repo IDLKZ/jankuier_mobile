@@ -561,6 +561,8 @@
   "useBiometricsOrCreatePin": "Қосымшаны қорғау үшін биометрияны қолданыңыз немесе PIN код жасаңыз",
   "continueButton": "Жалғастыру",
   "giveAccessToData": "Деректерге қол жеткізуге рұқсат беру",
+  "resetPinCode": "PIN кодты қалпына келтіру",
+  "giveAccessToData": "Деректерге қол жеткізуге рұқсат беру",
   "privacyButton": "Жеке деректерді өңдеу саясаты",
   "privacyTitle": "Құпиялылық саясаты",
   "publicTitle": "Қоғамдық келісім-шарт (оферта)",

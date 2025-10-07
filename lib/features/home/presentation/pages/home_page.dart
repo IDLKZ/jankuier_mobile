@@ -176,7 +176,8 @@ class _HomePageState extends State<HomePage>
       child: BlocListener<GetTournamentBloc, GetTournamentStateState>(
         listener: (context, state) {
           // Обновляем выбранный турнир при получении новых данных (например, при смене языка)
-          if (state is GetTournamentStateSuccessState && _selectedTournament != null) {
+          if (state is GetTournamentStateSuccessState &&
+              _selectedTournament != null) {
             final updatedTournament = state.tournaments.results.firstWhere(
               (tournament) => tournament.id == _selectedTournament!.id,
               orElse: () => _selectedTournament!,
@@ -212,10 +213,12 @@ class _HomePageState extends State<HomePage>
                           : _buildSelectTournamentMessage(),
                       // Future Match
                       if (_selectedTournament != null)
+                        buildFutureMatch(context),
+                      if (_selectedTournament != null)
                         buildFutureClubMatch(context),
-                      if (_selectedTournament != null) buildFutureMatch(context),
                       // News section
-                      if (_selectedTournament != null) buildNewsSection(context),
+                      if (_selectedTournament != null)
+                        buildNewsSection(context),
                     ],
                   ),
                 ),
