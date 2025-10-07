@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
 import 'package:jankuier_mobile/core/utils/hive_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Top-level function for handling background messages
 @pragma('vm:entry-point')
@@ -14,8 +15,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print('Handling background message: ${message.messageId}');
   }
 
-  // Show local notification for background messages
-  await FirebaseNotificationService.instance.showLocalNotification(message);
+  try {
+    // Show local notification for background messages
+    await FirebaseNotificationService.instance.showLocalNotification(message);
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error handling background message: $e');
+    }
+  }
 }
 
 class FirebaseNotificationService {
@@ -116,11 +123,17 @@ class FirebaseNotificationService {
 
   Future<void> _setupMessageHandlers() async {
     // Handle foreground messages
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (kDebugMode) {
         print('Foreground message received: ${message.messageId}');
       }
-      showLocalNotification(message);
+      try {
+        await showLocalNotification(message);
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error handling foreground message: $e');
+        }
+      }
     });
 
     // Handle notification tap when app is in background
@@ -141,12 +154,77 @@ class FirebaseNotificationService {
     }
   }
 
+  /// Get localized notification title and body
+  Future<Map<String, String?>> _getLocalizedNotificationContent(
+    RemoteNotification notification,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      // Get current app locale from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final savedLocale = prefs.getString('selected_locale') ?? Platform.localeName;
+
+      // Extract language code (en, ru, kk)
+      String languageCode = 'ru'; // default
+      if (savedLocale.contains('en')) {
+        languageCode = 'en';
+      } else if (savedLocale.contains('kk')) {
+        languageCode = 'kk';
+      } else if (savedLocale.contains('ru')) {
+        languageCode = 'ru';
+      }
+
+      // Try to get localized content from data payload
+      final localizedTitle = data['title_$languageCode'] as String?;
+      final localizedBody = data['body_$languageCode'] as String?;
+
+      // Return localized content if available, otherwise fallback to default
+      return {
+        'title': localizedTitle ?? notification.title,
+        'body': localizedBody ?? notification.body,
+      };
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting localized notification content: $e');
+      }
+      // Fallback to default notification content
+      return {
+        'title': notification.title,
+        'body': notification.body,
+      };
+    }
+  }
+
   /// Show local notification
   Future<void> showLocalNotification(RemoteMessage message) async {
-    final notification = message.notification;
-    final data = message.data;
+    try {
+      final notification = message.notification;
+      final data = message.data;
 
-    if (notification == null) return;
+      if (notification == null) return;
+
+      // Get localized notification content
+      final localizedContent = await _getLocalizedNotificationContent(notification, data);
+      final title = localizedContent['title'];
+      final body = localizedContent['body'];
+
+      // For iOS, check if APNS token is available
+      if (Platform.isIOS) {
+        final apnsToken = await _firebaseMessaging.getAPNSToken();
+        if (apnsToken == null) {
+          if (kDebugMode) {
+            print('APNS token not available, using custom notification instead');
+          }
+          // Use custom notification as fallback with localized content
+          await showCustomNotification(
+            title: title ?? 'Notification',
+            body: body ?? '',
+            payload: jsonEncode(data),
+            isImportant: data['priority'] == 'high' || data['priority'] == 'urgent',
+          );
+          return;
+        }
+      }
 
     // Determine channel based on priority
     final isImportant =
@@ -166,17 +244,18 @@ class FirebaseNotificationService {
       priority: isImportant ? Priority.max : Priority.high,
       enableVibration: true,
       playSound: true,
+      icon: '@mipmap/ic_launcher', // Use app icon for notifications
       styleInformation: imageUrl != null
           ? BigPictureStyleInformation(
               FilePathAndroidBitmap(imageUrl),
-              contentTitle: notification.title,
-              summaryText: notification.body,
+              contentTitle: title,
+              summaryText: body,
               htmlFormatContentTitle: true,
               htmlFormatSummaryText: true,
             )
           : BigTextStyleInformation(
-              notification.body ?? '',
-              contentTitle: notification.title,
+              body ?? '',
+              contentTitle: title,
               htmlFormatBigText: true,
               htmlFormatContentTitle: true,
             ),
@@ -184,7 +263,7 @@ class FirebaseNotificationService {
       ledColor: const Color(0xFF0249CC),
       ledOnMs: 1000,
       ledOffMs: 500,
-      ticker: notification.title,
+      ticker: title,
       showWhen: true,
       when: DateTime.now().millisecondsSinceEpoch,
     );
@@ -195,6 +274,7 @@ class FirebaseNotificationService {
       presentSound: true,
       badgeNumber: 1,
       threadIdentifier: 'jankuier_notifications',
+      subtitle: null,
     );
 
     final notificationDetails = NotificationDetails(
@@ -202,14 +282,34 @@ class FirebaseNotificationService {
       iOS: iosDetails,
     );
 
-    // Show notification
-    await _localNotifications.show(
-      message.messageId.hashCode,
-      notification.title,
-      notification.body,
-      notificationDetails,
-      payload: jsonEncode(data),
-    );
+      // Show notification with localized content
+      await _localNotifications.show(
+        message.messageId.hashCode,
+        title,
+        body,
+        notificationDetails,
+        payload: jsonEncode(data),
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error showing local notification: $e');
+      }
+      // Fallback to custom notification if something goes wrong
+      try {
+        final notification = message.notification;
+        if (notification != null) {
+          await showCustomNotification(
+            title: notification.title ?? 'Notification',
+            body: notification.body ?? '',
+            payload: jsonEncode(message.data),
+          );
+        }
+      } catch (fallbackError) {
+        if (kDebugMode) {
+          print('Fallback notification also failed: $fallbackError');
+        }
+      }
+    }
   }
 
   /// Handle notification tap
@@ -354,6 +454,7 @@ class FirebaseNotificationService {
       channelDescription: channel.description,
       importance: channel.importance,
       priority: isImportant ? Priority.max : Priority.high,
+      icon: '@mipmap/ic_launcher', // Use app icon for notifications
       styleInformation: BigTextStyleInformation(
         body,
         contentTitle: title,
@@ -406,5 +507,59 @@ class FirebaseNotificationService {
     }
 
     return [];
+  }
+
+  /// Test localized notification (for development/testing)
+  /// Uses local notification instead of Firebase to avoid APNS token issues
+  Future<void> showTestLocalizedNotification() async {
+    try {
+      // Get current app locale from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final savedLocale = prefs.getString('selected_locale') ?? Platform.localeName;
+
+      // Extract language code (en, ru, kk)
+      String languageCode = 'ru'; // default
+      if (savedLocale.contains('en')) {
+        languageCode = 'en';
+      } else if (savedLocale.contains('kk')) {
+        languageCode = 'kk';
+      } else if (savedLocale.contains('ru')) {
+        languageCode = 'ru';
+      }
+
+      // Localized test messages
+      final Map<String, Map<String, String>> testMessages = {
+        'en': {
+          'title': 'Test Notification',
+          'body': 'This is a test notification in English',
+        },
+        'ru': {
+          'title': 'Тестовое уведомление',
+          'body': 'Это тестовое уведомление на русском языке',
+        },
+        'kk': {
+          'title': 'Тест хабарландыруы',
+          'body': 'Бұл қазақ тіліндегі тест хабарландыруы',
+        },
+      };
+
+      final message = testMessages[languageCode] ?? testMessages['ru']!;
+
+      // Show custom notification with localized content
+      await showCustomNotification(
+        title: message['title']!,
+        body: message['body']!,
+        payload: jsonEncode({'screen': 'test', 'language': languageCode}),
+        isImportant: false,
+      );
+
+      if (kDebugMode) {
+        print('Test localized notification sent successfully in $languageCode');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error showing test notification: $e');
+      }
+    }
   }
 }

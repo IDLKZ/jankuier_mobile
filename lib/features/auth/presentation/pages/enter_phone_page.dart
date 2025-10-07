@@ -36,15 +36,15 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   @override
   void initState() {
     super.initState();
-    if (widget.phone != null && widget.phone!.isNotEmpty) {
-      // Форматируем существующий номер с маской
-      final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
-      if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
-        _phoneC.text = _phoneMask.maskText(cleanPhone.substring(1));
-      } else {
-        _phoneC.text = widget.phone!;
-      }
-    }
+    // if (widget.phone != null && widget.phone!.isNotEmpty) {
+    //   // Форматируем существующий номер с маской
+    //   final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
+    //   if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
+    //     _phoneC.text = _phoneMask.maskText(cleanPhone.substring(1));
+    //   } else {
+    //     _phoneC.text = widget.phone!;
+    //   }
+    // }
   }
 
   @override
@@ -71,6 +71,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return '7$cleanPhone'; // Добавляем 7 в начало
   }
 
+  // Widget builders
   // Widget builders
   Widget _buildTextFormField({
     required TextEditingController controller,
