@@ -560,5 +560,9 @@
   "securitySetup": "Настройка защиты",
   "useBiometricsOrCreatePin": "Используйте биометрию или создайте PIN-код для защиты приложения",
   "continueButton": "Продолжить",
-  "giveAccessToData": "Дайте доступ к данным"
+  "giveAccessToData": "Дайте доступ к данным",
+  "privacyButton": "Политика обработки персональных данных",
+  "privacyTitle": "Политика конфиденциальности",
+  "publicTitle": "Публичный договор (оферта)",
+  "publicMobileTitle": "Публичный договор-оферта мобильного приложения"
 }

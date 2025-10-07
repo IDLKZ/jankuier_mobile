@@ -1462,4 +1462,17 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get giveAccessToData => 'Деректерге қол жеткізуге рұқсат беру';
+
+  @override
+  String get privacyButton => 'Жеке деректерді өңдеу саясаты';
+
+  @override
+  String get privacyTitle => 'Құпиялылық саясаты';
+
+  @override
+  String get publicTitle => 'Қоғамдық келісім-шарт (оферта)';
+
+  @override
+  String get publicMobileTitle =>
+      'Мобильді қосымшаның ашық ұсынысы туралы келісім';
 }

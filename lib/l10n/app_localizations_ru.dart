@@ -1466,4 +1466,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get giveAccessToData => 'Дайте доступ к данным';
+
+  @override
+  String get privacyButton => 'Политика обработки персональных данных';
+
+  @override
+  String get privacyTitle => 'Политика конфиденциальности';
+
+  @override
+  String get publicTitle => 'Публичный договор (оферта)';
+
+  @override
+  String get publicMobileTitle =>
+      'Публичный договор-оферта мобильного приложения';
 }

@@ -2943,6 +2943,30 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Дайте доступ к данным'**
   String get giveAccessToData;
+
+  /// No description provided for @privacyButton.
+  ///
+  /// In ru, this message translates to:
+  /// **'Политика обработки персональных данных'**
+  String get privacyButton;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Политика конфиденциальности'**
+  String get privacyTitle;
+
+  /// No description provided for @publicTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Публичный договор (оферта)'**
+  String get publicTitle;
+
+  /// No description provided for @publicMobileTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Публичный договор-оферта мобильного приложения'**
+  String get publicMobileTitle;
 }
 
 class _AppLocalizationsDelegate

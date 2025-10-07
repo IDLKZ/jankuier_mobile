@@ -1461,4 +1461,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giveAccessToData => 'Grant access to data';
+
+  @override
+  String get privacyButton => 'Personal data processing policy';
+
+  @override
+  String get privacyTitle => 'Privacy Policy';
+
+  @override
+  String get publicTitle => 'Public contract (offer)';
+
+  @override
+  String get publicMobileTitle => 'Mobile application public offer agreement';
 }

@@ -4,6 +4,7 @@ import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 import 'package:jankuier_mobile/core/common/entities/file_entity.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../pages/privacy_webview_page.dart';
 
 class EditProfilePage extends StatelessWidget {
   final String userName;
@@ -146,6 +147,58 @@ class EditProfilePage extends StatelessWidget {
                   ),
                 ],
                 const SizedBox(height: 32),
+                GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                    backgroundColor: Colors.white,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SafeArea(
+                        child: Wrap(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
+                              title: Text(AppLocalizations.of(context)!.privacyTitle, style: const TextStyle(color: Colors.blue)),
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const PrivacyWebViewPage(type: 'privacy'),
+                                  ),
+                                );
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
+                              title: Text(AppLocalizations.of(context)!.publicTitle, style: const TextStyle(color: Colors.blue)),
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const PrivacyWebViewPage(type: 'public'),
+                                  ),
+                                );
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.gpp_good_outlined, color: Colors.blue),
+                              title: Text(AppLocalizations.of(context)!.publicMobileTitle, style: const TextStyle(color: Colors.blue)),
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const PrivacyWebViewPage(type: 'public-mobile',),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(AppLocalizations.of(context)!.privacyButton, style: const TextStyle(color: Colors.blue),),
+                  ),
+                ),
+                const SizedBox(height: 12),
               ],
             ),
           ),

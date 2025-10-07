@@ -12,6 +12,12 @@ class ApiConstant {
       "https://jankuier.kz/web-frame-ticket/get-booking/";
   static const String WebFrameGetMerchURL =
       "https://jankuier.kz/web-frame-ticket/get-product-order/";
+  static const String WebFrameGetPrivacyURL =
+      "https://jankuier.kz/docs/privacy";
+  static const String WebFrameGetPublicURL =
+      "https://jankuier.kz/docs/public";
+  static const String WebFrameGetPublicMobileURL =
+      "https://jankuier.kz/docs/public-mobile";
   //Get Cities URL
   static const String GetAllCitiesUrl = "${BaseURL}city/all/";
   //Get Product URL

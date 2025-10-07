@@ -561,5 +561,9 @@
   "securitySetup": "Security Setup",
   "useBiometricsOrCreatePin": "Use biometrics or create a PIN code to protect the app",
   "continueButton": "Continue",
-  "giveAccessToData": "Grant access to data"
+  "giveAccessToData": "Grant access to data",
+  "privacyButton": "Personal data processing policy",
+  "privacyTitle": "Privacy Policy",
+  "publicTitle": "Public contract (offer)",
+  "publicMobileTitle": "Mobile application public offer agreement"
 }
