@@ -12,6 +12,9 @@ import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_profile_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/user_verification_parameter.dart';
 
+import '../../data/entities/user_reset_entity.dart';
+import '../parameters/user_reset_parameter.dart';
+
 abstract class AuthRepository {
   Future<Either<Failure, BearerTokenEntity>> signIn(LoginParameter parameter);
   Future<Either<Failure, UserEntity>> signUp(RegisterParameter parameter);
@@ -29,4 +32,8 @@ abstract class AuthRepository {
   Future<Either<Failure, UserCodeVerificationResultEntity>> verifyCode(
       UserCodeVerificationParameter parameter);
   Future<Either<Failure, bool>> deleteAccount();
+  Future<Either<Failure, UserCodeResetResultEntity>> sendResetCode(
+      String phone);
+  Future<Either<Failure, UserCodeResetResultEntity>> verifyResetCode(
+      UserCodeResetParameter parameter);
 }

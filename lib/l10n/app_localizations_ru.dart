@@ -115,7 +115,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Регистрация успешна! Пожалуйста, подтвердите номер телефона';
 
   @override
-  String get register => 'Записаться';
+  String get register => 'Зарегистрироваться';
 
   @override
   String get next => 'Далее';

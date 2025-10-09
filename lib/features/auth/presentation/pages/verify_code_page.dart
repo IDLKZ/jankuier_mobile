@@ -1,8 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
@@ -36,7 +36,6 @@ class VerifyCodePage extends StatefulWidget {
 
 class _VerifyCodePageState extends State<VerifyCodePage> {
   final _codeController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   bool _isCodeComplete = false;
   bool _isTimerExpired = false;
   UserCodeVerificationResultEntity? _currentVerificationResult;
@@ -49,7 +48,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
     // If no verification result provided, redirect to EnterPhonePage
     if (_currentVerificationResult == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go(AppRouteConstants.EnterPhonePagePath);
+        context.go(AppRouteConstants.SignInPagePath);
       });
     }
   }
@@ -66,38 +65,96 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
     });
   }
 
+  String _formatPhoneForDisplay(String phone) {
+    // Format: 71234567890 -> +7 (123) 456-78-90
+    if (phone.length == 11 && phone.startsWith('7')) {
+      return '+7 (${phone.substring(1, 4)}) ${phone.substring(4, 7)}-${phone.substring(7, 9)}-${phone.substring(9, 11)}';
+    }
+    return phone;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Modern PIN themes with glass-morphism
     final defaultPinTheme = PinTheme(
-      width: 56.w,
-      height: 56.h,
+      width: 64.w,
+      height: 64.h,
       textStyle: TextStyle(
-        fontSize: 22.sp,
+        fontSize: 28.sp,
         color: Colors.white,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.white),
-        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16.r),
+        color: Colors.white.withOpacity(0.15),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.3),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: AppColors.white, width: 2),
+        border: Border.all(color: Colors.white, width: 2),
+        color: Colors.white.withOpacity(0.2),
       ),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
-        color: Colors.white.withOpacity(0.1),
-        border: Border.all(color: AppColors.white),
+        color: Colors.white.withOpacity(0.25),
+        border: Border.all(color: Colors.white, width: 1.5),
       ),
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: GestureDetector(
+          onTap: () {
+            context.go(AppRouteConstants.EnterPhonePagePath);
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 10.h, left: 10.w),
+            width: 48.w,
+            height: 48.h,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 20.sp,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<SendVerifyCodeBloc>()),
@@ -109,18 +166,51 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is SendVerifyCodeSuccess) {
                   if (state.result.result == true) {
-                    // Update verification result with fresh data
                     setState(() {
                       _currentVerificationResult = state.result;
                       _isTimerExpired = false;
                     });
-                    Fluttertoast.showToast(msg: AppLocalizations.of(context)!.codeResentSuccessfully);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 0,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: AppLocalizations.of(context)!.success,
+                          message: AppLocalizations.of(context)!
+                              .codeResentSuccessfully,
+                          contentType: ContentType.success,
+                        ),
+                      ),
+                    );
                   } else {
-                    Fluttertoast.showToast(
-                        msg: state.result.message ?? AppLocalizations.of(context)!.codeResendError);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 0,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: AppLocalizations.of(context)!.error,
+                          message: state.result.message ??
+                              AppLocalizations.of(context)!.codeResendError,
+                          contentType: ContentType.failure,
+                        ),
+                      ),
+                    );
                   }
                 } else if (state is SendVerifyCodeFailure) {
-                  Fluttertoast.showToast(msg: state.message);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.error,
+                        message: state.message,
+                        contentType: ContentType.failure,
+                      ),
+                    ),
+                  );
                 }
               },
             ),
@@ -128,14 +218,50 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is VerifyCodeSuccess) {
                   if (state.result.result == true) {
-                    Fluttertoast.showToast(msg: AppLocalizations.of(context)!.codeVerifiedSuccessfully);
-                    context.go(AppRouteConstants.SignInPagePath);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 0,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: AppLocalizations.of(context)!.success,
+                          message: AppLocalizations.of(context)!
+                              .codeVerifiedSuccessfully,
+                          contentType: ContentType.success,
+                        ),
+                      ),
+                    );
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      context.go(AppRouteConstants.SignInPagePath);
+                    });
                   } else {
-                    Fluttertoast.showToast(
-                        msg: state.result.message ?? AppLocalizations.of(context)!.invalidCode);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 0,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: AppLocalizations.of(context)!.error,
+                          message: state.result.message ??
+                              AppLocalizations.of(context)!.invalidCode,
+                          contentType: ContentType.failure,
+                        ),
+                      ),
+                    );
                   }
                 } else if (state is VerifyCodeFailure) {
-                  Fluttertoast.showToast(msg: state.message);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.error,
+                        message: state.message,
+                        contentType: ContentType.failure,
+                      ),
+                    ),
+                  );
                 }
               },
             ),
@@ -151,42 +277,15 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                     children: [
                       Container(
                         decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xFF004AD0),
-                              Color(0xFF0A388C),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
+                          gradient: AppColors.primaryGradient,
                         ),
                       ),
-                      Image.asset(
-                        "assets/images/circle_vector.png",
-                        fit: BoxFit.fill,
-                        colorBlendMode: BlendMode.darken,
-                      ),
-                      Positioned(
-                        top: 40.h,
-                        left: 25.w,
-                        child: GestureDetector(
-                          onTap: () =>
-                              context.go(AppRouteConstants.EnterPhonePagePath),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.arrow_back_ios_new,
-                                size: 20.sp,
-                                color: const Color(0xFF0148C9),
-                              ),
-                            ),
-                          ),
+                      Transform.scale(
+                        scale: 1.2,
+                        child: Image.asset(
+                          "assets/images/circle_vector.png",
+                          fit: BoxFit.contain,
+                          colorBlendMode: BlendMode.darken,
                         ),
                       ),
                       SizedBox.expand(
@@ -194,99 +293,242 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),
                             child: SingleChildScrollView(
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Security Shield Icon
+                                  Hero(
+                                    tag: 'app_logo',
+                                    child: Image.asset(
                                       "assets/images/kff_logo.png",
                                       width: 120.w,
                                     ),
-                                    SizedBox(height: 16.h),
-                                    Text(
-                                      AppLocalizations.of(context)!.enterVerificationCode,
-                                      style: TextStyle(
+                                  ),
+                                  SizedBox(height: 32.h),
+                                  // Title
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .enterVerificationCode,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: -0.5,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 12.h),
+
+                                  // Subtitle with phone
+                                  Text(
+                                    "${AppLocalizations.of(context)!.codeSentToPhone}",
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.8),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    _formatPhoneForDisplay(widget.phone),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 40.h),
+
+                                  // PIN Input
+                                  Pinput(
+                                    controller: _codeController,
+                                    length: 4,
+                                    defaultPinTheme: defaultPinTheme,
+                                    focusedPinTheme: focusedPinTheme,
+                                    submittedPinTheme: submittedPinTheme,
+                                    onChanged: _onCodeChanged,
+                                    pinputAutovalidateMode:
+                                        PinputAutovalidateMode.onSubmit,
+                                    showCursor: true,
+                                    cursor: Container(
+                                      width: 2.5,
+                                      height: 32,
+                                      decoration: BoxDecoration(
                                         color: Colors.white,
-                                        fontSize: 24.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(height: 8.h),
-                                    Text(
-                                      "${AppLocalizations.of(context)!.codeSentToPhone} ${widget.phone}",
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.8),
-                                        fontSize: 16.sp,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(height: 24.h),
-
-                                    // PIN Input
-                                    Pinput(
-                                      controller: _codeController,
-                                      length: 4,
-                                      defaultPinTheme: defaultPinTheme,
-                                      focusedPinTheme: focusedPinTheme,
-                                      submittedPinTheme: submittedPinTheme,
-                                      onChanged: _onCodeChanged,
-                                      pinputAutovalidateMode:
-                                          PinputAutovalidateMode.onSubmit,
-                                      showCursor: true,
-                                      cursor: Container(
-                                        width: 2,
-                                        height: 24,
-                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(2),
                                       ),
                                     ),
+                                  ),
+                                  SizedBox(height: 32.h),
 
-                                    SizedBox(height: 24.h),
-
-                                    // Countdown Timer
-                                    if (_currentVerificationResult != null &&
-                                        _currentVerificationResult!
-                                                .expiresInSeconds !=
-                                            null &&
-                                        !_isTimerExpired)
-                                      SlideCountdown(
-                                        key: ValueKey(_currentVerificationResult!.hashCode),
-                                        duration: Duration(
-                                          seconds: _currentVerificationResult!
-                                              .expiresInSeconds!,
-                                        ),
-                                        slideDirection: SlideDirection.down,
-                                        decoration: BoxDecoration(
+                                  // Timer Card
+                                  if (_currentVerificationResult != null &&
+                                      _currentVerificationResult!
+                                              .expiresInSeconds !=
+                                          null &&
+                                      !_isTimerExpired)
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w,
+                                        vertical: 16.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        color: Colors.white.withOpacity(0.1),
+                                        border: Border.all(
                                           color: Colors.white.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          width: 1,
                                         ),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        separator: ":",
-                                        onDone: () {
-                                          setState(() {
-                                            _isTimerExpired = true;
-                                          });
-                                          Fluttertoast.showToast(
-                                            msg: AppLocalizations.of(context)!.timeExpiredRequestNew,
-                                          );
-                                        },
                                       ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.timer_outlined,
+                                            color:
+                                                Colors.white.withOpacity(0.8),
+                                            size: 24.sp,
+                                          ),
+                                          SizedBox(width: 12.w),
+                                          Text(
+                                            'Код действителен:',
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.9),
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          SizedBox(width: 12.w),
+                                          SlideCountdown(
+                                            key: ValueKey(
+                                                _currentVerificationResult!
+                                                    .hashCode),
+                                            duration: Duration(
+                                              seconds:
+                                                  _currentVerificationResult!
+                                                      .expiresInSeconds!,
+                                            ),
+                                            slideDirection: SlideDirection.down,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                            ),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            separator: ":",
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 8.w,
+                                              vertical: 4.h,
+                                            ),
+                                            onDone: () {
+                                              setState(() {
+                                                _isTimerExpired = true;
+                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  elevation: 0,
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  content:
+                                                      AwesomeSnackbarContent(
+                                                    title: AppLocalizations.of(
+                                                            context)!
+                                                        .verify,
+                                                    message: AppLocalizations
+                                                            .of(context)!
+                                                        .timeExpiredRequestNew,
+                                                    contentType:
+                                                        ContentType.warning,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
 
-                                    SizedBox(height: 24.h),
+                                  // Expired message
+                                  if (_isTimerExpired)
+                                    Container(
+                                      padding: EdgeInsets.all(16.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        color: Colors.orange.withOpacity(0.2),
+                                        border: Border.all(
+                                          color: Colors.orange.withOpacity(0.4),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.warning_amber_rounded,
+                                            color: Colors.orange[300],
+                                            size: 24.sp,
+                                          ),
+                                          SizedBox(width: 12.w),
+                                          Expanded(
+                                            child: Text(
+                                              'Время действия кода истекло',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
 
-                                    // Verify Button
-                                    if (_isCodeComplete)
-                                      SizedBox(
-                                        width: double.infinity,
-                                        height: 50.h,
-                                        child: ElevatedButton(
-                                          onPressed: isLoading
+                                  SizedBox(height: 32.h),
+
+                                  // Verify Button
+                                  if (_isCodeComplete && !_isTimerExpired)
+                                    Container(
+                                      width: double.infinity,
+                                      height: 56.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xFFFFC107),
+                                            Color(0xFFFFB300),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFFFFC107)
+                                                .withOpacity(0.4),
+                                            blurRadius: 20,
+                                            offset: const Offset(0, 10),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          onTap: isLoading
                                               ? null
                                               : () {
                                                   final parameter =
@@ -300,84 +542,182 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                                       .add(VerifyCodeSubmitted(
                                                           parameter));
                                                 },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
+                                          child: Center(
+                                            child: isLoading
+                                                ? SizedBox(
+                                                    height: 24.h,
+                                                    width: 24.w,
+                                                    child:
+                                                        const CircularProgressIndicator(
+                                                      color: Color(0xFF0148C9),
+                                                      strokeWidth: 3,
+                                                    ),
+                                                  )
+                                                : Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .check_circle_outline,
+                                                        color: const Color(
+                                                            0xFF0148C9),
+                                                        size: 20.sp,
+                                                      ),
+                                                      SizedBox(width: 8.w),
+                                                      Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .verify,
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xFF0148C9),
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          letterSpacing: 0.5,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
-                                          child: Text(
-                                            AppLocalizations.of(context)!.verify,
-                                            style: TextStyle(
-                                              color: const Color(0xFF0148C9),
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                    SizedBox(height: 16.h),
-
-                                    // Resend Code Button - only when timer expired
-                                    if (_isTimerExpired)
-                                      TextButton(
-                                        onPressed: isLoading
-                                            ? null
-                                            : () {
-                                                context
-                                                    .read<SendVerifyCodeBloc>()
-                                                    .add(
-                                                        SendVerifyCodeSubmitted(
-                                                            widget.phone));
-                                              },
-                                        child: Text(
-                                          AppLocalizations.of(context)!.resendCode,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.sp,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-
-                                    SizedBox(height: 16.h),
-
-                                    // Back to Login
-                                    TextButton(
-                                      onPressed: () {
-                                        context.go(
-                                            AppRouteConstants.SignInPagePath);
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.backToLogin,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.sp,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+
+                                  SizedBox(height: 24.h),
+
+                                  // Resend Code Button
+                                  if (_isTimerExpired)
+                                    Container(
+                                      width: double.infinity,
+                                      height: 56.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          onTap: isLoading
+                                              ? null
+                                              : () {
+                                                  context
+                                                      .read<
+                                                          SendVerifyCodeBloc>()
+                                                      .add(
+                                                          SendVerifyCodeSubmitted(
+                                                              widget.phone));
+                                                },
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.refresh_rounded,
+                                                  color: Colors.white,
+                                                  size: 20.sp,
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  AppLocalizations.of(context)!
+                                                      .resendCode,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w700,
+                                                    letterSpacing: 0.5,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  SizedBox(height: 32.h),
+
+                                  // Divider
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 1,
+                                          color: Colors.white.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.w),
+                                        child: Text(
+                                          'или',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 1,
+                                          color: Colors.white.withOpacity(0.3),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: 24.h),
+
+                                  // Back to Login
+                                  TextButton(
+                                    onPressed: () {
+                                      context
+                                          .go(AppRouteConstants.SignInPagePath);
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 12.h,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.login_rounded,
+                                          color: Colors.white.withOpacity(0.9),
+                                          size: 20.sp,
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .backToLogin,
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.9),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 20.h),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-
-                      // Loading Indicator
-                      if (isLoading)
-                        Container(
-                          color: Colors.black.withOpacity(0.3),
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                     ],
                   );
                 },

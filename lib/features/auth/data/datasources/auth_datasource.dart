@@ -14,7 +14,9 @@ import '../../../../core/constants/api_constants.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/utils/hive_utils.dart';
 import '../../../../core/utils/http_utils.dart';
+import '../../domain/parameters/user_reset_parameter.dart';
 import '../entities/user_entity.dart';
+import '../entities/user_reset_entity.dart';
 
 abstract class AuthDSInterface {
   Future<BearerTokenEntity> signIn(LoginParameter parameter);
@@ -28,6 +30,9 @@ abstract class AuthDSInterface {
   Future<UserCodeVerificationResultEntity> sendVerifyCode(String phone);
   Future<UserCodeVerificationResultEntity> verifyCode(
       UserCodeVerificationParameter parameter);
+  Future<UserCodeResetResultEntity> sendResetCode(String phone);
+  Future<UserCodeResetResultEntity> verifyResetCode(
+      UserCodeResetParameter parameter);
   Future<bool> deleteAccount();
 }
 
@@ -210,6 +215,40 @@ class AuthDSImpl implements AuthDSInterface {
       final response = await httpUtils.post(ApiConstant.RefreshTokenUrl,
           data: parameter.toJson());
       final result = BearerTokenEntity.fromJson(response);
+      return result;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<UserCodeResetResultEntity> sendResetCode(String phone) async {
+    try {
+      final response = await httpUtils
+          .post(ApiConstant.SendResetCodeUrl, data: {"phone": phone});
+      final result = UserCodeResetResultEntity.fromJson(response);
+      return result;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } on ApiException catch (e) {
+      throw ApiException(message: e.message, statusCode: e.statusCode);
+    } on Exception catch (e) {
+      throw ApiException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<UserCodeResetResultEntity> verifyResetCode(
+      UserCodeResetParameter parameter) async {
+    try {
+      final response = await httpUtils.post(
+          ApiConstant.ResetPasswordVerifyCodeUrl,
+          data: parameter.toJson());
+      final result = UserCodeResetResultEntity.fromJson(response);
       return result;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

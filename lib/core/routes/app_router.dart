@@ -97,8 +97,10 @@ class AppRouter {
         name: AppRouteConstants.VerifyCodePageName,
         builder: (context, state) {
           final phone = state.uri.queryParameters['phone'] ?? '';
-          final verificationResult =
-              state.extra as UserCodeVerificationResultEntity;
+          final UserCodeVerificationResultEntity? verificationResult =
+              state.extra is UserCodeVerificationResultEntity
+                  ? state.extra as UserCodeVerificationResultEntity
+                  : null;
           return VerifyCodePage(
             phone: phone,
             verificationResult: verificationResult,

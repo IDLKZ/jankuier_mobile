@@ -307,7 +307,7 @@ abstract class AppLocalizations {
   /// No description provided for @register.
   ///
   /// In ru, this message translates to:
-  /// **'Записаться'**
+  /// **'Зарегистрироваться'**
   String get register;
 
   /// No description provided for @next.

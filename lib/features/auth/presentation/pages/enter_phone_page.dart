@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +27,8 @@ class EnterPhonePage extends StatefulWidget {
 }
 
 class _EnterPhonePageState extends State<EnterPhonePage> {
-  final _formKey = GlobalKey<FormState>();
   final _phoneC = TextEditingController();
+  String? _phoneError;
 
   final _phoneMask = MaskTextInputFormatter(
     mask: '+7 (###) ###-##-##',
@@ -36,15 +39,40 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   @override
   void initState() {
     super.initState();
-    // if (widget.phone != null && widget.phone!.isNotEmpty) {
-    //   // Форматируем существующий номер с маской
-    //   final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
-    //   if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
-    //     _phoneC.text = _phoneMask.maskText(cleanPhone.substring(1));
-    //   } else {
-    //     _phoneC.text = widget.phone!;
-    //   }
-    // }
+    // Pre-fill phone number if provided
+    if (widget.phone != null && widget.phone!.isNotEmpty) {
+      try {
+        print('EnterPhonePage: Received phone = ${widget.phone}');
+
+        // Clean the phone number (remove all non-digits)
+        final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
+        print('EnterPhonePage: Clean phone = $cleanPhone (length: ${cleanPhone.length})');
+
+        // Format based on length
+        if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
+          // Phone format: 7XXXXXXXXXX -> +7 (XXX) XXX-XX-XX
+          final digitsOnly = cleanPhone.substring(1); // Remove leading 7
+          _phoneC.text = _phoneMask.maskText(digitsOnly);
+          print('EnterPhonePage: Formatted (case 1) = ${_phoneC.text}');
+        } else if (cleanPhone.length == 10) {
+          // Phone format: XXXXXXXXXX -> +7 (XXX) XXX-XX-XX
+          _phoneC.text = _phoneMask.maskText(cleanPhone);
+          print('EnterPhonePage: Formatted (case 2) = ${_phoneC.text}');
+        } else if (cleanPhone.length == 11 && !cleanPhone.startsWith('7')) {
+          // Handle edge case
+          final digitsOnly = cleanPhone.substring(1);
+          _phoneC.text = _phoneMask.maskText(digitsOnly);
+          print('EnterPhonePage: Formatted (case 3) = ${_phoneC.text}');
+        } else {
+          print('EnterPhonePage: Phone format not recognized, length = ${cleanPhone.length}');
+        }
+      } catch (e) {
+        // If formatting fails, leave field empty
+        print('Error formatting phone: $e');
+      }
+    } else {
+      print('EnterPhonePage: No phone provided (phone = ${widget.phone})');
+    }
   }
 
   @override
@@ -54,217 +82,476 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   }
 
   String? _validatePhone(String? value) {
-    if (value == null || value.trim().isEmpty) {
+    // Get text from controller (more reliable than getUnmaskedText when pre-filled)
+    final text = value ?? _phoneC.text;
+
+    // Extract only digits
+    final cleanPhone = text.replaceAll(RegExp(r'\D'), '');
+
+    print('_validatePhone: text = "$text", cleanPhone = "$cleanPhone" (length: ${cleanPhone.length})');
+
+    // Check if completely empty
+    if (text.isEmpty || cleanPhone.isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    // Получаем только цифры из маскированного номера
-    final cleanPhone = _phoneMask.getUnmaskedText();
-    // Проверяем что номер состоит из 10 цифр (7 добавится автоматически)
-    if (cleanPhone.length != 10) {
+
+    // We expect either 10 digits (XXXXXXXXXX) or 11 digits starting with 7 (7XXXXXXXXXX)
+    if (cleanPhone.length == 10) {
+      return null; // Valid: 10 digits
+    } else if (cleanPhone.length == 11 && cleanPhone.startsWith('7')) {
+      return null; // Valid: 7 + 10 digits
+    } else {
       return AppLocalizations.of(context)!.phoneFormat;
     }
-    return null;
   }
 
   String _getCleanPhone() {
-    final cleanPhone = _phoneMask.getUnmaskedText();
-    return '7$cleanPhone'; // Добавляем 7 в начало
+    // Get digits from controller text
+    final text = _phoneC.text;
+    final cleanPhone = text.replaceAll(RegExp(r'\D'), '');
+
+    print('_getCleanPhone: text = "$text", cleanPhone = "$cleanPhone"');
+
+    // If it starts with 7 and has 11 digits, it's already in the right format
+    if (cleanPhone.startsWith('7') && cleanPhone.length == 11) {
+      return cleanPhone;
+    }
+
+    // Otherwise, add 7 prefix (assuming 10 digits)
+    return '7$cleanPhone';
   }
 
-  // Widget builders
-  // Widget builders
-  Widget _buildTextFormField({
-    required TextEditingController controller,
-    required String hintText,
-    required String? Function(String?) validator,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    List<MaskTextInputFormatter>? inputFormatters,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      style: TextStyle(color: Colors.white),
-      validator: validator,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.transparent,
-        hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.white),
-        errorStyle: TextStyle(color: Colors.yellow[300]),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.white),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.white, width: 2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.yellow[300]!),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.yellow[300]!, width: 2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
+  void _submitForm(BuildContext context) {
+    final error = _validatePhone(_phoneC.text);
+
+    setState(() {
+      _phoneError = error;
+    });
+
+    if (error == null) {
+      String phone = _getCleanPhone();
+      context.read<SendVerifyCodeBloc>().add(SendVerifyCodeSubmitted(phone));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: GestureDetector(
+          onTap: () {
+            context.go(AppRouteConstants.SignInPagePath);
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 10.h, left: 10.w),
+            width: 48.w,
+            height: 48.h,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 20.sp,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: BlocProvider<SendVerifyCodeBloc>(
         create: (context) => getIt<SendVerifyCodeBloc>(),
         child: BlocConsumer<SendVerifyCodeBloc, SendVerifyCodeState>(
           listener: (BuildContext context, SendVerifyCodeState state) {
             if (state is SendVerifyCodeSuccess) {
               if (state.result.result == true) {
-                // Navigate to VerifyCodePage with phone and verification result
                 final cleanPhone = _getCleanPhone();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.success,
+                      message: state.result.message ??
+                          AppLocalizations.of(context)!
+                              .codeVerifiedSuccessfully,
+                      contentType: ContentType.success,
+                    ),
+                  ),
+                );
                 context.pushNamed(
                   AppRouteConstants.VerifyCodePageName,
                   queryParameters: {'phone': cleanPhone},
                   extra: state.result,
                 );
               } else {
-                Fluttertoast.showToast(
-                    msg: state.result.message ??
-                        AppLocalizations.of(context)!.somethingWentWrong);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: state.result.message ??
+                          AppLocalizations.of(context)!.somethingWentWrong,
+                      contentType: ContentType.failure,
+                    ),
+                  ),
+                );
               }
             } else if (state is SendVerifyCodeFailure) {
-              Fluttertoast.showToast(msg: state.message);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.error,
+                    message: state.message,
+                    contentType: ContentType.failure,
+                  ),
+                ),
+              );
             }
           },
           builder: (BuildContext context, SendVerifyCodeState state) {
-            return Stack(children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF004AD0), // #004AD0
-                      Color(0xFF0A388C), // #0A388C
-                    ],
-                    begin: Alignment.topLeft, // начало градиента
-                    end: Alignment.bottomRight, // конец градиента
+            final isLoading = state is SendVerifyCodeLoading;
+
+            return Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: AppColors.primaryGradient,
                   ),
                 ),
-              ),
-              Image.asset(
-                "assets/images/circle_vector.png", fit: BoxFit.fill,
-                // затемнение (опционально)
-                colorBlendMode: BlendMode.darken,
-              ),
-              Positioned(
-                top: 40.h,
-                left: 25.w,
-                child: GestureDetector(
-                  onTap: () => context.go(AppRouteConstants.SignInPagePath),
-                  child: Container(
-                    width: 40, // сделал чуть больше для баланса
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new, // более ровная версия
-                        size: 20.sp,
-                        color: Color(0xFF0148C9),
-                      ),
-                    ),
+                Transform.scale(
+                  scale: 1.2,
+                  child: Image.asset(
+                    "assets/images/circle_vector.png",
+                    fit: BoxFit.contain,
+                    colorBlendMode: BlendMode.darken,
                   ),
                 ),
-              ),
-              SizedBox.expand(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                SizedBox.expand(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.w),
+                      child: SingleChildScrollView(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/kff_logo.png",
-                                width: 120.w),
-                            SizedBox(
-                              height: 16.h,
+                            // Logo
+                            Hero(
+                              tag: 'app_logo',
+                              child: Image.asset(
+                                "assets/images/kff_logo.png",
+                                width: 120.w,
+                              ),
                             ),
+                            SizedBox(height: 32.h),
+
+                            // Title
                             Text(
                               AppLocalizations.of(context)!
                                   .enterPhoneForVerification,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.sp,
-                                  fontWeight: FontWeight.w700),
+                                color: Colors.white,
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.5,
+                              ),
                             ),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            // Поле Телефон
-                            _buildTextFormField(
-                              controller: _phoneC,
-                              hintText:
-                                  AppLocalizations.of(context)!.enterPhoneHint,
-                              validator: _validatePhone,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [_phoneMask],
-                            ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: 12.h),
 
-                            // Кнопка Войти
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow[700],
-                                  foregroundColor: Color(0xFF0148C9),
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                            // Subtitle
+                            Text(
+                              'Мы отправим SMS-код для подтверждения',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(height: 40.h),
+
+                            // Phone Field with Glass Effect
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: Colors.white.withOpacity(0.15),
+                                    border: Border.all(
+                                      color: _phoneError != null
+                                          ? Colors.yellow[300]!
+                                          : Colors.white.withOpacity(0.3),
+                                      width: 1.5,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
+                                  ),
+                                  child: TextFormField(
+                                    controller: _phoneC,
+                                    keyboardType: TextInputType.phone,
+                                    inputFormatters: [_phoneMask],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    decoration: InputDecoration(
+                                      filled: false,
+                                      prefixIcon: Icon(
+                                        Icons.phone_outlined,
+                                        color: Colors.white.withOpacity(0.8),
+                                        size: 24.sp,
+                                      ),
+                                      hintText: AppLocalizations.of(context)!
+                                          .enterPhoneHint,
+                                      hintStyle: TextStyle(
+                                        color: Colors.white.withOpacity(0.5),
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 20.w,
+                                        vertical: 18.h,
+                                      ),
+                                      errorStyle: const TextStyle(height: 0),
+                                    ),
+                                    onChanged: (_) {
+                                      if (_phoneError != null) {
+                                        setState(() {
+                                          _phoneError = null;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    String phone = _getCleanPhone();
-                                    context
-                                        .read<SendVerifyCodeBloc>()
-                                        .add(SendVerifyCodeSubmitted(phone));
-                                  }
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)!.sendSMSCode,
-                                  style: TextStyle(fontSize: 14.sp),
+                                if (_phoneError != null)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 16.w,
+                                      top: 8.h,
+                                    ),
+                                    child: Text(
+                                      _phoneError!,
+                                      style: TextStyle(
+                                        color: Colors.yellow[300],
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            SizedBox(height: 32.h),
+
+                            // Send Code Button
+                            Container(
+                              width: double.infinity,
+                              height: 56.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                gradient: LinearGradient(
+                                  colors: isLoading
+                                      ? [Colors.grey[400]!, Colors.grey[500]!]
+                                      : [
+                                          const Color(0xFFFFC107),
+                                          const Color(0xFFFFB300),
+                                        ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: isLoading
+                                    ? []
+                                    : [
+                                        BoxShadow(
+                                          color: const Color(0xFFFFC107)
+                                              .withOpacity(0.4),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 10),
+                                        ),
+                                      ],
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  onTap: isLoading
+                                      ? null
+                                      : () => _submitForm(context),
+                                  child: Center(
+                                    child: isLoading
+                                        ? SizedBox(
+                                            height: 24.h,
+                                            width: 24.w,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: Color(0xFF0148C9),
+                                              strokeWidth: 3,
+                                            ),
+                                          )
+                                        : Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.sms_outlined,
+                                                color: const Color(0xFF0148C9),
+                                                size: 20.sp,
+                                              ),
+                                              SizedBox(width: 8.w),
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .sendSMSCode,
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF0148C9),
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                  letterSpacing: 0.5,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 16.h),
-                            // Регистрация
+                            SizedBox(height: 32.h),
+
+                            // Info card
+                            Container(
+                              padding: EdgeInsets.all(16.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: Colors.white.withOpacity(0.1),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    color: Colors.white.withOpacity(0.8),
+                                    size: 24.sp,
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Text(
+                                      'SMS-код придет в течение 1-2 минут',
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.9),
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 32.h),
+
+                            // Divider
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 1,
+                                    color: Colors.white.withOpacity(0.3),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Text(
+                                    'или',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.6),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 1,
+                                    color: Colors.white.withOpacity(0.3),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 24.h),
+
+                            // Back to Sign In
                             TextButton(
                               onPressed: () {
                                 context.go(AppRouteConstants.SignInPagePath);
                               },
-                              child: Text(
-                                AppLocalizations.of(context)!.iHaveAccount,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14.sp),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 12.h,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.login_rounded,
+                                    color: Colors.white.withOpacity(0.9),
+                                    size: 20.sp,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Text(
+                                    AppLocalizations.of(context)!.iHaveAccount,
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+                            SizedBox(height: 20.h),
                           ],
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ]);
+                )
+              ],
+            );
           },
         ),
       ),

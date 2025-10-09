@@ -154,7 +154,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 // Category tag
                 if (news.categoryTitle != null) ...[
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                     decoration: BoxDecoration(
                       gradient: AppColors.primaryGradient,
                       borderRadius: BorderRadius.circular(20),
@@ -300,7 +301,82 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                         margin: Margins.only(bottom: 4.h),
                       ),
                       "blockquote": Style(
-                        margin: Margins.only(left: 16.w, right: 16.w, top: 8.h, bottom: 8.h),
+                        margin: Margins.only(
+                            left: 16.w, right: 16.w, top: 8.h, bottom: 8.h),
+                        padding: HtmlPaddings.only(left: 12.w),
+                        border: Border(
+                          left: BorderSide(
+                            color: AppColors.gradientStart,
+                            width: 3.w,
+                          ),
+                        ),
+                        backgroundColor: Colors.grey.withValues(alpha: 0.1),
+                      ),
+                    },
+                  ),
+                ],
+                if (news.body != null) ...[
+                  Html(
+                    data: news.body!,
+                    style: {
+                      "body": Style(
+                        fontFamily: 'Inter',
+                        fontSize: FontSize(16.sp),
+                        color: AppColors.textPrimary,
+                        lineHeight: LineHeight(1.6),
+                        margin: Margins.zero,
+                        padding: HtmlPaddings.zero,
+                      ),
+                      "p": Style(
+                        fontFamily: 'Inter',
+                        fontSize: FontSize(16.sp),
+                        color: AppColors.textPrimary,
+                        lineHeight: LineHeight(1.6),
+                        margin: Margins.only(bottom: 12.h),
+                      ),
+                      "h1": Style(
+                        fontFamily: 'Inter',
+                        fontSize: FontSize(24.sp),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.bold,
+                        margin: Margins.only(top: 16.h, bottom: 8.h),
+                      ),
+                      "h2": Style(
+                        fontFamily: 'Inter',
+                        fontSize: FontSize(20.sp),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.bold,
+                        margin: Margins.only(top: 14.h, bottom: 6.h),
+                      ),
+                      "h3": Style(
+                        fontFamily: 'Inter',
+                        fontSize: FontSize(18.sp),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                        margin: Margins.only(top: 12.h, bottom: 4.h),
+                      ),
+                      "strong, b": Style(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      "em, i": Style(
+                        fontStyle: FontStyle.italic,
+                      ),
+                      "a": Style(
+                        color: AppColors.gradientStart,
+                        textDecoration: TextDecoration.underline,
+                      ),
+                      "ul": Style(
+                        margin: Margins.only(left: 16.w, bottom: 8.h),
+                      ),
+                      "ol": Style(
+                        margin: Margins.only(left: 16.w, bottom: 8.h),
+                      ),
+                      "li": Style(
+                        margin: Margins.only(bottom: 4.h),
+                      ),
+                      "blockquote": Style(
+                        margin: Margins.only(
+                            left: 16.w, right: 16.w, top: 8.h, bottom: 8.h),
                         padding: HtmlPaddings.only(left: 12.w),
                         border: Border(
                           left: BorderSide(

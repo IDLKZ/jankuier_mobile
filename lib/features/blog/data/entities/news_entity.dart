@@ -10,10 +10,13 @@ class News extends Equatable {
   final String title;
 
   final String? slug;
+
   /// Краткое описание (Yii: teaser)
   final String? summary;
+
   /// Полный текст (Laravel: text)
   final String? text;
+  final String? body;
 
   /// Нормализованная дата публикации (если возможно распарсить)
   final DateTime? date;
@@ -40,6 +43,7 @@ class News extends Equatable {
     this.slug,
     this.summary,
     this.text,
+    this.body,
     this.date,
     this.views,
     this.pinned = false,
@@ -69,7 +73,8 @@ class News extends Equatable {
       title: (json['title'] ?? '').toString(),
       slug: json['slug']?.toString(),
       summary: json['teaser']?.toString(), // Yii
-      text: json['text']?.toString(),      // Laravel
+      text: json['text']?.toString(), // Laravel
+      body: json['body']?.toString(), // Laravel
       date: date,
       views: views,
       pinned: pinned,
@@ -82,19 +87,20 @@ class News extends Equatable {
 
   /// Обратно в JSON (без потери — только нормализованные поля этой модели).
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'slug': slug,
-    'summary': summary,
-    'text': text,
-    'date': date?.toIso8601String(),
-    'views': views,
-    'pinned': pinned,
-    'categoryTitle': categoryTitle,
-    'categorySlug': categorySlug,
-    'imageUrl': imageUrl,
-    'link': link,
-  };
+        'id': id,
+        'title': title,
+        'slug': slug,
+        'summary': summary,
+        'text': text,
+        'body': body,
+        'date': date?.toIso8601String(),
+        'views': views,
+        'pinned': pinned,
+        'categoryTitle': categoryTitle,
+        'categorySlug': categorySlug,
+        'imageUrl': imageUrl,
+        'link': link,
+      };
 
   News copyWith({
     int? id,
@@ -102,6 +108,7 @@ class News extends Equatable {
     String? slug,
     String? summary,
     String? text,
+    String? body,
     DateTime? date,
     int? views,
     bool? pinned,
@@ -116,6 +123,7 @@ class News extends Equatable {
       slug: slug ?? this.slug,
       summary: summary ?? this.summary,
       text: text ?? this.text,
+      body: body ?? this.body,
       date: date ?? this.date,
       views: views ?? this.views,
       pinned: pinned ?? this.pinned,
@@ -127,24 +135,26 @@ class News extends Equatable {
   }
 
   /// Удобный маппер списка
-  static List<News> listFromJson(List<dynamic> arr) =>
-      arr.map((e) => News.fromJson((e as Map).cast<String, dynamic>())).toList();
+  static List<News> listFromJson(List<dynamic> arr) => arr
+      .map((e) => News.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
 
   @override
   List<Object?> get props => [
-    id,
-    title,
-    slug,
-    summary,
-    text,
-    date,
-    views,
-    pinned,
-    categoryTitle,
-    categorySlug,
-    imageUrl,
-    link,
-  ];
+        id,
+        title,
+        slug,
+        summary,
+        text,
+        body,
+        date,
+        views,
+        pinned,
+        categoryTitle,
+        categorySlug,
+        imageUrl,
+        link,
+      ];
 
   // ---------- helpers ----------
 
@@ -163,13 +173,15 @@ class News extends Equatable {
     }
     final dtUnix = _asInt(json['datetime']);
     if (dtUnix > 0) {
-      return DateTime.fromMillisecondsSinceEpoch(dtUnix * 1000, isUtc: true).toLocal();
+      return DateTime.fromMillisecondsSinceEpoch(dtUnix * 1000, isUtc: true)
+          .toLocal();
     }
 
     // Yii: shown_date_ts (UNIX seconds) / shown_date (string)
     final shownTs = _asInt(json['shown_date_ts']);
     if (shownTs > 0) {
-      return DateTime.fromMillisecondsSinceEpoch(shownTs * 1000, isUtc: true).toLocal();
+      return DateTime.fromMillisecondsSinceEpoch(shownTs * 1000, isUtc: true)
+          .toLocal();
     }
     final shown = json['shown_date']?.toString();
     if (shown != null && shown.isNotEmpty) {
@@ -214,7 +226,8 @@ class News extends Equatable {
     }
     if (image is Map) {
       final m = image.cast<String, dynamic>();
-      String? pick(String key) => m[key]?.toString().isEmpty ?? true ? null : m[key]?.toString();
+      String? pick(String key) =>
+          m[key]?.toString().isEmpty ?? true ? null : m[key]?.toString();
       return pick('original') ??
           pick('content') ??
           pick('square') ??

@@ -83,6 +83,7 @@ dependencies:
   pinput: ^5.0.2
   input_quantity: ^2.5.0
   mask_text_input_formatter: ^2.9.0
+  awesome_snackbar_content: 0.1.7
   #Local Storage
   hive: ^2.2.3
   flutter_secure_storage: ^9.2.4

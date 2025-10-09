@@ -7,12 +7,14 @@ import 'package:jankuier_mobile/core/errors/failures.dart';
 import 'package:jankuier_mobile/features/auth/data/datasources/auth_datasource.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/bearer_token_entity.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_entity.dart';
+import 'package:jankuier_mobile/features/auth/data/entities/user_reset_entity.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_verification_entity.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/login_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/refresh_token_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/register_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_password_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/update_profile_parameter.dart';
+import 'package:jankuier_mobile/features/auth/domain/parameters/user_reset_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/user_verification_parameter.dart';
 import 'package:jankuier_mobile/features/auth/domain/repositories/auth_repository.dart';
 
@@ -153,6 +155,32 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, bool>> deleteAccount() async {
     try {
       final result = await _dataSource.deleteAccount();
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
+    } catch (e) {
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCodeResetResultEntity>> sendResetCode(
+      String phone) async {
+    try {
+      final result = await _dataSource.sendResetCode(phone);
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(FailureMapper.fromApiException(e));
+    } catch (e) {
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCodeResetResultEntity>> verifyResetCode(
+      UserCodeResetParameter parameter) async {
+    try {
+      final result = await _dataSource.verifyResetCode(parameter);
       return Right(result);
     } on ApiException catch (e) {
       return Left(FailureMapper.fromApiException(e));
