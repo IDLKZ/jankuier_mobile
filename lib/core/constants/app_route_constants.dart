@@ -133,6 +133,10 @@ class AppRouteConstants {
   static const String EnterPhonePageName = "Enter Phone Page";
   static const String VerifyCodePagePath = "/verify-code";
   static const String VerifyCodePageName = "Verify Code Page";
+  static const String SendResetCodePagePath = "/send-reset-code";
+  static const String SendResetCodePageName = "Send Reset Code Page";
+  static const String ResetPasswordPagePath = "/reset-password";
+  static const String ResetPasswordPageName = "Reset Password Page";
 
   static const String MyFirstLocalAuthPagePath = "/set-up-local-auth";
   static const String MyFirstLocalAuthPageName = "Set Up Local Auth";

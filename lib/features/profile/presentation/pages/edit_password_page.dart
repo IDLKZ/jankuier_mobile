@@ -97,6 +97,12 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
     if (value == _oldPasswordC.text) {
       return AppLocalizations.of(context)!.newPasswordMustDiffer;
     }
+    final passwordPattern =
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).{8,}$';
+    final regex = RegExp(passwordPattern);
+    if (!regex.hasMatch(value)) {
+      return "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол";
+    }
     return null;
   }
 

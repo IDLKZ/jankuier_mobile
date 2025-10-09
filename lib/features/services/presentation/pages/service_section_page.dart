@@ -19,7 +19,6 @@ import '../../../../core/di/injection.dart';
 import '../../data/entities/academy/academy_group_entity.dart';
 import '../../data/entities/academy/academy_group_schedule_entity.dart';
 import '../../domain/parameters/academy_group_schedule_by_day_parameter.dart';
-import '../../domain/use_cases/academy/get_academy_group_schedule_case.dart';
 import '../bloc/academy_group_schedule/academy_group_schedule_bloc.dart';
 import '../bloc/academy_group_schedule/academy_group_schedule_event.dart';
 import '../bloc/academy_group_schedule/academy_group_schedule_state.dart';
@@ -155,27 +154,20 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
   void initState() {
     super.initState();
 
-    if (widget.entity.groups.isNotEmpty) {
-      parameter = AcademyGroupScheduleByDayParameter(
-        day: DateTime.now(),
-        groupIds: widget.entity.groups.map((item) => item.id).toList(),
-      );
+    // Инициализируем parameter всегда, даже если групп нет
+    parameter = AcademyGroupScheduleByDayParameter(
+      day: DateTime.now(),
+      groupIds: widget.entity.groups.map((item) => item.id).toList(),
+    );
 
-      // Инициализируем bloc с начальными данными
+    // Инициализируем bloc с начальными данными, только если есть группы
+    if (widget.entity.groups.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (parameter != null && mounted) {
           context
               .read<AcademyGroupScheduleBloc>()
               .add(GetAcademyGroupScheduleEvent(parameter!));
         }
-      });
-    }
-  }
-
-  void _onDateChange(DateTime date) {
-    if (parameter != null) {
-      setState(() {
-        parameter = parameter!.copyWith(day: date); // копия с новой датой
       });
     }
   }
@@ -228,28 +220,31 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
             ],
           ),
           SizedBox(height: 12.h),
-          if (parameter != null)
-            Column(
-              children: [
-                MainTitleWidget(title: AppLocalizations.of(context)!.schedule),
-                SizedBox(height: 6.h),
-                SizedBox(
-                  height: 90,
-                  child: DatePicker(
-                    DateTime.now(),
-                    initialSelectedDate: DateTime.now(),
-                    selectionColor: AppColors.primaryLight,
-                    selectedTextColor: Colors.white,
-                    onDateChange: (date) {
-                      setState(() {
-                        parameter = parameter!.copyWith(day: date);
-                      });
+          Column(
+            children: [
+              MainTitleWidget(title: AppLocalizations.of(context)!.schedule),
+              SizedBox(height: 6.h),
+              SizedBox(
+                height: 90,
+                child: DatePicker(
+                  DateTime.now(),
+                  initialSelectedDate: DateTime.now(),
+                  selectionColor: AppColors.primaryLight,
+                  selectedTextColor: Colors.white,
+                  onDateChange: (date) {
+                    setState(() {
+                      parameter = parameter!.copyWith(day: date);
+                    });
+                    // Отправляем событие в bloc только если есть группы
+                    if (widget.entity.groups.isNotEmpty) {
                       context
                           .read<AcademyGroupScheduleBloc>()
                           .add(GetAcademyGroupScheduleEvent(parameter!));
-                    },
-                  ),
+                    }
+                  },
                 ),
+              ),
+              if (parameter != null)
                 BlocBuilder<AcademyGroupScheduleBloc,
                     AcademyGroupScheduleState>(builder: (context, state) {
                   if (state is AcademyGroupScheduleLoadedState) {
@@ -276,8 +271,8 @@ class _SectionDetailCardState extends State<_SectionDetailCard> {
                     return SizedBox();
                   }
                 })
-              ],
-            ),
+            ],
+          ),
           Divider(
             height: 15.h,
             color: AppColors.grey200,

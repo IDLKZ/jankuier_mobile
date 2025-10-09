@@ -1,32 +1,27 @@
-import 'dart:io';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
-import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart';
-import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_event.dart';
-import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_state.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/reset_password_bloc/reset_password_bloc.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/reset_password_bloc/reset_password_event.dart';
+import 'package:jankuier_mobile/features/auth/presentation/bloc/reset_password_bloc/reset_password_state.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/constants/form_validation_constants.dart';
 import '../../../../core/di/injection.dart';
 
-class EnterPhonePage extends StatefulWidget {
-  final String? phone;
-  const EnterPhonePage({super.key, required this.phone});
+class SendResetCodePage extends StatefulWidget {
+  const SendResetCodePage({super.key});
 
   @override
-  State<EnterPhonePage> createState() => _EnterPhonePageState();
+  State<SendResetCodePage> createState() => _SendResetCodePageState();
 }
 
-class _EnterPhonePageState extends State<EnterPhonePage> {
+class _SendResetCodePageState extends State<SendResetCodePage> {
   final _phoneC = TextEditingController();
   String? _phoneError;
 
@@ -37,46 +32,23 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   );
 
   @override
-  void initState() {
-    super.initState();
-    // Pre-fill phone number if provided
-    if (widget.phone != null && widget.phone!.isNotEmpty) {
-      try {
-        // Clean the phone number (remove all non-digits)
-        final cleanPhone = widget.phone!.replaceAll(RegExp(r'\D'), '');
-        print(cleanPhone);
-        if (cleanPhone.startsWith('77') && cleanPhone.length == 11) {
-          final digitsOnly = cleanPhone.substring(2);
-          _phoneC.text = _phoneMask.maskText(digitsOnly);
-        } else {
-          // If format doesn't match, leave field empty
-        }
-      } catch (e) {
-        // If formatting fails, leave field empty
-      }
-    }
-  }
-
-  @override
   void dispose() {
     _phoneC.dispose();
     super.dispose();
   }
 
   String? _validatePhone(String? value) {
-    // Get text from controller (more reliable than getUnmaskedText when pre-filled)
     final text = value ?? _phoneC.text;
-    // Extract only digits - this will include all digits from mask +7 7## ###-##-##
     final cleanPhone = text.replaceAll(RegExp(r'\D'), '');
-    // Check if completely empty
+
     if (text.isEmpty || cleanPhone.isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    // cleanPhone should be 11 digits: 77XXXXXXXXX
+
     if (cleanPhone.length != 11) {
       return AppLocalizations.of(context)!.phoneFormat;
     }
-    // Check if phone matches the pattern 77XXXXXXXXX
+
     final re = RegExp(FormValidationConstant.PhoneRegExp);
     if (!re.hasMatch(cleanPhone)) {
       return AppLocalizations.of(context)!.phoneFormat;
@@ -85,11 +57,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   }
 
   String _getCleanPhone() {
-    // Get digits from controller text
     final text = _phoneC.text;
     final cleanPhone = text.replaceAll(RegExp(r'\D'), '');
-
-    // cleanPhone already contains all digits from mask: 77XXXXXXXXX (11 digits)
     return cleanPhone;
   }
 
@@ -102,7 +71,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
 
     if (error == null) {
       String phone = _getCleanPhone();
-      context.read<SendVerifyCodeBloc>().add(SendVerifyCodeSubmitted(phone));
+      context.read<ResetPasswordBloc>().add(SendResetCodeSubmitted(phone));
     }
   }
 
@@ -148,11 +117,11 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
           ),
         ),
       ),
-      body: BlocProvider<SendVerifyCodeBloc>(
-        create: (context) => getIt<SendVerifyCodeBloc>(),
-        child: BlocConsumer<SendVerifyCodeBloc, SendVerifyCodeState>(
-          listener: (BuildContext context, SendVerifyCodeState state) {
-            if (state is SendVerifyCodeSuccess) {
+      body: BlocProvider<ResetPasswordBloc>(
+        create: (context) => getIt<ResetPasswordBloc>(),
+        child: BlocConsumer<ResetPasswordBloc, ResetPasswordState>(
+          listener: (BuildContext context, ResetPasswordState state) {
+            if (state is SendResetCodeSuccess) {
               if (state.result.result == true) {
                 final cleanPhone = _getCleanPhone();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -163,14 +132,13 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                     content: AwesomeSnackbarContent(
                       title: AppLocalizations.of(context)!.success,
                       message: state.result.message ??
-                          AppLocalizations.of(context)!
-                              .codeVerifiedSuccessfully,
+                          'Код для сброса пароля отправлен',
                       contentType: ContentType.success,
                     ),
                   ),
                 );
                 context.pushNamed(
-                  AppRouteConstants.VerifyCodePageName,
+                  AppRouteConstants.ResetPasswordPageName,
                   queryParameters: {'phone': cleanPhone},
                   extra: state.result,
                 );
@@ -189,7 +157,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                   ),
                 );
               }
-            } else if (state is SendVerifyCodeFailure) {
+            } else if (state is ResetPasswordFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   elevation: 0,
@@ -204,8 +172,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
               );
             }
           },
-          builder: (BuildContext context, SendVerifyCodeState state) {
-            final isLoading = state is SendVerifyCodeLoading;
+          builder: (BuildContext context, ResetPasswordState state) {
+            final isLoading = state is ResetPasswordLoading;
 
             return Stack(
               children: [
@@ -230,24 +198,40 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Logo
-                            Hero(
-                              tag: 'app_logo',
-                              child: Image.asset(
-                                "assets/images/kff_logo.png",
-                                width: 120.w,
+                            // Icon
+                            Container(
+                              width: 100.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.15),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.lock_reset_outlined,
+                                size: 48.sp,
+                                color: Colors.white,
                               ),
                             ),
                             SizedBox(height: 32.h),
 
                             // Title
                             Text(
-                              AppLocalizations.of(context)!
-                                  .enterPhoneForVerification,
+                              'Сброс пароля',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 22.sp,
+                                fontSize: 28.sp,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: -0.5,
                               ),
@@ -256,7 +240,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
 
                             // Subtitle
                             Text(
-                              'Мы отправим SMS-код для подтверждения',
+                              'Введите номер телефона для получения кода',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),
@@ -401,8 +385,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                               ),
                                               SizedBox(width: 8.w),
                                               Text(
-                                                AppLocalizations.of(context)!
-                                                    .sendSMSCode,
+                                                'Отправить код',
                                                 style: TextStyle(
                                                   color:
                                                       const Color(0xFF0148C9),
@@ -505,7 +488,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                   ),
                                   SizedBox(width: 8.w),
                                   Text(
-                                    AppLocalizations.of(context)!.iHaveAccount,
+                                    'Вернуться к входу',
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.9),
                                       fontSize: 14.sp,

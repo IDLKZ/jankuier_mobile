@@ -502,7 +502,8 @@ class _SignInPageState extends State<SignInPage> {
                                   alignment: Alignment.centerRight,
                                   child: TextButton(
                                     onPressed: () {
-                                      // TODO: Implement forgot password
+                                      context.push(AppRouteConstants
+                                          .SendResetCodePagePath);
                                     },
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.symmetric(

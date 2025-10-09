@@ -1396,6 +1396,12 @@ abstract class AppLocalizations {
   /// **'ИИН (необязательно)'**
   String get iinOptional;
 
+  /// No description provided for @iinMustBe12Digits.
+  ///
+  /// In ru, this message translates to:
+  /// **'ИИН должен состоять из 12 цифр'**
+  String get iinMustBe12Digits;
+
   /// No description provided for @saveChanges.
   ///
   /// In ru, this message translates to:
@@ -2973,6 +2979,156 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Публичный договор-оферта мобильного приложения'**
   String get publicMobileTitle;
+
+  /// No description provided for @weWillSendSmsCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Мы отправим SMS-код для подтверждения'**
+  String get weWillSendSmsCode;
+
+  /// No description provided for @smsCodeWillArriveIn.
+  ///
+  /// In ru, this message translates to:
+  /// **'SMS-код придет в течение 1-2 минут'**
+  String get smsCodeWillArriveIn;
+
+  /// No description provided for @or.
+  ///
+  /// In ru, this message translates to:
+  /// **'или'**
+  String get or;
+
+  /// No description provided for @enterCodeFromSms.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите код из SMS'**
+  String get enterCodeFromSms;
+
+  /// No description provided for @codeResentAgain.
+  ///
+  /// In ru, this message translates to:
+  /// **'Код отправлен повторно'**
+  String get codeResentAgain;
+
+  /// No description provided for @passwordSuccessfullyChanged.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пароль успешно изменен'**
+  String get passwordSuccessfullyChanged;
+
+  /// No description provided for @wrongCodeOrResetError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Неверный код или ошибка сброса пароля'**
+  String get wrongCodeOrResetError;
+
+  /// No description provided for @newPasswordTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Новый пароль'**
+  String get newPasswordTitle;
+
+  /// No description provided for @enterSmsCodeAndNewPassword.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите код из SMS и новый пароль'**
+  String get enterSmsCodeAndNewPassword;
+
+  /// No description provided for @codeValidFor.
+  ///
+  /// In ru, this message translates to:
+  /// **'Код действителен:'**
+  String get codeValidFor;
+
+  /// No description provided for @codeExpiredRequestNew.
+  ///
+  /// In ru, this message translates to:
+  /// **'Время действия кода истекло. Запросите новый код.'**
+  String get codeExpiredRequestNew;
+
+  /// No description provided for @codeExpired.
+  ///
+  /// In ru, this message translates to:
+  /// **'Время действия кода истекло'**
+  String get codeExpired;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сбросить пароль'**
+  String get resetPasswordButton;
+
+  /// No description provided for @resendCodeAgain.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить код повторно'**
+  String get resendCodeAgain;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вернуться к входу'**
+  String get backToSignIn;
+
+  /// No description provided for @resetCodeSent.
+  ///
+  /// In ru, this message translates to:
+  /// **'Код для сброса пароля отправлен'**
+  String get resetCodeSent;
+
+  /// No description provided for @passwordResetTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сброс пароля'**
+  String get passwordResetTitle;
+
+  /// No description provided for @enterPhoneToGetCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите номер телефона для получения кода'**
+  String get enterPhoneToGetCode;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отправить код'**
+  String get sendCode;
+
+  /// No description provided for @enterValidPhoneNumber.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите корректный номер телефона'**
+  String get enterValidPhoneNumber;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите корректный email'**
+  String get enterValidEmail;
+
+  /// No description provided for @enterEmailPhoneOrLogin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите email, телефон или логин'**
+  String get enterEmailPhoneOrLogin;
+
+  /// No description provided for @emailPhoneOrLogin.
+  ///
+  /// In ru, this message translates to:
+  /// **'Email, телефон или логин'**
+  String get emailPhoneOrLogin;
+
+  /// No description provided for @createNewAccount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Создайте новый аккаунт'**
+  String get createNewAccount;
+
+  /// No description provided for @passwordRequirements.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол'**
+  String get passwordRequirements;
 }
 
 class _AppLocalizationsDelegate

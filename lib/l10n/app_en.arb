@@ -237,6 +237,7 @@
   "email": "Email",
   "phoneNumber": "Phone Number",
   "iinOptional": "IIN (optional)",
+  "iinMustBe12Digits": "IIN must be 12 digits",
   "saveChanges": "Save Changes",
   "profileSuccessfullyUpdated": "Profile successfully updated",
   "security": "Security",

@@ -670,6 +670,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iinOptional => 'IIN (optional)';
 
   @override
+  String get iinMustBe12Digits => 'IIN must be 12 digits';
+
+  @override
   String get saveChanges => 'Save Changes';
 
   @override
@@ -1476,4 +1479,81 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get publicMobileTitle => 'Mobile application public offer agreement';
+
+  @override
+  String get weWillSendSmsCode => 'Мы отправим SMS-код для подтверждения';
+
+  @override
+  String get smsCodeWillArriveIn => 'SMS-код придет в течение 1-2 минут';
+
+  @override
+  String get or => 'или';
+
+  @override
+  String get enterCodeFromSms => 'Введите код из SMS';
+
+  @override
+  String get codeResentAgain => 'Код отправлен повторно';
+
+  @override
+  String get passwordSuccessfullyChanged => 'Пароль успешно изменен';
+
+  @override
+  String get wrongCodeOrResetError => 'Неверный код или ошибка сброса пароля';
+
+  @override
+  String get newPasswordTitle => 'Новый пароль';
+
+  @override
+  String get enterSmsCodeAndNewPassword => 'Введите код из SMS и новый пароль';
+
+  @override
+  String get codeValidFor => 'Код действителен:';
+
+  @override
+  String get codeExpiredRequestNew =>
+      'Время действия кода истекло. Запросите новый код.';
+
+  @override
+  String get codeExpired => 'Время действия кода истекло';
+
+  @override
+  String get resetPasswordButton => 'Сбросить пароль';
+
+  @override
+  String get resendCodeAgain => 'Отправить код повторно';
+
+  @override
+  String get backToSignIn => 'Вернуться к входу';
+
+  @override
+  String get resetCodeSent => 'Код для сброса пароля отправлен';
+
+  @override
+  String get passwordResetTitle => 'Сброс пароля';
+
+  @override
+  String get enterPhoneToGetCode => 'Введите номер телефона для получения кода';
+
+  @override
+  String get sendCode => 'Отправить код';
+
+  @override
+  String get enterValidPhoneNumber => 'Введите корректный номер телефона';
+
+  @override
+  String get enterValidEmail => 'Введите корректный email';
+
+  @override
+  String get enterEmailPhoneOrLogin => 'Введите email, телефон или логин';
+
+  @override
+  String get emailPhoneOrLogin => 'Email, телефон или логин';
+
+  @override
+  String get createNewAccount => 'Создайте новый аккаунт';
+
+  @override
+  String get passwordRequirements =>
+      'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол';
 }

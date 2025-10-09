@@ -36,6 +36,8 @@ import 'package:jankuier_mobile/features/auth/domain/usecases/get_me_usecase.dar
     as _i477;
 import 'package:jankuier_mobile/features/auth/domain/usecases/refresh_token_usecase.dart'
     as _i391;
+import 'package:jankuier_mobile/features/auth/domain/usecases/send_reset_code_usecase.dart'
+    as _i1071;
 import 'package:jankuier_mobile/features/auth/domain/usecases/send_verify_code_usecase.dart'
     as _i398;
 import 'package:jankuier_mobile/features/auth/domain/usecases/sign_in_usecase.dart'
@@ -50,6 +52,8 @@ import 'package:jankuier_mobile/features/auth/domain/usecases/update_profile_use
     as _i625;
 import 'package:jankuier_mobile/features/auth/domain/usecases/verify_code_usecase.dart'
     as _i517;
+import 'package:jankuier_mobile/features/auth/domain/usecases/verify_reset_code_usecase.dart'
+    as _i929;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_account_bloc/delete_account_bloc.dart'
     as _i347;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/delete_profile_photo_bloc/delete_profile_photo_bloc.dart'
@@ -58,6 +62,8 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/get_me_bloc/get_
     as _i278;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/refresh_token_bloc/refresh_token_bloc.dart'
     as _i604;
+import 'package:jankuier_mobile/features/auth/presentation/bloc/reset_password_bloc/reset_password_bloc.dart'
+    as _i486;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/send_verify_code_bloc/send_verify_code_bloc.dart'
     as _i59;
 import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart'
@@ -492,6 +498,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i477.GetMeUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i391.RefreshTokenUseCase>(
         () => _i391.RefreshTokenUseCase(gh<_i106.AuthRepository>()));
+    gh.factory<_i1071.SendResetCodeUseCase>(
+        () => _i1071.SendResetCodeUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i398.SendVerifyCodeUseCase>(
         () => _i398.SendVerifyCodeUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i2.SignInUseCase>(
@@ -506,6 +514,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i625.UpdateProfileUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i517.VerifyCodeUseCase>(
         () => _i517.VerifyCodeUseCase(gh<_i106.AuthRepository>()));
+    gh.factory<_i929.VerifyResetCodeUseCase>(
+        () => _i929.VerifyResetCodeUseCase(gh<_i106.AuthRepository>()));
     gh.factory<_i449.GetCoachesBloc>(
         () => _i449.GetCoachesBloc(getCoachesCase: gh<_i272.GetCoachesCase>()));
     gh.factory<_i493.UpdateCartItemBloc>(
@@ -630,6 +640,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1027.GetAllProductOrderItemStatusBloc>(() =>
         _i1027.GetAllProductOrderItemStatusBloc(
             gh<_i7.GetAllProductOrderItemStatusUseCase>()));
+    gh.factory<_i486.ResetPasswordBloc>(() => _i486.ResetPasswordBloc(
+          gh<_i1071.SendResetCodeUseCase>(),
+          gh<_i929.VerifyResetCodeUseCase>(),
+        ));
     gh.factory<_i888.GetMyProductOrderByIdBloc>(() =>
         _i888.GetMyProductOrderByIdBloc(
             gh<_i923.GetMyProductOrderByIdUseCase>()));

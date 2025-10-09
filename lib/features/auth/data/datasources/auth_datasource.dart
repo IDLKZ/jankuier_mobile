@@ -228,8 +228,8 @@ class AuthDSImpl implements AuthDSInterface {
   @override
   Future<UserCodeResetResultEntity> sendResetCode(String phone) async {
     try {
-      final response = await httpUtils
-          .post(ApiConstant.SendResetCodeUrl, data: {"phone": phone});
+      final response = await httpUtils.post(ApiConstant.SendResetCodeUrl,
+          queryParameters: {"phone": phone});
       final result = UserCodeResetResultEntity.fromJson(response);
       return result;
     } on DioException catch (e) {

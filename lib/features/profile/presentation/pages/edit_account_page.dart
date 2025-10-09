@@ -129,6 +129,19 @@ class _EditAccountPageState extends State<EditAccountPage> {
     return null;
   }
 
+  String? _validateIin(String? value) {
+    // ИИН опционален, но если введен, должен быть валидным
+    if (value == null || value.trim().isEmpty) {
+      return null; // Поле опциональное
+    }
+    final iin = value.trim();
+    final re = RegExp(FormValidationConstant.IinRegExp);
+    if (!re.hasMatch(iin)) {
+      return AppLocalizations.of(context)!.iinMustBe12Digits;
+    }
+    return null;
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Remove mask formatting from phone
@@ -323,6 +336,19 @@ class _EditAccountViewState extends State<_EditAccountView> {
     return null;
   }
 
+  String? _validateIin(String? value) {
+    // ИИН опционален, но если введен, должен быть валидным
+    if (value == null || value.trim().isEmpty) {
+      return null; // Поле опциональное
+    }
+    final iin = value.trim();
+    final re = RegExp(FormValidationConstant.IinRegExp);
+    if (!re.hasMatch(iin)) {
+      return AppLocalizations.of(context)!.iinMustBe12Digits;
+    }
+    return null;
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Remove mask formatting from phone
@@ -490,8 +516,12 @@ class _EditAccountViewState extends State<_EditAccountView> {
                   _buildTextFormField(
                     controller: _iinC,
                     labelText: AppLocalizations.of(context)!.iinOptional,
-                    validator: (value) => null, // Optional field
+                    validator: _validateIin,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(12),
+                    ],
                   ),
 
                   SizedBox(height: 20.h),

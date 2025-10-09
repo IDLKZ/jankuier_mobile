@@ -236,6 +236,7 @@
   "email": "Email",
   "phoneNumber": "Телефон нөмірі",
   "iinOptional": "ЖСН (қажет емес)",
+  "iinMustBe12Digits": "ЖСН 12 саннан тұруы керек",
   "saveChanges": "Өзгерістерді сақтау",
   "profileSuccessfullyUpdated": "Профиль сәтті жаңартылды",
   "security": "Қауіпсіздік",

@@ -57,7 +57,7 @@ class _SignUpViewState extends State<_SignUpView> {
   final _phoneC = TextEditingController();
 
   final _phoneMask = MaskTextInputFormatter(
-    mask: '+7 (###) ###-##-##',
+    mask: '+7 7## ###-##-##',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );
@@ -140,16 +140,25 @@ class _SignUpViewState extends State<_SignUpView> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterPhone;
     }
-    final cleanPhone = _phoneMask.getUnmaskedText();
-    if (cleanPhone.length != 10) {
+    // Extract all digits from the text field
+    final cleanPhone = _phoneC.text.replaceAll(RegExp(r'\D'), '');
+    // cleanPhone should be 11 digits: 77XXXXXXXXX
+    if (cleanPhone.length != 11) {
+      return AppLocalizations.of(context)!.phoneFormat;
+    }
+    // Check if phone matches the pattern 77XXXXXXXXX
+    final re = RegExp(FormValidationConstant.PhoneRegExp);
+    if (!re.hasMatch(cleanPhone)) {
       return AppLocalizations.of(context)!.phoneFormat;
     }
     return null;
   }
 
   String _getCleanPhone() {
-    final cleanPhone = _phoneMask.getUnmaskedText();
-    return '7$cleanPhone';
+    // Extract all digits from the text field
+    final cleanPhone = _phoneC.text.replaceAll(RegExp(r'\D'), '');
+    // cleanPhone already contains all digits from mask: 77XXXXXXXXX (11 digits)
+    return cleanPhone;
   }
 
   String? _validateFirstName(String? value) {
@@ -209,7 +218,7 @@ class _SignUpViewState extends State<_SignUpView> {
   }
 
   void _submitForm() {
-    if (_validatePage2()) {
+    if (_validatePage2() && _validatePage1()) {
       final registerParameter = RegisterParameter(
         username: _usernameC.text.trim(),
         email: _emailC.text.trim(),

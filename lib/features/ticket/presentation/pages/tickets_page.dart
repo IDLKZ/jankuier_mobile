@@ -18,11 +18,26 @@ class TicketsPage extends StatefulWidget {
 class _TicketsPageState extends State<TicketsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  Locale? _currentLocale;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Отслеживаем изменение локали и выполняем rebuild
+    final locale = Localizations.localeOf(context);
+    if (_currentLocale != locale) {
+      _currentLocale = locale;
+      // Пересоздаем состояние при смене языка
+      if (mounted) {
+        setState(() {});
+      }
+    }
   }
 
   @override

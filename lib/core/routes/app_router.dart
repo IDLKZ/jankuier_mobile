@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/constants/app_constants.dart';
 import 'package:jankuier_mobile/core/constants/ticketon_api_constants.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/reset_password_page.dart';
+import 'package:jankuier_mobile/features/auth/presentation/pages/send_reset_code_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:jankuier_mobile/features/auth/presentation/pages/enter_phone_page.dart';
@@ -28,6 +30,7 @@ import 'package:jankuier_mobile/features/standings/presentation/pages/standings_
 import 'package:jankuier_mobile/features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/pages/tickets_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
+import '../../features/auth/data/entities/user_reset_entity.dart';
 import '../../features/blog/presentation/pages/blog_page.dart';
 import '../../features/countries/presentation/pages/countries_page.dart';
 import '../../features/local_auth/domain/repository/local_auth_interface.dart';
@@ -102,6 +105,36 @@ class AppRouter {
                   ? state.extra as UserCodeVerificationResultEntity
                   : null;
           return VerifyCodePage(
+            phone: phone,
+            verificationResult: verificationResult,
+          );
+        },
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.SendResetCodePagePath,
+        name: AppRouteConstants.SendResetCodePageName,
+        builder: (context, state) {
+          return SendResetCodePage();
+        },
+        redirect: (BuildContext context, GoRouterState state) async {
+          return await AppRouteMiddleware()
+              .checkGuestMiddleware(context, state);
+        },
+      ),
+      GoRoute(
+        path: AppRouteConstants.ResetPasswordPagePath,
+        name: AppRouteConstants.ResetPasswordPageName,
+        builder: (context, state) {
+          final phone = state.uri.queryParameters['phone'] ?? '';
+          final UserCodeResetResultEntity? verificationResult =
+              state.extra is UserCodeResetResultEntity
+                  ? state.extra as UserCodeResetResultEntity
+                  : null;
+          return ResetPasswordPage(
             phone: phone,
             verificationResult: verificationResult,
           );

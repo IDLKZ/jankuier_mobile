@@ -478,135 +478,138 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                             FieldPartySchedulePreviewState>(
                           builder: (context, state) {
                             if (state is FieldPartySchedulePreviewLoadedState) {
-                              if (state.schedulePreview.generatedCount > 0) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      height: 90,
-                                      child: DatePicker(
-                                        DateTime.now(),
-                                        initialSelectedDate: parameter.day,
-                                        selectionColor: AppColors.primaryLight,
-                                        selectedTextColor: Colors.white,
-                                        onDateChange: _onDateChanged,
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // DatePicker показывается всегда
+                                  SizedBox(
+                                    height: 90,
+                                    child: DatePicker(
+                                      DateTime.now(),
+                                      initialSelectedDate: parameter.day,
+                                      selectionColor: AppColors.primaryLight,
+                                      selectedTextColor: Colors.white,
+                                      onDateChange: _onDateChanged,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  // Список расписаний и кнопка показываются только если есть записи
+                                  if (state.schedulePreview.generatedCount > 0)
+                                    ...[
+                                      DynamicHeightGridView(
+                                        builder: (ctx, index) {
+                                          final entity = state.schedulePreview
+                                              .scheduleRecords[index];
+                                          return GestureDetector(
+                                            onTap: () =>
+                                                _onScheduleSelect(entity),
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 5.w,
+                                                vertical: 10.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: scheduleRecordEntity
+                                                            ?.startAt ==
+                                                        entity.startAt
+                                                    ? AppColors.primaryLight
+                                                    : AppColors.grey300,
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "${entity.startAt} - ${entity.endAt}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: scheduleRecordEntity
+                                                                  ?.startAt ==
+                                                              entity.startAt
+                                                          ? AppColors.white
+                                                          : AppColors.grey500,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 10.h),
+                                                  Text(
+                                                    "${entity.price} KZT",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: scheduleRecordEntity
+                                                                  ?.startAt ==
+                                                              entity.startAt
+                                                          ? AppColors.white
+                                                          : AppColors.grey500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        itemCount:
+                                            state.schedulePreview.generatedCount,
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 10.w,
+                                        mainAxisSpacing: 10.h,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                       ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    DynamicHeightGridView(
-                                      builder: (ctx, index) {
-                                        final entity = state.schedulePreview
-                                            .scheduleRecords[index];
-                                        return GestureDetector(
-                                          onTap: () =>
-                                              _onScheduleSelect(entity),
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 5.w,
-                                              vertical: 10.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: scheduleRecordEntity
-                                                          ?.startAt ==
-                                                      entity.startAt
-                                                  ? AppColors.primaryLight
-                                                  : AppColors.grey300,
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  "${entity.startAt} - ${entity.endAt}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: scheduleRecordEntity
-                                                                ?.startAt ==
-                                                            entity.startAt
-                                                        ? AppColors.white
-                                                        : AppColors.grey500,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 10.h),
-                                                Text(
-                                                  "${entity.price} KZT",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: scheduleRecordEntity
-                                                                ?.startAt ==
-                                                            entity.startAt
-                                                        ? AppColors.white
-                                                        : AppColors.grey500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      itemCount:
-                                          state.schedulePreview.generatedCount,
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 10.w,
-                                      mainAxisSpacing: 10.h,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                    ),
-                                    (scheduleRecordEntity != null
-                                        ? Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "${scheduleRecordEntity?.price} KZT",
-                                                  style: TextStyle(
-                                                    fontSize: 18.sp,
-                                                    color:
-                                                        const Color(0xFF0247C3),
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
+                                      if (scheduleRecordEntity != null)
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                "${scheduleRecordEntity?.price} KZT",
+                                                style: TextStyle(
+                                                  fontSize: 18.sp,
+                                                  color:
+                                                      const Color(0xFF0247C3),
+                                                  fontWeight: FontWeight.w700,
                                                 ),
                                               ),
-                                              Expanded(
-                                                  child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  minimumSize:
-                                                      Size.fromHeight(45.h),
-                                                  backgroundColor:
-                                                      AppColors.primary,
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 20.w),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.r),
-                                                  ),
+                                            ),
+                                            Expanded(
+                                                child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize:
+                                                    Size.fromHeight(45.h),
+                                                backgroundColor:
+                                                    AppColors.primary,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20.w),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.r),
                                                 ),
-                                                onPressed: () {
-                                                  _handlePayment(context =
-                                                      widget.showModalContext);
-                                                },
-                                                child: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .pay,
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white),
-                                                ),
-                                              ))
-                                            ],
-                                          )
-                                        : SizedBox())
-                                  ],
-                                );
-                              }
-                              return Text(
-                                  AppLocalizations.of(context)!.noScheduleYet);
+                                              ),
+                                              onPressed: () {
+                                                _handlePayment(context =
+                                                    widget.showModalContext);
+                                              },
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .pay,
+                                                style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                            ))
+                                          ],
+                                        )
+                                    ]
+                                  else
+                                    Text(
+                                        AppLocalizations.of(context)!.noScheduleYet),
+                                ],
+                              );
                             }
                             return const Center(
                               child: CircularProgressIndicator(),
