@@ -123,6 +123,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
           listener: (BuildContext context, ResetPasswordState state) {
             if (state is SendResetCodeSuccess) {
               if (state.result.result == true) {
+                FocusScope.of(context).unfocus();
                 final cleanPhone = _getCleanPhone();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -143,6 +144,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                   extra: state.result,
                 );
               } else {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -158,6 +160,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                 );
               }
             } else if (state is ResetPasswordFailure) {
+              FocusScope.of(context).unfocus();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   elevation: 0,

@@ -146,6 +146,10 @@ class _SectionMainState extends State<SectionMain>
     }
   }
 
+  Future<void> _onRefresh() async {
+    _bloc.add(PaginateAcademyEvent(_params.copyWith(page: 1)));
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context); // ⚡ обязательно для AutomaticKeepAliveClientMixin
@@ -154,19 +158,22 @@ class _SectionMainState extends State<SectionMain>
       child: BlocBuilder<AcademyBloc, AcademyState>(
         builder: (context, state) {
           if (state is PaginateAcademyLoadedState) {
-            return SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MainTitleWidget(
-                            title: AppLocalizations.of(context)!
-                                .sectionRegistration),
-                        IconButton(
-                            onPressed: () {
+            return RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MainTitleWidget(
+                              title: AppLocalizations.of(context)!
+                                  .sectionRegistration),
+                          IconButton(
+                              onPressed: () {
                               showModalBottomSheet<void>(
                                 context: context,
                                 useRootNavigator: false,
@@ -567,10 +574,11 @@ class _SectionMainState extends State<SectionMain>
                               Iconsax.filter_square_copy,
                               size: 18.sp,
                             ))
-                      ]),
-                  SizedBox(height: 12.h),
-                  _buildAcademyList(state.academies, state),
-                ],
+                        ]),
+                    SizedBox(height: 12.h),
+                    _buildAcademyList(state.academies, state),
+                  ],
+                ),
               ),
             );
           } else {

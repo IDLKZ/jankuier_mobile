@@ -206,6 +206,7 @@ class _SignInPageState extends State<SignInPage> {
                   context.read<GetMeBloc>().add(const LoadUserProfile());
                 } else if (state is SignInFailure) {
                   if (state.failure?.statusCode == 403) {
+                    FocusScope.of(context).unfocus();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         elevation: 0,
@@ -223,6 +224,7 @@ class _SignInPageState extends State<SignInPage> {
                     // Navigate to EnterPhonePage - user will need to enter their phone
                     context.pushNamed(AppRouteConstants.EnterPhonePageName);
                   } else {
+                    FocusScope.of(context).unfocus();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         elevation: 0,

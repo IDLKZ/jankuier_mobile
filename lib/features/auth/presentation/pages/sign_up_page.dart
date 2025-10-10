@@ -479,6 +479,7 @@ class _SignUpViewState extends State<_SignUpView> {
           BlocListener<SignUpBloc, SignUpState>(
             listener: (context, state) {
               if (state is SignUpSuccess) {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -497,6 +498,7 @@ class _SignUpViewState extends State<_SignUpView> {
                   queryParameters: {'phone': state.user.phone},
                 );
               } else if (state is SignUpFailure) {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,

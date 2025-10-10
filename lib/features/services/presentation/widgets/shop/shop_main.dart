@@ -90,6 +90,12 @@ class _ShopMainState extends State<ShopMain>
     productBloc!.add(FilterProductEvent(paginateProductParameter));
   }
 
+  Future<void> _onRefresh() async {
+    if (productBloc != null) {
+      productBloc!.add(PaginateProductEvent(paginateProductParameter.copyWith(page: 1)));
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -115,23 +121,27 @@ class _ShopMainState extends State<ShopMain>
         ),
       ],
       child: Builder(builder: (scopedCtx) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _MyOrdersBanner(),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child:
-                    MainTitleWidget(title: AppLocalizations.of(context)!.shop),
-              ),
-              const ShopBannerProduct(),
-              ProductCategoryBottomScheet(
-                onFiltersApplied: _onFiltersApplied,
-              ),
-              const ProductGridCards(),
-            ],
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _MyOrdersBanner(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child:
+                      MainTitleWidget(title: AppLocalizations.of(context)!.shop),
+                ),
+                const ShopBannerProduct(),
+                ProductCategoryBottomScheet(
+                  onFiltersApplied: _onFiltersApplied,
+                ),
+                const ProductGridCards(),
+              ],
+            ),
           ),
         );
       }),

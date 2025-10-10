@@ -10,12 +10,15 @@ import 'package:intl/intl.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/ticketon_api_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/utils/hive_utils.dart';
 import '../../../auth/presentation/pages/sign_in_page.dart';
+import '../../domain/parameters/ticketon_get_shows_parameter.dart';
 import '../bloc/shows/ticketon_bloc.dart';
+import '../bloc/shows/ticketon_event.dart';
 import '../bloc/shows/ticketon_state.dart';
 import '../pages/ticket_webview_page.dart';
 
@@ -28,35 +31,47 @@ class NewTicketWidgets extends StatelessWidget {
         builder: (context, state) {
       if (state is TicketonShowsShowsLoaded) {
         final filteredShows = state.shows.validShows;
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.w,
-            vertical: 15.h,
-          ),
-          child: ListView.builder(
-            itemCount: filteredShows.length,
-            itemBuilder: (ctx, index) {
-              final show = filteredShows[index];
-              final event = state.shows.events[show.eventId];
-              final place = state.shows.places[show.placeId];
-              final city = place != null ? state.shows.cities[place.cityId] : null;
+        return RefreshIndicator(
+          onRefresh: () async {
+            final bloc = context.read<TicketonShowsBloc>();
+            final parameter = TicketonGetShowsParameter.withCurrentLocale(
+              place: TicketonApiConstant.PlaceId,
+            );
+            bloc.add(LoadTicketonShowsEvent(parameter: parameter));
+            // Wait for the refresh to complete
+            await Future.delayed(const Duration(milliseconds: 500));
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 15.h,
+            ),
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: filteredShows.length,
+              itemBuilder: (ctx, index) {
+                final show = filteredShows[index];
+                final event = state.shows.events[show.eventId];
+                final place = state.shows.places[show.placeId];
+                final city = place != null ? state.shows.cities[place.cityId] : null;
 
-              return Padding(
-                padding: EdgeInsets.only(bottom: 16.h),
-                child: TicketCard(
-                  image: event?.main != "" ? event?.main : event?.cover,
-                  genre: event?.genre,
-                  cityName: city?.name,
-                  name: event?.name,
-                  description: event?.description,
-                  placeName: place?.name,
-                  remark: event?.remark,
-                  address: place?.address,
-                  startAt: show.dateTime,
-                  showId: show.id != null ? int.tryParse(show.id!) : null,
-                ),
-              );
-            },
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: TicketCard(
+                    image: event?.main != "" ? event?.main : event?.cover,
+                    genre: event?.genre,
+                    cityName: city?.name,
+                    name: event?.name,
+                    description: event?.description,
+                    placeName: place?.name,
+                    remark: event?.remark,
+                    address: place?.address,
+                    startAt: show.dateTime,
+                    showId: show.id != null ? int.tryParse(show.id!) : null,
+                  ),
+                );
+              },
+            ),
           ),
         );
       }

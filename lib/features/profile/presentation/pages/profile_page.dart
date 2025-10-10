@@ -242,6 +242,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _onRefresh() async {
+    _getMeBloc.add(const LoadUserProfile());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -343,33 +347,42 @@ class _ProfilePageState extends State<ProfilePage> {
           bloc: _getMeBloc,
           builder: (context, state) {
             if (state is GetMeLoaded) {
-              return EditProfilePage(
-                userName: "${state.user.firstName} ${state.user.lastName}",
-                userImage: state.user.image,
-                onAvatarTap: () {
-                  _showPhotoOptions(context, state.user.imageId != null);
-                },
-                onPersonalDataTap: () {
-                  context.push(AppRouteConstants.EditAccountPagePath);
-                },
-                onSecurityTap: () {
-                  context.push(AppRouteConstants.EditPasswordPagePath);
-                },
-                onResetPinCodeTap: () {
-                  context.push(AppRouteConstants.ReloadPINCodePagePath);
-                },
-                onMyOrdersTap: () {
-                  context.push(AppRouteConstants.MyProductOrdersPagePath);
-                },
-                onMyBookingsTap: () {
-                  context
-                      .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
-                },
-                onCartTap: () {
-                  context.push(AppRouteConstants.MyCartPagePath);
-                },
-                onLogout: _onLogout,
-                onDeleteAccount: _showDeleteAccountConfirmation,
+              return RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top,
+                    child: EditProfilePage(
+                      userName: "${state.user.firstName} ${state.user.lastName}",
+                      userImage: state.user.image,
+                      onAvatarTap: () {
+                        _showPhotoOptions(context, state.user.imageId != null);
+                      },
+                      onPersonalDataTap: () {
+                        context.push(AppRouteConstants.EditAccountPagePath);
+                      },
+                      onSecurityTap: () {
+                        context.push(AppRouteConstants.EditPasswordPagePath);
+                      },
+                      onResetPinCodeTap: () {
+                        context.push(AppRouteConstants.ReloadPINCodePagePath);
+                      },
+                      onMyOrdersTap: () {
+                        context.push(AppRouteConstants.MyProductOrdersPagePath);
+                      },
+                      onMyBookingsTap: () {
+                        context
+                            .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+                      },
+                      onCartTap: () {
+                        context.push(AppRouteConstants.MyCartPagePath);
+                      },
+                      onLogout: _onLogout,
+                      onDeleteAccount: _showDeleteAccountConfirmation,
+                    ),
+                  ),
+                ),
               );
             }
             return const SizedBox.expand(

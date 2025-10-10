@@ -124,6 +124,10 @@ class _FieldsMainState extends State<FieldsMain>
     }
   }
 
+  Future<void> _onRefresh() async {
+    _bloc.add(PaginateFieldPartyEvent(_params.copyWith(page: 1)));
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context); // важно для AutomaticKeepAliveClientMixin
@@ -134,16 +138,20 @@ class _FieldsMainState extends State<FieldsMain>
             if (state is PaginateFieldPartyLoadedState) {
               final fieldParties = state.fieldParties;
 
-              return SingleChildScrollView(
-                controller: _scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _MyBookingsBanner(),
-                    _buildHeader(context),
-                    SizedBox(height: 15.h),
-                    _buildFieldList(fieldParties, state),
-                  ],
+              return RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _MyBookingsBanner(),
+                      _buildHeader(context),
+                      SizedBox(height: 15.h),
+                      _buildFieldList(fieldParties, state),
+                    ],
+                  ),
                 ),
               );
             }

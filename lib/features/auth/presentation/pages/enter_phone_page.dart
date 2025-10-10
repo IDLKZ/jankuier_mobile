@@ -156,6 +156,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
             if (state is SendVerifyCodeSuccess) {
               if (state.result.result == true) {
                 final cleanPhone = _getCleanPhone();
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -176,6 +177,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                   extra: state.result,
                 );
               } else {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -191,6 +193,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                 );
               }
             } else if (state is SendVerifyCodeFailure) {
+              FocusScope.of(context).unfocus();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   elevation: 0,

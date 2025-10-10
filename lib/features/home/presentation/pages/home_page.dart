@@ -152,6 +152,16 @@ class _HomePageState extends State<HomePage>
       )));
   }
 
+  Future<void> _onRefresh() async {
+    _loadTournaments();
+    _loadNews();
+    _loadClubMatches();
+    _futureMatchesBloc.add(GetFutureMatchesRequestEvent(1));
+    if (_selectedTournament != null) {
+      _loadTabData();
+    }
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -197,29 +207,33 @@ class _HomePageState extends State<HomePage>
               buildHeader(context),
               // Content with scroll
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Tournament selection section
-                      buildTournamentSection(
-                          context, _selectedTournament, _onTournamentSelected),
-                      // Main tournament card
-                      if (_selectedTournament != null)
-                        buildMainTournamentCard(context, _selectedTournament),
-                      // Tabs and content
-                      _selectedTournament != null
-                          ? buildTabsSectionWithScroll(
-                              context, _tabController, () => setState(() {}))
-                          : _buildSelectTournamentMessage(),
-                      // Future Match
-                      if (_selectedTournament != null)
-                        buildFutureMatch(context),
-                      if (_selectedTournament != null)
-                        buildFutureClubMatch(context),
-                      // News section
-                      if (_selectedTournament != null)
-                        buildNewsSection(context),
-                    ],
+                child: RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        // Tournament selection section
+                        buildTournamentSection(
+                            context, _selectedTournament, _onTournamentSelected),
+                        // Main tournament card
+                        if (_selectedTournament != null)
+                          buildMainTournamentCard(context, _selectedTournament),
+                        // Tabs and content
+                        _selectedTournament != null
+                            ? buildTabsSectionWithScroll(
+                                context, _tabController, () => setState(() {}))
+                            : _buildSelectTournamentMessage(),
+                        // Future Match
+                        if (_selectedTournament != null)
+                          buildFutureMatch(context),
+                        if (_selectedTournament != null)
+                          buildFutureClubMatch(context),
+                        // News section
+                        if (_selectedTournament != null)
+                          buildNewsSection(context),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -120,6 +120,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   void _submitForm(BuildContext context) {
     if (!_isCodeComplete) {
+      FocusScope.of(context).unfocus();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           elevation: 0,
@@ -335,6 +336,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             if (state is SendResetCodeSuccess) {
               // Resend code success
               if (state.result.result == true) {
+                FocusScope.of(context).unfocus();
                 setState(() {
                   _currentResetResult = state.result;
                   _isTimerExpired = false;
@@ -352,6 +354,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   ),
                 );
               } else {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -369,6 +372,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             } else if (state is VerifyResetCodeSuccess) {
               // Password reset success
               if (state.result.result == true) {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -387,6 +391,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   context.go(AppRouteConstants.SignInPagePath);
                 });
               } else {
+                FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     elevation: 0,
@@ -402,6 +407,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 );
               }
             } else if (state is ResetPasswordFailure) {
+              FocusScope.of(context).unfocus();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   elevation: 0,
@@ -577,6 +583,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                         vertical: 4.h,
                                       ),
                                       onDone: () {
+                                        FocusScope.of(context).unfocus();
                                         setState(() {
                                           _isTimerExpired = true;
                                         });

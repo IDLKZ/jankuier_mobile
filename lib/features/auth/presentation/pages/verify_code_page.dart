@@ -167,6 +167,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is SendVerifyCodeSuccess) {
                   if (state.result.result == true) {
+                    FocusScope.of(context).unfocus();
                     setState(() {
                       _currentVerificationResult = state.result;
                       _isTimerExpired = false;
@@ -185,6 +186,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                       ),
                     );
                   } else {
+                    FocusScope.of(context).unfocus();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         elevation: 0,
@@ -200,6 +202,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                     );
                   }
                 } else if (state is SendVerifyCodeFailure) {
+                  FocusScope.of(context).unfocus();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       elevation: 0,
@@ -219,6 +222,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
               listener: (context, state) {
                 if (state is VerifyCodeSuccess) {
                   if (state.result.result == true) {
+                    FocusScope.of(context).unfocus();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         elevation: 0,
@@ -236,6 +240,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                       context.go(AppRouteConstants.SignInPagePath);
                     });
                   } else {
+                    FocusScope.of(context).unfocus();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         elevation: 0,
@@ -251,6 +256,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                     );
                   }
                 } else if (state is VerifyCodeFailure) {
+                  FocusScope.of(context).unfocus();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       elevation: 0,
