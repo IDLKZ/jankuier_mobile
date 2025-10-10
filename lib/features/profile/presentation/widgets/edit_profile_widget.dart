@@ -36,15 +36,11 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F7F9),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
                 MainTitleWidget(
                     title: AppLocalizations.of(context)!.editProfile),
                 const SizedBox(height: 20),
@@ -229,10 +225,7 @@ class EditProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }

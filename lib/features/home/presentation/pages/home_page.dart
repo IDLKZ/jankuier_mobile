@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/home/presentation/widgets/_build_future_club_match_widget.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/ticketon_api_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/content_refresh_service.dart';
 import '../../../../core/services/main_selection_service.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_bloc.dart';
 import '../../../kff/presentation/bloc/get_future_matches/get_future_matches_event.dart';
@@ -14,6 +17,9 @@ import '../../../kff_league/presentation/bloc/matches/matches_event.dart';
 import '../../../standings/domain/parameters/match_parameter.dart';
 import '../../../standings/presentation/bloc/standing_bloc.dart';
 import '../../../standings/presentation/bloc/standing_event.dart';
+import '../../../ticket/domain/parameters/ticketon_get_shows_parameter.dart';
+import '../../../ticket/presentation/bloc/shows/ticketon_bloc.dart';
+import '../../../ticket/presentation/bloc/shows/ticketon_event.dart';
 import '../../../tournament/data/entities/tournament_entity.dart';
 import '../../../tournament/domain/parameters/get_tournament_parameter.dart';
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_bloc.dart';
@@ -50,11 +56,14 @@ class _HomePageState extends State<HomePage>
   late GetNewsBloc _newsBloc;
   late GetFutureMatchesBloc _futureMatchesBloc;
   late MatchesBloc _futureClubMatches;
+  late TicketonShowsBloc _ticketonShowsBloc;
   late TabController _tabController;
   final GetTournamentParameter _params = const GetTournamentParameter();
   final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   bool _hasMainCountry = false;
   TournamentEntity? _selectedTournament;
+  StreamSubscription? _languageSubscription;
+  ContentRefreshService? _contentRefreshService;
 
   @override
   void initState() {
@@ -66,11 +75,37 @@ class _HomePageState extends State<HomePage>
       ..add(GetFutureMatchesRequestEvent(1));
     _newsBloc = getIt<GetNewsBloc>();
     _futureClubMatches = getIt<MatchesBloc>();
+    _ticketonShowsBloc = getIt<TicketonShowsBloc>();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
     _checkMainCountry();
     _loadClubMatches();
     _loadNews();
+    _loadTickets();
+    _initLanguageRefresh();
+  }
+
+  void _initLanguageRefresh() async {
+    try {
+      await Future.delayed(const Duration(milliseconds: 100));
+      _contentRefreshService = await getIt.getAsync<ContentRefreshService>();
+      _languageSubscription = _contentRefreshService!.onLanguageChanged.listen(
+        (newLanguage) {
+          if (mounted) {
+            _loadTickets();
+          }
+        },
+      );
+    } catch (e) {
+      print('HomePage: ContentRefreshService not available: $e');
+    }
+  }
+
+  void _loadTickets() {
+    final parameter = TicketonGetShowsParameter.withCurrentLocale(
+      place: TicketonApiConstant.PlaceId,
+    );
+    _ticketonShowsBloc.add(LoadTicketonShowsEvent(parameter: parameter));
   }
 
   Future<void> _checkMainCountry() async {
@@ -156,6 +191,7 @@ class _HomePageState extends State<HomePage>
     _loadTournaments();
     _loadNews();
     _loadClubMatches();
+    _loadTickets();
     _futureMatchesBloc.add(GetFutureMatchesRequestEvent(1));
     if (_selectedTournament != null) {
       _loadTabData();
@@ -164,12 +200,14 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
+    _languageSubscription?.cancel();
     _tabController.dispose();
     _tournamentBloc.close();
     _standingBloc.close();
     _newsBloc.close();
     _futureMatchesBloc.close();
     _futureClubMatches.close();
+    _ticketonShowsBloc.close();
     super.dispose();
   }
 
@@ -182,6 +220,7 @@ class _HomePageState extends State<HomePage>
         BlocProvider.value(value: _newsBloc),
         BlocProvider.value(value: _futureMatchesBloc),
         BlocProvider.value(value: _futureClubMatches),
+        BlocProvider.value(value: _ticketonShowsBloc),
       ],
       child: BlocListener<GetTournamentBloc, GetTournamentStateState>(
         listener: (context, state) {

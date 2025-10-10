@@ -85,7 +85,7 @@ class ApiConstant {
   //Auth Me, Login, Register
   static const String GetMeUrl = "${BaseURL}auth/me";
   static const String RegisterUrl = "${BaseURL}auth/register";
-  static const String LoginUrl = "${BaseURL}auth/login";
+  static const String LoginUrl = "${BaseURL}auth/login-client";
   static const String RefreshTokenUrl = "${BaseURL}auth/refresh-token";
 
   //User Update Profile, Password, Avatar
@@ -95,7 +95,7 @@ class ApiConstant {
   static const String UpdatePasswordUrl = "${BaseURL}auth/update-password";
   static const String UpdateProfilePhoto =
       "${BaseURL}auth/update-profile-photo";
-  static const String DeleteAccountUrl = "${BaseURL}auth/delete-account";
+  static const String DeleteAccountUrl = "${BaseURL}auth/deactivate-my-account";
 
   // Verify
   static const String SendVerificationCodeUrl =

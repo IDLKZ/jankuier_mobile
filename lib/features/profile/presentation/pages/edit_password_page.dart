@@ -182,7 +182,9 @@ class _EditPasswordViewState extends State<_EditPasswordView> {
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.security,
         actionIcon: Icons.notifications_none,
-        onActionTap: () {},
+        onActionTap: () {
+          context.go(AppRouteConstants.MyNotificationsPagePath);
+        },
         leadingIcon: Icons.arrow_back_ios,
       ),
       body: BlocListener<UpdatePasswordBloc, UpdatePasswordState>(

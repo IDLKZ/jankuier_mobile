@@ -315,22 +315,38 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           BlocListener<DeleteAccountBloc, DeleteAccountState>(
             bloc: _deleteAccountBloc,
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is DeleteAccountSuccess) {
-                // Clear all user data from Hive
-                final hiveUtils = getIt<HiveUtils>();
-                hiveUtils.clearAccessToken();
-                hiveUtils.clearCurrentUser();
+                try {
+                  // Delete FCM token before account deletion
+                  await FirebaseNotificationService.instance.deleteToken();
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.accountDeleted),
-                    backgroundColor: Colors.green,
-                  ),
-                );
+                  // Clear all user data from Hive (access token, refresh token, currentUser)
+                  final hiveUtils = getIt<HiveUtils>();
+                  await hiveUtils.clearAllUserData();
 
-                // Navigate to SignIn page
-                context.go(AppRouteConstants.SignInPagePath);
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.accountDeleted),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+
+                    // Navigate to SignIn page
+                    context.go(AppRouteConstants.SignInPagePath);
+                  }
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            '${AppLocalizations.of(context)!.errorOnLogout}: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
               } else if (state is DeleteAccountFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -343,54 +359,56 @@ class _ProfilePageState extends State<ProfilePage> {
             },
           ),
         ],
-        child: BlocBuilder<GetMeBloc, GetMeState>(
-          bloc: _getMeBloc,
-          builder: (context, state) {
-            if (state is GetMeLoaded) {
-              return RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top,
-                    child: EditProfilePage(
-                      userName: "${state.user.firstName} ${state.user.lastName}",
-                      userImage: state.user.image,
-                      onAvatarTap: () {
-                        _showPhotoOptions(context, state.user.imageId != null);
-                      },
-                      onPersonalDataTap: () {
-                        context.push(AppRouteConstants.EditAccountPagePath);
-                      },
-                      onSecurityTap: () {
-                        context.push(AppRouteConstants.EditPasswordPagePath);
-                      },
-                      onResetPinCodeTap: () {
-                        context.push(AppRouteConstants.ReloadPINCodePagePath);
-                      },
-                      onMyOrdersTap: () {
-                        context.push(AppRouteConstants.MyProductOrdersPagePath);
-                      },
-                      onMyBookingsTap: () {
-                        context
-                            .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
-                      },
-                      onCartTap: () {
-                        context.push(AppRouteConstants.MyCartPagePath);
-                      },
-                      onLogout: _onLogout,
-                      onDeleteAccount: _showDeleteAccountConfirmation,
+        child: Container(
+          color: const Color(0xFFF6F7F9),
+          child: BlocBuilder<GetMeBloc, GetMeState>(
+            bloc: _getMeBloc,
+            builder: (context, state) {
+              if (state is GetMeLoaded) {
+                return RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SafeArea(
+                      child: EditProfilePage(
+                        userName: "${state.user.firstName} ${state.user.lastName}",
+                        userImage: state.user.image,
+                        onAvatarTap: () {
+                          _showPhotoOptions(context, state.user.imageId != null);
+                        },
+                        onPersonalDataTap: () {
+                          context.push(AppRouteConstants.EditAccountPagePath);
+                        },
+                        onSecurityTap: () {
+                          context.push(AppRouteConstants.EditPasswordPagePath);
+                        },
+                        onResetPinCodeTap: () {
+                          context.push(AppRouteConstants.ReloadPINCodePagePath);
+                        },
+                        onMyOrdersTap: () {
+                          context.push(AppRouteConstants.MyProductOrdersPagePath);
+                        },
+                        onMyBookingsTap: () {
+                          context
+                              .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+                        },
+                        onCartTap: () {
+                          context.push(AppRouteConstants.MyCartPagePath);
+                        },
+                        onLogout: _onLogout,
+                        onDeleteAccount: _showDeleteAccountConfirmation,
+                      ),
                     ),
                   ),
+                );
+              }
+              return const SizedBox.expand(
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
               );
-            }
-            return const SizedBox.expand(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          },
+            },
+          ),
         ),
       ),
     );

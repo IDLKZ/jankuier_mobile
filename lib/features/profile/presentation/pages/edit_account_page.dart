@@ -426,7 +426,9 @@ class _EditAccountViewState extends State<_EditAccountView> {
       appBar: PagesCommonAppBar(
         title: AppLocalizations.of(context)!.data,
         actionIcon: Icons.notifications_none,
-        onActionTap: () {},
+        onActionTap: () {
+          context.go(AppRouteConstants.MyNotificationsPagePath);
+        },
         leadingIcon: Icons.arrow_back_ios,
       ),
       body: MultiBlocListener(

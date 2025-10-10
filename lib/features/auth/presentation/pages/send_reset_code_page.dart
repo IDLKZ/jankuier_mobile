@@ -80,6 +80,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -185,12 +186,15 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                     gradient: AppColors.primaryGradient,
                   ),
                 ),
-                Transform.scale(
-                  scale: 1.2,
-                  child: Image.asset(
-                    "assets/images/circle_vector.png",
-                    fit: BoxFit.contain,
-                    colorBlendMode: BlendMode.darken,
+                Positioned.fill(
+                  child: Transform.scale(
+                    scale: 1.4,
+                    child: Image.asset(
+                      "assets/images/circle_vector.png",
+                      fit: BoxFit.contain,
+                      color: Colors.black.withValues(alpha: 0.2),
+                      colorBlendMode: BlendMode.multiply,
+                    ),
                   ),
                 ),
                 SizedBox.expand(
