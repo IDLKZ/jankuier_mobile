@@ -118,6 +118,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -280,12 +281,15 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                           gradient: AppColors.primaryGradient,
                         ),
                       ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Image.asset(
-                          "assets/images/circle_vector.png",
-                          fit: BoxFit.contain,
-                          colorBlendMode: BlendMode.darken,
+                      Positioned.fill(
+                        child: Transform.scale(
+                          scale: 1.4,
+                          child: Image.asset(
+                            "assets/images/circle_vector.png",
+                            fit: BoxFit.contain,
+                            color: Colors.black.withValues(alpha: 0.2),
+                            colorBlendMode: BlendMode.multiply,
+                          ),
                         ),
                       ),
                       SizedBox.expand(
@@ -394,16 +398,6 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                             size: 24.sp,
                                           ),
                                           SizedBox(width: 12.w),
-                                          Text(
-                                            'Код действителен:',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.white.withOpacity(0.9),
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          SizedBox(width: 12.w),
                                           SlideCountdown(
                                             key: ValueKey(
                                                 _currentVerificationResult!
@@ -484,7 +478,8 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                           SizedBox(width: 12.w),
                                           Expanded(
                                             child: Text(
-                                              'Время действия кода истекло',
+                                              AppLocalizations.of(context)!
+                                                  .codeExpiredRequestNew,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 13.sp,
@@ -657,7 +652,7 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 16.w),
                                         child: Text(
-                                          'или',
+                                          AppLocalizations.of(context)!.or,
                                           style: TextStyle(
                                             color:
                                                 Colors.white.withOpacity(0.6),

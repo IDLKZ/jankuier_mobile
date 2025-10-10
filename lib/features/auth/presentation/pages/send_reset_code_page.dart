@@ -227,7 +227,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
 
                             // Title
                             Text(
-                              'Сброс пароля',
+                              AppLocalizations.of(context)!.passwordResetTitle,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -240,7 +240,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
 
                             // Subtitle
                             Text(
-                              'Введите номер телефона для получения кода',
+                              AppLocalizations.of(context)!.enterPhoneToGetCode,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),
@@ -385,7 +385,8 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                                               ),
                                               SizedBox(width: 8.w),
                                               Text(
-                                                'Отправить код',
+                                                AppLocalizations.of(context)!
+                                                    .sendCode,
                                                 style: TextStyle(
                                                   color:
                                                       const Color(0xFF0148C9),
@@ -423,7 +424,8 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                                   SizedBox(width: 12.w),
                                   Expanded(
                                     child: Text(
-                                      'SMS-код придет в течение 1-2 минут',
+                                      AppLocalizations.of(context)!
+                                          .smsCodeWillArriveIn,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.9),
                                         fontSize: 13.sp,
@@ -488,7 +490,7 @@ class _SendResetCodePageState extends State<SendResetCodePage> {
                                   ),
                                   SizedBox(width: 8.w),
                                   Text(
-                                    'Вернуться к входу',
+                                    AppLocalizations.of(context)!.backToSignIn,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.9),
                                       fontSize: 14.sp,

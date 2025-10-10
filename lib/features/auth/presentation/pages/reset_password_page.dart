@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,7 +90,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       return AppLocalizations.of(context)!.passwordMinSixChars;
     }
     if (!regex.hasMatch(value)) {
-      return "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол";
+      return AppLocalizations.of(context)!.passwordRequirements;
     }
     return null;
   }
@@ -106,7 +107,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   bool _validateForm() {
     final passwordError = _validatePassword(_passwordC.text);
-    final confirmPasswordError = _validateConfirmPassword(_confirmPasswordC.text);
+    final confirmPasswordError =
+        _validateConfirmPassword(_confirmPasswordC.text);
 
     setState(() {
       _passwordError = passwordError;
@@ -125,7 +127,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           backgroundColor: Colors.transparent,
           content: AwesomeSnackbarContent(
             title: AppLocalizations.of(context)!.error,
-            message: 'Введите код из SMS',
+            message: AppLocalizations.of(context)!.enterCodeFromSms,
             contentType: ContentType.failure,
           ),
         ),
@@ -344,7 +346,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     backgroundColor: Colors.transparent,
                     content: AwesomeSnackbarContent(
                       title: AppLocalizations.of(context)!.success,
-                      message: 'Код отправлен повторно',
+                      message: AppLocalizations.of(context)!.codeResentAgain,
                       contentType: ContentType.success,
                     ),
                   ),
@@ -374,7 +376,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     backgroundColor: Colors.transparent,
                     content: AwesomeSnackbarContent(
                       title: AppLocalizations.of(context)!.success,
-                      message: state.result.message ?? 'Пароль успешно изменен',
+                      message: state.result.message ??
+                          AppLocalizations.of(context)!
+                              .passwordSuccessfullyChanged,
                       contentType: ContentType.success,
                     ),
                   ),
@@ -391,7 +395,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     content: AwesomeSnackbarContent(
                       title: AppLocalizations.of(context)!.error,
                       message: state.result.message ??
-                          'Неверный код или ошибка сброса пароля',
+                          AppLocalizations.of(context)!.wrongCodeOrResetError,
                       contentType: ContentType.failure,
                     ),
                   ),
@@ -467,7 +471,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
                             // Title
                             Text(
-                              'Новый пароль',
+                              AppLocalizations.of(context)!.newPasswordTitle,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 28.sp,
@@ -480,7 +484,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
                             // Subtitle
                             Text(
-                              'Введите код из SMS и новый пароль',
+                              AppLocalizations.of(context)!
+                                  .enterSmsCodeAndNewPassword,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),
                                 fontSize: 14.sp,
@@ -548,15 +553,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                       size: 24.sp,
                                     ),
                                     SizedBox(width: 12.w),
-                                    Text(
-                                      'Код действителен:',
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.9),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(width: 12.w),
                                     SlideCountdown(
                                       key: ValueKey(
                                           _currentResetResult!.hashCode),
@@ -591,11 +587,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                             behavior: SnackBarBehavior.floating,
                                             backgroundColor: Colors.transparent,
                                             content: AwesomeSnackbarContent(
-                                              title: AppLocalizations.of(
-                                                      context)!
-                                                  .error,
+                                              title:
+                                                  AppLocalizations.of(context)!
+                                                      .error,
                                               message:
-                                                  'Время действия кода истекло. Запросите новый код.',
+                                                  AppLocalizations.of(context)!
+                                                      .codeExpiredRequestNew,
                                               contentType: ContentType.warning,
                                             ),
                                           ),
@@ -628,7 +625,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                     SizedBox(width: 12.w),
                                     Expanded(
                                       child: Text(
-                                        'Время действия кода истекло',
+                                        AppLocalizations.of(context)!
+                                            .codeExpired,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 13.sp,
@@ -646,7 +644,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             if (!_isTimerExpired) ...[
                               _buildGlassField(
                                 controller: _passwordC,
-                                hintText: AppLocalizations.of(context)!.password,
+                                hintText:
+                                    AppLocalizations.of(context)!.password,
                                 icon: Icons.lock_outline_rounded,
                                 errorText: _passwordError,
                                 obscureText: _obscurePassword,
@@ -661,8 +660,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               SizedBox(height: 20.h),
                               _buildGlassField(
                                 controller: _confirmPasswordC,
-                                hintText:
-                                    AppLocalizations.of(context)!.repeatPassword,
+                                hintText: AppLocalizations.of(context)!
+                                    .repeatPassword,
                                 icon: Icons.lock_outline_rounded,
                                 errorText: _confirmPasswordError,
                                 obscureText: _obscureConfirmPassword,
@@ -710,7 +709,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   color: Colors.transparent,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.r),
-                                    onTap: isLoading ? null : () => _submitForm(context),
+                                    onTap: isLoading
+                                        ? null
+                                        : () => _submitForm(context),
                                     child: Center(
                                       child: isLoading
                                           ? SizedBox(
@@ -733,7 +734,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 Text(
-                                                  'Сбросить пароль',
+                                                  AppLocalizations.of(context)!
+                                                      .resetPasswordButton,
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF0148C9),
@@ -786,7 +788,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                           ),
                                           SizedBox(width: 8.w),
                                           Text(
-                                            'Отправить код повторно',
+                                            AppLocalizations.of(context)!
+                                                .resendCodeAgain,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16.sp,
@@ -816,7 +819,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 16.w),
                                   child: Text(
-                                    'или',
+                                    AppLocalizations.of(context)!.or,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.6),
                                       fontSize: 14.sp,
@@ -856,7 +859,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   ),
                                   SizedBox(width: 8.w),
                                   Text(
-                                    'Вернуться к входу',
+                                    AppLocalizations.of(context)!.backToSignIn,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.9),
                                       fontSize: 14.sp,

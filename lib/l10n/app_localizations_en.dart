@@ -1481,79 +1481,79 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publicMobileTitle => 'Mobile application public offer agreement';
 
   @override
-  String get weWillSendSmsCode => 'Мы отправим SMS-код для подтверждения';
+  String get weWillSendSmsCode => 'We will send an SMS code for verification';
 
   @override
-  String get smsCodeWillArriveIn => 'SMS-код придет в течение 1-2 минут';
+  String get smsCodeWillArriveIn => 'SMS code will arrive within 1-2 minutes';
 
   @override
-  String get or => 'или';
+  String get or => 'or';
 
   @override
-  String get enterCodeFromSms => 'Введите код из SMS';
+  String get enterCodeFromSms => 'Enter code from SMS';
 
   @override
-  String get codeResentAgain => 'Код отправлен повторно';
+  String get codeResentAgain => 'Code resent';
 
   @override
-  String get passwordSuccessfullyChanged => 'Пароль успешно изменен';
+  String get passwordSuccessfullyChanged => 'Password successfully changed';
 
   @override
-  String get wrongCodeOrResetError => 'Неверный код или ошибка сброса пароля';
+  String get wrongCodeOrResetError => 'Wrong code or password reset error';
 
   @override
-  String get newPasswordTitle => 'Новый пароль';
+  String get newPasswordTitle => 'New Password';
 
   @override
-  String get enterSmsCodeAndNewPassword => 'Введите код из SMS и новый пароль';
+  String get enterSmsCodeAndNewPassword =>
+      'Enter code from SMS and new password';
 
   @override
-  String get codeValidFor => 'Код действителен:';
+  String get codeValidFor => 'Code valid for:';
 
   @override
-  String get codeExpiredRequestNew =>
-      'Время действия кода истекло. Запросите новый код.';
+  String get codeExpiredRequestNew => 'Code expired. Request a new code.';
 
   @override
-  String get codeExpired => 'Время действия кода истекло';
+  String get codeExpired => 'Code expired';
 
   @override
-  String get resetPasswordButton => 'Сбросить пароль';
+  String get resetPasswordButton => 'Reset Password';
 
   @override
-  String get resendCodeAgain => 'Отправить код повторно';
+  String get resendCodeAgain => 'Resend code';
 
   @override
-  String get backToSignIn => 'Вернуться к входу';
+  String get backToSignIn => 'Back to sign in';
 
   @override
-  String get resetCodeSent => 'Код для сброса пароля отправлен';
+  String get resetCodeSent => 'Password reset code sent';
 
   @override
-  String get passwordResetTitle => 'Сброс пароля';
+  String get passwordResetTitle => 'Password Reset';
 
   @override
-  String get enterPhoneToGetCode => 'Введите номер телефона для получения кода';
+  String get enterPhoneToGetCode => 'Enter phone number to get code';
 
   @override
-  String get sendCode => 'Отправить код';
+  String get sendCode => 'Send code';
 
   @override
-  String get enterValidPhoneNumber => 'Введите корректный номер телефона';
+  String get enterValidPhoneNumber => 'Enter a valid phone number';
 
   @override
-  String get enterValidEmail => 'Введите корректный email';
+  String get enterValidEmail => 'Enter a valid email';
 
   @override
-  String get enterEmailPhoneOrLogin => 'Введите email, телефон или логин';
+  String get enterEmailPhoneOrLogin => 'Enter email, phone or login';
 
   @override
-  String get emailPhoneOrLogin => 'Email, телефон или логин';
+  String get emailPhoneOrLogin => 'Email, phone or login';
 
   @override
-  String get createNewAccount => 'Создайте новый аккаунт';
+  String get createNewAccount => 'Create a new account';
 
   @override
   String get passwordRequirements =>
-      'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол';
+      'Password must contain at least 1 uppercase, 1 lowercase letter, 1 digit and 1 special character';
 }

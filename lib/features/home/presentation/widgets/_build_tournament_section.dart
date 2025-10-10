@@ -43,7 +43,7 @@ Widget _buildTournamentCarousel(TournamentEntity? selectedTournament,
         return _buildLoadingCarousel();
       } else if (state is GetTournamentStateSuccessState) {
         // Filter only football tournaments with seasons (like in tournament_selection_grid.dart)
-        const excludedSeasonIds = [71, 92, 24, 108, 17];
+        const excludedSeasonIds = [71, 92, 24, 108, 17, 155];
         final tournaments = state.tournaments.results
             .where((tournament) =>
                 tournament.sport == SotaApiConstant.FootballID &&

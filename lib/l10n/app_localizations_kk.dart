@@ -1483,79 +1483,80 @@ class AppLocalizationsKk extends AppLocalizations {
       'Мобильді қосымшаның ашық ұсынысы туралы келісім';
 
   @override
-  String get weWillSendSmsCode => 'Мы отправим SMS-код для подтверждения';
+  String get weWillSendSmsCode => 'Растау үшін SMS кодын жібереміз';
 
   @override
-  String get smsCodeWillArriveIn => 'SMS-код придет в течение 1-2 минут';
+  String get smsCodeWillArriveIn => 'SMS код 1-2 минут ішінде келеді';
 
   @override
-  String get or => 'или';
+  String get or => 'немесе';
 
   @override
-  String get enterCodeFromSms => 'Введите код из SMS';
+  String get enterCodeFromSms => 'SMS-тен кодты енгізіңіз';
 
   @override
-  String get codeResentAgain => 'Код отправлен повторно';
+  String get codeResentAgain => 'Код қайта жіберілді';
 
   @override
-  String get passwordSuccessfullyChanged => 'Пароль успешно изменен';
+  String get passwordSuccessfullyChanged => 'Құпия сөз сәтті өзгертілді';
 
   @override
-  String get wrongCodeOrResetError => 'Неверный код или ошибка сброса пароля';
+  String get wrongCodeOrResetError =>
+      'Қате код немесе құпия сөзді қалпына келтіру қатесі';
 
   @override
-  String get newPasswordTitle => 'Новый пароль';
+  String get newPasswordTitle => 'Жаңа құпия сөз';
 
   @override
-  String get enterSmsCodeAndNewPassword => 'Введите код из SMS и новый пароль';
+  String get enterSmsCodeAndNewPassword =>
+      'SMS-тен кодты және жаңа құпия сөзді енгізіңіз';
 
   @override
-  String get codeValidFor => 'Код действителен:';
+  String get codeValidFor => 'Кодтың жарамдылық мерзімі:';
 
   @override
-  String get codeExpiredRequestNew =>
-      'Время действия кода истекло. Запросите новый код.';
+  String get codeExpiredRequestNew => 'Код мерзімі өтті. Жаңа код сұраңыз.';
 
   @override
-  String get codeExpired => 'Время действия кода истекло';
+  String get codeExpired => 'Код мерзімі өтті';
 
   @override
-  String get resetPasswordButton => 'Сбросить пароль';
+  String get resetPasswordButton => 'Құпия сөзді қалпына келтіру';
 
   @override
-  String get resendCodeAgain => 'Отправить код повторно';
+  String get resendCodeAgain => 'Кодты қайта жіберу';
 
   @override
-  String get backToSignIn => 'Вернуться к входу';
+  String get backToSignIn => 'Кіруге қайту';
 
   @override
-  String get resetCodeSent => 'Код для сброса пароля отправлен';
+  String get resetCodeSent => 'Құпия сөзді қалпына келтіру коды жіберілді';
 
   @override
-  String get passwordResetTitle => 'Сброс пароля';
+  String get passwordResetTitle => 'Құпия сөзді қалпына келтіру';
 
   @override
-  String get enterPhoneToGetCode => 'Введите номер телефона для получения кода';
+  String get enterPhoneToGetCode => 'Код алу үшін телефон нөмірін енгізіңіз';
 
   @override
-  String get sendCode => 'Отправить код';
+  String get sendCode => 'Код жіберу';
 
   @override
-  String get enterValidPhoneNumber => 'Введите корректный номер телефона';
+  String get enterValidPhoneNumber => 'Жарамды телефон нөмірін енгізіңіз';
 
   @override
-  String get enterValidEmail => 'Введите корректный email';
+  String get enterValidEmail => 'Жарамды email енгізіңіз';
 
   @override
-  String get enterEmailPhoneOrLogin => 'Введите email, телефон или логин';
+  String get enterEmailPhoneOrLogin => 'Email, телефон немесе логин енгізіңіз';
 
   @override
-  String get emailPhoneOrLogin => 'Email, телефон или логин';
+  String get emailPhoneOrLogin => 'Email, телефон немесе логин';
 
   @override
-  String get createNewAccount => 'Создайте новый аккаунт';
+  String get createNewAccount => 'Жаңа тіркелгі жасаңыз';
 
   @override
   String get passwordRequirements =>
-      'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол';
+      'Құпия сөз кемінде 1 бас әріпті, 1 кіші әріпті, 1 санды және 1 арнайы таңбаны қамтуы керек';
 }

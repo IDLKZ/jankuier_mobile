@@ -98,12 +98,12 @@ class _SignInPageState extends State<SignInPage> {
         // Remove mask characters for validation
         final digitsOnly = trimmed.replaceAll(RegExp(r'[^\d]'), '');
         if (!RegExp(FormValidationConstant.PhoneRegExp).hasMatch(digitsOnly)) {
-          return 'Введите корректный номер телефона';
+          return AppLocalizations.of(context)!.enterValidPhoneNumber;
         }
         break;
       case InputType.email:
         if (!RegExp(FormValidationConstant.EmailRegExp).hasMatch(trimmed)) {
-          return 'Введите корректный email';
+          return AppLocalizations.of(context)!.enterValidEmail;
         }
         break;
       case InputType.username:
@@ -112,7 +112,7 @@ class _SignInPageState extends State<SignInPage> {
         }
         break;
       case InputType.unknown:
-        return 'Введите email, телефон или логин';
+        return AppLocalizations.of(context)!.enterEmailPhoneOrLogin;
     }
 
     return null;
@@ -166,6 +166,7 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -253,12 +254,15 @@ class _SignInPageState extends State<SignInPage> {
                 gradient: AppColors.primaryGradient,
               ),
             ),
-            Transform.scale(
-              scale: 1.2,
-              child: Image.asset(
-                "assets/images/circle_vector.png", fit: BoxFit.contain,
-                // затемнение (опционально)
-                colorBlendMode: BlendMode.darken,
+            Positioned.fill(
+              child: Transform.scale(
+                scale: 1.4,
+                child: Image.asset(
+                  "assets/images/circle_vector.png",
+                  fit: BoxFit.contain,
+                  color: Colors.black.withValues(alpha: 0.2),
+                  colorBlendMode: BlendMode.multiply,
+                ),
               ),
             ),
             SizedBox.expand(
@@ -362,7 +366,9 @@ class _SignInPageState extends State<SignInPage> {
                                                 Colors.white.withOpacity(0.8),
                                             size: 24.sp,
                                           ),
-                                          hintText: 'Email, телефон или логин',
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .emailPhoneOrLogin,
                                           hintStyle: TextStyle(
                                             color:
                                                 Colors.white.withOpacity(0.5),
@@ -604,7 +610,7 @@ class _SignInPageState extends State<SignInPage> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 16.w),
                                       child: Text(
-                                        "или",
+                                        AppLocalizations.of(context)!.or,
                                         style: TextStyle(
                                           color: Colors.white.withOpacity(0.6),
                                           fontSize: 14.sp,

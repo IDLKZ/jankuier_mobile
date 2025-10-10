@@ -121,7 +121,7 @@ class _SignUpViewState extends State<_SignUpView> {
       return AppLocalizations.of(context)!.passwordMinSixChars;
     }
     if (!regex.hasMatch(value)) {
-      return "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол";
+      return AppLocalizations.of(context)!.passwordRequirements;
     }
     return null;
   }
@@ -429,6 +429,7 @@ class _SignUpViewState extends State<_SignUpView> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -519,12 +520,15 @@ class _SignUpViewState extends State<_SignUpView> {
                 gradient: AppColors.primaryGradient,
               ),
             ),
-            Transform.scale(
-              scale: 1.2,
-              child: Image.asset(
-                "assets/images/circle_vector.png",
-                fit: BoxFit.contain,
-                colorBlendMode: BlendMode.darken,
+            Positioned.fill(
+              child: Transform.scale(
+                scale: 1.4,
+                child: Image.asset(
+                  "assets/images/circle_vector.png",
+                  fit: BoxFit.contain,
+                  color: Colors.black.withValues(alpha: 0.2),
+                  colorBlendMode: BlendMode.multiply,
+                ),
               ),
             ),
             Positioned.fill(
@@ -555,7 +559,7 @@ class _SignUpViewState extends State<_SignUpView> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'Создайте новый аккаунт',
+                        AppLocalizations.of(context)!.createNewAccount,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           fontSize: 14.sp,
@@ -678,7 +682,7 @@ class _SignUpViewState extends State<_SignUpView> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16.w),
                             child: Text(
-                              'или',
+                              AppLocalizations.of(context)!.or,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.6),
                                 fontSize: 14.sp,
