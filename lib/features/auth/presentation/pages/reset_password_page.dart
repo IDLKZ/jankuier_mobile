@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -289,72 +290,126 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () {
-            context.go(AppRouteConstants.SendResetCodePagePath);
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 10.h, left: 10.w),
-            width: 48.w,
-            height: 48.h,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white.withOpacity(0.3),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+    return KeyboardDismisser(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: GestureDetector(
+            onTap: () {
+              context.go(AppRouteConstants.SendResetCodePagePath);
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 10.h, left: 10.w),
+              width: 48.w,
+              height: 48.h,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.3),
+                  width: 1.5,
                 ),
-              ],
-            ),
-            child: Center(
-              child: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 20.sp,
-                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 20.sp,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: BlocProvider<ResetPasswordBloc>(
-        create: (context) => getIt<ResetPasswordBloc>(),
-        child: BlocConsumer<ResetPasswordBloc, ResetPasswordState>(
-          listener: (BuildContext context, ResetPasswordState state) {
-            if (state is SendResetCodeSuccess) {
-              // Resend code success
-              if (state.result.result == true) {
-                FocusScope.of(context).unfocus();
-                setState(() {
-                  _currentResetResult = state.result;
-                  _isTimerExpired = false;
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    elevation: 0,
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    content: AwesomeSnackbarContent(
-                      title: AppLocalizations.of(context)!.success,
-                      message: AppLocalizations.of(context)!.codeResentAgain,
-                      contentType: ContentType.success,
+        body: BlocProvider<ResetPasswordBloc>(
+          create: (context) => getIt<ResetPasswordBloc>(),
+          child: BlocConsumer<ResetPasswordBloc, ResetPasswordState>(
+            listener: (BuildContext context, ResetPasswordState state) {
+              if (state is SendResetCodeSuccess) {
+                // Resend code success
+                if (state.result.result == true) {
+                  FocusScope.of(context).unfocus();
+                  setState(() {
+                    _currentResetResult = state.result;
+                    _isTimerExpired = false;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.success,
+                        message: AppLocalizations.of(context)!.codeResentAgain,
+                        contentType: ContentType.success,
+                      ),
                     ),
-                  ),
-                );
-              } else {
+                  );
+                } else {
+                  FocusScope.of(context).unfocus();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.error,
+                        message: state.result.message ??
+                            AppLocalizations.of(context)!.somethingWentWrong,
+                        contentType: ContentType.failure,
+                      ),
+                    ),
+                  );
+                }
+              } else if (state is VerifyResetCodeSuccess) {
+                // Password reset success
+                if (state.result.result == true) {
+                  FocusScope.of(context).unfocus();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.success,
+                        message: state.result.message ??
+                            AppLocalizations.of(context)!
+                                .passwordSuccessfullyChanged,
+                        contentType: ContentType.success,
+                      ),
+                    ),
+                  );
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    context.go(AppRouteConstants.SignInPagePath);
+                  });
+                } else {
+                  FocusScope.of(context).unfocus();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: AppLocalizations.of(context)!.error,
+                        message: state.result.message ??
+                            AppLocalizations.of(context)!.wrongCodeOrResetError,
+                        contentType: ContentType.failure,
+                      ),
+                    ),
+                  );
+                }
+              } else if (state is ResetPasswordFailure) {
                 FocusScope.of(context).unfocus();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -363,533 +418,504 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     backgroundColor: Colors.transparent,
                     content: AwesomeSnackbarContent(
                       title: AppLocalizations.of(context)!.error,
-                      message: state.result.message ??
-                          AppLocalizations.of(context)!.somethingWentWrong,
+                      message: state.message,
                       contentType: ContentType.failure,
                     ),
                   ),
                 );
               }
-            } else if (state is VerifyResetCodeSuccess) {
-              // Password reset success
-              if (state.result.result == true) {
-                FocusScope.of(context).unfocus();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    elevation: 0,
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    content: AwesomeSnackbarContent(
-                      title: AppLocalizations.of(context)!.success,
-                      message: state.result.message ??
-                          AppLocalizations.of(context)!
-                              .passwordSuccessfullyChanged,
-                      contentType: ContentType.success,
+            },
+            builder: (BuildContext context, ResetPasswordState state) {
+              final isLoading = state is ResetPasswordLoading;
+
+              return Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: AppColors.primaryGradient,
                     ),
                   ),
-                );
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  context.go(AppRouteConstants.SignInPagePath);
-                });
-              } else {
-                FocusScope.of(context).unfocus();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    elevation: 0,
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    content: AwesomeSnackbarContent(
-                      title: AppLocalizations.of(context)!.error,
-                      message: state.result.message ??
-                          AppLocalizations.of(context)!.wrongCodeOrResetError,
-                      contentType: ContentType.failure,
+                  Positioned.fill(
+                    child: Transform.scale(
+                      scale: 1.4,
+                      child: Image.asset(
+                        "assets/images/circle_vector.png",
+                        fit: BoxFit.contain,
+                        color: Colors.black.withValues(alpha: 0.2),
+                        colorBlendMode: BlendMode.multiply,
+                      ),
                     ),
                   ),
-                );
-              }
-            } else if (state is ResetPasswordFailure) {
-              FocusScope.of(context).unfocus();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  elevation: 0,
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  content: AwesomeSnackbarContent(
-                    title: AppLocalizations.of(context)!.error,
-                    message: state.message,
-                    contentType: ContentType.failure,
-                  ),
-                ),
-              );
-            }
-          },
-          builder: (BuildContext context, ResetPasswordState state) {
-            final isLoading = state is ResetPasswordLoading;
-
-            return Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                  ),
-                ),
-                Positioned.fill(
-                  child: Transform.scale(
-                    scale: 1.4,
-                    child: Image.asset(
-                      "assets/images/circle_vector.png",
-                      fit: BoxFit.contain,
-                      color: Colors.black.withValues(alpha: 0.2),
-                      colorBlendMode: BlendMode.multiply,
-                    ),
-                  ),
-                ),
-                SizedBox.expand(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.w),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Lock Icon
-                            Container(
-                              width: 100.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.15),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
-                                  width: 2,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 10),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                Icons.lock_open_outlined,
-                                size: 48.sp,
-                                color: Colors.white,
-                              ),
+                  SizedBox.expand(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25.w),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
-                            SizedBox(height: 32.h),
-
-                            // Title
-                            Text(
-                              AppLocalizations.of(context)!.newPasswordTitle,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 28.sp,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: -0.5,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 12.h),
-
-                            // Subtitle
-                            Text(
-                              AppLocalizations.of(context)!
-                                  .enterSmsCodeAndNewPassword,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              _formatPhoneForDisplay(widget.phone),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 32.h),
-
-                            // PIN Input
-                            Pinput(
-                              controller: _codeController,
-                              length: 4,
-                              defaultPinTheme: defaultPinTheme,
-                              focusedPinTheme: focusedPinTheme,
-                              submittedPinTheme: submittedPinTheme,
-                              onChanged: _onCodeChanged,
-                              pinputAutovalidateMode:
-                                  PinputAutovalidateMode.onSubmit,
-                              showCursor: true,
-                              cursor: Container(
-                                width: 2.5,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 24.h),
-
-                            // Timer Card
-                            if (_currentResetResult != null &&
-                                _currentResetResult!.expiresInSeconds != null &&
-                                !_isTimerExpired)
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w,
-                                  vertical: 16.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  color: Colors.white.withOpacity(0.1),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.2),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.timer_outlined,
-                                      color: Colors.white.withOpacity(0.8),
-                                      size: 24.sp,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Lock Icon
+                                Container(
+                                  width: 100.w,
+                                  height: 100.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.15),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.3),
+                                      width: 2,
                                     ),
-                                    SizedBox(width: 12.w),
-                                    SlideCountdown(
-                                      key: ValueKey(
-                                          _currentResetResult!.hashCode),
-                                      duration: Duration(
-                                        seconds: _currentResetResult!
-                                            .expiresInSeconds!,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 10),
                                       ),
-                                      slideDirection: SlideDirection.down,
-                                      decoration: BoxDecoration(
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.lock_open_outlined,
+                                    size: 48.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(height: 32.h),
+
+                                // Title
+                                Text(
+                                  AppLocalizations.of(context)!
+                                      .newPasswordTitle,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: -0.5,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 12.h),
+
+                                // Subtitle
+                                Text(
+                                  AppLocalizations.of(context)!
+                                      .enterSmsCodeAndNewPassword,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  _formatPhoneForDisplay(widget.phone),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 32.h),
+
+                                // PIN Input
+                                Pinput(
+                                  controller: _codeController,
+                                  length: 4,
+                                  defaultPinTheme: defaultPinTheme,
+                                  focusedPinTheme: focusedPinTheme,
+                                  submittedPinTheme: submittedPinTheme,
+                                  onChanged: _onCodeChanged,
+                                  pinputAutovalidateMode:
+                                      PinputAutovalidateMode.onSubmit,
+                                  showCursor: true,
+                                  cursor: Container(
+                                    width: 2.5,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 24.h),
+
+                                // Timer Card
+                                if (_currentResetResult != null &&
+                                    _currentResetResult!.expiresInSeconds !=
+                                        null &&
+                                    !_isTimerExpired)
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w,
+                                      vertical: 16.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.white.withOpacity(0.1),
+                                      border: Border.all(
                                         color: Colors.white.withOpacity(0.2),
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
+                                        width: 1,
                                       ),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      separator: ":",
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8.w,
-                                        vertical: 4.h,
-                                      ),
-                                      onDone: () {
-                                        FocusScope.of(context).unfocus();
-                                        setState(() {
-                                          _isTimerExpired = true;
-                                        });
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            elevation: 0,
-                                            behavior: SnackBarBehavior.floating,
-                                            backgroundColor: Colors.transparent,
-                                            content: AwesomeSnackbarContent(
-                                              title:
-                                                  AppLocalizations.of(context)!
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.timer_outlined,
+                                          color: Colors.white.withOpacity(0.8),
+                                          size: 24.sp,
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        SlideCountdown(
+                                          key: ValueKey(
+                                              _currentResetResult!.hashCode),
+                                          duration: Duration(
+                                            seconds: _currentResetResult!
+                                                .expiresInSeconds!,
+                                          ),
+                                          slideDirection: SlideDirection.down,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
+                                          ),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          separator: ":",
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w,
+                                            vertical: 4.h,
+                                          ),
+                                          onDone: () {
+                                            FocusScope.of(context).unfocus();
+                                            setState(() {
+                                              _isTimerExpired = true;
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                elevation: 0,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                content: AwesomeSnackbarContent(
+                                                  title: AppLocalizations.of(
+                                                          context)!
                                                       .error,
-                                              message:
-                                                  AppLocalizations.of(context)!
+                                                  message: AppLocalizations.of(
+                                                          context)!
                                                       .codeExpiredRequestNew,
-                                              contentType: ContentType.warning,
+                                                  contentType:
+                                                      ContentType.warning,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                // Expired message
+                                if (_isTimerExpired)
+                                  Container(
+                                    padding: EdgeInsets.all(16.w),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.orange.withOpacity(0.2),
+                                      border: Border.all(
+                                        color: Colors.orange.withOpacity(0.4),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.warning_amber_rounded,
+                                          color: Colors.orange[300],
+                                          size: 24.sp,
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .codeExpired,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                        );
-                                      },
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                            // Expired message
-                            if (_isTimerExpired)
-                              Container(
-                                padding: EdgeInsets.all(16.w),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  color: Colors.orange.withOpacity(0.2),
-                                  border: Border.all(
-                                    color: Colors.orange.withOpacity(0.4),
-                                    width: 1,
                                   ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.warning_amber_rounded,
-                                      color: Colors.orange[300],
-                                      size: 24.sp,
+
+                                SizedBox(height: 32.h),
+
+                                // Password fields (only show if not expired)
+                                if (!_isTimerExpired) ...[
+                                  _buildGlassField(
+                                    controller: _passwordC,
+                                    hintText:
+                                        AppLocalizations.of(context)!.password,
+                                    icon: Icons.lock_outline_rounded,
+                                    errorText: _passwordError,
+                                    obscureText: _obscurePassword,
+                                    hasToggle: true,
+                                    toggleState: _obscurePassword,
+                                    onToggle: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  _buildGlassField(
+                                    controller: _confirmPasswordC,
+                                    hintText: AppLocalizations.of(context)!
+                                        .repeatPassword,
+                                    icon: Icons.lock_outline_rounded,
+                                    errorText: _confirmPasswordError,
+                                    obscureText: _obscureConfirmPassword,
+                                    hasToggle: true,
+                                    toggleState: _obscureConfirmPassword,
+                                    onToggle: () {
+                                      setState(() {
+                                        _obscureConfirmPassword =
+                                            !_obscureConfirmPassword;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 32.h),
+                                ],
+
+                                // Reset Button
+                                if (_isCodeComplete && !_isTimerExpired)
+                                  Container(
+                                    width: double.infinity,
+                                    height: 56.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      gradient: LinearGradient(
+                                        colors: isLoading
+                                            ? [
+                                                Colors.grey[400]!,
+                                                Colors.grey[500]!
+                                              ]
+                                            : [
+                                                const Color(0xFFFFC107),
+                                                const Color(0xFFFFB300),
+                                              ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: isLoading
+                                          ? []
+                                          : [
+                                              BoxShadow(
+                                                color: const Color(0xFFFFC107)
+                                                    .withOpacity(0.4),
+                                                blurRadius: 20,
+                                                offset: const Offset(0, 10),
+                                              ),
+                                            ],
                                     ),
-                                    SizedBox(width: 12.w),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        onTap: isLoading
+                                            ? null
+                                            : () => _submitForm(context),
+                                        child: Center(
+                                          child: isLoading
+                                              ? SizedBox(
+                                                  height: 24.h,
+                                                  width: 24.w,
+                                                  child:
+                                                      const CircularProgressIndicator(
+                                                    color: Color(0xFF0148C9),
+                                                    strokeWidth: 3,
+                                                  ),
+                                                )
+                                              : Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .check_circle_outline,
+                                                      color: const Color(
+                                                          0xFF0148C9),
+                                                      size: 20.sp,
+                                                    ),
+                                                    SizedBox(width: 8.w),
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .resetPasswordButton,
+                                                      style: TextStyle(
+                                                        color: const Color(
+                                                            0xFF0148C9),
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        letterSpacing: 0.5,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                SizedBox(height: 24.h),
+
+                                // Resend Code Button
+                                if (_isTimerExpired)
+                                  Container(
+                                    width: double.infinity,
+                                    height: 56.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                        onTap: isLoading
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<ResetPasswordBloc>()
+                                                    .add(SendResetCodeSubmitted(
+                                                        widget.phone));
+                                              },
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.refresh_rounded,
+                                                color: Colors.white,
+                                                size: 20.sp,
+                                              ),
+                                              SizedBox(width: 8.w),
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .resendCodeAgain,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                  letterSpacing: 0.5,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                SizedBox(height: 32.h),
+
+                                // Divider
+                                Row(
+                                  children: [
                                     Expanded(
+                                      child: Container(
+                                        height: 1,
+                                        color: Colors.white.withOpacity(0.3),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w),
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .codeExpired,
+                                        AppLocalizations.of(context)!.or,
                                         style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13.sp,
+                                          color: Colors.white.withOpacity(0.6),
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                            SizedBox(height: 32.h),
-
-                            // Password fields (only show if not expired)
-                            if (!_isTimerExpired) ...[
-                              _buildGlassField(
-                                controller: _passwordC,
-                                hintText:
-                                    AppLocalizations.of(context)!.password,
-                                icon: Icons.lock_outline_rounded,
-                                errorText: _passwordError,
-                                obscureText: _obscurePassword,
-                                hasToggle: true,
-                                toggleState: _obscurePassword,
-                                onToggle: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                              SizedBox(height: 20.h),
-                              _buildGlassField(
-                                controller: _confirmPasswordC,
-                                hintText: AppLocalizations.of(context)!
-                                    .repeatPassword,
-                                icon: Icons.lock_outline_rounded,
-                                errorText: _confirmPasswordError,
-                                obscureText: _obscureConfirmPassword,
-                                hasToggle: true,
-                                toggleState: _obscureConfirmPassword,
-                                onToggle: () {
-                                  setState(() {
-                                    _obscureConfirmPassword =
-                                        !_obscureConfirmPassword;
-                                  });
-                                },
-                              ),
-                              SizedBox(height: 32.h),
-                            ],
-
-                            // Reset Button
-                            if (_isCodeComplete && !_isTimerExpired)
-                              Container(
-                                width: double.infinity,
-                                height: 56.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  gradient: LinearGradient(
-                                    colors: isLoading
-                                        ? [Colors.grey[400]!, Colors.grey[500]!]
-                                        : [
-                                            const Color(0xFFFFC107),
-                                            const Color(0xFFFFB300),
-                                          ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  boxShadow: isLoading
-                                      ? []
-                                      : [
-                                          BoxShadow(
-                                            color: const Color(0xFFFFC107)
-                                                .withOpacity(0.4),
-                                            blurRadius: 20,
-                                            offset: const Offset(0, 10),
-                                          ),
-                                        ],
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    onTap: isLoading
-                                        ? null
-                                        : () => _submitForm(context),
-                                    child: Center(
-                                      child: isLoading
-                                          ? SizedBox(
-                                              height: 24.h,
-                                              width: 24.w,
-                                              child:
-                                                  const CircularProgressIndicator(
-                                                color: Color(0xFF0148C9),
-                                                strokeWidth: 3,
-                                              ),
-                                            )
-                                          : Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.check_circle_outline,
-                                                  color:
-                                                      const Color(0xFF0148C9),
-                                                  size: 20.sp,
-                                                ),
-                                                SizedBox(width: 8.w),
-                                                Text(
-                                                  AppLocalizations.of(context)!
-                                                      .resetPasswordButton,
-                                                  style: TextStyle(
-                                                    color:
-                                                        const Color(0xFF0148C9),
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.w700,
-                                                    letterSpacing: 0.5,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                            SizedBox(height: 24.h),
-
-                            // Resend Code Button
-                            if (_isTimerExpired)
-                              Container(
-                                width: double.infinity,
-                                height: 56.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    onTap: isLoading
-                                        ? null
-                                        : () {
-                                            context
-                                                .read<ResetPasswordBloc>()
-                                                .add(SendResetCodeSubmitted(
-                                                    widget.phone));
-                                          },
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.refresh_rounded,
-                                            color: Colors.white,
-                                            size: 20.sp,
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .resendCodeAgain,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                        ],
+                                    Expanded(
+                                      child: Container(
+                                        height: 1,
+                                        color: Colors.white.withOpacity(0.3),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
 
-                            SizedBox(height: 32.h),
+                                SizedBox(height: 24.h),
 
-                            // Divider
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.white.withOpacity(0.3),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.or,
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.6),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
+                                // Back to Login
+                                TextButton(
+                                  onPressed: () {
+                                    context
+                                        .go(AppRouteConstants.SignInPagePath);
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 12.h,
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.white.withOpacity(0.3),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.login_rounded,
+                                        color: Colors.white.withOpacity(0.9),
+                                        size: 20.sp,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .backToSignIn,
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.9),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                                SizedBox(height: 20.h),
                               ],
                             ),
-
-                            SizedBox(height: 24.h),
-
-                            // Back to Login
-                            TextButton(
-                              onPressed: () {
-                                context.go(AppRouteConstants.SignInPagePath);
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 12.h,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.login_rounded,
-                                    color: Colors.white.withOpacity(0.9),
-                                    size: 20.sp,
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Text(
-                                    AppLocalizations.of(context)!.backToSignIn,
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.9),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 20.h),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
