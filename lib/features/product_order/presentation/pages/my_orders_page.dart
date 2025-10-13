@@ -186,7 +186,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                           Text(
                             AppLocalizations.of(context)!.loadingError,
                             style: TextStyle(
-                              fontSize: 18.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                               color: colorScheme.onSurface,
                             ),
@@ -240,7 +240,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                             Text(
                               AppLocalizations.of(context)!.noOrdersYet,
                               style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
                                 color: colorScheme.onSurface,
                               ),
@@ -469,7 +469,7 @@ class _OrderCard extends StatelessWidget {
                         child: Text(
                           '${_formatPrice(order.totalPrice)} ₸',
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w800,
                             color: AppColors.primary,
                             letterSpacing: -0.3,
@@ -482,14 +482,14 @@ class _OrderCard extends StatelessWidget {
                 ),
 
                 ...[
-                SizedBox(height: 10.h),
-                _buildInfoChip(
-                  icon: Icons.check_circle_rounded,
-                  label: AppLocalizations.of(context)!.paidOn,
-                  value: dateFormat.format(order.paidAt ?? DateTime.now()),
-                  color: AppColors.primary,
-                ),
-              ],
+                  SizedBox(height: 10.h),
+                  _buildInfoChip(
+                    icon: Icons.check_circle_rounded,
+                    label: AppLocalizations.of(context)!.paidOn,
+                    value: dateFormat.format(order.paidAt ?? DateTime.now()),
+                    color: AppColors.primary,
+                  ),
+                ],
 
                 if (order.paidUntil != null && !order.isPaid) ...[
                   SizedBox(height: 10.h),
@@ -548,7 +548,7 @@ class _OrderCard extends StatelessWidget {
                         SizedBox(width: 6.w),
                         Icon(
                           Icons.arrow_forward_rounded,
-                          size: 16.sp,
+                          size: 14.sp,
                           color: Colors.white,
                         ),
                       ],
