@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -142,24 +143,28 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                    AppLocalizations.of(context)!.bookingCancelledSuccessfully),
-                backgroundColor: AppColors.success,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                content: AwesomeSnackbarContent(
+                  title: AppLocalizations.of(context)!.success,
+                  message: AppLocalizations.of(context)!
+                      .bookingCancelledSuccessfully,
+                  contentType: ContentType.success,
                 ),
+                elevation: 0,
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
               ),
             );
             _loadData(_tabController.index);
           } else if (state is DeleteMyFieldPartyRequestByIdError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.error,
+                elevation: 0,
                 behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                backgroundColor: Colors.transparent,
+                content: AwesomeSnackbarContent(
+                  title: AppLocalizations.of(context)!.error,
+                  message: state.message,
+                  contentType: ContentType.warning,
                 ),
               ),
             );
@@ -195,7 +200,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
 
   Widget _buildTabBar() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12.w),
+      margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
       decoration: BoxDecoration(
         gradient: AppColors.primaryGradient,
         borderRadius: BorderRadius.circular(8.r),
@@ -565,7 +570,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                       children: [
                         CircularProgressIndicator(
                           strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation(Colors.blue.shade600),
+                          valueColor:
+                              AlwaysStoppedAnimation(Colors.blue.shade600),
                         ),
                         SizedBox(height: 16.h),
                         Text(
@@ -653,7 +659,9 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    displayBooking.status?.localizedTitle(context) ?? 'Статус',
+                                    displayBooking.status
+                                            ?.localizedTitle(context) ??
+                                        'Статус',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14.sp,
@@ -678,7 +686,9 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                           child: _buildMainInfoCard(
                             icon: Icons.sports_soccer,
                             title: 'Поле',
-                            value: displayBooking.field?.localizedTitle(context) ?? 'Не указано',
+                            value:
+                                displayBooking.field?.localizedTitle(context) ??
+                                    'Не указано',
                             color: Colors.blue.shade600,
                           ),
                         ),
@@ -687,7 +697,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                           child: _buildMainInfoCard(
                             icon: Icons.payments,
                             title: 'Стоимость',
-                            value: '${displayBooking.totalPrice.toStringAsFixed(0)} ₸',
+                            value:
+                                '${displayBooking.totalPrice.toStringAsFixed(0)} ₸',
                             color: Colors.green.shade600,
                           ),
                         ),
@@ -826,11 +837,13 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 16.h),
-                          if (displayBooking.field?.localizedAddress(context) != null)
+                          if (displayBooking.field?.localizedAddress(context) !=
+                              null)
                             _buildInfoTile(
                               icon: Icons.location_on,
                               title: 'Адрес',
-                              value: displayBooking.field!.localizedAddress(context),
+                              value: displayBooking.field!
+                                  .localizedAddress(context),
                               color: Colors.red.shade400,
                             ),
                           if (displayBooking.phone != null)
@@ -927,7 +940,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                       child: BlocBuilder<DeleteMyFieldPartyRequestByIdBloc,
                           DeleteMyFieldPartyRequestByIdState>(
                         builder: (context, deleteState) {
-                          final isLoading = deleteState is DeleteMyFieldPartyRequestByIdLoading;
+                          final isLoading = deleteState
+                              is DeleteMyFieldPartyRequestByIdLoading;
 
                           return Container(
                             width: double.infinity,
@@ -949,7 +963,10 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                               ],
                             ),
                             child: ElevatedButton(
-                              onPressed: isLoading ? null : () => _showCancelDialog(context, displayBooking.id),
+                              onPressed: isLoading
+                                  ? null
+                                  : () => _showCancelDialog(
+                                      context, displayBooking.id),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
@@ -959,32 +976,34 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                               ),
                               child: isLoading
                                   ? SizedBox(
-                                width: 24.w,
-                                height: 24.h,
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
+                                      width: 24.w,
+                                      height: 24.h,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
                                   : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.cancel_outlined,
-                                    color: Colors.white,
-                                    size: 22.sp,
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  Text(
-                                    AppLocalizations.of(context)!.cancelBooking,
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.cancel_outlined,
+                                          color: Colors.white,
+                                          size: 22.sp,
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .cancelBooking,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
                             ),
                           );
                         },
@@ -1227,8 +1246,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(dialogContext);
                     context.read<DeleteMyFieldPartyRequestByIdBloc>().add(
-                      DeleteMyFieldPartyRequestByIdStarted(id: bookingId),
-                    );
+                          DeleteMyFieldPartyRequestByIdStarted(id: bookingId),
+                        );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.shade600,
@@ -1254,4 +1273,3 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
     );
   }
 }
-

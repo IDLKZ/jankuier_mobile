@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -470,13 +471,15 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
     // Показываем снэкбар с обратной связью
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(_isFavorite
-            ? AppLocalizations.of(context)!.addedToFavorites
-            : AppLocalizations.of(context)!.removedFromFavorites),
-        backgroundColor: _isFavorite ? AppColors.success : AppColors.info,
+        elevation: 0,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: AppLocalizations.of(context)!.success,
+          message: _isFavorite
+              ? AppLocalizations.of(context)!.addedToFavorites
+              : AppLocalizations.of(context)!.removedFromFavorites,
+          contentType: ContentType.success,
         ),
         duration: const Duration(milliseconds: 1500),
       ),
@@ -489,25 +492,19 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
   void _handleAddToCart() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.shopping_cart, color: AppColors.white),
-            SizedBox(width: 8.w),
-            Expanded(
-                child: Text(AppLocalizations.of(context)!.productAddedToCart)),
-          ],
-        ),
-        backgroundColor: AppColors.success,
+        elevation: 0,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: AppLocalizations.of(context)!.success,
+          message: AppLocalizations.of(context)!.productAddedToCart,
+          contentType: ContentType.success,
         ),
-        duration: const Duration(seconds: 2),
         action: SnackBarAction(
           label: AppLocalizations.of(context)!.toCart,
           textColor: AppColors.white,
           onPressed: () {
-            // TODO: Навигация в корзину
+            context.push(AppRouteConstants.MyCartPagePath);
           },
         ),
       ),
@@ -1133,11 +1130,13 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.addedToCart),
-                    backgroundColor: AppColors.success,
+                    elevation: 0,
                     behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.success,
+                      message: AppLocalizations.of(context)!.addedToCart,
+                      contentType: ContentType.success,
                     ),
                     duration: const Duration(milliseconds: 1500),
                   ),
@@ -1146,11 +1145,13 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
               } else if (state is AddToCartError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
                     behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: state.message,
+                      contentType: ContentType.failure,
                     ),
                   ),
                 );

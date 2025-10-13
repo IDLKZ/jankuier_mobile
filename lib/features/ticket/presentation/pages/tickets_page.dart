@@ -55,7 +55,7 @@ class _TicketsPageState extends State<TicketsPage>
           actionIcon: Iconsax.ticket,
           onActionTap: () {}),
       body: Padding(
-        padding: const EdgeInsets.symmetric(),
+        padding: EdgeInsets.symmetric(vertical: 10.h),
         child: Column(
           children: [
             Padding(

@@ -7,18 +7,15 @@ import '../repository/local_auth_interface.dart';
 
 /// Параметры для обновления PIN-кода
 class ReloadPinParams extends Equatable {
-  final String oldPin;
   final String newPin;
 
-  const ReloadPinParams({required this.oldPin, required this.newPin});
+  const ReloadPinParams({required this.newPin});
 
   @override
-  List<Object?> get props => [oldPin, newPin];
+  List<Object?> get props => [newPin];
 }
 
 /// UseCase для обновления существующего PIN-кода
-///
-/// Для успешного обновления необходимо подтвердить старый PIN-код.
 @injectable
 class ReloadPinCodeUseCase implements UseCase<bool, ReloadPinParams> {
   final LocalAuthInterface repository;
@@ -27,6 +24,6 @@ class ReloadPinCodeUseCase implements UseCase<bool, ReloadPinParams> {
 
   @override
   Future<Either<Failure, bool>> call(ReloadPinParams params) async {
-    return await repository.reloadPinCode(params.oldPin, params.newPin);
+    return await repository.reloadPinCode(params.newPin);
   }
 }

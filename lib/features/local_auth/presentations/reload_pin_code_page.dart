@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,22 +35,16 @@ class _ReloadPinCodePageContent extends StatefulWidget {
 
 class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
   final _newPinController = TextEditingController();
-  final _oldPinController = TextEditingController();
   final _confirmPinController = TextEditingController();
 
   bool _pinExists = false;
   bool _isChecking = true;
   bool _isNewPinComplete = false;
-  bool _isOldPinComplete = false;
   bool _isConfirmPinComplete = false;
-  int _attempts = 0;
-  static const int _maxAttempts = 3;
-  bool _showOldPinError = false;
 
   @override
   void dispose() {
     _newPinController.dispose();
-    _oldPinController.dispose();
     _confirmPinController.dispose();
     super.dispose();
   }
@@ -57,13 +52,6 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
   void _onNewPinChanged(String pin) {
     setState(() {
       _isNewPinComplete = pin.length == 4;
-    });
-  }
-
-  void _onOldPinChanged(String pin) {
-    setState(() {
-      _isOldPinComplete = pin.length == 4;
-      _showOldPinError = false;
     });
   }
 
@@ -80,8 +68,14 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.pinCodesDoNotMatch),
-            backgroundColor: AppColors.error,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: AppLocalizations.of(context)!.error,
+              message: l10n.pinCodesDoNotMatch,
+              contentType: ContentType.failure,
+            ),
           ),
         );
         return;
@@ -94,15 +88,20 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
   }
 
   void _handleUpdatePin() {
-    if (_oldPinController.text.length == 4 &&
-        _newPinController.text.length == 4 &&
+    if (_newPinController.text.length == 4 &&
         _confirmPinController.text.length == 4) {
       if (_newPinController.text != _confirmPinController.text) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.newPinCodesDoNotMatch),
-            backgroundColor: AppColors.error,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: AppLocalizations.of(context)!.error,
+              message: l10n.newPinCodesDoNotMatch,
+              contentType: ContentType.failure,
+            ),
           ),
         );
         return;
@@ -110,7 +109,6 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
 
       context.read<LocalAuthBloc>().add(
             UpdatePinCode(
-              oldPin: _oldPinController.text,
               newPin: _newPinController.text,
             ),
           );
@@ -151,12 +149,6 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
       ),
     );
 
-    final errorPinTheme = defaultPinTheme.copyWith(
-      decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: AppColors.error, width: 2),
-      ),
-    );
-
     return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
         final l10n = AppLocalizations.of(context)!;
@@ -174,8 +166,14 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
         } else if (state is PinSetSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n.pinCodeSuccessfullySet),
-              backgroundColor: AppColors.success,
+              elevation: 0,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              content: AwesomeSnackbarContent(
+                title: AppLocalizations.of(context)!.success,
+                message: l10n.pinCodeSuccessfullySet,
+                contentType: ContentType.success,
+              ),
             ),
           );
           Future.delayed(const Duration(seconds: 1), () {
@@ -184,47 +182,45 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
         } else if (state is PinSetFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
+              elevation: 0,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              content: AwesomeSnackbarContent(
+                title: AppLocalizations.of(context)!.error,
+                message: state.message,
+                contentType: ContentType.failure,
+              ),
             ),
           );
         } else if (state is PinUpdated) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n.pinCodeSuccessfullyUpdated),
-              backgroundColor: AppColors.success,
+              elevation: 0,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              content: AwesomeSnackbarContent(
+                title: AppLocalizations.of(context)!.success,
+                message: l10n.pinCodeSuccessfullyUpdated,
+                contentType: ContentType.success,
+              ),
             ),
           );
           Future.delayed(const Duration(seconds: 1), () {
             _navigateToProfile();
           });
         } else if (state is PinUpdateFailure) {
-          setState(() {
-            _attempts++;
-            _oldPinController.clear();
-            _isOldPinComplete = false;
-            _showOldPinError = true;
-          });
-
-          if (_attempts >= _maxAttempts) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(l10n.attemptsExceeded),
-                backgroundColor: AppColors.error,
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              elevation: 0,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              content: AwesomeSnackbarContent(
+                title: AppLocalizations.of(context)!.error,
+                message: state.message,
+                contentType: ContentType.failure,
               ),
-            );
-            Future.delayed(const Duration(seconds: 1), () {
-              _navigateToProfile();
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(l10n.incorrectOldPinAttemptsRemaining(
-                    _maxAttempts - _attempts)),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
+            ),
+          );
         }
       },
       child: Builder(
@@ -280,7 +276,7 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                               Center(
                                 child: Text(
                                   _pinExists
-                                      ? l10n.enterOldAndNewPin
+                                      ? l10n.newPinCode
                                       : l10n.createFourDigitPin,
                                   style: TextStyle(
                                     fontSize: 14.sp,
@@ -290,51 +286,6 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                                 ),
                               ),
                               SizedBox(height: 32.h),
-
-                              // Поле для старого PIN (только если PIN существует)
-                              if (_pinExists) ...[
-                                Text(
-                                  l10n.oldPinCode,
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                SizedBox(height: 10.h),
-                                Center(
-                                  child: Pinput(
-                                    controller: _oldPinController,
-                                    length: 4,
-                                    defaultPinTheme: defaultPinTheme,
-                                    focusedPinTheme: focusedPinTheme,
-                                    submittedPinTheme: submittedPinTheme,
-                                    errorPinTheme:
-                                        _showOldPinError ? errorPinTheme : null,
-                                    obscureText: true,
-                                    obscuringCharacter: '●',
-                                    onChanged: _onOldPinChanged,
-                                    keyboardType: TextInputType.number,
-                                    hapticFeedbackType:
-                                        HapticFeedbackType.lightImpact,
-                                  ),
-                                ),
-                                if (_attempts > 0) ...[
-                                  SizedBox(height: 8.h),
-                                  Center(
-                                    child: Text(
-                                      l10n.attemptsRemaining(
-                                          _maxAttempts - _attempts),
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: AppColors.error,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                SizedBox(height: 20.h),
-                              ],
 
                               // Поле для нового PIN
                               Text(
@@ -394,12 +345,8 @@ class _ReloadPinCodePageContentState extends State<_ReloadPinCodePageContent> {
                               BlocBuilder<LocalAuthBloc, LocalAuthState>(
                                 builder: (context, state) {
                                   final isLoading = state is LocalAuthLoading;
-                                  final isButtonEnabled = _pinExists
-                                      ? (_isOldPinComplete &&
-                                          _isNewPinComplete &&
-                                          _isConfirmPinComplete)
-                                      : (_isNewPinComplete &&
-                                          _isConfirmPinComplete);
+                                  final isButtonEnabled = _isNewPinComplete &&
+                                      _isConfirmPinComplete;
 
                                   return SizedBox(
                                     width: double.infinity,

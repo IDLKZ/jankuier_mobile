@@ -192,32 +192,19 @@ class LocalAuthRepositoryImpl implements LocalAuthInterface {
 
   /// Обновляет существующий PIN-код на новый
   ///
-  /// Для успешного обновления необходимо подтвердить старый PIN-код.
-  ///
   /// **Параметры:**
-  /// - [oldPin] - текущий PIN-код для подтверждения
   /// - [pin] - новый PIN-код для установки
   ///
   /// **Возвращает:**
-  /// - [Right(true)] если старый PIN верен и новый успешно сохранен
-  /// - [Right(false)] если старый PIN неверен или не был установлен
+  /// - [Right(true)] если новый PIN-код успешно сохранен
   /// - [Left] с [ServerFailure] при возникновении ошибки
   @override
-  Future<Either<Failure, bool>> reloadPinCode(String oldPin, String pin) async {
+  Future<Either<Failure, bool>> reloadPinCode(String pin) async {
     try {
-      // Читаем текущий PIN-код
-      final String? storedPin =
-          await _storage.read(key: LocalAuthConstants.localAuthKey);
-      if (storedPin != null) {
-        // Проверяем соответствие старого PIN-кода
-        if (oldPin == storedPin) {
-          // Обновляем PIN-код на новый
-          await _storage.write(
-              key: LocalAuthConstants.localAuthKey, value: pin);
-          return Right(true);
-        }
-      }
-      return Right(false);
+      // Обновляем PIN-код на новый
+      await _storage.write(
+          key: LocalAuthConstants.localAuthKey, value: pin);
+      return Right(true);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

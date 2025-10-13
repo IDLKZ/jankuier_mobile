@@ -13,5 +13,5 @@ abstract class LocalAuthInterface {
   Future<Either<Failure, bool>> setPinHash(String pin);
   Future<Either<Failure, bool>> getPinHashBefore();
   Future<Either<Failure, bool>> checkPinCode(String pin);
-  Future<Either<Failure, bool>> reloadPinCode(String oldPin, String pin);
+  Future<Either<Failure, bool>> reloadPinCode(String pin);
 }

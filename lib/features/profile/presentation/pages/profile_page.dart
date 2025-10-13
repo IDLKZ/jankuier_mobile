@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
@@ -328,7 +329,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.accountDeleted),
+                        content:
+                            Text(AppLocalizations.of(context)!.accountDeleted),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -360,6 +362,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
         child: Container(
+          padding: EdgeInsets.symmetric(vertical: 10.h),
           color: const Color(0xFFF6F7F9),
           child: BlocBuilder<GetMeBloc, GetMeState>(
             bloc: _getMeBloc,
@@ -371,10 +374,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: SafeArea(
                       child: EditProfilePage(
-                        userName: "${state.user.firstName} ${state.user.lastName}",
+                        userName:
+                            "${state.user.firstName} ${state.user.lastName}",
                         userImage: state.user.image,
                         onAvatarTap: () {
-                          _showPhotoOptions(context, state.user.imageId != null);
+                          _showPhotoOptions(
+                              context, state.user.imageId != null);
                         },
                         onPersonalDataTap: () {
                           context.push(AppRouteConstants.EditAccountPagePath);
@@ -386,11 +391,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           context.push(AppRouteConstants.ReloadPINCodePagePath);
                         },
                         onMyOrdersTap: () {
-                          context.push(AppRouteConstants.MyProductOrdersPagePath);
+                          context
+                              .push(AppRouteConstants.MyProductOrdersPagePath);
                         },
                         onMyBookingsTap: () {
-                          context
-                              .push(AppRouteConstants.MyBookingFieldRequestsPagePath);
+                          context.push(
+                              AppRouteConstants.MyBookingFieldRequestsPagePath);
                         },
                         onCartTap: () {
                           context.push(AppRouteConstants.MyCartPagePath);

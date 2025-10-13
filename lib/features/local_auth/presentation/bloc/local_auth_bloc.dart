@@ -152,7 +152,7 @@ class LocalAuthBloc extends Bloc<LocalAuthEvent, LocalAuthState> {
     emit(const LocalAuthLoading());
 
     final result = await _reloadPinCode(
-      ReloadPinParams(oldPin: event.oldPin, newPin: event.newPin),
+      ReloadPinParams(newPin: event.newPin),
     );
 
     result.fold(
@@ -161,7 +161,7 @@ class LocalAuthBloc extends Bloc<LocalAuthEvent, LocalAuthState> {
         if (isUpdated) {
           emit(const PinUpdated());
         } else {
-          emit(const PinUpdateFailure('Неверный старый PIN-код'));
+          emit(const PinUpdateFailure('Ошибка обновления PIN-кода'));
         }
       },
     );

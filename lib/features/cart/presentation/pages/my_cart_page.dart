@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,8 +75,14 @@ class _MyCartPageContentState extends State<_MyCartPageContent> {
               } else if (state is UpdateCartItemError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: state.message,
+                      contentType: ContentType.warning,
+                    ),
                   ),
                 );
               }
@@ -89,15 +96,27 @@ class _MyCartPageContentState extends State<_MyCartPageContent> {
                     .add(const LoadMyCart(checkCartItems: true));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.cartCleared),
-                    backgroundColor: AppColors.success,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.success,
+                      message: AppLocalizations.of(context)!.cartCleared,
+                      contentType: ContentType.success,
+                    ),
                   ),
                 );
               } else if (state is ClearCartError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: state.message,
+                      contentType: ContentType.warning,
+                    ),
                   ),
                 );
               }
@@ -122,8 +141,14 @@ class _MyCartPageContentState extends State<_MyCartPageContent> {
               } else if (state is CreateProductOrderFromCartError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: state.message,
+                      contentType: ContentType.failure,
+                    ),
                   ),
                 );
               }

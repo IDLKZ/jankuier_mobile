@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -165,8 +166,14 @@ class _SetFirstTimeLocalAuthTypePageContentState
             } else if (state is PinSetFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: AppColors.error,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.error,
+                    message: state.message,
+                    contentType: ContentType.failure,
+                  ),
                 ),
               );
             }

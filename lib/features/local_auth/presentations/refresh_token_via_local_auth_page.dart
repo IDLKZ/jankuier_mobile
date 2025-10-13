@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -202,8 +203,14 @@ class _RefreshTokenViaLocalAuthPageContentState
                 final l10n = AppLocalizations.of(context)!;
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(l10n.attemptsExceededLoginAgain),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: l10n.attemptsExceededLoginAgain,
+                      contentType: ContentType.failure,
+                    ),
                   ),
                 );
                 Future.delayed(const Duration(seconds: 1), () {
@@ -214,9 +221,15 @@ class _RefreshTokenViaLocalAuthPageContentState
                 final l10n = AppLocalizations.of(context)!;
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(l10n.incorrectPinAttemptsRemaining(
-                        _maxPinAttempts - _pinAttempts)),
-                    backgroundColor: AppColors.error,
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: AppLocalizations.of(context)!.error,
+                      message: l10n.incorrectPinAttemptsRemaining(
+                          _maxPinAttempts - _pinAttempts),
+                      contentType: ContentType.failure,
+                    ),
                   ),
                 );
               }
@@ -224,8 +237,14 @@ class _RefreshTokenViaLocalAuthPageContentState
               // Общая ошибка - переходим на SignIn
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: AppColors.error,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.error,
+                    message: state.message,
+                    contentType: ContentType.failure,
+                  ),
                 ),
               );
               Future.delayed(const Duration(seconds: 2), () {
@@ -244,8 +263,14 @@ class _RefreshTokenViaLocalAuthPageContentState
               final l10n = AppLocalizations.of(context)!;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(l10n.failedToRefreshToken),
-                  backgroundColor: AppColors.error,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.error,
+                    message: l10n.failedToRefreshToken,
+                    contentType: ContentType.failure,
+                  ),
                 ),
               );
               Future.delayed(const Duration(seconds: 1), () {

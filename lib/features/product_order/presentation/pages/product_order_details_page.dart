@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -309,8 +310,14 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
             if (state is CancelOrDeleteProductOrderSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.success),
-                  backgroundColor: AppColors.success,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.success,
+                    message: AppLocalizations.of(context)!.success,
+                    contentType: ContentType.success,
+                  ),
                 ),
               );
               // Перезагрузка данных заказа
@@ -318,8 +325,14 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
             } else if (state is CancelOrDeleteProductOrderError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: AppColors.error,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: AppLocalizations.of(context)!.error,
+                    message: state.message,
+                    contentType: ContentType.failure,
+                  ),
                 ),
               );
             }
@@ -393,13 +406,16 @@ class _ProductOrderDetailsPageState extends State<ProductOrderDetailsPage> {
                           onPay: !order.isPaid
                               ? () async {
                                   final hiveUtils = getIt<HiveUtils>();
-                                  final token = await hiveUtils.getAccessToken();
+                                  final token =
+                                      await hiveUtils.getAccessToken();
                                   if (token == null) {
-                                    context.go(AppRouteConstants.SignInPagePath);
+                                    context
+                                        .go(AppRouteConstants.SignInPagePath);
                                   } else {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => ProductWebViewPage(
+                                        builder: (context) =>
+                                            ProductWebViewPage(
                                           orderId: order.id.toString(),
                                           token: token,
                                         ),

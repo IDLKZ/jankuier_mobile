@@ -574,7 +574,7 @@ class _GamePageViewState extends State<_GamePageView>
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.sp,
-                    color: Colors.grey[600],
+                    color: Colors.black,
                   )),
               Text(rightValue,
                   style: TextStyle(
@@ -713,7 +713,7 @@ class _GamePageViewState extends State<_GamePageView>
             width: 120.w,
             child: Text(
               title,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12.sp, color: Colors.black),
             ),
           ),
           Expanded(
@@ -762,7 +762,7 @@ class _GamePageViewState extends State<_GamePageView>
                   child: Icon(
                     Icons.sports_soccer,
                     size: 16.w,
-                    color: Colors.grey[600],
+                    color: Colors.black,
                   ),
                 ),
               SizedBox(width: 8.w),
@@ -775,7 +775,10 @@ class _GamePageViewState extends State<_GamePageView>
           SizedBox(height: 12.h),
           Text(
             AppLocalizations.of(context)!.coachingStaff,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black),
           ),
           SizedBox(height: 8.h),
           _buildCoachRow(
@@ -785,7 +788,10 @@ class _GamePageViewState extends State<_GamePageView>
           SizedBox(height: 16.h),
           Text(
             AppLocalizations.of(context)!.players,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black),
           ),
           SizedBox(height: 8.h),
           ...team.lineup.map((player) => _buildPlayerRow(player)),
@@ -799,14 +805,14 @@ class _GamePageViewState extends State<_GamePageView>
       padding: EdgeInsets.only(bottom: 4.h),
       child: Row(
         children: [
-          Icon(Icons.person, size: 16.w, color: Colors.grey[600]),
+          Icon(Icons.person, size: 16.w, color: Colors.black),
           SizedBox(width: 8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(role,
-                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[600])),
+                    style: TextStyle(fontSize: 10.sp, color: Colors.black)),
                 Text(name, style: TextStyle(fontSize: 12.sp)),
               ],
             ),
@@ -885,7 +891,7 @@ class _GamePageViewState extends State<_GamePageView>
                   player.isGk
                       ? AppLocalizations.of(context)!.goalkeeperFull
                       : AppLocalizations.of(context)!.fieldPlayer,
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 10.sp, color: Colors.black),
                 ),
               ],
             ),
@@ -1135,7 +1141,7 @@ class _GamePageViewState extends State<_GamePageView>
               fontFamily: 'Inter',
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
+              color: Colors.black,
             ),
           ),
         ],
@@ -1490,7 +1496,7 @@ class _StatRow extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.sp,
-                    color: Colors.grey[600],
+                    color: Colors.black,
                   )),
               Text(rightValue,
                   style: TextStyle(
@@ -1653,7 +1659,7 @@ class _LineupContent extends StatelessWidget {
             width: 120.w,
             child: Text(
               title,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12.sp, color: Colors.black),
             ),
           ),
           Expanded(
@@ -1705,7 +1711,7 @@ class _TeamLineupWidget extends StatelessWidget {
                   child: Icon(
                     Icons.sports_soccer,
                     size: 16.w,
-                    color: Colors.grey[600],
+                    color: Colors.black,
                   ),
                 ),
               SizedBox(width: 8.w),
@@ -1743,14 +1749,14 @@ class _TeamLineupWidget extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 4.h),
       child: Row(
         children: [
-          Icon(Icons.person, size: 16.w, color: Colors.grey[600]),
+          Icon(Icons.person, size: 16.w, color: Colors.black),
           SizedBox(width: 8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(role,
-                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[600])),
+                    style: TextStyle(fontSize: 10.sp, color: Colors.black)),
                 Text(name, style: TextStyle(fontSize: 12.sp)),
               ],
             ),
@@ -1836,7 +1842,7 @@ class _PlayerRowWidget extends StatelessWidget {
                   player.isGk
                       ? AppLocalizations.of(context)!.goalkeeperFull
                       : AppLocalizations.of(context)!.fieldPlayer,
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 10.sp, color: Colors.black),
                 ),
               ],
             ),
@@ -2142,7 +2148,7 @@ class _KeyStatItem extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
+              color: Colors.black,
             ),
           ),
         ],

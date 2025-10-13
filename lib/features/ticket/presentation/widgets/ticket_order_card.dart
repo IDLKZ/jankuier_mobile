@@ -43,7 +43,7 @@ class TicketOrderCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OrderStatusConstants.getStatus(order.status!),
+            OrderStatusConstants.getStatus(order.status!, context),
             SizedBox(height: 4.h),
             // Header with event name and status
             Row(
@@ -51,7 +51,8 @@ class TicketOrderCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    order.showInfo.event?.name ?? AppLocalizations.of(context)!.untitled,
+                    order.showInfo.event?.name ??
+                        AppLocalizations.of(context)!.untitled,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
@@ -60,25 +61,6 @@ class TicketOrderCard extends StatelessWidget {
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8.w,
-                    vertical: 4.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(order).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Text(
-                    _getStatusText(order, context),
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w600,
-                      color: _getStatusColor(order),
-                    ),
                   ),
                 ),
               ],

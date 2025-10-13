@@ -11,8 +11,9 @@ class OrderStatusConstants {
   static const int cancelledRefundWait = 5; // Cancelled, awaiting refund
   static const int cancelledRefunded = 6; // Cancelled, refunded
 
-  static Widget getStatus(TicketonOrderStatusEntity status) {
-    late String text = status.titleRu;
+  static Widget getStatus(
+      TicketonOrderStatusEntity status, BuildContext context) {
+    late String text = status.localizedTitle(context);
     late Color color;
     switch (status.id) {
       case created:

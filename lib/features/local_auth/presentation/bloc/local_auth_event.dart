@@ -49,13 +49,12 @@ class CheckPinExists extends LocalAuthEvent {
 
 /// Событие для обновления PIN-кода
 class UpdatePinCode extends LocalAuthEvent {
-  final String oldPin;
   final String newPin;
 
-  const UpdatePinCode({required this.oldPin, required this.newPin});
+  const UpdatePinCode({required this.newPin});
 
   @override
-  List<Object?> get props => [oldPin, newPin];
+  List<Object?> get props => [newPin];
 }
 
 /// Событие для получения типа локальной аутентификации
