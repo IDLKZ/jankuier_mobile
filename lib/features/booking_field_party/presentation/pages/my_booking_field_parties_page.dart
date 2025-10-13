@@ -268,7 +268,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                   state.message,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                     color: AppColors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
@@ -575,9 +575,9 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          'Загрузка...',
+                          AppLocalizations.of(context)!.loading,
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 12.sp,
                             color: Colors.grey.shade600,
                           ),
                         ),
@@ -651,7 +651,8 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Бронирование',
+                                    AppLocalizations.of(context)!
+                                        .bookingDetails,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.9),
                                       fontSize: 12.sp,
@@ -661,7 +662,7 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                                   Text(
                                     displayBooking.status
                                             ?.localizedTitle(context) ??
-                                        'Статус',
+                                        AppLocalizations.of(context)!.status,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14.sp,
@@ -745,7 +746,7 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                             ),
                             SizedBox(width: 12.w),
                             Text(
-                              'Время бронирования',
+                              AppLocalizations.of(context)!.bookingDetails,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -762,7 +763,7 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Дата',
+                                    AppLocalizations.of(context)!.date,
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       color: Colors.grey.shade600,
@@ -1233,7 +1234,7 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                   child: Text(
                     AppLocalizations.of(context)!.no,
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
                     ),
@@ -1258,8 +1259,9 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.yesCancel,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
