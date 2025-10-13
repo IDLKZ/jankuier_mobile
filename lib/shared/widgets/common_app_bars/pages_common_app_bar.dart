@@ -12,7 +12,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const PagesCommonAppBar({
     super.key,
-    this.commonHeight = 120,
+    this.commonHeight = 80,
     this.leadingIcon,
     required this.title,
     required this.actionIcon,
@@ -21,17 +21,15 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      toolbarHeight: commonHeight.h,
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      flexibleSpace: Container(
-        height: commonHeight.h,
+    return PreferredSize(
+      preferredSize: Size.fromHeight(commonHeight.h),
+      child: Container(
+        height: commonHeight.h + MediaQuery.of(context).padding.top,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(12.r),
-              bottomRight: Radius.circular(12.r)),
+            bottomLeft: Radius.circular(12.r),
+            bottomRight: Radius.circular(12.r),
+          ),
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -43,6 +41,7 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: Stack(
           children: [
+            // Фон
             Positioned(
               top: 0,
               right: 0,
@@ -51,24 +50,29 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fit: BoxFit.fitHeight,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w)
-                    .copyWith(bottom: 20.h),
+
+            // Центрируем контент
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top,
+                left: 20.w,
+                right: 20.w,
+              ),
+              child: Center(
+                // <<<<<< --- Центрирование!
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // по вертикали центр
                   children: [
-                    // 🏷️ Заголовок
+                    // Левая часть
                     Row(
                       children: [
                         if (leadingIcon != null) ...[
                           GestureDetector(
                             child: Icon(leadingIcon,
                                 size: 20.sp, color: Colors.white),
-                            onTap: () {
-                              context.pop();
-                            },
+                            onTap: () => context.pop(),
                           ),
                           SizedBox(width: 8.w),
                         ],
@@ -79,35 +83,34 @@ class PagesCommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w600,
-                            fontSize: 20.sp,
+                            fontSize: 18.sp,
                             color: Colors.white,
                           ),
                         ),
                       ],
                     ),
 
-                    // 🔧 Действие или пустой SizedBox
+                    // Правая иконка
                     GestureDetector(
-                        onTap: () => onActionTap,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withValues(alpha: 0.2)),
-                          child: IconButton(
-                            icon: Icon(actionIcon,
-                                size: 30,
-                                color: Colors.white.withValues(alpha: 0.7)),
-                            onPressed: () {
-                              onActionTap();
-                            },
-                          ),
-                        ))
+                      onTap: onActionTap,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.2),
+                        ),
+                        child: Icon(
+                          actionIcon,
+                          size: 30,
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
