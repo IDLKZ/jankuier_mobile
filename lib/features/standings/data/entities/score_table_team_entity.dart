@@ -27,16 +27,16 @@ class ScoreTableTeamEntity extends Equatable {
 
   factory ScoreTableTeamEntity.fromJson(Map<String, dynamic> json) {
     return ScoreTableTeamEntity(
-      id: json['id'],
-      name: json['name'],
-      logo: json['logo'],
-      rg: json['rg'],
-      wins: json['wins'],
-      draws: json['draws'],
-      losses: json['losses'],
-      points: json['points'],
-      matches: json['matches'],
-      goals: json['goals'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      logo: json['logo'] ?? '',
+      rg: json['rg'] ?? 0,
+      wins: json['wins'] ?? 0,
+      draws: json['draws'] ?? 0,
+      losses: json['losses'] ?? 0,
+      points: json['points'] ?? 0,
+      matches: json['matches'] ?? 0,
+      goals: json['goals'] ?? '',
     );
   }
 
@@ -81,8 +81,8 @@ class ScoreTableDataEntity extends Equatable {
 
   factory ScoreTableDataEntity.fromJson(Map<String, dynamic> json) {
     return ScoreTableDataEntity(
-      latestUpdateDateTime: json['latest_update_date_time'],
-      table: (json['table'] as List<dynamic>)
+      latestUpdateDateTime: json['latest_update_date_time'] ?? '',
+      table: (json['table'] as List<dynamic>? ?? [])
           .map((teamJson) => ScoreTableTeamEntity.fromJson(teamJson))
           .toList(),
     );

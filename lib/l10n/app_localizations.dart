@@ -3129,6 +3129,60 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол'**
   String get passwordRequirements;
+
+  /// No description provided for @noStatisticsAvailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Статистика недоступна'**
+  String get noStatisticsAvailable;
+
+  /// No description provided for @statisticsWillAppearHere.
+  ///
+  /// In ru, this message translates to:
+  /// **'Статистика матча появится здесь'**
+  String get statisticsWillAppearHere;
+
+  /// No description provided for @noLineupAvailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Состав недоступен'**
+  String get noLineupAvailable;
+
+  /// No description provided for @lineupWillAppearHere.
+  ///
+  /// In ru, this message translates to:
+  /// **'Состав команд появится здесь'**
+  String get lineupWillAppearHere;
+
+  /// No description provided for @noPlayerStatsAvailable.
+  ///
+  /// In ru, this message translates to:
+  /// **'Статистика игроков недоступна'**
+  String get noPlayerStatsAvailable;
+
+  /// No description provided for @playerStatsWillAppearHere.
+  ///
+  /// In ru, this message translates to:
+  /// **'Статистика игроков появится здесь'**
+  String get playerStatsWillAppearHere;
+
+  /// No description provided for @withSupport.
+  ///
+  /// In ru, this message translates to:
+  /// **'при поддержке'**
+  String get withSupport;
+
+  /// No description provided for @iAcceptTerms.
+  ///
+  /// In ru, this message translates to:
+  /// **'Я принимаю условия'**
+  String get iAcceptTerms;
+
+  /// No description provided for @acceptTerms.
+  ///
+  /// In ru, this message translates to:
+  /// **'Необходимо принять условия политики конфиденциальности'**
+  String get acceptTerms;
 }
 
 class _AppLocalizationsDelegate

@@ -147,7 +147,8 @@ class _StandingsPageState extends State<_StandingsPageView>
           return _buildStandingsTable(state.result);
         } else if (state is GetStandingsTableFromSotaFailedState) {
           return Center(
-            child: Text("${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
+            child: Text(
+                "${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
           );
         }
         return const SizedBox();
@@ -222,11 +223,12 @@ class _StandingsPageState extends State<_StandingsPageView>
           return _buildMatchesList(state.result);
         } else if (state is GetMatchesFromSotaFailedState) {
           return Center(
-            child: Text("${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
+            child: Text(
+                "${AppLocalizations.of(context)!.loadingErrorWithMessage} ${state.failureData.message}"),
           );
         }
         return Center(
-          child: Text(AppLocalizations.of(context)!.selectResultsTab),
+          child: CircularProgressIndicator(),
         );
       },
     );

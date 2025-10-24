@@ -56,3 +56,17 @@ class GetMatchesFromSotaLoadedState extends GetStandingState {
   @override
   List<Object?> get props => [result];
 }
+
+//Комбинированный state с таблицей и матчами
+class GetStandingsAndMatchesLoadedState extends GetStandingState {
+  final List<ScoreTableTeamEntity> standings;
+  final List<MatchEntity> matches;
+
+  GetStandingsAndMatchesLoadedState({
+    required this.standings,
+    required this.matches,
+  });
+
+  @override
+  List<Object?> get props => [standings, matches];
+}

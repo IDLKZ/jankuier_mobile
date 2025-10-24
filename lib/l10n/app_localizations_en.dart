@@ -1556,4 +1556,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get passwordRequirements =>
       'Password must contain at least 1 uppercase, 1 lowercase letter, 1 digit and 1 special character';
+
+  @override
+  String get noStatisticsAvailable => 'Statistics not available';
+
+  @override
+  String get statisticsWillAppearHere => 'Match statistics will appear here';
+
+  @override
+  String get noLineupAvailable => 'Lineup not available';
+
+  @override
+  String get lineupWillAppearHere => 'Team lineups will appear here';
+
+  @override
+  String get noPlayerStatsAvailable => 'Player statistics not available';
+
+  @override
+  String get playerStatsWillAppearHere => 'Player statistics will appear here';
+
+  @override
+  String get withSupport => 'with support';
+
+  @override
+  String get iAcceptTerms => 'I accept the terms of';
+
+  @override
+  String get acceptTerms => 'You must accept the privacy policy terms';
 }

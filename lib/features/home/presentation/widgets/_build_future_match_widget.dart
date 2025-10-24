@@ -226,24 +226,26 @@ Widget homebuildMatchesList(
                           ),
                         ],
                         SizedBox(height: 8.h),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.grey100,
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Text(
-                            '${AppLocalizations.of(context)!.round.toUpperCase()} ${match.tour}',
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                        match.tour != null
+                            ? Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey100,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.round.toUpperCase()} ${match.tour}',
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),

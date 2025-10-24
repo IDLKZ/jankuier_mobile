@@ -71,11 +71,14 @@ class TicketonGetShowsParameter {
   }
 
   DataMap toMap() {
-    return {
+    DataMap map = {
       "type": type.toString(),
-      "place": place.toString(),
       "with": withParam.toString(),
       "i18n": i18n.toString(),
     };
+    if (place != null) {
+      map["place"] = place.toString();
+    }
+    return map;
   }
 }

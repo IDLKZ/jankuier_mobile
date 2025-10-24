@@ -65,8 +65,7 @@ class TicketonShowsBloc extends Bloc<TicketonShowsEvent, TicketonShowsState> {
       emit(const TicketonShowsLoading());
 
       // Используем базовые параметры с текущим языком
-      final parameter = TicketonGetShowsParameter.withCurrentLocale(
-          place: TicketonApiConstant.PlaceId);
+      final parameter = TicketonGetShowsParameter.withCurrentLocale();
       add(LoadTicketonShowsEvent(parameter: parameter));
     }
   }

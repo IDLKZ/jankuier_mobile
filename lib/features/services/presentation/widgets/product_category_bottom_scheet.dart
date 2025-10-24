@@ -17,6 +17,7 @@ import '../bloc/product/product_bloc.dart';
 import '../bloc/product/product_event.dart';
 import '../bloc/product_category/product_category_bloc.dart';
 import '../bloc/product_category/product_category_state.dart';
+import 'bayan_sulu_support_widget.dart';
 
 class ProductCategoryBottomScheet extends StatefulWidget {
   final Function(List<int> categoryIds, int? minPrice, int? maxPrice)?
@@ -96,6 +97,7 @@ class _ProductCategoryBottomScheetState
                                           vertical: 15.h, horizontal: 15.w),
                                       child: Column(
                                         children: [
+                                          buildBayanSuluBlueCard(context),
                                           MainTitleWidget(
                                               title:
                                                   AppLocalizations.of(context)!
@@ -174,7 +176,9 @@ class _ProductCategoryBottomScheetState
                                                     ),
                                                     const SizedBox(height: 8),
                                                     Text(
-                                                      context.localizedDirectTitle(pc),
+                                                      context
+                                                          .localizedDirectTitle(
+                                                              pc),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(

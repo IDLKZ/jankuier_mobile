@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jankuier_mobile/features/standings/data/entities/match_entity.dart';
+import 'package:jankuier_mobile/features/standings/data/entities/score_table_team_entity.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../home/presentation/widgets/home_helpers.dart';
 import '../../data/entities/match_lineup_entity.dart';
 import '../../data/entities/player_stat_entity.dart';
 import '../../data/entities/team_stat_entity.dart';
@@ -15,14 +17,24 @@ import '../bloc/game_state.dart';
 class GamePage extends StatelessWidget {
   final String gameId;
   final MatchEntity match;
+  final List? standings;
 
-  const GamePage({super.key, required this.gameId, required this.match});
+  const GamePage({
+    super.key,
+    required this.gameId,
+    required this.match,
+    this.standings,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<GameBloc>(),
-      child: _GamePageView(gameId: gameId, match: match),
+      child: _GamePageView(
+        gameId: gameId,
+        match: match,
+        standings: standings,
+      ),
     );
   }
 }
@@ -30,8 +42,13 @@ class GamePage extends StatelessWidget {
 class _GamePageView extends StatefulWidget {
   final String gameId;
   final MatchEntity match;
+  final List? standings;
 
-  const _GamePageView({required this.gameId, required this.match});
+  const _GamePageView({
+    required this.gameId,
+    required this.match,
+    this.standings,
+  });
 
   @override
   State<_GamePageView> createState() => _GamePageViewState();
@@ -165,6 +182,15 @@ class _GamePageViewState extends State<_GamePageView>
   }
 
   Widget _buildMatchInfoCard() {
+    // Получаем логотипы из standings если они есть
+    final standings = widget.standings?.cast<ScoreTableTeamEntity>() ?? [];
+    final homeTeamLogo = standings.isNotEmpty
+        ? getTeamLogoById(widget.match.homeTeam.id, standings)
+        : '';
+    final awayTeamLogo = standings.isNotEmpty
+        ? getTeamLogoById(widget.match.awayTeam.id, standings)
+        : '';
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       padding: EdgeInsets.all(16.w),
@@ -191,15 +217,23 @@ class _GamePageViewState extends State<_GamePageView>
                     Container(
                       width: 50.w,
                       height: 50.h,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
                         shape: BoxShape.circle,
+                        image: homeTeamLogo.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(homeTeamLogo),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       ),
-                      child: Icon(
-                        Icons.sports_soccer,
-                        color: Colors.grey,
-                        size: 30.sp,
-                      ),
+                      child: homeTeamLogo.isEmpty
+                          ? Icon(
+                              Icons.sports_soccer,
+                              color: Colors.grey,
+                              size: 30.sp,
+                            )
+                          : null,
                     ),
                     SizedBox(height: 8.h),
                     Text(
@@ -248,15 +282,23 @@ class _GamePageViewState extends State<_GamePageView>
                     Container(
                       width: 50.w,
                       height: 50.h,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
                         shape: BoxShape.circle,
+                        image: awayTeamLogo.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(awayTeamLogo),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       ),
-                      child: Icon(
-                        Icons.sports_soccer,
-                        color: Colors.grey,
-                        size: 30.sp,
-                      ),
+                      child: awayTeamLogo.isEmpty
+                          ? Icon(
+                              Icons.sports_soccer,
+                              color: Colors.grey,
+                              size: 30.sp,
+                            )
+                          : null,
                     ),
                     SizedBox(height: 8.h),
                     Text(
@@ -648,7 +690,7 @@ class _GamePageViewState extends State<_GamePageView>
           );
         }
         return Center(
-          child: Text(AppLocalizations.of(context)!.selectLineupTabToLoad),
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -915,7 +957,7 @@ class _GamePageViewState extends State<_GamePageView>
           );
         }
         return Center(
-          child: Text(AppLocalizations.of(context)!.selectPlayersTabToLoad),
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -1312,7 +1354,44 @@ class _TeamStatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final teams = statsResponse.data.teams;
-    if (teams.length < 2) return const SizedBox();
+
+    // Проверка на пустые или недостаточные данные
+    if (teams.isEmpty || teams.length < 2) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.bar_chart,
+                size: 64.sp,
+                color: Colors.grey[400],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                AppLocalizations.of(context)!.noStatisticsAvailable,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                AppLocalizations.of(context)!.statisticsWillAppearHere,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     final homeTeam = teams[0];
     final awayTeam = teams[1];
@@ -1587,7 +1666,7 @@ class _LineupTabViewState extends State<_LineupTabView>
           );
         }
         return Center(
-          child: Text(AppLocalizations.of(context)!.selectLineupTabToLoad),
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -1601,6 +1680,47 @@ class _LineupContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Проверка на пустые данные составов
+    final hasHomeLineup = lineup.homeTeam.lineup.isNotEmpty;
+    final hasAwayLineup = lineup.awayTeam.lineup.isNotEmpty;
+
+    if (!hasHomeLineup && !hasAwayLineup) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.groups,
+                size: 64.sp,
+                color: Colors.grey[400],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                AppLocalizations.of(context)!.noLineupAvailable,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                AppLocalizations.of(context)!.lineupWillAppearHere,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -1884,7 +2004,7 @@ class _PlayerStatsTabViewState extends State<_PlayerStatsTabView>
           );
         }
         return Center(
-          child: Text(AppLocalizations.of(context)!.selectPlayersTabToLoad),
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -1899,6 +2019,45 @@ class _PlayerStatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final teamNames = statsResponse.data.teamNames;
+    final players = statsResponse.data.players;
+
+    // Проверка на пустые данные игроков
+    if (players.isEmpty || teamNames.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.sports_soccer,
+                size: 64.sp,
+                color: Colors.grey[400],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                AppLocalizations.of(context)!.noPlayerStatsAvailable,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                AppLocalizations.of(context)!.playerStatsWillAppearHere,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return DefaultTabController(
       length: teamNames.length,

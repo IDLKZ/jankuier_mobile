@@ -16,8 +16,13 @@ class MatchItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('${AppRouteConstants.GameStatPagePath}${match.id}',
-            extra: match);
+        context.push(
+          '${AppRouteConstants.GameStatPagePath}${match.id}',
+          extra: {
+            'match': match,
+            'standings': null, // standings не доступны в этом контексте
+          },
+        );
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 1.h),

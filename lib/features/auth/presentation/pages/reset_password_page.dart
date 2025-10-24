@@ -15,6 +15,7 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/reset_password_b
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/localization_service.dart';
 import '../../data/entities/user_reset_entity.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -331,6 +332,53 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               ),
             ),
           ),
+          actions: [
+            FutureBuilder<LocalizationService>(
+              future: getIt.getAsync<LocalizationService>(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+
+                final localizationService = snapshot.data!;
+
+                return GestureDetector(
+                  onTap: () {
+                    localizationService.cycleToNextLanguage();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.h, right: 10.w),
+                    width: 40.w,
+                    height: 32.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: localizationService,
+                        builder: (context, child) {
+                          return Text(
+                            localizationService.getCurrentLanguageDisplayName(),
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: BlocProvider<ResetPasswordBloc>(
           create: (context) => getIt<ResetPasswordBloc>(),

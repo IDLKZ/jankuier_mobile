@@ -61,7 +61,8 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                   // Match details
                   _buildMatchDetails(context),
 
-                  if (!isFuture) ...[
+                  // Дополнительная информация для прошедших матчей (если есть результаты)
+                  if (match.result1 != null && match.result2 != null) ...[
                     SizedBox(height: 24.h),
                     _buildPastMatchExtras(context),
                   ],
@@ -109,9 +110,12 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                 () {
-                    final title = context.localizedTitle(match.tournament?.title);
-                    return title.isNotEmpty ? title : AppLocalizations.of(context)!.tournament;
+                  () {
+                    final title =
+                        context.localizedTitle(match.tournament?.title);
+                    return title.isNotEmpty
+                        ? title
+                        : AppLocalizations.of(context)!.tournament;
                   }(),
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -180,7 +184,9 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               Text(
                 () {
                   final title = context.localizedTitle(match.team1?.title);
-                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team1;
+                  return title.isNotEmpty
+                      ? title
+                      : AppLocalizations.of(context)!.team1;
                 }(),
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -199,7 +205,30 @@ class MatchDetailsBottomSheet extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              if (isFuture) ...[
+              // Проверяем только наличие результатов
+              if (match.result1 != null && match.result2 != null) ...[
+                // Есть результаты - показываем счет
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 20.h,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: AutoSizeText(
+                    '${match.result1} : ${match.result2}',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                  ),
+                ),
+              ] else ...[
+                // Нет результатов - показываем время
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 20.w,
@@ -227,26 +256,6 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ],
-                  ),
-                ),
-              ] else ...[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24.w,
-                    vertical: 20.h,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: AutoSizeText(
-                    '${match.result1 ?? 0} : ${match.result2 ?? 0}',
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
                   ),
                 ),
               ],
@@ -293,7 +302,9 @@ class MatchDetailsBottomSheet extends StatelessWidget {
               Text(
                 () {
                   final title = context.localizedTitle(match.team2?.title);
-                  return title.isNotEmpty ? title : AppLocalizations.of(context)!.team2;
+                  return title.isNotEmpty
+                      ? title
+                      : AppLocalizations.of(context)!.team2;
                 }(),
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -598,7 +609,9 @@ class MatchDetailsBottomSheet extends StatelessWidget {
                     Text(
                       () {
                         final title = context.localizedTitle(stadium.title);
-                        return title.isNotEmpty ? title : AppLocalizations.of(context)!.notSpecified;
+                        return title.isNotEmpty
+                            ? title
+                            : AppLocalizations.of(context)!.notSpecified;
                       }(),
                       style: TextStyle(
                         fontSize: 14.sp,

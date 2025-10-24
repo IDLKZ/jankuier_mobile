@@ -34,9 +34,7 @@ class NewTicketWidgets extends StatelessWidget {
         return RefreshIndicator(
           onRefresh: () async {
             final bloc = context.read<TicketonShowsBloc>();
-            final parameter = TicketonGetShowsParameter.withCurrentLocale(
-              place: TicketonApiConstant.PlaceId,
-            );
+            final parameter = TicketonGetShowsParameter.withCurrentLocale();
             bloc.add(LoadTicketonShowsEvent(parameter: parameter));
             // Wait for the refresh to complete
             await Future.delayed(const Duration(milliseconds: 500));
@@ -53,7 +51,8 @@ class NewTicketWidgets extends StatelessWidget {
                 final show = filteredShows[index];
                 final event = state.shows.events[show.eventId];
                 final place = state.shows.places[show.placeId];
-                final city = place != null ? state.shows.cities[place.cityId] : null;
+                final city =
+                    place != null ? state.shows.cities[place.cityId] : null;
 
                 return Padding(
                   padding: EdgeInsets.only(bottom: 16.h),
@@ -76,7 +75,8 @@ class NewTicketWidgets extends StatelessWidget {
         );
       }
       if (state is TicketonShowsError) {
-        return Center(child: Text(AppLocalizations.of(context)!.noActiveTicketsYet));
+        return Center(
+            child: Text(AppLocalizations.of(context)!.noActiveTicketsYet));
       }
       return const Center(
         child: CircularProgressIndicator(),
@@ -127,7 +127,6 @@ class TicketCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.r),
-
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +191,8 @@ class TicketCard extends StatelessWidget {
                     left: 8.w,
                     right: 8.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
                         color: AppColors.success.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(12.r),
@@ -277,7 +277,9 @@ class TicketCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                placeName ?? AppLocalizations.of(context)!.venueNotSpecified,
+                                placeName ??
+                                    AppLocalizations.of(context)!
+                                        .venueNotSpecified,
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.w600,
@@ -406,7 +408,8 @@ class TicketCard extends StatelessWidget {
     );
   }
 
-  void _showDetailsBottomSheet(BuildContext context, Future<String?> Function() getAccessToken) {
+  void _showDetailsBottomSheet(
+      BuildContext context, Future<String?> Function() getAccessToken) {
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
 
     showModalBottomSheet<void>(
@@ -465,13 +468,15 @@ class TicketCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w, vertical: 6.h),
                               decoration: BoxDecoration(
                                 color: AppColors.primary.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(16.r),
                               ),
                               child: Text(
-                                genre?.toUpperCase() ?? AppLocalizations.of(context)!.sport,
+                                genre?.toUpperCase() ??
+                                    AppLocalizations.of(context)!.sport,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w600,
@@ -484,7 +489,8 @@ class TicketCard extends StatelessWidget {
                           SizedBox(width: 8.w),
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w, vertical: 6.h),
                               decoration: BoxDecoration(
                                 color: AppColors.success.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(16.r),
@@ -521,10 +527,9 @@ class TicketCard extends StatelessWidget {
                         data: remark ?? '',
                         style: {
                           "p": Style(
-                            fontSize: FontSize(12.sp),
-                            textAlign: TextAlign.left,
-                            color: AppColors.black
-                          ),
+                              fontSize: FontSize(12.sp),
+                              textAlign: TextAlign.left,
+                              color: AppColors.black),
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -548,7 +553,8 @@ class TicketCard extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.all(8.w),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withValues(alpha: 0.1),
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
                                   child: Icon(
@@ -560,7 +566,8 @@ class TicketCard extends StatelessWidget {
                                 SizedBox(width: 12.w),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         AppLocalizations.of(context)!.venue,
@@ -592,7 +599,8 @@ class TicketCard extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.all(8.w),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withValues(alpha: 0.1),
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
                                   child: Icon(
@@ -604,10 +612,12 @@ class TicketCard extends StatelessWidget {
                                 SizedBox(width: 12.w),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        AppLocalizations.of(context)!.dateAndTime,
+                                        AppLocalizations.of(context)!
+                                            .dateAndTime,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
@@ -617,8 +627,10 @@ class TicketCard extends StatelessWidget {
                                       SizedBox(height: 2.h),
                                       Text(
                                         startAt != null
-                                          ? dateFormatter.format(startAt!.toLocal())
-                                          : AppLocalizations.of(context)!.timeNotSpecified,
+                                            ? dateFormatter
+                                                .format(startAt!.toLocal())
+                                            : AppLocalizations.of(context)!
+                                                .timeNotSpecified,
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,

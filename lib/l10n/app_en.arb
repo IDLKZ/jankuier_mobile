@@ -593,5 +593,14 @@
   "enterEmailPhoneOrLogin": "Enter email, phone or login",
   "emailPhoneOrLogin": "Email, phone or login",
   "createNewAccount": "Create a new account",
-  "passwordRequirements": "Password must contain at least 1 uppercase, 1 lowercase letter, 1 digit and 1 special character"
+  "passwordRequirements": "Password must contain at least 1 uppercase, 1 lowercase letter, 1 digit and 1 special character",
+  "noStatisticsAvailable": "Statistics not available",
+  "statisticsWillAppearHere": "Match statistics will appear here",
+  "noLineupAvailable": "Lineup not available",
+  "lineupWillAppearHere": "Team lineups will appear here",
+  "noPlayerStatsAvailable": "Player statistics not available",
+  "playerStatsWillAppearHere": "Player statistics will appear here",
+  "withSupport": "with support",
+  "iAcceptTerms": "I accept the terms of",
+  "acceptTerms": "You must accept the privacy policy terms"
 }

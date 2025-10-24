@@ -4,6 +4,7 @@ import 'package:jankuier_mobile/features/standings/presentation/bloc/standing_ev
 import 'package:jankuier_mobile/features/standings/presentation/bloc/standing_state.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/content_refresh_service.dart';
+import '../../data/entities/score_table_team_entity.dart';
 import '../../domain/use_cases/get_matches_from_sota_case.dart';
 import '../../domain/use_cases/get_standings_table_from_sota_case.dart';
 import '../../domain/parameters/match_parameter.dart';
@@ -13,6 +14,9 @@ class StandingBloc extends Bloc<StandingEvent, GetStandingState> {
   final GetMatchesFromSotaCase getMatchesFromSotaCase;
   StreamSubscription? _languageSubscription;
   ContentRefreshService? _contentRefreshService;
+
+  // Хранение загруженной таблицы для использования с матчами
+  List<ScoreTableTeamEntity>? _cachedStandings;
 
   StandingBloc({
     required this.getStandingsTableFromSotaCase,
@@ -48,7 +52,10 @@ class StandingBloc extends Bloc<StandingEvent, GetStandingState> {
 
     result.fold(
       (failure) => emit(GetStandingsTableFromSotaFailedState(failure)),
-      (data) => emit(GetStandingsTableFromSotaLoadedState(data)),
+      (data) {
+        _cachedStandings = data; // Сохраняем таблицу в кэш
+        emit(GetStandingsTableFromSotaLoadedState(data));
+      },
     );
   }
 
@@ -58,11 +65,31 @@ class StandingBloc extends Bloc<StandingEvent, GetStandingState> {
   ) async {
     emit(GetMatchesFromSotaLoadingState());
 
+    // Загружаем таблицу, если она еще не загружена
+    if (_cachedStandings == null) {
+      final standingsResult = await getStandingsTableFromSotaCase();
+      standingsResult.fold(
+        (failure) {}, // Игнорируем ошибку загрузки таблицы
+        (data) => _cachedStandings = data,
+      );
+    }
+
     final result = await getMatchesFromSotaCase(event.parameter);
 
     result.fold(
       (failure) => emit(GetMatchesFromSotaFailedState(failure)),
-      (data) => emit(GetMatchesFromSotaLoadedState(data)),
+      (matches) {
+        // Если есть кэшированная таблица, эмитим комбинированный state
+        if (_cachedStandings != null) {
+          emit(GetStandingsAndMatchesLoadedState(
+            standings: _cachedStandings!,
+            matches: matches,
+          ));
+        } else {
+          // Иначе просто матчи
+          emit(GetMatchesFromSotaLoadedState(matches));
+        }
+      },
     );
   }
 

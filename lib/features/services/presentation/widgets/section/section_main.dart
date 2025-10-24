@@ -11,6 +11,7 @@ import 'package:jankuier_mobile/features/services/domain/use_cases/academy/pagin
 import 'package:jankuier_mobile/features/services/presentation/bloc/academy/academy_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/academy/academy_event.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/academy/academy_state.dart';
+import 'package:jankuier_mobile/features/services/presentation/widgets/bayan_sulu_support_widget.dart';
 import 'package:jankuier_mobile/shared/widgets/main_title_widget.dart';
 
 import '../../../../../core/common/entities/city_entity.dart';
@@ -49,7 +50,8 @@ class _SectionMainState extends State<SectionMain>
   int _selectedGender = 0; // 0-любой, 1-мужской, 2-женский
 
   final dropDownKey = GlobalKey<DropdownSearchState>();
-  PaginateAcademyParameter _params = const PaginateAcademyParameter(perPage: 12);
+  PaginateAcademyParameter _params =
+      const PaginateAcademyParameter(perPage: 12);
 
   late final AcademyBloc _bloc;
 
@@ -174,406 +176,440 @@ class _SectionMainState extends State<SectionMain>
                                   .sectionRegistration),
                           IconButton(
                               onPressed: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                useRootNavigator: false,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) {
-                                  return StatefulBuilder(
-                                    builder: (context, setModalState) {
-                                      return DraggableScrollableSheet(
-                                        initialChildSize: 0.6,
-                                        maxChildSize: 0.8,
-                                        minChildSize: 0.4,
-                                        expand: false,
-                                        builder: (_, scrollController) {
-                                          return Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w,
-                                                vertical: 30.h),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(15.r),
-                                                topLeft: Radius.circular(15.r),
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  useRootNavigator: false,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) {
+                                    return StatefulBuilder(
+                                      builder: (context, setModalState) {
+                                        return DraggableScrollableSheet(
+                                          initialChildSize: 0.6,
+                                          maxChildSize: 0.8,
+                                          minChildSize: 0.4,
+                                          expand: false,
+                                          builder: (_, scrollController) {
+                                            return Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20.w,
+                                                  vertical: 10.h),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  topRight:
+                                                      Radius.circular(15.r),
+                                                  topLeft:
+                                                      Radius.circular(15.r),
+                                                ),
                                               ),
-                                            ),
-                                            child: SingleChildScrollView(
-                                              controller: scrollController,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  // Title
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .searchFilters,
-                                                    style: TextStyle(
-                                                        fontSize: 18.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: AppColors.black),
-                                                  ),
-                                                  SizedBox(height: 20.h),
-
-                                                  // Search field
-                                                  TextField(
-                                                    controller:
-                                                        _searchController,
-                                                    decoration: InputDecoration(
-                                                      labelText:
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .search,
-                                                      hintText:
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .enterSectionName,
-                                                      border:
-                                                          const OutlineInputBorder(),
-                                                      errorText: _searchError,
-                                                      prefixIcon: const Icon(
-                                                          Icons.search),
-                                                      filled: true,
-                                                      fillColor: Colors.white,
-                                                    ),
-                                                    onChanged: (value) {
-                                                      setModalState(() {
-                                                        _searchError =
-                                                            _validateSearch(
-                                                                value);
-                                                      });
-                                                    },
-                                                  ),
-                                                  SizedBox(height: 15.h),
-
-                                                  // City selector
-                                                  BlocProvider.value(
-                                                    value: _getCitiesBloc,
-                                                    child: BlocBuilder<
-                                                        GetCitiesBloc,
-                                                        GetCitiesState>(
-                                                      builder:
-                                                          (BuildContext context,
-                                                              GetCitiesState
-                                                                  state) {
-                                                        if (state
-                                                            is GetCitiesLoadingState) {
-                                                          return const Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          );
-                                                        }
-                                                        if (state
-                                                            is GetCitiesSuccessState) {
-                                                          return DropdownSearch<
-                                                              CityEntity>(
-                                                            key: dropDownKey,
-                                                            selectedItem:
-                                                                _selectedCity,
-                                                            onChanged: (item) {
-                                                              setModalState(() {
-                                                                _selectedCity =
-                                                                    item;
-                                                              });
-                                                            },
-                                                            itemAsString:
-                                                                (city) => context.localizedDirectTitle(city),
-                                                            compareFn: (item1, item2) =>
-                                                                item1.id == item2.id,
-                                                            filterFn: (CityEntity city,
-                                                                String filter) {
-                                                              final query = filter
-                                                                  .toLowerCase();
-                                                              return (
-                                                                      context.localizedDirectTitle(city)
-                                                                      .toLowerCase()
-                                                                      .contains(query));
-                                                            },
-                                                            items: (filter,
-                                                                    infiniteScrollProps) =>
-                                                                state.cities,
-                                                            decoratorProps:
-                                                                DropDownDecoratorProps(
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText: AppLocalizations.of(context)!
-                                                                    .selectCity,
-                                                                border:
-                                                                    const OutlineInputBorder(),
-                                                                prefixIcon:
-                                                                    const Icon(Icons.location_city),
-                                                                filled: true,
-                                                                fillColor:
-                                                                    Colors
-                                                                        .white,
-                                                              ),
-                                                            ),
-                                                            popupProps:
-                                                                PopupProps.menu(
-                                                              constraints:
-                                                                  BoxConstraints(
-                                                                      maxHeight: 200.h),
-                                                              showSelectedItems:
-                                                                  false,
-                                                              showSearchBox:
-                                                                  true,
-                                                              fit:
-                                                                  FlexFit.loose,
-                                                              itemBuilder: (context,
-                                                                      item,
-                                                                      isDisabled,
-                                                                      isSelected) =>
-                                                                  Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        12.0),
-                                                                child: Text(
-                                                                  context.localizedDirectTitle(item),
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          14.sp),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        return const SizedBox();
-                                                      },
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 15.h),
-
-                                                  // Gender selector
-                                                  DropdownButtonFormField<int>(
-                                                    value: _selectedGender,
-                                                    decoration: InputDecoration(
-                                                      labelText:
-                                                          AppLocalizations.of(
-                                                                  context)!
-                                                              .gender,
-                                                      labelStyle: const TextStyle(
+                                              child: SingleChildScrollView(
+                                                controller: scrollController,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildBayanSuluBlueCard(
+                                                        context),
+                                                    // Title
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .searchFilters,
+                                                      style: TextStyle(
+                                                          fontSize: 18.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                           color:
                                                               AppColors.black),
-                                                      border:
-                                                          const OutlineInputBorder(),
-                                                      prefixIcon:
-                                                          const Icon(Icons.person),
-                                                      filled: true,
-                                                      fillColor: Colors.white,
                                                     ),
-                                                    items: [
-                                                      DropdownMenuItem(
-                                                          value: 0,
-                                                          child: Text(
-                                                              AppLocalizations.of(
-                                                                      context)!
-                                                                  .any)),
-                                                      DropdownMenuItem(
-                                                          value: 1,
-                                                          child: Text(
-                                                              AppLocalizations.of(
-                                                                      context)!
-                                                                  .male)),
-                                                      DropdownMenuItem(
-                                                          value: 2,
-                                                          child: Text(
-                                                              AppLocalizations.of(
-                                                                      context)!
-                                                                  .female)),
-                                                    ],
-                                                    onChanged: (value) {
-                                                      setModalState(() {
-                                                        _selectedGender =
-                                                            value ?? 0;
-                                                      });
-                                                    },
-                                                  ),
-                                                  SizedBox(height: 15.h),
+                                                    SizedBox(height: 20.h),
 
-                                                  // Age range
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .age,
-                                                    style: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors.black),
-                                                  ),
-                                                  SizedBox(height: 8.h),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: TextField(
-                                                          controller:
-                                                              _minAgeController,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .from,
-                                                            border:
-                                                                const OutlineInputBorder(),
-                                                            isDense: true,
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white,
-                                                          ),
-                                                        ),
+                                                    // Search field
+                                                    TextField(
+                                                      controller:
+                                                          _searchController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .search,
+                                                        hintText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .enterSectionName,
+                                                        border:
+                                                            const OutlineInputBorder(),
+                                                        errorText: _searchError,
+                                                        prefixIcon: const Icon(
+                                                            Icons.search),
+                                                        filled: true,
+                                                        fillColor: Colors.white,
                                                       ),
-                                                      SizedBox(width: 10.w),
-                                                      Expanded(
-                                                        child: TextField(
-                                                          controller:
-                                                              _maxAgeController,
-                                                          keyboardType:
-                                                              TextInputType.number,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                AppLocalizations.of(context)!.to,
-                                                            border:
-                                                                const OutlineInputBorder(),
-                                                            isDense: true,
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 15.h),
-
-                                                  // Price range
-                                                  Text(
-                                                    AppLocalizations.of(context)!.averagePrice,
-                                                    style: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors.black),
-                                                  ),
-                                                  SizedBox(height: 8.h),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: TextField(
-                                                          controller:
-                                                              _minPriceController,
-                                                          keyboardType:
-                                                              const TextInputType
-                                                                  .numberWithOptions(
-                                                                  decimal:
-                                                                      true),
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .priceFrom,
-                                                            border:
-                                                                const OutlineInputBorder(),
-                                                            isDense: true,
-                                                            suffixText: '₸',
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 10.w),
-                                                      Expanded(
-                                                        child: TextField(
-                                                          controller:
-                                                              _maxPriceController,
-                                                          keyboardType:
-                                                              const TextInputType
-                                                                  .numberWithOptions(
-                                                                  decimal:
-                                                                      true),
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                AppLocalizations.of(
-                                                                        context)!
-                                                                    .priceTo,
-                                                            border:
-                                                                const OutlineInputBorder(),
-                                                            isDense: true,
-                                                            suffixText: '₸',
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 25.h),
-
-                                                  // Apply button
-                                                  SizedBox(
-                                                    width: double.infinity,
-                                                    child: ElevatedButton(
-                                                      onPressed: () {
-                                                        _applyFilters();
-                                                        Navigator.of(context)
-                                                            .pop();
+                                                      onChanged: (value) {
+                                                        setModalState(() {
+                                                          _searchError =
+                                                              _validateSearch(
+                                                                  value);
+                                                        });
                                                       },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xFF0247C3),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 15.h),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.r),
-                                                        ),
+                                                    ),
+                                                    SizedBox(height: 15.h),
+
+                                                    // City selector
+                                                    BlocProvider.value(
+                                                      value: _getCitiesBloc,
+                                                      child: BlocBuilder<
+                                                          GetCitiesBloc,
+                                                          GetCitiesState>(
+                                                        builder: (BuildContext
+                                                                context,
+                                                            GetCitiesState
+                                                                state) {
+                                                          if (state
+                                                              is GetCitiesLoadingState) {
+                                                            return const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            );
+                                                          }
+                                                          if (state
+                                                              is GetCitiesSuccessState) {
+                                                            return DropdownSearch<
+                                                                CityEntity>(
+                                                              key: dropDownKey,
+                                                              selectedItem:
+                                                                  _selectedCity,
+                                                              onChanged:
+                                                                  (item) {
+                                                                setModalState(
+                                                                    () {
+                                                                  _selectedCity =
+                                                                      item;
+                                                                });
+                                                              },
+                                                              itemAsString:
+                                                                  (city) => context
+                                                                      .localizedDirectTitle(
+                                                                          city),
+                                                              compareFn: (item1,
+                                                                      item2) =>
+                                                                  item1.id ==
+                                                                  item2.id,
+                                                              filterFn: (CityEntity
+                                                                      city,
+                                                                  String
+                                                                      filter) {
+                                                                final query = filter
+                                                                    .toLowerCase();
+                                                                return (context
+                                                                    .localizedDirectTitle(
+                                                                        city)
+                                                                    .toLowerCase()
+                                                                    .contains(
+                                                                        query));
+                                                              },
+                                                              items: (filter,
+                                                                      infiniteScrollProps) =>
+                                                                  state.cities,
+                                                              decoratorProps:
+                                                                  DropDownDecoratorProps(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText: AppLocalizations.of(
+                                                                          context)!
+                                                                      .selectCity,
+                                                                  border:
+                                                                      const OutlineInputBorder(),
+                                                                  prefixIcon:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .location_city),
+                                                                  filled: true,
+                                                                  fillColor:
+                                                                      Colors
+                                                                          .white,
+                                                                ),
+                                                              ),
+                                                              popupProps:
+                                                                  PopupProps
+                                                                      .menu(
+                                                                constraints:
+                                                                    BoxConstraints(
+                                                                        maxHeight:
+                                                                            200.h),
+                                                                showSelectedItems:
+                                                                    false,
+                                                                showSearchBox:
+                                                                    true,
+                                                                fit: FlexFit
+                                                                    .loose,
+                                                                itemBuilder: (context,
+                                                                        item,
+                                                                        isDisabled,
+                                                                        isSelected) =>
+                                                                    Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          12.0),
+                                                                  child: Text(
+                                                                    context
+                                                                        .localizedDirectTitle(
+                                                                            item),
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            14.sp),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          return const SizedBox();
+                                                        },
                                                       ),
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .apply,
-                                                        style: TextStyle(
+                                                    ),
+                                                    SizedBox(height: 15.h),
+
+                                                    // Gender selector
+                                                    DropdownButtonFormField<
+                                                        int>(
+                                                      value: _selectedGender,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .gender,
+                                                        labelStyle:
+                                                            const TextStyle(
+                                                                color: AppColors
+                                                                    .black),
+                                                        border:
+                                                            const OutlineInputBorder(),
+                                                        prefixIcon: const Icon(
+                                                            Icons.person),
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                      ),
+                                                      items: [
+                                                        DropdownMenuItem(
+                                                            value: 0,
+                                                            child: Text(
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .any)),
+                                                        DropdownMenuItem(
+                                                            value: 1,
+                                                            child: Text(
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .male)),
+                                                        DropdownMenuItem(
+                                                            value: 2,
+                                                            child: Text(
+                                                                AppLocalizations.of(
+                                                                        context)!
+                                                                    .female)),
+                                                      ],
+                                                      onChanged: (value) {
+                                                        setModalState(() {
+                                                          _selectedGender =
+                                                              value ?? 0;
+                                                        });
+                                                      },
+                                                    ),
+                                                    SizedBox(height: 15.h),
+
+                                                    // Age range
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .age,
+                                                      style: TextStyle(
                                                           fontSize: 16.sp,
-                                                          color: Colors.white,
                                                           fontWeight:
-                                                              FontWeight.w600,
+                                                              FontWeight.w500,
+                                                          color:
+                                                              AppColors.black),
+                                                    ),
+                                                    SizedBox(height: 8.h),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: TextField(
+                                                            controller:
+                                                                _minAgeController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .from,
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                              isDense: true,
+                                                              filled: true,
+                                                              fillColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10.w),
+                                                        Expanded(
+                                                          child: TextField(
+                                                            controller:
+                                                                _maxAgeController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .to,
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                              isDense: true,
+                                                              filled: true,
+                                                              fillColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 15.h),
+
+                                                    // Price range
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .averagePrice,
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color:
+                                                              AppColors.black),
+                                                    ),
+                                                    SizedBox(height: 8.h),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: TextField(
+                                                            controller:
+                                                                _minPriceController,
+                                                            keyboardType:
+                                                                const TextInputType
+                                                                    .numberWithOptions(
+                                                                    decimal:
+                                                                        true),
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .priceFrom,
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                              isDense: true,
+                                                              suffixText: '₸',
+                                                              filled: true,
+                                                              fillColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10.w),
+                                                        Expanded(
+                                                          child: TextField(
+                                                            controller:
+                                                                _maxPriceController,
+                                                            keyboardType:
+                                                                const TextInputType
+                                                                    .numberWithOptions(
+                                                                    decimal:
+                                                                        true),
+                                                            decoration:
+                                                                InputDecoration(
+                                                              labelText:
+                                                                  AppLocalizations.of(
+                                                                          context)!
+                                                                      .priceTo,
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                              isDense: true,
+                                                              suffixText: '₸',
+                                                              filled: true,
+                                                              fillColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 25.h),
+
+                                                    // Apply button
+                                                    SizedBox(
+                                                      width: double.infinity,
+                                                      child: ElevatedButton(
+                                                        onPressed: () {
+                                                          _applyFilters();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              const Color(
+                                                                  0xFF0247C3),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      15.h),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.r),
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .apply,
+                                                          style: TextStyle(
+                                                            fontSize: 16.sp,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            icon: Icon(
-                              Iconsax.filter_square_copy,
-                              size: 18.sp,
-                            ))
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Iconsax.filter_square_copy,
+                                size: 18.sp,
+                              ))
                         ]),
                     SizedBox(height: 12.h),
                     _buildAcademyList(state.academies, state),

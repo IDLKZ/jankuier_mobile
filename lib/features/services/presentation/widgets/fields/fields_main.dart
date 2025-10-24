@@ -17,6 +17,7 @@ import 'package:jankuier_mobile/features/services/data/entities/field/field_part
 import 'package:jankuier_mobile/features/services/domain/parameters/paginate_field_party_parameter.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/field_party/field_party_event.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/field_party/field_party_state.dart';
+import 'package:jankuier_mobile/features/services/presentation/widgets/bayan_sulu_support_widget.dart';
 
 import '../../../../../core/di/injection.dart';
 import '../../../../../shared/widgets/main_title_widget.dart';
@@ -197,6 +198,7 @@ class _FieldsMainState extends State<FieldsMain>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                buildBayanSuluBlueCard(context),
                                 // Title
                                 Text(
                                   AppLocalizations.of(context)!.searchFilters,
@@ -250,7 +252,8 @@ class _FieldsMainState extends State<FieldsMain>
                                               _selectedCity = item;
                                             });
                                           },
-                                          itemAsString: (city) => context.localizedDirectTitle(city),
+                                          itemAsString: (city) => context
+                                              .localizedDirectTitle(city),
                                           compareFn: (item1, item2) =>
                                               item1.id == item2.id,
                                           filterFn:
@@ -275,9 +278,10 @@ class _FieldsMainState extends State<FieldsMain>
                                               labelText:
                                                   AppLocalizations.of(context)!
                                                       .selectCity,
-                                              border: const OutlineInputBorder(),
-                                              prefixIcon:
-                                                  const Icon(Icons.location_city),
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              prefixIcon: const Icon(
+                                                  Icons.location_city),
                                               filled: true,
                                               fillColor: Colors.white,
                                             ),

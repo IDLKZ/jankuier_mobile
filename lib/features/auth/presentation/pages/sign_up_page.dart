@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -8,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../profile/presentation/pages/privacy_webview_page.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/constants/form_validation_constants.dart';
 import 'package:jankuier_mobile/features/auth/domain/parameters/register_parameter.dart';
@@ -17,6 +19,8 @@ import 'package:jankuier_mobile/features/auth/presentation/bloc/sign_up_bloc/sig
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/localization_service.dart';
+import '../widget/bayan_sulu_support_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -66,6 +70,9 @@ class _SignUpViewState extends State<_SignUpView> {
   // Password visibility
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+
+  // Terms acceptance
+  bool _acceptedTerms = false;
 
   // Validation errors
   final Map<String, String?> _errors = {};
@@ -166,7 +173,7 @@ class _SignUpViewState extends State<_SignUpView> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterFirstName;
     }
-    if (value.trim().length < 2) {
+    if (value.trim().length < 1) {
       return AppLocalizations.of(context)!.firstNameMinChars;
     }
     if (value.trim().length > 200) {
@@ -179,7 +186,7 @@ class _SignUpViewState extends State<_SignUpView> {
     if (value == null || value.trim().isEmpty) {
       return AppLocalizations.of(context)!.enterLastName;
     }
-    if (value.trim().length < 2) {
+    if (value.trim().length < 1) {
       return AppLocalizations.of(context)!.lastNameMinChars;
     }
     if (value.trim().length > 200) {
@@ -225,6 +232,7 @@ class _SignUpViewState extends State<_SignUpView> {
       _errors.clear();
       _errors['password'] = _validatePassword(_passC.text);
       _errors['confirmPassword'] = _validateConfirmPassword(_samePassC.text);
+      _errors['terms'] = _acceptedTerms ? null : AppLocalizations.of(context)!.acceptTerms;
     });
 
     return !_errors.values.any((error) => error != null);
@@ -494,6 +502,124 @@ class _SignUpViewState extends State<_SignUpView> {
                 });
               },
             ),
+            SizedBox(height: 24.h),
+            // Terms and conditions checkbox
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Transform.scale(
+                  scale: 1.2,
+                  child: Checkbox(
+                    value: _acceptedTerms,
+                    onChanged: (value) {
+                      setState(() {
+                        _acceptedTerms = value ?? false;
+                        if (_acceptedTerms) {
+                          _errors['terms'] = null;
+                        }
+                      });
+                    },
+                    fillColor: WidgetStateProperty.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Colors.white;
+                      }
+                      return Colors.white.withValues(alpha: 0.3);
+                    }),
+                    checkColor: const Color(0xFF0148C9),
+                    side: BorderSide(
+                      color: _errors['terms'] != null
+                          ? Colors.yellow[300]!
+                          : Colors.white.withValues(alpha: 0.6),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 12.h),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.white.withValues(alpha: 0.9),
+                          height: 1.4,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.iAcceptTerms,
+                          ),
+                          TextSpan(
+                            text: ' ${AppLocalizations.of(context)!.privacyTitle}',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(type: 'privacy'),
+                                  ),
+                                );
+                              },
+                          ),
+                          TextSpan(text: ', '),
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.publicTitle,
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(type: 'public'),
+                                  ),
+                                );
+                              },
+                          ),
+                          TextSpan(text: ', '),
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.publicMobileTitle,
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PrivacyWebViewPage(type: 'public-mobile'),
+                                  ),
+                                );
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_errors['terms'] != null)
+              Padding(
+                padding: EdgeInsets.only(left: 48.w, top: 4.h),
+                child: Text(
+                  _errors['terms']!,
+                  style: TextStyle(
+                    color: Colors.yellow[300],
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -550,6 +676,53 @@ class _SignUpViewState extends State<_SignUpView> {
               ),
             ),
           ),
+          actions: [
+            FutureBuilder<LocalizationService>(
+              future: getIt.getAsync<LocalizationService>(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+
+                final localizationService = snapshot.data!;
+
+                return GestureDetector(
+                  onTap: () {
+                    localizationService.cycleToNextLanguage();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.h, right: 10.w),
+                    width: 40.w,
+                    height: 32.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: localizationService,
+                        builder: (context, child) {
+                          return Text(
+                            localizationService.getCurrentLanguageDisplayName(),
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: MultiBlocListener(
           listeners: [
@@ -822,7 +995,9 @@ class _SignUpViewState extends State<_SignUpView> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 10.h),
+                          buildBayanSuluWhiteCard(context),
+                          SizedBox(height: 10.h),
                         ],
                       ),
                     ),

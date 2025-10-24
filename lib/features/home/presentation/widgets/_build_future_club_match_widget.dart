@@ -12,7 +12,6 @@ import '../../../../core/constants/app_route_constants.dart';
 import '../../../kff_league/presentation/widgets/match_card_widget.dart';
 
 Widget buildFutureClubMatch(BuildContext context) {
-  bool isFuture = true;
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,15 +115,13 @@ Widget buildFutureClubMatch(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          isFuture ? Icons.schedule : Icons.history,
+                          Icons.sports_soccer,
                           size: 48.sp,
                           color: AppColors.textSecondary,
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          isFuture
-                              ? AppLocalizations.of(context)!.noUpcomingMatches
-                              : AppLocalizations.of(context)!.noPastMatches,
+                          AppLocalizations.of(context)!.noUpcomingMatches,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -153,7 +150,7 @@ Widget buildFutureClubMatch(BuildContext context) {
                     ...matches.map((match) {
                       return MatchCardWidget(
                         match: match,
-                        isFuture: isFuture,
+                        isFuture: false, // Параметр не используется, но оставляем для совместимости
                       );
                     }).toList(),
                   ],

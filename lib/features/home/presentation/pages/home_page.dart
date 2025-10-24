@@ -28,6 +28,7 @@ import '../../../blog/domain/parameters/get_news_parameter.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_bloc.dart';
 import '../../../blog/presentation/bloc/get_news/get_news_event.dart';
 import '../../../tournament/presentation/bloc/get_tournaments/get_tournament_state.dart';
+import '../widgets/_build_bayan_sulu_support_widget.dart';
 import '../widgets/_build_future_match_widget.dart';
 import '../widgets/_build_header.dart';
 import '../widgets/_build_main_tournament_card.dart';
@@ -102,9 +103,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _loadTickets() {
-    final parameter = TicketonGetShowsParameter.withCurrentLocale(
-      place: TicketonApiConstant.PlaceId,
-    );
+    final parameter = TicketonGetShowsParameter.withCurrentLocale();
     _ticketonShowsBloc.add(LoadTicketonShowsEvent(parameter: parameter));
   }
 
@@ -134,6 +133,9 @@ class _HomePageState extends State<HomePage>
       final mainSelectionService = getIt<MainSelectionService>();
       await mainSelectionService.saveMainTournament(tournament);
 
+      // Always load standings table first for team logos
+      _standingBloc.add(LoadStandingsTableFromSotaEvent());
+
       // Load data for current tab
       _loadTabData();
     } catch (e) {
@@ -155,7 +157,8 @@ class _HomePageState extends State<HomePage>
       // Load standings table
       _standingBloc.add(LoadStandingsTableFromSotaEvent());
     } else {
-      // Load matches
+      // Load matches - standings already loaded by _onTournamentSelected
+      // or will be loaded automatically by bloc from cache
       final latestSeason = _selectedTournament!.seasons.isNotEmpty
           ? _selectedTournament!.seasons.reduce((current, next) =>
               current.startDate.isAfter(next.startDate) ? current : next)
@@ -253,8 +256,8 @@ class _HomePageState extends State<HomePage>
                     child: Column(
                       children: [
                         // Tournament selection section
-                        buildTournamentSection(
-                            context, _selectedTournament, _onTournamentSelected),
+                        buildTournamentSection(context, _selectedTournament,
+                            _onTournamentSelected),
                         // Main tournament card
                         if (_selectedTournament != null)
                           buildMainTournamentCard(context, _selectedTournament),
@@ -268,6 +271,7 @@ class _HomePageState extends State<HomePage>
                           buildFutureMatch(context),
                         if (_selectedTournament != null)
                           buildFutureClubMatch(context),
+                        buildBayanSuluYellowCard(context),
                         // News section
                         if (_selectedTournament != null)
                           buildNewsSection(context),

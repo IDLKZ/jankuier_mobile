@@ -18,6 +18,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/constants/form_validation_constants.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/localization_service.dart';
 
 class EnterPhonePage extends StatefulWidget {
   final String? phone;
@@ -150,6 +151,53 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
               ),
             ),
           ),
+          actions: [
+            FutureBuilder<LocalizationService>(
+              future: getIt.getAsync<LocalizationService>(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+
+                final localizationService = snapshot.data!;
+
+                return GestureDetector(
+                  onTap: () {
+                    localizationService.cycleToNextLanguage();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.h, right: 10.w),
+                    width: 40.w,
+                    height: 32.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: localizationService,
+                        builder: (context, child) {
+                          return Text(
+                            localizationService.getCurrentLanguageDisplayName(),
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: BlocProvider<SendVerifyCodeBloc>(
           create: (context) => getIt<SendVerifyCodeBloc>(),

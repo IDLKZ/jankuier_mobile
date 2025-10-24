@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../standings/data/entities/score_table_team_entity.dart';
 
 String formatDate(String dateString) {
   try {
@@ -37,5 +38,15 @@ String formatNewsDate(BuildContext context, String dateString) {
     }
   } catch (e) {
     return dateString;
+  }
+}
+
+/// Поиск логотипа команды по ID из списка команд турнирной таблицы
+String getTeamLogoById(int teamId, List<ScoreTableTeamEntity> standings) {
+  try {
+    final team = standings.firstWhere((team) => team.id == teamId);
+    return team.logo;
+  } catch (e) {
+    return ''; // Возвращаем пустую строку, если команда не найдена
   }
 }

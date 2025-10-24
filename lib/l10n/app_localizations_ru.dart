@@ -1562,4 +1562,32 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get passwordRequirements =>
       'Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол';
+
+  @override
+  String get noStatisticsAvailable => 'Статистика недоступна';
+
+  @override
+  String get statisticsWillAppearHere => 'Статистика матча появится здесь';
+
+  @override
+  String get noLineupAvailable => 'Состав недоступен';
+
+  @override
+  String get lineupWillAppearHere => 'Состав команд появится здесь';
+
+  @override
+  String get noPlayerStatsAvailable => 'Статистика игроков недоступна';
+
+  @override
+  String get playerStatsWillAppearHere => 'Статистика игроков появится здесь';
+
+  @override
+  String get withSupport => 'при поддержке';
+
+  @override
+  String get iAcceptTerms => 'Я принимаю условия';
+
+  @override
+  String get acceptTerms =>
+      'Необходимо принять условия политики конфиденциальности';
 }

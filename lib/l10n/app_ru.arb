@@ -592,5 +592,14 @@
   "enterEmailPhoneOrLogin": "Введите email, телефон или логин",
   "emailPhoneOrLogin": "Email, телефон или логин",
   "createNewAccount": "Создайте новый аккаунт",
-  "passwordRequirements": "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол"
+  "passwordRequirements": "Пароль должен содержать минимум 1 заглавную, 1 строчную букву, 1 цифру и 1 спецсимвол",
+  "noStatisticsAvailable": "Статистика недоступна",
+  "statisticsWillAppearHere": "Статистика матча появится здесь",
+  "noLineupAvailable": "Состав недоступен",
+  "lineupWillAppearHere": "Состав команд появится здесь",
+  "noPlayerStatsAvailable": "Статистика игроков недоступна",
+  "playerStatsWillAppearHere": "Статистика игроков появится здесь",
+  "withSupport": "при поддержке",
+  "iAcceptTerms": "Я принимаю условия",
+  "acceptTerms": "Необходимо принять условия политики конфиденциальности"
 }

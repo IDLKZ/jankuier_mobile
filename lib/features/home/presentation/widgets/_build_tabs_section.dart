@@ -155,13 +155,20 @@ Widget _buildTableTabWithoutExpanded() {
 Widget _buildResultsTabWithoutExpanded() {
   return BlocBuilder<StandingBloc, GetStandingState>(
     builder: (context, state) {
-      if (state is GetMatchesFromSotaLoadingState) {
+      if (state is GetMatchesFromSotaLoadingState ||
+          state is GetStandingsTableFromSotaLoadingState) {
         return SizedBox(
           height: 200.h,
           child: const Center(child: CircularProgressIndicator()),
         );
+      } else if (state is GetStandingsAndMatchesLoadedState) {
+        // Комбинированный state с таблицей и матчами
+        return _buildMatchesListWithoutExpanded(
+            state.matches, context, state.standings);
       } else if (state is GetMatchesFromSotaLoadedState) {
-        return _buildMatchesListWithoutExpanded(state.result, context);
+        // Только матчи (без таблицы) - показываем без логотипов
+        // Bloc автоматически загрузит таблицу при следующем запросе
+        return _buildMatchesListWithoutExpanded(state.result, context, null);
       } else if (state is GetMatchesFromSotaFailedState) {
         return SizedBox(
           height: 200.h,
@@ -200,7 +207,7 @@ Widget _buildResultsTabWithoutExpanded() {
       return SizedBox(
         height: 100.h,
         child: Center(
-          child: Text(AppLocalizations.of(context)!.selectResultsTab),
+          child: CircularProgressIndicator(),
         ),
       );
     },
@@ -315,8 +322,8 @@ Widget _buildStandingsTableWithoutExpanded(
   );
 }
 
-Widget _buildMatchesListWithoutExpanded(
-    List<MatchEntity> matches, BuildContext context) {
+Widget _buildMatchesListWithoutExpanded(List<MatchEntity> matches,
+    BuildContext context, List<ScoreTableTeamEntity>? standings) {
   final groupedMatches = <int, List<MatchEntity>>{};
 
   for (final match in matches) {
@@ -350,8 +357,8 @@ Widget _buildMatchesListWithoutExpanded(
               ),
             ),
             // Matches for this tour
-            ...tourMatches
-                .map((match) => _buildMatchCardWithoutMargin(match, context)),
+            ...tourMatches.map((match) =>
+                _buildMatchCardWithoutMargin(match, context, standings)),
             SizedBox(height: 16.h),
           ],
         );
@@ -360,11 +367,23 @@ Widget _buildMatchesListWithoutExpanded(
   );
 }
 
-Widget _buildMatchCardWithoutMargin(MatchEntity match, BuildContext context) {
+Widget _buildMatchCardWithoutMargin(MatchEntity match, BuildContext context,
+    List<ScoreTableTeamEntity>? standings) {
+  // Получаем логотипы из таблицы, если она доступна
+  final homeTeamLogo =
+      standings != null ? getTeamLogoById(match.homeTeam.id, standings) : '';
+  final awayTeamLogo =
+      standings != null ? getTeamLogoById(match.awayTeam.id, standings) : '';
+
   return GestureDetector(
     onTap: () {
-      context.push('${AppRouteConstants.GameStatPagePath}${match.id}',
-          extra: match);
+      context.push(
+        '${AppRouteConstants.GameStatPagePath}${match.id}',
+        extra: {
+          'match': match,
+          'standings': standings,
+        },
+      );
     },
     child: Container(
       margin: EdgeInsets.only(bottom: 8.h),
@@ -391,15 +410,23 @@ Widget _buildMatchCardWithoutMargin(MatchEntity match, BuildContext context) {
                 Container(
                   width: 40.w,
                   height: 40.h,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
                     shape: BoxShape.circle,
+                    image: homeTeamLogo.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(homeTeamLogo),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
-                  child: Icon(
-                    Icons.sports_soccer,
-                    color: Colors.grey,
-                    size: 24.sp,
-                  ),
+                  child: homeTeamLogo.isEmpty
+                      ? Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 24.sp,
+                        )
+                      : null,
                 ),
                 SizedBox(height: 8.h),
                 // Home team name
@@ -457,15 +484,23 @@ Widget _buildMatchCardWithoutMargin(MatchEntity match, BuildContext context) {
                 Container(
                   width: 40.w,
                   height: 40.h,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
                     shape: BoxShape.circle,
+                    image: awayTeamLogo.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(awayTeamLogo),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
-                  child: Icon(
-                    Icons.sports_soccer,
-                    color: Colors.grey,
-                    size: 24.sp,
-                  ),
+                  child: awayTeamLogo.isEmpty
+                      ? Icon(
+                          Icons.sports_soccer,
+                          color: Colors.grey,
+                          size: 24.sp,
+                        )
+                      : null,
                 ),
                 SizedBox(height: 8.h),
                 // Away team name

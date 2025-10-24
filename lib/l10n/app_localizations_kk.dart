@@ -261,28 +261,28 @@ class AppLocalizationsKk extends AppLocalizations {
       'Ойыншылар статистикасы қойындысын таңдаңыз';
 
   @override
-  String get ballPossession => 'Доп володельство';
+  String get ballPossession => 'Допқа иелік ету';
 
   @override
   String get shots => 'Соққылар';
 
   @override
-  String get shotsOnGoal => 'Қақпаға соққылар';
+  String get shotsOnGoal => 'Қақпаға бағытталған соққылар';
 
   @override
-  String get shotsOffGoal => 'Қақпаның сыртына';
+  String get shotsOffGoal => 'Қиыс соққылар';
 
   @override
-  String get fouls => 'Бұзып кетулер';
+  String get fouls => 'Фолдар';
 
   @override
-  String get yellowCards => 'Сары карточкалар';
+  String get yellowCards => 'Сары қағаздар';
 
   @override
   String get refereeTeam => 'Төрешілер бригадасы';
 
   @override
-  String get mainReferee => 'Бас төреші:';
+  String get mainReferee => 'Бас төреші';
 
   @override
   String get firstAssistant => '1-ші көмекші:';
@@ -297,22 +297,22 @@ class AppLocalizationsKk extends AppLocalizations {
   String get coachingStaff => 'Жаттықтырушы штаб';
 
   @override
-  String get headCoach => 'Бас жаттықтырушы';
+  String get headCoach => 'Бас бапкер';
 
   @override
-  String get assistants => 'Көмекшілер';
+  String get assistants => 'Бапкер көмекшілері';
 
   @override
-  String get goalkeeper => 'ЩҚ';
+  String get goalkeeper => 'Ққ';
 
   @override
-  String get goalkeeperFull => 'Щанго қорғаушы';
+  String get goalkeeperFull => 'Қақпашы';
 
   @override
-  String get fieldPlayer => 'Дала ойыншысы';
+  String get fieldPlayer => 'Алаң ойыншысы';
 
   @override
-  String get onTarget => 'Қақпаға';
+  String get onTarget => ' Қақпаға бағытталған соққылар';
 
   @override
   String get passes => 'Пастар';
@@ -321,13 +321,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get offTarget => 'Қақпаның сыртына';
 
   @override
-  String get yellows => 'Сарылар';
+  String get yellows => 'Сары қағаздар';
 
   @override
   String get offsides => 'Офсайдтар';
 
   @override
-  String get corners => 'Көлбеу соққылар';
+  String get corners => 'Бұрыштамалар';
 
   @override
   String get additionalStats => 'Қосымша статистика';
@@ -1559,4 +1559,33 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get passwordRequirements =>
       'Құпия сөз кемінде 1 бас әріпті, 1 кіші әріпті, 1 санды және 1 арнайы таңбаны қамтуы керек';
+
+  @override
+  String get noStatisticsAvailable => 'Статистика қолжетімді емес';
+
+  @override
+  String get statisticsWillAppearHere => 'Матч статистикасы мұнда пайда болады';
+
+  @override
+  String get noLineupAvailable => 'Құрама қолжетімді емес';
+
+  @override
+  String get lineupWillAppearHere => 'Команда құрамасы мұнда пайда болады';
+
+  @override
+  String get noPlayerStatsAvailable =>
+      'Ойыншылардың статистикасы қолжетімді емес';
+
+  @override
+  String get playerStatsWillAppearHere =>
+      'Ойыншылардың статистикасы мұнда пайда болады';
+
+  @override
+  String get withSupport => 'қолдауымен';
+
+  @override
+  String get iAcceptTerms => 'Мен шарттарды қабылдаймын';
+
+  @override
+  String get acceptTerms => 'Құпиялық саясатының шарттарын қабылдау қажет';
 }

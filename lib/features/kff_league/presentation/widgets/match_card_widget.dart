@@ -173,7 +173,30 @@ class MatchCardWidget extends StatelessWidget {
                       Expanded(
                         child: Column(
                           children: [
-                            if (isFuture) ...[
+                            // Проверяем только наличие результатов
+                            if (match.result1 != null &&
+                                match.result2 != null) ...[
+                              // Есть результаты - показываем счет
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w,
+                                  vertical: 16.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: AppColors.primaryGradient,
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                child: Text(
+                                  '${match.result1} : ${match.result2}',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ] else ...[
+                              // Нет результатов - показываем время
                               Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
@@ -188,7 +211,7 @@ class MatchCardWidget extends StatelessWidget {
                                     Icon(
                                       Icons.schedule,
                                       color: AppColors.white,
-                                      size: 18.sp,
+                                      size: 16.sp,
                                     ),
                                     SizedBox(height: 4.h),
                                     Text(
@@ -202,25 +225,6 @@ class MatchCardWidget extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
-                                ),
-                              ),
-                            ] else ...[
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w,
-                                  vertical: 16.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: AppColors.primaryGradient,
-                                  borderRadius: BorderRadius.circular(16.r),
-                                ),
-                                child: Text(
-                                  '${match.result1 ?? 0} : ${match.result2 ?? 0}',
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: AppColors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                 ),
                               ),
                             ],
@@ -337,8 +341,9 @@ class MatchCardWidget extends StatelessWidget {
                     ),
                   ),
 
-                  // Additional info for past matches
-                  if (!isFuture &&
+                  // Additional info for past matches (если есть результаты)
+                  if (match.result1 != null &&
+                      match.result2 != null &&
                       (match.attendance != null || match.protocol != null)) ...[
                     SizedBox(height: 12.h),
                     Container(

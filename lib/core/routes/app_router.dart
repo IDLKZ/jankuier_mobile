@@ -222,9 +222,15 @@ class AppRouter {
                     path: '${AppRouteConstants.GameStatPagePath}:gameId',
                     name: AppRouteConstants.GameStatPageName,
                     builder: (context, state) {
-                      final match = state.extra as MatchEntity;
+                      final extra = state.extra as Map<String, dynamic>?;
+                      final match = extra?['match'] as MatchEntity;
+                      final standings = extra?['standings'] as List?;
                       String gameId = state.pathParameters['gameId'] ?? "0";
-                      return GamePage(gameId: gameId, match: match);
+                      return GamePage(
+                        gameId: gameId,
+                        match: match,
+                        standings: standings,
+                      );
                     },
                   ),
                   GoRoute(
@@ -248,8 +254,7 @@ class AppRouter {
                       return getIt<TicketonShowsBloc>()
                         ..add(LoadTicketonShowsEvent(
                             parameter:
-                                TicketonGetShowsParameter.withCurrentLocale(
-                                    place: TicketonApiConstant.PlaceId)));
+                                TicketonGetShowsParameter.withCurrentLocale()));
                     },
                     child: const TicketsPage(),
                   );
