@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/services/data/entities/product/product_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/recommended_product/recommended_product_bloc.dart';
 
@@ -35,11 +36,11 @@ class ShopBannerProduct extends StatelessWidget {
                           ? Image.network(
                               ApiConstant.GetImageUrl(
                                   productEntity.image!.filePath),
-                              fit: BoxFit.none,
+                              fit: BoxFit.fitHeight,
                             )
                           : Image.asset(
                               FileUtils.LocalProductImage,
-                              fit: BoxFit.none,
+                              fit: BoxFit.fitHeight,
                             ),
                     ),
                     Positioned.fill(
@@ -72,7 +73,7 @@ class ShopBannerProduct extends StatelessWidget {
                                   ),
                                   SizedBox(height: 4.h),
                                   Text(
-                                    "${productEntity.basePrice} KZT",
+                                    "${PriceFormatter.formatWithCurrency(productEntity.basePrice, "KZT")}",
                                     style: TextStyle(
                                       fontFamily: "Inter",
                                       fontSize: 12.sp,

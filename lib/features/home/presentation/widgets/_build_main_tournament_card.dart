@@ -7,7 +7,8 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../tournament/data/entities/tournament_entity.dart';
 import '_build_league_carousel.dart';
 
-Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedTournament) {
+Widget buildMainTournamentCard(
+    BuildContext context, TournamentEntity? selectedTournament) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
     padding: EdgeInsets.all(20.w),
@@ -33,13 +34,13 @@ Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedT
           ),
           child: selectedTournament?.image != null
               ? ClipOval(
-            child: buildTournamentImage(selectedTournament!.image!),
-          )
+                  child: buildTournamentImage(selectedTournament!.image!),
+                )
               : Icon(
-            Icons.sports_soccer,
-            color: Colors.grey,
-            size: 30.sp,
-          ),
+                  Icons.sports_soccer,
+                  color: Colors.grey,
+                  size: 30.sp,
+                ),
         ),
         SizedBox(width: 16.w),
         Expanded(
@@ -48,37 +49,23 @@ Widget buildMainTournamentCard(BuildContext context, TournamentEntity? selectedT
             children: [
               selectedTournament?.name != null
                   ? Text(
-                // Для казахского языка показываем "Қазақстанның" перед названием турнира
-                Localizations.localeOf(context).languageCode == 'kk'
-                    ? '${AppLocalizations.of(context)!.ofKazakhstan} ${selectedTournament!.name}'
-                    : selectedTournament!.name,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              )
+                      selectedTournament!.name,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    )
                   : Text(
-                AppLocalizations.of(context)!.premierLeague,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-              // Для казахского языка не показываем отдельную строку "Қазақстанның"
-              if (Localizations.localeOf(context).languageCode != 'kk')
-                Text(
-                  AppLocalizations.of(context)!.ofKazakhstan,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
+                      AppLocalizations.of(context)!.premierLeague,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
 import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 import 'package:jankuier_mobile/core/utils/localization_helper.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/cart/domain/parameters/add_to_cart_parameter.dart';
 import 'package:jankuier_mobile/features/cart/presentation/bloc/add_to_cart/add_to_cart_bloc.dart';
 import 'package:jankuier_mobile/features/cart/presentation/bloc/add_to_cart/add_to_cart_event.dart';
@@ -106,7 +107,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
               size: 72.sp,
               color: AppColors.error,
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
             Text(
               AppLocalizations.of(context)!.loadingError,
               style: TextStyle(
@@ -125,7 +126,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
                 height: 1.4,
               ),
             ),
-            SizedBox(height: 32.h),
+            SizedBox(height: 12.h),
             ElevatedButton.icon(
               onPressed: () => context.pop(),
               icon: const Icon(Icons.arrow_back),
@@ -268,7 +269,7 @@ class _ServiceProductPageState extends State<ServiceProductPage> {
                 size: 80.sp,
                 color: AppColors.grey500,
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 12.h),
               Text(
                 AppLocalizations.of(context)!.imageNotAvailable,
                 style: TextStyle(
@@ -574,17 +575,17 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildProductHeader(),
-            SizedBox(height: 24.h),
+            SizedBox(height: 12.h),
             _buildProductMeta(),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
             _buildPriceSection(),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
             _buildProductCharacteristics(),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
             _buildStockStatus(),
-            SizedBox(height: 24.h),
+            SizedBox(height: 12.h),
             _buildModificationOptions(),
-            SizedBox(height: 32.h),
+            SizedBox(height: 12.h),
             _buildAddToCartSection(),
           ],
         ),
@@ -860,7 +861,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
               ),
             ),
             Text(
-              '${currentPrice.toStringAsFixed(0)} ₸',
+              PriceFormatter.formatWithCurrency(currentPrice, '₸'),
               style: TextStyle(
                 fontSize: 28.sp,
                 fontWeight: FontWeight.bold,
@@ -1056,7 +1057,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
 
     return [
       Text(
-        '${totalPrice.toStringAsFixed(0)} ₸',
+        PriceFormatter.formatWithCurrency(totalPrice, '₸'),
         style: TextStyle(
           color: AppColors.success,
           fontSize: 32.sp,
@@ -1066,7 +1067,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       SizedBox(width: 16.w),
       if (hasOldPrice) ...[
         Text(
-          '${oldPrice?.toStringAsFixed(0) ?? '0'} ₸',
+          PriceFormatter.formatWithCurrency(oldPrice ?? 0, '₸'),
           style: TextStyle(
             fontSize: 20.sp,
             color: AppColors.textSecondary,

@@ -65,39 +65,41 @@ class SectionCardWidget extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 12.h),
-
           // ⏱ Длительность и возраст
           Row(
             children: [
-              Icon(Icons.access_time, size: 14.sp, color: const Color(0xFF838383)),
+              Icon(Icons.access_time,
+                  size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${entity.averageTrainingTimeInMinute} ${AppLocalizations.of(context)!.minutes}",
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
+                  style: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xFF838383))),
               SizedBox(width: 12.w),
               Icon(Icons.person, size: 14.sp, color: const Color(0xFF838383)),
               SizedBox(width: 4.w),
               Text(
                   "${entity.minAge}-${entity.maxAge} ${AppLocalizations.of(context)!.years}",
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF838383))),
+                  style: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xFF838383))),
             ],
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
 
           // 💰 Цена и кнопка
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "${entity.averagePrice}KZT/${AppLocalizations.of(context)!.month}",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF0247C3),
+              if (entity.averagePrice != null && entity.averagePrice! > 0)
+                Text(
+                  "${entity.averagePrice}KZT/${AppLocalizations.of(context)!.month}",
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF0247C3),
+                  ),
                 ),
-              ),
               OutlinedButton(
                 onPressed: onTap,
                 style: OutlinedButton.styleFrom(
@@ -114,7 +116,6 @@ class SectionCardWidget extends StatelessWidget {
               ),
             ],
           ),
-
           SizedBox(height: 12.h),
           Container(
             decoration: BoxDecoration(

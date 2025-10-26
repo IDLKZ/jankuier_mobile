@@ -8,6 +8,7 @@ import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/di/injection.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/cart/data/entities/cart_item_entity.dart';
 import 'package:jankuier_mobile/features/cart/domain/parameters/update_or_remove_parameter.dart';
 import 'package:jankuier_mobile/features/cart/presentation/bloc/clear_cart/clear_cart_bloc.dart';
@@ -460,7 +461,7 @@ class _CartItemCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${item.unitPrice.toStringAsFixed(0)} ₸',
+                              PriceFormatter.formatWithCurrency(item.unitPrice, '₸'),
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
@@ -469,7 +470,7 @@ class _CartItemCard extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              'Итого: ${item.totalPrice.toStringAsFixed(0)} ₸',
+                              'Итого: ${PriceFormatter.format(item.totalPrice)} ₸',
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
@@ -533,7 +534,7 @@ class _CartBottomBar extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${totalPrice.toStringAsFixed(0)} ₸',
+                  PriceFormatter.formatWithCurrency(totalPrice, '₸'),
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,

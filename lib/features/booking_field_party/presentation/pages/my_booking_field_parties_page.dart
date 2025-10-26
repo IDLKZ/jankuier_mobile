@@ -8,6 +8,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/hive_utils.dart';
+import '../../../../core/utils/price_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/common_app_bars/pages_common_app_bar.dart';
 import 'booking_webview_page.dart';
@@ -462,7 +463,7 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
                 SizedBox(height: 6.h),
                 _buildInfoRow(
                   Icons.payments_rounded,
-                  '${booking.totalPrice.toStringAsFixed(0)} ₸',
+                  PriceFormatter.formatWithCurrency(booking.totalPrice, '₸'),
                   statusColor,
                 ),
                 if (booking.field?.localizedAddress(context) != null) ...[
@@ -699,7 +700,7 @@ class _BookingDetailsBottomSheet extends StatelessWidget {
                             icon: Icons.payments,
                             title: 'Стоимость',
                             value:
-                                '${displayBooking.totalPrice.toStringAsFixed(0)} ₸',
+                                PriceFormatter.formatWithCurrency(displayBooking.totalPrice, '₸'),
                             color: Colors.green.shade600,
                           ),
                         ),

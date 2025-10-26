@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/product_order/data/entities/product_order_entity.dart';
 import 'package:jankuier_mobile/features/product_order/data/entities/product_order_item_entity.dart';
 import 'package:jankuier_mobile/shared/widgets/common_app_bars/pages_common_app_bar.dart';
@@ -776,8 +777,7 @@ class _OrderSummaryCard extends StatelessWidget {
 
   /// Форматирует цену с разделителями тысяч
   String _formatPrice(double price) {
-    final formatter = NumberFormat('#,##0.00', 'ru_RU');
-    return formatter.format(price);
+    return PriceFormatter.format(price);
   }
 }
 
@@ -1103,7 +1103,6 @@ class _OrderItemCard extends StatelessWidget {
 
   /// Форматирует цену с разделителями тысяч
   String _formatPrice(double price) {
-    final formatter = NumberFormat('#,##0.00', 'ru_RU');
-    return formatter.format(price);
+    return PriceFormatter.format(price);
   }
 }

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/order_status_constants.dart';
+import '../../../../core/utils/price_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/ticket_order/ticket_order_entity.dart';
 
@@ -362,7 +363,7 @@ class OrderDetailsBottomSheet extends StatelessWidget {
                                   ),
                                   if (ticket.cost != null) ...[
                                     Text(
-                                      '${ticket.cost} ${order.currency ?? "₸"}',
+                                      '${PriceFormatter.format(ticket.cost)} ${order.currency ?? "₸"}',
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w600,
@@ -391,7 +392,7 @@ class OrderDetailsBottomSheet extends StatelessWidget {
                         if (order.sum != null) ...[
                           SizedBox(height: 8.h),
                           _buildInfoRow(AppLocalizations.of(context)!.totalCost,
-                              '${order.sum!.toStringAsFixed(0)} ${order.currency ?? "₸"}',
+                              '${PriceFormatter.format(order.sum)} ${order.currency ?? "₸"}',
                               isHighlighted: true),
                         ],
                         if (order.email != null) ...[

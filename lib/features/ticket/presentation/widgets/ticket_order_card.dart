@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/order_status_constants.dart';
+import '../../../../core/utils/price_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/entities/ticket_order/ticket_order_entity.dart';
 import '../pages/repayment_webview_page.dart';
@@ -132,7 +133,7 @@ class TicketOrderCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${order.sum!.toStringAsFixed(0)} ${order.currency ?? "₸"}',
+                          '${PriceFormatter.format(order.sum)} ${order.currency ?? "₸"}',
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,

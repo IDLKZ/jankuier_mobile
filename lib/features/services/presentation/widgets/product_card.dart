@@ -11,6 +11,7 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/product/prod
 import '../../../../core/constants/app_route_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/localization_helper.dart';
+import '../../../../core/utils/price_formatter.dart';
 
 class ProductGridCards extends StatefulWidget {
   const ProductGridCards({
@@ -70,7 +71,7 @@ class _ProductGridCardsState extends State<ProductGridCards> {
                 return ProductCard(
                   imageWidget: FileUtils.getProductImage(p.image),
                   title: context.localizedDirectTitle(p),
-                  price: '${p.basePrice} ₸',
+                  price: PriceFormatter.formatWithCurrency(p.basePrice, '₸'),
                   buttonText: AppLocalizations.of(context)!.addToCart,
                   onPressed: () {
                     context.push(

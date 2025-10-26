@@ -11,6 +11,7 @@ import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
 import 'package:jankuier_mobile/core/utils/hive_utils.dart';
 import 'package:jankuier_mobile/core/utils/localization_helper.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/auth/data/entities/user_entity.dart';
 import 'package:jankuier_mobile/features/booking_field_party/domain/parameters/create_booking_field_party_request_parameter.dart';
 import 'package:jankuier_mobile/features/booking_field_party/presentation/bloc/create_booking_field_party_request/create_booking_field_party_request_bloc.dart';
@@ -108,14 +109,20 @@ class FieldCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             children: [
-              Text(
-                "${fieldPartyEntity.activeScheduleSetting?.pricePerTime.first.price ?? 5000} KZT",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: const Color(0xFF0247C3),
-                  fontWeight: FontWeight.w700,
+              if (fieldPartyEntity
+                      .activeScheduleSetting?.pricePerTime.first.price !=
+                  null)
+                Text(
+                  PriceFormatter.formatWithCurrency(
+                    fieldPartyEntity.activeScheduleSetting?.pricePerTime.first.price,
+                    "KZT",
+                  ),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF0247C3),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
               const Spacer(),
               SizedBox(
                 height: 36.h,
@@ -552,7 +559,10 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                                                 ),
                                                 SizedBox(height: 10.h),
                                                 Text(
-                                                  "${entity.price} KZT",
+                                                  PriceFormatter.formatWithCurrency(
+                                                    entity.price,
+                                                    "KZT",
+                                                  ),
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 12.sp,
@@ -582,7 +592,10 @@ class _FieldBookingCardState extends State<FieldBookingCard> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "${scheduleRecordEntity?.price} KZT",
+                                              PriceFormatter.formatWithCurrency(
+                                                scheduleRecordEntity?.price,
+                                                "KZT",
+                                              ),
                                               style: TextStyle(
                                                 fontSize: 18.sp,
                                                 color: const Color(0xFF0247C3),

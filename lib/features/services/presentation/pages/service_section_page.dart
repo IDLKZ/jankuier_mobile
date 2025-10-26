@@ -9,6 +9,7 @@ import 'package:jankuier_mobile/core/constants/api_constants.dart';
 import 'package:jankuier_mobile/core/constants/app_colors.dart';
 import 'package:jankuier_mobile/core/utils/file_utils.dart';
 import 'package:jankuier_mobile/core/utils/localization_helper.dart';
+import 'package:jankuier_mobile/core/utils/price_formatter.dart';
 import 'package:jankuier_mobile/features/services/data/entities/academy/get_full_academy_entity.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_bloc.dart';
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_state.dart';
@@ -383,7 +384,7 @@ class AcademyGroupCard extends StatelessWidget {
             children: [
               Text(
                 group.price != null
-                    ? "${group.price?.toStringAsFixed(0)} ₸/${context.localizedDirectPricePer(group) ?? AppLocalizations.of(context)!.month}"
+                    ? "${PriceFormatter.format(group.price)} ₸/${context.localizedDirectPricePer(group) ?? AppLocalizations.of(context)!.month}"
                     : AppLocalizations.of(context)!.free,
                 style: TextStyle(
                   fontSize: 13.sp,
