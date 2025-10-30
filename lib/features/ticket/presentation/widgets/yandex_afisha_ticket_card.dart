@@ -363,7 +363,7 @@ class YandexAfishaTicketCard extends StatelessWidget {
                                 ApiConstant.GetImageUrl(ticket.image!.filePath),
                                 width: double.infinity,
                                 height: 200.h,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fitHeight,
                               )
                             : Image.asset(
                                 FileUtils.LocalProductImage,
