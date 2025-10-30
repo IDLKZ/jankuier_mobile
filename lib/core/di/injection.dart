@@ -51,6 +51,9 @@ import '../../features/services/domain/use_cases/academy/get_full_academy_detail
 import '../../features/services/domain/use_cases/academy/paginate_academy_case.dart';
 import '../../features/services/presentation/bloc/recommended_product/recommended_product_bloc.dart';
 import '../../features/ticket/domain/use_cases/ticketon_order_check_usecase.dart';
+import '../../features/ticket/domain/use_cases/paginate_yandex_afisha_tickets_usecase.dart';
+import '../../features/ticket/domain/use_cases/get_all_yandex_afisha_tickets_usecase.dart';
+import '../../features/ticket/domain/use_cases/get_yandex_afisha_ticket_by_id_usecase.dart';
 import '../../features/tournament/domain/use_cases/get_tournaments_from_sota_case.dart';
 import '../../features/tournament/presentation/bloc/get_tournaments/get_tournament_bloc.dart';
 import '../../features/tournament/domain/interface/tournament_interface.dart';
@@ -81,6 +84,9 @@ import '../../features/ticket/domain/use_cases/paginate_ticket_order_usecase.dar
 import '../../features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
 import '../../features/ticket/presentation/bloc/paginate_ticket_order/paginate_ticket_order_bloc.dart';
 import '../../features/ticket/presentation/bloc/ticketon_order_check/ticketon_order_check_bloc.dart';
+import '../../features/ticket/presentation/bloc/paginate_yandex_afisha_tickets/paginate_yandex_afisha_tickets_bloc.dart';
+import '../../features/ticket/presentation/bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_bloc.dart';
+import '../../features/ticket/presentation/bloc/get_yandex_afisha_ticket_by_id/get_yandex_afisha_ticket_by_id_bloc.dart';
 import '../../features/kff/data/datasource/kff_datasource.dart';
 import '../../features/kff/data/repositories/kff_repository.dart';
 import '../../features/kff/domain/interface/kff_interface.dart';
@@ -368,6 +374,25 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<TicketonOrderCheckBloc>(
     () => TicketonOrderCheckBloc(
       ticketonOrderCheckUseCase: getIt<TicketonOrderCheckUseCase>(),
+    ),
+  );
+
+  // Yandex Afisha Ticket BLoCs
+  getIt.registerFactory<PaginateYandexAfishaTicketsBloc>(
+    () => PaginateYandexAfishaTicketsBloc(
+      paginateYandexAfishaTicketsUseCase: getIt<PaginateYandexAfishaTicketsUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<GetAllYandexAfishaTicketsBloc>(
+    () => GetAllYandexAfishaTicketsBloc(
+      getAllYandexAfishaTicketsUseCase: getIt<GetAllYandexAfishaTicketsUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<GetYandexAfishaTicketByIdBloc>(
+    () => GetYandexAfishaTicketByIdBloc(
+      getYandexAfishaTicketByIdUseCase: getIt<GetYandexAfishaTicketByIdUseCase>(),
     ),
   );
 }

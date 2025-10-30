@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,14 +7,11 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
-
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/ticketon_api_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/utils/hive_utils.dart';
-import '../../../auth/presentation/pages/sign_in_page.dart';
 import '../../domain/parameters/ticketon_get_shows_parameter.dart';
 import '../bloc/shows/ticketon_bloc.dart';
 import '../bloc/shows/ticketon_event.dart';

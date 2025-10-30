@@ -193,4 +193,13 @@ class ApiConstant {
   static String GetMatchLineUpStatsByGameIdUrl(String gameId) {
     return "${BaseURL}sota/public/v1/games/$gameId/pre_game_lineup/";
   }
+
+  //Yandex Afisha
+  static const String paginateYandexAfishaTickets =
+      "${BaseURL}yandex-afisha-widget-ticket";
+  static const String allYandexAfishaTickets =
+      "${BaseURL}yandex-afisha-widget-ticket/all";
+  static String GetYandexAfishaTicketByIdUrl(int yandexAfishaId) {
+    return "${BaseURL}yandex-afisha-widget-ticket/get/$yandexAfishaId";
+  }
 }

@@ -298,20 +298,32 @@ import 'package:jankuier_mobile/features/ticket/data/repositories/ticketon_order
     as _i943;
 import 'package:jankuier_mobile/features/ticket/data/repositories/ticketon_repository_impl.dart'
     as _i380;
+import 'package:jankuier_mobile/features/ticket/data/repositories/yandex_afisha_ticket_repository_impl.dart'
+    as _i822;
 import 'package:jankuier_mobile/features/ticket/datasources/ticketon_datasource.dart'
     as _i259;
 import 'package:jankuier_mobile/features/ticket/datasources/ticketon_order_datasource.dart'
     as _i933;
+import 'package:jankuier_mobile/features/ticket/datasources/yandex_afisha_ticket_datasource.dart'
+    as _i506;
 import 'package:jankuier_mobile/features/ticket/domain/interface/ticketon_interface.dart'
     as _i190;
 import 'package:jankuier_mobile/features/ticket/domain/interface/ticketon_order_repository.dart'
     as _i644;
+import 'package:jankuier_mobile/features/ticket/domain/interface/yandex_afisha_ticket_repository.dart'
+    as _i183;
+import 'package:jankuier_mobile/features/ticket/domain/use_cases/get_all_yandex_afisha_tickets_usecase.dart'
+    as _i626;
 import 'package:jankuier_mobile/features/ticket/domain/use_cases/get_ticket_order_usecase.dart'
     as _i925;
 import 'package:jankuier_mobile/features/ticket/domain/use_cases/get_ticketon_shows_use_case.dart'
     as _i729;
+import 'package:jankuier_mobile/features/ticket/domain/use_cases/get_yandex_afisha_ticket_by_id_usecase.dart'
+    as _i240;
 import 'package:jankuier_mobile/features/ticket/domain/use_cases/paginate_ticket_order_usecase.dart'
     as _i700;
+import 'package:jankuier_mobile/features/ticket/domain/use_cases/paginate_yandex_afisha_tickets_usecase.dart'
+    as _i76;
 import 'package:jankuier_mobile/features/ticket/domain/use_cases/ticketon_order_check_usecase.dart'
     as _i252;
 import 'package:jankuier_mobile/features/ticket/domain/use_cases/ticketon_ticket_check_usecase.dart'
@@ -342,6 +354,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i100.NewsDSInterface>(() => _i100.NewsDSImpl());
     gh.factory<_i933.TicketonOrderDSInterface>(
         () => _i933.TicketonOrderDSImpl());
+    gh.factory<_i506.YandexAfishaTicketDSInterface>(
+        () => _i506.YandexAfishaTicketDSImpl());
     gh.singletonAsync<_i633.ContentRefreshService>(() async =>
         _i633.ContentRefreshService(await getAsync<_i530.LocalizationService>())
           ..initialize());
@@ -351,6 +365,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1012.LocalAuthRepositoryImpl());
     gh.factory<_i259.TicketonDSInterface>(() => _i259.TicketonDSImpl());
     gh.factory<_i644.AuthDSInterface>(() => _i644.AuthDSImpl());
+    gh.factory<_i183.YandexAfishaTicketRepository>(() =>
+        _i822.YandexAfishaTicketRepositoryImpl(
+            gh<_i506.YandexAfishaTicketDSInterface>()));
     gh.factory<_i8.CheckBiometricsAvailableUseCase>(() =>
         _i8.CheckBiometricsAvailableUseCase(gh<_i472.LocalAuthInterface>()));
     gh.factory<_i877.CheckBiometricsDataUseCase>(
@@ -373,6 +390,15 @@ extension GetItInjectableX on _i174.GetIt {
         _i943.TicketonOrderRepositoryImpl(
             gh<_i933.TicketonOrderDSInterface>()));
     gh.factory<_i105.KffDSInterface>(() => _i105.KffDSImpl());
+    gh.factory<_i626.GetAllYandexAfishaTicketsUseCase>(() =>
+        _i626.GetAllYandexAfishaTicketsUseCase(
+            gh<_i183.YandexAfishaTicketRepository>()));
+    gh.factory<_i240.GetYandexAfishaTicketByIdUseCase>(() =>
+        _i240.GetYandexAfishaTicketByIdUseCase(
+            gh<_i183.YandexAfishaTicketRepository>()));
+    gh.factory<_i76.PaginateYandexAfishaTicketsUseCase>(() =>
+        _i76.PaginateYandexAfishaTicketsUseCase(
+            gh<_i183.YandexAfishaTicketRepository>()));
     gh.factory<_i16.AddToCartUseCase>(
         () => _i16.AddToCartUseCase(gh<_i888.CartRepository>()));
     gh.factory<_i515.ClearCartUseCase>(
