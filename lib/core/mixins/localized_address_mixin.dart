@@ -19,3 +19,22 @@ mixin LocalizedAddressEntity {
     }
   }
 }
+mixin LocalizedStadiumEntity {
+  String? get stadiumRu;
+  String? get stadiumKk;
+  String? get stadiumEn;
+
+  String localizedStadium(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+
+    switch (locale.languageCode) {
+      case 'kk':
+        return stadiumKk ?? stadiumRu ?? "-";
+      case 'en':
+        return stadiumEn ?? stadiumRu ?? "-";
+      case 'ru':
+      default:
+        return stadiumRu ?? "-";
+    }
+  }
+}

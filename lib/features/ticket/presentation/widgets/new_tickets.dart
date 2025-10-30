@@ -13,71 +13,122 @@ import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../core/utils/hive_utils.dart';
 import '../../domain/parameters/ticketon_get_shows_parameter.dart';
+import '../../domain/parameters/all_yandex_afisha_ticket_parameter.dart';
 import '../bloc/shows/ticketon_bloc.dart';
 import '../bloc/shows/ticketon_event.dart';
 import '../bloc/shows/ticketon_state.dart';
+import '../bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_bloc.dart';
+import '../bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_event.dart';
+import '../bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_state.dart';
 import '../pages/ticket_webview_page.dart';
+import 'yandex_afisha_ticket_card.dart';
 
 class NewTicketWidgets extends StatelessWidget {
   const NewTicketWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Объединяем два BlocBuilder для отображения билетов из двух источников
     return BlocBuilder<TicketonShowsBloc, TicketonShowsState>(
-        builder: (context, state) {
-      if (state is TicketonShowsShowsLoaded) {
-        final filteredShows = state.shows.validShows;
-        return RefreshIndicator(
-          onRefresh: () async {
-            final bloc = context.read<TicketonShowsBloc>();
-            final parameter = TicketonGetShowsParameter.withCurrentLocale();
-            bloc.add(LoadTicketonShowsEvent(parameter: parameter));
-            // Wait for the refresh to complete
-            await Future.delayed(const Duration(milliseconds: 500));
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-              vertical: 15.h,
-            ),
-            child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: filteredShows.length,
-              itemBuilder: (ctx, index) {
-                final show = filteredShows[index];
-                final event = state.shows.events[show.eventId];
-                final place = state.shows.places[show.placeId];
-                final city =
-                    place != null ? state.shows.cities[place.cityId] : null;
+      builder: (context, ticketonState) {
+        return BlocBuilder<GetAllYandexAfishaTicketsBloc, GetAllYandexAfishaTicketsState>(
+          builder: (context, yandexState) {
+            // Проверяем состояния загрузки
+            final isTicketonLoading = ticketonState is! TicketonShowsShowsLoaded &&
+                                      ticketonState is! TicketonShowsError;
+            final isYandexLoading = yandexState is GetAllYandexAfishaTicketsLoadingState;
 
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child: TicketCard(
-                    image: event?.main != "" ? event?.main : event?.cover,
-                    genre: event?.genre,
-                    cityName: city?.name,
-                    name: event?.name,
-                    description: event?.description,
-                    placeName: place?.name,
-                    remark: event?.remark,
-                    address: place?.address,
-                    startAt: show.dateTime,
-                    showId: show.id != null ? int.tryParse(show.id!) : null,
+            // Если оба источника загружаются, показываем индикатор
+            if (isTicketonLoading && isYandexLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            // Собираем билеты из обоих источников
+            final List<Widget> allTicketWidgets = [];
+
+            // Добавляем билеты Yandex Afisha
+            if (yandexState is GetAllYandexAfishaTicketsLoadedState) {
+              for (final ticket in yandexState.tickets) {
+                allTicketWidgets.add(
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: YandexAfishaTicketCard(ticket: ticket),
                   ),
                 );
+              }
+            }
+
+            // Добавляем билеты Ticketon
+            if (ticketonState is TicketonShowsShowsLoaded) {
+              final filteredShows = ticketonState.shows.validShows;
+              for (final show in filteredShows) {
+                final event = ticketonState.shows.events[show.eventId];
+                final place = ticketonState.shows.places[show.placeId];
+                final city = place != null ? ticketonState.shows.cities[place.cityId] : null;
+
+                allTicketWidgets.add(
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: TicketCard(
+                      image: event?.main != "" ? event?.main : event?.cover,
+                      genre: event?.genre,
+                      cityName: city?.name,
+                      name: event?.name,
+                      description: event?.description,
+                      placeName: place?.name,
+                      remark: event?.remark,
+                      address: place?.address,
+                      startAt: show.dateTime,
+                      showId: show.id != null ? int.tryParse(show.id!) : null,
+                    ),
+                  ),
+                );
+              }
+            }
+
+            // Если нет билетов из обоих источников
+            if (allTicketWidgets.isEmpty) {
+              if (ticketonState is TicketonShowsError ||
+                  yandexState is GetAllYandexAfishaTicketsFailedState) {
+                return Center(
+                  child: Text(AppLocalizations.of(context)!.noActiveTicketsYet),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            // Отображаем все билеты
+            return RefreshIndicator(
+              onRefresh: () async {
+                // Обновляем оба источника
+                final ticketonBloc = context.read<TicketonShowsBloc>();
+                final yandexBloc = context.read<GetAllYandexAfishaTicketsBloc>();
+
+                final ticketonParameter = TicketonGetShowsParameter.withCurrentLocale();
+                ticketonBloc.add(LoadTicketonShowsEvent(parameter: ticketonParameter));
+
+                const yandexParameter = AllYandexAfishaWidgetTicketFilterParameter(
+                  isActive: true,
+                );
+                yandexBloc.add(GetAllYandexAfishaTicketsEvent(yandexParameter));
+
+                await Future.delayed(const Duration(milliseconds: 500));
               },
-            ),
-          ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                  vertical: 15.h,
+                ),
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: allTicketWidgets,
+                ),
+              ),
+            );
+          },
         );
-      }
-      if (state is TicketonShowsError) {
-        return Center(
-            child: Text(AppLocalizations.of(context)!.noActiveTicketsYet));
-      }
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    });
+      },
+    );
   }
 }
 

@@ -1,21 +1,41 @@
 import 'package:equatable/equatable.dart';
+import 'package:jankuier_mobile/core/mixins/localized_address_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_description_mixin.dart';
+import 'package:jankuier_mobile/core/mixins/localized_title_mixin.dart';
 
 import '../../../../../core/common/entities/file_entity.dart';
 
-class YandexAfishaWidgetTicketEntity extends Equatable {
+class YandexAfishaWidgetTicketEntity extends Equatable
+    with
+        LocalizedTitleEntity,
+        LocalizedDescriptionEntity,
+        LocalizedAddressEntity,
+        LocalizedStadiumEntity {
   final int id;
   final int? imageId;
+  @override
   final String titleRu;
+  @override
   final String? titleKk;
+  @override
   final String? titleEn;
+  @override
   final String? descriptionRu;
+  @override
   final String? descriptionKk;
+  @override
   final String? descriptionEn;
+  @override
   final String? addressRu;
+  @override
   final String? addressKk;
+  @override
   final String? addressEn;
+  @override
   final String? stadiumRu;
+  @override
   final String? stadiumKk;
+  @override
   final String? stadiumEn;
   final DateTime? startAt;
   final String yandexSessionId;

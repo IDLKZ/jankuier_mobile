@@ -28,6 +28,9 @@ import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_aca
 import 'package:jankuier_mobile/features/services/presentation/bloc/get_full_academy_detail/get_full_academy_detail_event.dart';
 import 'package:jankuier_mobile/features/standings/presentation/pages/standings_page.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/bloc/shows/ticketon_bloc.dart';
+import 'package:jankuier_mobile/features/ticket/presentation/bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_bloc.dart';
+import 'package:jankuier_mobile/features/ticket/presentation/bloc/get_all_yandex_afisha_tickets/get_all_yandex_afisha_tickets_event.dart';
+import 'package:jankuier_mobile/features/ticket/domain/parameters/all_yandex_afisha_ticket_parameter.dart';
 import 'package:jankuier_mobile/features/ticket/presentation/pages/tickets_page.dart';
 import '../../features/activity/presentation/pages/activity_page.dart';
 import '../../features/auth/data/entities/user_reset_entity.dart';
@@ -249,13 +252,25 @@ class AppRouter {
                 path: AppRouteConstants.TicketPagePath,
                 name: AppRouteConstants.TicketPageName,
                 builder: (context, state) {
-                  return BlocProvider(
-                    create: (BuildContext context) {
-                      return getIt<TicketonShowsBloc>()
-                        ..add(LoadTicketonShowsEvent(
-                            parameter:
-                                TicketonGetShowsParameter.withCurrentLocale()));
-                    },
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (BuildContext context) {
+                          return getIt<TicketonShowsBloc>()
+                            ..add(LoadTicketonShowsEvent(
+                                parameter:
+                                    TicketonGetShowsParameter.withCurrentLocale()));
+                        },
+                      ),
+                      BlocProvider(
+                        create: (BuildContext context) {
+                          return getIt<GetAllYandexAfishaTicketsBloc>()
+                            ..add(GetAllYandexAfishaTicketsEvent(
+                                const AllYandexAfishaWidgetTicketFilterParameter(
+                                    isActive: true)));
+                        },
+                      ),
+                    ],
                     child: const TicketsPage(),
                   );
                 },
