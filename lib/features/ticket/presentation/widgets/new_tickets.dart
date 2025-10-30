@@ -31,12 +31,15 @@ class NewTicketWidgets extends StatelessWidget {
     // Объединяем два BlocBuilder для отображения билетов из двух источников
     return BlocBuilder<TicketonShowsBloc, TicketonShowsState>(
       builder: (context, ticketonState) {
-        return BlocBuilder<GetAllYandexAfishaTicketsBloc, GetAllYandexAfishaTicketsState>(
+        return BlocBuilder<GetAllYandexAfishaTicketsBloc,
+            GetAllYandexAfishaTicketsState>(
           builder: (context, yandexState) {
             // Проверяем состояния загрузки
-            final isTicketonLoading = ticketonState is! TicketonShowsShowsLoaded &&
-                                      ticketonState is! TicketonShowsError;
-            final isYandexLoading = yandexState is GetAllYandexAfishaTicketsLoadingState;
+            final isTicketonLoading =
+                ticketonState is! TicketonShowsShowsLoaded &&
+                    ticketonState is! TicketonShowsError;
+            final isYandexLoading =
+                yandexState is GetAllYandexAfishaTicketsLoadingState;
 
             // Если оба источника загружаются, показываем индикатор
             if (isTicketonLoading && isYandexLoading) {
@@ -64,7 +67,9 @@ class NewTicketWidgets extends StatelessWidget {
               for (final show in filteredShows) {
                 final event = ticketonState.shows.events[show.eventId];
                 final place = ticketonState.shows.places[show.placeId];
-                final city = place != null ? ticketonState.shows.cities[place.cityId] : null;
+                final city = place != null
+                    ? ticketonState.shows.cities[place.cityId]
+                    : null;
 
                 allTicketWidgets.add(
                   Padding(
@@ -102,12 +107,16 @@ class NewTicketWidgets extends StatelessWidget {
               onRefresh: () async {
                 // Обновляем оба источника
                 final ticketonBloc = context.read<TicketonShowsBloc>();
-                final yandexBloc = context.read<GetAllYandexAfishaTicketsBloc>();
+                final yandexBloc =
+                    context.read<GetAllYandexAfishaTicketsBloc>();
 
-                final ticketonParameter = TicketonGetShowsParameter.withCurrentLocale();
-                ticketonBloc.add(LoadTicketonShowsEvent(parameter: ticketonParameter));
+                final ticketonParameter =
+                    TicketonGetShowsParameter.withCurrentLocale();
+                ticketonBloc
+                    .add(LoadTicketonShowsEvent(parameter: ticketonParameter));
 
-                const yandexParameter = AllYandexAfishaWidgetTicketFilterParameter(
+                const yandexParameter =
+                    AllYandexAfishaWidgetTicketFilterParameter(
                   isActive: true,
                 );
                 yandexBloc.add(GetAllYandexAfishaTicketsEvent(yandexParameter));
@@ -465,287 +474,292 @@ class TicketCard extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-          ),
-          child: Column(
-            children: [
-              // Хэндл
-              Container(
-                width: 40.w,
-                height: 4.h,
-                margin: EdgeInsets.only(top: 12.h),
-                decoration: BoxDecoration(
-                  color: AppColors.textSecondary.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2.r),
+        return SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+            ),
+            child: Column(
+              children: [
+                // Хэндл
+                Container(
+                  width: 40.w,
+                  height: 4.h,
+                  margin: EdgeInsets.only(top: 12.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.textSecondary.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
                 ),
-              ),
 
-              // Содержимое
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Изображение
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16.r),
-                        child: image != null
-                            ? Image.network(
-                                image!,
-                                width: double.infinity,
-                                height: 200.h,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                FileUtils.LocalProductImage,
-                                width: double.infinity,
-                                height: 200.h,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      SizedBox(height: 20.h),
-
-                      // Теги
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 6.h),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(16.r),
-                              ),
-                              child: Text(
-                                genre?.toUpperCase() ??
-                                    AppLocalizations.of(context)!.sport,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
+                // Содержимое
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(20.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Изображение
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16.r),
+                          child: image != null
+                              ? Image.network(
+                                  image!,
+                                  width: double.infinity,
+                                  height: 200.h,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  FileUtils.LocalProductImage,
+                                  width: double.infinity,
+                                  height: 200.h,
+                                  fit: BoxFit.cover,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 6.h),
-                              decoration: BoxDecoration(
-                                color: AppColors.success.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(16.r),
-                              ),
-                              child: Text(
-                                cityName ?? "",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.success,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Название
-                      Text(
-                        name ?? "",
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black,
-                          height: 1.3,
                         ),
-                      ),
-                      SizedBox(height: 8.h),
+                        SizedBox(height: 20.h),
 
-                      // HTML контент
-                      Html(
-                        data: remark ?? '',
-                        style: {
-                          "p": Style(
-                              fontSize: FontSize(12.sp),
-                              textAlign: TextAlign.left,
-                              color: AppColors.black),
-                        },
-                      ),
-                      SizedBox(height: 20.h),
-
-                      // Информация о месте и времени
-                      Container(
-                        padding: EdgeInsets.all(16.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.1),
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
+                        // Теги
+                        Row(
                           children: [
-                            // Место
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(8.w),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary
-                                        .withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  child: Icon(
-                                    Iconsax.location_copy,
-                                    size: 20.sp,
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.primary.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                child: Text(
+                                  genre?.toUpperCase() ??
+                                      AppLocalizations.of(context)!.sport,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
                                     color: AppColors.primary,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                SizedBox(width: 12.w),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!.venue,
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 2.h),
-                                      Text(
-                                        address ?? "",
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                            SizedBox(height: 16.h),
-
-                            // Время
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(8.w),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary
-                                        .withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  child: Icon(
-                                    Iconsax.clock_copy,
-                                    size: 20.sp,
-                                    color: AppColors.primary,
-                                  ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.success.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(16.r),
                                 ),
-                                SizedBox(width: 12.w),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .dateAndTime,
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.textSecondary,
-                                        ),
-                                      ),
-                                      SizedBox(height: 2.h),
-                                      Text(
-                                        startAt != null
-                                            ? dateFormatter
-                                                .format(startAt!.toLocal())
-                                            : AppLocalizations.of(context)!
-                                                .timeNotSpecified,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textPrimary,
-                                        ),
-                                      ),
-                                    ],
+                                child: Text(
+                                  cityName ?? "",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.success,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: 20.h),
+                        SizedBox(height: 16.h),
 
-                      // Кнопка покупки
-                      SizedBox(
-                        width: double.infinity,
-                        child: GestureDetector(
-                          onTap: () async {
-                            final token = await getAccessToken();
-                            if (token == null) {
-                              context.go(AppRouteConstants.SignInPagePath);
-                            } else {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => TicketWebViewPage(
-                                    showId: showId.toString(),
-                                    token: token,
-                                  ),
-                                ),
-                              );
-                            }
+                        // Название
+                        Text(
+                          name ?? "",
+                          style: TextStyle(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.black,
+                            height: 1.3,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+
+                        // HTML контент
+                        Html(
+                          data: remark ?? '',
+                          style: {
+                            "p": Style(
+                                fontSize: FontSize(12.sp),
+                                textAlign: TextAlign.left,
+                                color: AppColors.black),
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 16.h),
-                            decoration: BoxDecoration(
-                              gradient: AppColors.primaryGradient,
-                              borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        SizedBox(height: 20.h),
+
+                        // Информация о месте и времени
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.1),
+                              width: 1,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Iconsax.ticket_discount_copy,
-                                  size: 18.sp,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 8.w),
-                                Text(
-                                  AppLocalizations.of(context)!.buyTickets,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
+                          ),
+                          child: Column(
+                            children: [
+                              // Место
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8.w),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Icon(
+                                      Iconsax.location_copy,
+                                      size: 20.sp,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!.venue,
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                        SizedBox(height: 2.h),
+                                        Text(
+                                          address ?? "",
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16.h),
+
+                              // Время
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8.w),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Icon(
+                                      Iconsax.clock_copy,
+                                      size: 20.sp,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .dateAndTime,
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.textSecondary,
+                                          ),
+                                        ),
+                                        SizedBox(height: 2.h),
+                                        Text(
+                                          startAt != null
+                                              ? dateFormatter
+                                                  .format(startAt!.toLocal())
+                                              : AppLocalizations.of(context)!
+                                                  .timeNotSpecified,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textPrimary,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+
+                        // Кнопка покупки
+                        SizedBox(
+                          width: double.infinity,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final token = await getAccessToken();
+                              if (token == null) {
+                                context.go(AppRouteConstants.SignInPagePath);
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => TicketWebViewPage(
+                                      showId: showId.toString(),
+                                      token: token,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              decoration: BoxDecoration(
+                                gradient: AppColors.primaryGradient,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Iconsax.ticket_discount_copy,
+                                    size: 18.sp,
                                     color: Colors.white,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 8.w),
+                                  Text(
+                                    AppLocalizations.of(context)!.buyTickets,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 18.w),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

@@ -425,9 +425,11 @@ class MatchCardWidget extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => MatchDetailsBottomSheet(
-        match: match,
-        isFuture: isFuture,
+      builder: (context) => SafeArea(
+        child: MatchDetailsBottomSheet(
+          match: match,
+          isFuture: isFuture,
+        ),
       ),
     );
   }

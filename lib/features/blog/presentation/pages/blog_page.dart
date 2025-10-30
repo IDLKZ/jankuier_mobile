@@ -429,12 +429,13 @@ class _BlogListPageState extends State<BlogListPage> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
+        return SafeArea(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
@@ -485,8 +486,9 @@ class _BlogListPageState extends State<BlogListPage> {
                   },
                 );
               }).toList(),
-              SizedBox(height: 20.h),
-            ],
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         );
       },

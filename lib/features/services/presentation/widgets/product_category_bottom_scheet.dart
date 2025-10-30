@@ -68,14 +68,15 @@ class _ProductCategoryBottomScheetState
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (BuildContext context) {
-                        return DraggableScrollableSheet(
-                          initialChildSize: 0.6,
-                          maxChildSize: 0.6,
-                          minChildSize: 0.4,
-                          expand: false,
-                          builder: (_, scrollController) {
-                            // локальный setState для содержимого шита
-                            return StatefulBuilder(
+                        return SafeArea(
+                          child: DraggableScrollableSheet(
+                            initialChildSize: 0.6,
+                            maxChildSize: 0.6,
+                            minChildSize: 0.4,
+                            expand: false,
+                            builder: (_, scrollController) {
+                              // локальный setState для содержимого шита
+                              return StatefulBuilder(
                               builder: (context, setModalState) {
                                 if (state is! AllProductCategoryLoadedState) {
                                   return const SizedBox.shrink();
@@ -358,9 +359,10 @@ class _ProductCategoryBottomScheetState
                                     ),
                                   ),
                                 );
-                              },
-                            );
-                          },
+                                },
+                              );
+                            },
+                          ),
                         );
                       },
                     );

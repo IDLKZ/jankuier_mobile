@@ -238,7 +238,8 @@ class YandexAfishaTicketCard extends StatelessWidget {
       builder: (BuildContext context) {
         return SafeArea(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.85, // 85% высоты экрана
+            height:
+                MediaQuery.of(context).size.height * 0.85, // 85% высоты экрана
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
@@ -247,10 +248,12 @@ class YandexAfishaTicketCard extends StatelessWidget {
               children: [
                 // Header with close button
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.05),
@@ -273,7 +276,8 @@ class YandexAfishaTicketCard extends StatelessWidget {
                       ),
                       // Close button
                       IconButton(
-                        icon: Icon(Icons.close, size: 24.sp, color: AppColors.textPrimary),
+                        icon: Icon(Icons.close,
+                            size: 24.sp, color: AppColors.textPrimary),
                         onPressed: () => Navigator.of(context).pop(),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -288,112 +292,114 @@ class YandexAfishaTicketCard extends StatelessWidget {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.75,
                       child: InAppWebView(
-                    initialUrlRequest: URLRequest(url: WebUri(url)),
-                    initialSettings: InAppWebViewSettings(
-                      // КРИТИЧНЫЕ настройки для редиректов
-                      useShouldOverrideUrlLoading: true,
-                      javaScriptEnabled: true,
-                      domStorageEnabled: true,
-                      thirdPartyCookiesEnabled: true,
-                      sharedCookiesEnabled: true,
+                        initialUrlRequest: URLRequest(url: WebUri(url)),
+                        initialSettings: InAppWebViewSettings(
+                          // КРИТИЧНЫЕ настройки для редиректов
+                          useShouldOverrideUrlLoading: true,
+                          javaScriptEnabled: true,
+                          domStorageEnabled: true,
+                          thirdPartyCookiesEnabled: true,
+                          sharedCookiesEnabled: true,
 
-                      // Настройки User Agent для совместимости
-                      userAgent:
-                          "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
+                          // Настройки User Agent для совместимости
+                          userAgent:
+                              "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
 
-                      // Настройки безопасности для редиректов
-                      allowsInlineMediaPlayback: true,
-                      mediaPlaybackRequiresUserGesture: false,
-                      mixedContentMode:
-                          MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                          // Настройки безопасности для редиректов
+                          allowsInlineMediaPlayback: true,
+                          mediaPlaybackRequiresUserGesture: false,
+                          mixedContentMode:
+                              MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
 
-                      // Настройки навигации
-                      allowsBackForwardNavigationGestures: true,
-                      clearCache: false,
-                      cacheEnabled: true,
+                          // Настройки навигации
+                          allowsBackForwardNavigationGestures: true,
+                          clearCache: false,
+                          cacheEnabled: true,
 
-                      // Настройки для внешних ссылок
-                      allowFileAccessFromFileURLs: true,
-                      allowUniversalAccessFromFileURLs: true,
+                          // Настройки для внешних ссылок
+                          allowFileAccessFromFileURLs: true,
+                          allowUniversalAccessFromFileURLs: true,
 
-                      // КРИТИЧНЫЕ настройки зума для эмулятора Android
-                      supportZoom: true,
-                      builtInZoomControls: true,
-                      displayZoomControls: false,
-                      useWideViewPort: true,
-                      loadWithOverviewMode: true,
+                          // КРИТИЧНЫЕ настройки зума для эмулятора Android
+                          supportZoom: true,
+                          builtInZoomControls: true,
+                          displayZoomControls: false,
+                          useWideViewPort: true,
+                          loadWithOverviewMode: true,
 
-                      // Настройки zoom scale для правильной работы pinch-to-zoom
-                      minimumZoomScale: 0.1,
-                      maximumZoomScale: 10.0,
-                      pageZoom: 1.0,
+                          // Настройки zoom scale для правильной работы pinch-to-zoom
+                          minimumZoomScale: 0.1,
+                          maximumZoomScale: 10.0,
+                          pageZoom: 1.0,
 
-                      // Включить горизонтальную прокрутку
-                      horizontalScrollBarEnabled: true,
-                      verticalScrollBarEnabled: true,
+                          // Включить горизонтальную прокрутку
+                          horizontalScrollBarEnabled: true,
+                          verticalScrollBarEnabled: true,
 
-                      // Улучшить отзывчивость касаний
-                      disableHorizontalScroll: false,
-                      disableVerticalScroll: false,
+                          // Улучшить отзывчивость касаний
+                          disableHorizontalScroll: false,
+                          disableVerticalScroll: false,
 
-                      // Android-специфичные настройки для зума и панорамирования
-                      minimumLogicalFontSize: 8,
-                      initialScale: 100,
-                      textZoom: 100,
+                          // Android-специфичные настройки для зума и панорамирования
+                          minimumLogicalFontSize: 8,
+                          initialScale: 100,
+                          textZoom: 100,
 
-                      // Важные настройки для сенсорного управления
-                      useOnDownloadStart: false,
-                      useOnLoadResource: false,
+                          // Важные настройки для сенсорного управления
+                          useOnDownloadStart: false,
+                          useOnLoadResource: false,
 
-                      // Дополнительная настройка viewport
-                      layoutAlgorithm: LayoutAlgorithm.NORMAL,
+                          // Дополнительная настройка viewport
+                          layoutAlgorithm: LayoutAlgorithm.NORMAL,
 
-                      // Улучшенные настройки для touch управления
-                      allowsLinkPreview: false,
-                      allowsPictureInPictureMediaPlayback: true,
-                      automaticallyAdjustsScrollIndicatorInsets: false,
+                          // Улучшенные настройки для touch управления
+                          allowsLinkPreview: false,
+                          allowsPictureInPictureMediaPlayback: true,
+                          automaticallyAdjustsScrollIndicatorInsets: false,
 
-                      // Настройки для лучшего zoom handling
-                      forceDark: ForceDark.OFF,
-                      hardwareAcceleration: true,
+                          // Настройки для лучшего zoom handling
+                          forceDark: ForceDark.OFF,
+                          hardwareAcceleration: true,
 
-                      // Дополнительные Android-специфичные настройки для эмулятора
-                      scrollsToTop: false,
+                          // Дополнительные Android-специфичные настройки для эмулятора
+                          scrollsToTop: false,
 
-                      // Настройки iframe для платежных систем
-                      iframeAllow: "camera; microphone; payment; geolocation",
-                      iframeAllowFullscreen: true,
-                    ),
-                    shouldOverrideUrlLoading:
-                        (controller, navigationAction) async {
-                      final uri = navigationAction.request.url;
+                          // Настройки iframe для платежных систем
+                          iframeAllow:
+                              "camera; microphone; payment; geolocation",
+                          iframeAllowFullscreen: true,
+                        ),
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                          final uri = navigationAction.request.url;
 
-                      if (uri != null) {
-                        print('🔄 Navigation request: ${uri.toString()}');
-                        print(
-                            '📋 Navigation type: ${navigationAction.navigationType}');
-                        print(
-                            '🎯 Is main frame: ${navigationAction.isForMainFrame}');
+                          if (uri != null) {
+                            print('🔄 Navigation request: ${uri.toString()}');
+                            print(
+                                '📋 Navigation type: ${navigationAction.navigationType}');
+                            print(
+                                '🎯 Is main frame: ${navigationAction.isForMainFrame}');
 
-                        // Разрешаем все навигации для правильной работы редиректов
-                        // Особенно важно для платежных систем
-                        return NavigationActionPolicy.ALLOW;
-                      }
+                            // Разрешаем все навигации для правильной работы редиректов
+                            // Особенно важно для платежных систем
+                            return NavigationActionPolicy.ALLOW;
+                          }
 
-                      return NavigationActionPolicy.ALLOW;
-                    },
-                    onLoadStart: (controller, url) {
-                      print('🚀 Loading started: ${url?.toString()}');
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                      print(
-                          '📍 Visited: ${url?.toString()} (reload: $androidIsReload)');
-                    },
-                    onLoadStop: (controller, url) async {
-                      print('✅ Loading finished: ${url?.toString()}');
+                          return NavigationActionPolicy.ALLOW;
+                        },
+                        onLoadStart: (controller, url) {
+                          print('🚀 Loading started: ${url?.toString()}');
+                        },
+                        onUpdateVisitedHistory:
+                            (controller, url, androidIsReload) {
+                          print(
+                              '📍 Visited: ${url?.toString()} (reload: $androidIsReload)');
+                        },
+                        onLoadStop: (controller, url) async {
+                          print('✅ Loading finished: ${url?.toString()}');
 
-                      // Настройка для поддержки редиректов и touch событий
-                      await controller.evaluateJavascript(source: """
+                          // Настройка для поддержки редиректов и touch событий
+                          await controller.evaluateJavascript(source: """
                         // Принудительно настраиваем viewport для максимальной поддержки зума
                         var metaTag = document.querySelector('meta[name="viewport"]');
                         if (metaTag) {
@@ -492,20 +498,20 @@ class YandexAfishaTicketCard extends StatelessWidget {
                         console.log('Pointer support:', 'onpointerdown' in window);
                         console.log('Current URL:', window.location.href);
                       """);
-                    },
-                    onReceivedError: (controller, request, error) {
-                      print('❌ Error: ${error.description}');
-                    },
-                    onReceivedHttpError:
-                        (controller, request, errorResponse) {
-                      print(
-                          'HTTP Error: ${errorResponse.statusCode} - ${errorResponse.reasonPhrase}');
-                      print('Failed URL: ${request.url}');
-                    },
-                    onConsoleMessage: (controller, consoleMessage) {
-                      print(
-                          'Console ${consoleMessage.messageLevel}: ${consoleMessage.message}');
-                    },
+                        },
+                        onReceivedError: (controller, request, error) {
+                          print('❌ Error: ${error.description}');
+                        },
+                        onReceivedHttpError:
+                            (controller, request, errorResponse) {
+                          print(
+                              'HTTP Error: ${errorResponse.statusCode} - ${errorResponse.reasonPhrase}');
+                          print('Failed URL: ${request.url}');
+                        },
+                        onConsoleMessage: (controller, consoleMessage) {
+                          print(
+                              'Console ${consoleMessage.messageLevel}: ${consoleMessage.message}');
+                        },
                       ),
                     ),
                   ),
@@ -765,7 +771,7 @@ class YandexAfishaTicketCard extends StatelessWidget {
                               }
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              padding: EdgeInsets.symmetric(vertical: 20.h),
                               decoration: BoxDecoration(
                                 gradient: AppColors.primaryGradient,
                                 borderRadius: BorderRadius.circular(12.r),
@@ -792,6 +798,9 @@ class YandexAfishaTicketCard extends StatelessWidget {
                             ),
                           ),
                         ),
+                      SizedBox(
+                        height: 20.h,
+                      )
                     ],
                   ),
                 ),

@@ -21,6 +21,7 @@ import 'core/adapters/user_entity_adapter.dart';
 import 'core/constants/flavor_config.dart';
 import 'core/di/injection.dart';
 import 'core/routes/app_router.dart';
+import 'core/utils/app_version_manager.dart';
 import 'features/tournament/data/entities/tournament_entity.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
@@ -68,6 +69,11 @@ void main() async {
 
   // Initialize LocalizationService (already initialized by dependency injection)
   await getIt.isReady<LocalizationService>();
+
+  // Check app version and clear FlutterSecureStorage if needed
+  // (first install, reinstall, or update)
+  final appVersionManager = getIt<AppVersionManager>();
+  await appVersionManager.checkAndHandleAppVersion();
 
   // Initialize Firebase
   await Firebase.initializeApp(

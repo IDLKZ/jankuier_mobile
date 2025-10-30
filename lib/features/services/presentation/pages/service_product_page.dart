@@ -1123,10 +1123,11 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext bottomSheetContext) {
-        return BlocProvider(
-          create: (context) => getIt<AddToCartBloc>(),
-          child: BlocListener<AddToCartBloc, AddToCartState>(
-            listener: (context, state) {
+        return SafeArea(
+          child: BlocProvider(
+            create: (context) => getIt<AddToCartBloc>(),
+            child: BlocListener<AddToCartBloc, AddToCartState>(
+              listener: (context, state) {
               if (state is AddToCartSuccess) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -1257,6 +1258,7 @@ class _ProductDetailCardState extends State<_ProductDetailCard> {
                     },
                   ),
                 ],
+              ),
               ),
             ),
           ),

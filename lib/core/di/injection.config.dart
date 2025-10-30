@@ -21,6 +21,7 @@ import 'package:jankuier_mobile/core/services/localization_service.dart'
     as _i530;
 import 'package:jankuier_mobile/core/services/main_selection_service.dart'
     as _i570;
+import 'package:jankuier_mobile/core/utils/app_version_manager.dart' as _i610;
 import 'package:jankuier_mobile/core/utils/hive_utils.dart' as _i854;
 import 'package:jankuier_mobile/features/auth/data/datasources/auth_datasource.dart'
     as _i644;
@@ -346,6 +347,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i947.KffApiDio>(() => _i947.KffApiDio());
     gh.factory<_i633.KffLeagueApiDio>(() => _i633.KffLeagueApiDio());
     gh.factory<_i176.SotaApiDio>(() => _i176.SotaApiDio());
+    gh.factory<_i610.AppVersionManager>(() => _i610.AppVersionManager());
     gh.factory<_i854.HiveUtils>(() => _i854.HiveUtils());
     gh.singletonAsync<_i530.LocalizationService>(() {
       final i = _i530.LocalizationService();

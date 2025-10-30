@@ -117,9 +117,11 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => OrderDetailsBottomSheet(
-        order: order,
-        onShowQRCode: () => _showQRCodeBottomSheet(context, order),
+      builder: (context) => SafeArea(
+        child: OrderDetailsBottomSheet(
+          order: order,
+          onShowQRCode: () => _showQRCodeBottomSheet(context, order),
+        ),
       ),
     );
   }
@@ -129,7 +131,9 @@ class _MyTicketsWidgetState extends State<MyTicketsWidget> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => QRCodeBottomSheet(order: order),
+      builder: (context) => SafeArea(
+        child: QRCodeBottomSheet(order: order),
+      ),
     );
   }
 

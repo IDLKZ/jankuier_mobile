@@ -250,4 +250,25 @@ class LocalAuthRepositoryImpl implements LocalAuthInterface {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  /// Очищает PIN-код и тип аутентификации из безопасного хранилища
+  ///
+  /// Удаляет все данные локальной аутентификации из FlutterSecureStorage.
+  /// Используется при переустановке приложения, обновлении или выходе из аккаунта.
+  ///
+  /// **Возвращает:**
+  /// - [Right(true)] если данные успешно очищены
+  /// - [Left] с [ServerFailure] при возникновении ошибки
+  @override
+  Future<Either<Failure, bool>> clearLocalAuthData() async {
+    try {
+      // Удаляем PIN-код
+      await _storage.delete(key: LocalAuthConstants.localAuthKey);
+      // Удаляем тип аутентификации
+      await _storage.delete(key: LocalAuthConstants.getTypeLocalAuth);
+      return Right(true);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

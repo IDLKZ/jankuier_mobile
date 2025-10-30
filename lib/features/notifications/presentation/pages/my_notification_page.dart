@@ -186,8 +186,10 @@ class _MyNotificationPageState extends State<MyNotificationPage>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _NotificationDetailModal(
-        bloc: _getNotificationByIdBloc,
+      builder: (context) => SafeArea(
+        child: _NotificationDetailModal(
+          bloc: _getNotificationByIdBloc,
+        ),
       ),
     );
   }

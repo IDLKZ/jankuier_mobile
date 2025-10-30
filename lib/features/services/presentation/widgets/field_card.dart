@@ -134,13 +134,14 @@ class FieldCard extends StatelessWidget {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (BuildContext context) {
-                        return DraggableScrollableSheet(
-                          initialChildSize: 0.9,
-                          maxChildSize: 0.9,
-                          minChildSize: 0.4,
-                          expand: false,
-                          builder: (_, scrollController) {
-                            return Container(
+                        return SafeArea(
+                          child: DraggableScrollableSheet(
+                            initialChildSize: 0.9,
+                            maxChildSize: 0.9,
+                            minChildSize: 0.4,
+                            expand: false,
+                            builder: (_, scrollController) {
+                              return Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.vertical(
@@ -152,9 +153,10 @@ class FieldCard extends StatelessWidget {
                                   showModalContext: context,
                                   fieldPartyEntity: fieldPartyEntity,
                                 ),
-                              ),
-                            );
-                          },
+                                ),
+                              );
+                            },
+                          ),
                         );
                       },
                     );

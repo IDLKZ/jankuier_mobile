@@ -14,4 +14,13 @@ abstract class LocalAuthInterface {
   Future<Either<Failure, bool>> getPinHashBefore();
   Future<Either<Failure, bool>> checkPinCode(String pin);
   Future<Either<Failure, bool>> reloadPinCode(String pin);
+
+  /// Очищает PIN-код и тип аутентификации из безопасного хранилища
+  ///
+  /// Используется при переустановке приложения, обновлении или выходе из аккаунта
+  ///
+  /// **Возвращает:**
+  /// - [Right(true)] если данные успешно очищены
+  /// - [Left] с [ServerFailure] при возникновении ошибки
+  Future<Either<Failure, bool>> clearLocalAuthData();
 }

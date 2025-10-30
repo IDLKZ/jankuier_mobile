@@ -519,14 +519,16 @@ class _MyBookingFieldPartiesPageState extends State<MyBookingFieldPartiesPage>
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: BlocProvider.value(
-          value: _getMyFieldPartyRequestByIdBloc
-            ..add(LoadMyFieldPartyRequestById(booking.id)),
+      builder: (context) => SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
           child: BlocProvider.value(
-            value: _deleteMyFieldPartyRequestByIdBloc,
-            child: _BookingDetailsBottomSheet(booking: booking),
+            value: _getMyFieldPartyRequestByIdBloc
+              ..add(LoadMyFieldPartyRequestById(booking.id)),
+            child: BlocProvider.value(
+              value: _deleteMyFieldPartyRequestByIdBloc,
+              child: _BookingDetailsBottomSheet(booking: booking),
+            ),
           ),
         ),
       ),
