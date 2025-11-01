@@ -128,22 +128,35 @@ class _WelcomeVideoPageState extends State<WelcomeVideoPage> {
                 ),
               ),
 
-            // Текстовая подсказка внизу экрана
+            // Логотип и текстовая подсказка внизу экрана
             if (_isPlaying && !_isVideoEnded)
               Positioned(
                 bottom: 40.h,
                 left: 20.w,
                 right: 20.w,
                 child: SafeArea(
-                  child: Text(
-                    AppLocalizations.of(context)!.touchScreenToSkip,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.4),
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w300,
-                      fontFamily: 'Inter',
-                    ),
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Логотип Bayan Sulu
+                      Image.asset(
+                        'assets/images/bayan_sulu_white.png',
+                        height: 40.h,
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: 16.h),
+                      // Текстовая подсказка
+                      Text(
+                        AppLocalizations.of(context)!.touchScreenToSkip,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.4),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Inter',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
               ),

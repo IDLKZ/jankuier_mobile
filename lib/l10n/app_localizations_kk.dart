@@ -109,7 +109,8 @@ class AppLocalizationsKk extends AppLocalizations {
   String get enterPhoneHint => 'Телефон нөмірін енгізіңіз (7XXXXXXXXXX)';
 
   @override
-  String get registrationSuccess => 'Тіркелу сәтті! Телефон нөмірін растаңыз';
+  String get registrationSuccess =>
+      'Тіркелу сәтті өтті! Телефон нөмірін растаңыз';
 
   @override
   String get register => 'Тіркелу';
@@ -118,7 +119,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get next => 'Келесі';
 
   @override
-  String get alreadyHaveAccount => 'Тіркелгі бар ма? Кіру';
+  String get alreadyHaveAccount => 'Аккаунтыңыз бар ма? Кіру';
 
   @override
   String get usernameValidation =>
@@ -135,7 +136,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get sendSMSCode => 'SMS кодын жіберу';
 
   @override
-  String get iHaveAccount => 'Менде тіркелгі бар';
+  String get iHaveAccount => 'Менде аккаунт бар';
 
   @override
   String get somethingWentWrong => 'Бірдеңе дұрыс болмады';
@@ -390,10 +391,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get allGames => 'Барлығы';
 
   @override
-  String get clubGames => 'Клуб ойындары';
+  String get clubGames => 'Клубтардың ойыны';
 
   @override
-  String get noUpcomingMatches => 'Алдағы матчтар жоқ';
+  String get noUpcomingMatches => 'Әзірге ойын жоқ';
 
   @override
   String get noPastMatches => 'Өткен матчтар жоқ';
@@ -565,7 +566,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get tickets => 'Билеттер';
 
   @override
-  String get yourTickets => 'Сіздің билеттеріңіз';
+  String get yourTickets => 'Сіздің билетіңіз';
 
   @override
   String get availableTickets => 'Қолжетімді билеттер';
@@ -708,7 +709,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get changeEmail => 'Поштаны өзгерту';
 
   @override
-  String get deleteAccount => 'Тіркелгіні жою';
+  String get deleteAccount => 'Аккаунтты жою';
 
   @override
   String get oldPassword => 'Ескі құпия сөз';
@@ -723,7 +724,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get editProfile => 'Профильді өңдеу';
 
   @override
-  String get personalData => 'Жеке деректер';
+  String get personalData => 'Жеке дерек';
 
   @override
   String get logout => 'Шығу';
@@ -741,10 +742,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get shop => 'Дүкен';
 
   @override
-  String get fields => 'Алаңдар';
+  String get fields => 'Алаңды жалға алу';
 
   @override
-  String get sections => 'Бөлімдер';
+  String get sections => 'Секцияға жазылу';
 
   @override
   String get years => 'жас';
@@ -858,7 +859,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get pay => 'Төлеу';
 
   @override
-  String get fieldRental => 'Алаң жалдау';
+  String get fieldRental => 'Алаң жалға беру';
 
   @override
   String get searchFilters => 'Іздеу сүзгілері';
@@ -936,7 +937,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get firstLeague => 'Бірінші лига';
 
   @override
-  String get activeTickets => 'Белсенді билеттер';
+  String get activeTickets => 'Билеттер';
 
   @override
   String get buyTickets => 'Билет сатып алу';
@@ -963,7 +964,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get loadingPayment => 'Төлем жүктелуде...';
 
   @override
-  String get noActiveTicketsYet => 'Әлі белсенді билеттер жоқ';
+  String get noActiveTicketsYet => 'Әлі билеттер жоқ';
 
   @override
   String get city => 'Қала';
@@ -1126,7 +1127,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get tryChangeSearchFilters => 'Іздеу сүзгілерін өзгертуге тырысыңыз';
 
   @override
-  String get touchScreenToSkip => 'Өткізіп жіберу үшін экранға тегіңіз';
+  String get touchScreenToSkip => 'Экранды жылжытыңыз';
 
   @override
   String get deleteAccountConfirmation => 'Аккаунтты жою растауы';
@@ -1145,7 +1146,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get accountDeletionFailed => 'Аккаунтты жою қатесі';
 
   @override
-  String get myBookings => 'Менің брондарым';
+  String get myBookings => 'Мен қойған бронь';
 
   @override
   String get pending => 'Күтуде';
@@ -1212,13 +1213,13 @@ class AppLocalizationsKk extends AppLocalizations {
   String get confirm => 'Растау';
 
   @override
-  String get myOrders => 'Менің тапсырыстарым';
+  String get myOrders => 'Менің тапсырысым';
 
   @override
   String get viewPurchaseHistory => 'Сатып алу тарихын қарау';
 
   @override
-  String get viewMyBookings => 'Менің брондауларымды қарау';
+  String get viewMyBookings => 'Мен қойған броньдарды қарау';
 
   @override
   String get authorizationRequired => 'Авторизация қажет';
@@ -1390,7 +1391,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get useBiometrics => 'Биометрияны қолдану';
 
   @override
-  String get loginWithDifferentAccount => 'Басқа тіркелгімен кіру';
+  String get loginWithDifferentAccount => 'Басқа аккаунтпен кіру';
 
   @override
   String get attemptsExceededLoginAgain =>
@@ -1467,10 +1468,10 @@ class AppLocalizationsKk extends AppLocalizations {
   String get giveAccessToData => 'Деректерге қол жеткізуге рұқсат беру';
 
   @override
-  String get resetPinCode => 'PIN кодты қалпына келтіру';
+  String get resetPinCode => 'PIN-код';
 
   @override
-  String get privacyButton => 'Жеке деректерді өңдеу саясаты';
+  String get privacyButton => 'Жеке деректі өңдеу';
 
   @override
   String get privacyTitle => 'Құпиялылық саясаты';
@@ -1554,7 +1555,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get emailPhoneOrLogin => 'Email, телефон немесе логин';
 
   @override
-  String get createNewAccount => 'Жаңа тіркелгі жасаңыз';
+  String get createNewAccount => 'Жаңа аккаунт жасаңыз';
 
   @override
   String get passwordRequirements =>

@@ -115,7 +115,7 @@ Widget buildFutureClubMatch(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.sports_soccer,
+                          Icons.access_time,
                           size: 48.sp,
                           color: AppColors.textSecondary,
                         ),
@@ -128,15 +128,15 @@ Widget buildFutureClubMatch(BuildContext context) {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          AppLocalizations.of(context)!.matchesWillBeDisplayed,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColors.textSecondary,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                        // SizedBox(height: 8.h),
+                        // Text(
+                        //   AppLocalizations.of(context)!.matchesWillBeDisplayed,
+                        //   style: TextStyle(
+                        //     fontSize: 14.sp,
+                        //     color: AppColors.textSecondary,
+                        //   ),
+                        //   textAlign: TextAlign.center,
+                        // ),
                       ],
                     ),
                   ),

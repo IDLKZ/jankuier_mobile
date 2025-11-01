@@ -81,21 +81,24 @@ class _RoundTab extends StatelessWidget {
           height: 48.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: selected ? Color(0xFFD6DEEE) : Color(0xFFD6DEEE),
+            color: selected ? const Color(0xFFD6DEEE) : const Color(0xFFD6DEEE),
           ),
           child: Icon(
             selected ? tab.activeIcon : tab.icon,
             size: 24.sp,
-            color: selected ? Color(0xFF0A388C) : Color(0xFF7690BF),
+            color: selected ? const Color(0xFF0A388C) : const Color(0xFF7690BF),
           ),
         ),
         SizedBox(height: 6.h),
-        Text(
-          tab.label,
-          style: TextStyle(
-            fontSize: 13.sp,
-            color: selected ? Colors.black : Color(0xFFA6A6A6),
-            fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+        Center(
+          child: Text(
+            tab.label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: selected ? 10.sp : 12.sp,
+              color: selected ? Colors.black : const Color(0xFFA6A6A6),
+              fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+            ),
           ),
         ),
       ],

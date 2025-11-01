@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jankuier_mobile/core/constants/api_constants.dart';
-import 'package:jankuier_mobile/core/constants/app_route_constants.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../../core/di/injection.dart';
 import '../../../../core/utils/file_utils.dart';
-import '../../../../core/utils/hive_utils.dart';
 import '../../data/entities/yandex_afisha_ticket/yandex_afisha_ticket_entity.dart';
-import '../pages/ticket_webview_page.dart';
 
 class YandexAfishaTicketCard extends StatelessWidget {
   final YandexAfishaWidgetTicketEntity ticket;
@@ -27,14 +22,8 @@ class YandexAfishaTicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
 
-    Future<String?> _getAccessToken() async {
-      final hiveUtils = getIt<HiveUtils>();
-      final accessToken = await hiveUtils.getAccessToken();
-      return accessToken;
-    }
-
     return GestureDetector(
-      onTap: () => _showDetailsBottomSheet(context, _getAccessToken),
+      onTap: () => _showDetailsBottomSheet(context),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -524,8 +513,7 @@ class YandexAfishaTicketCard extends StatelessWidget {
     );
   }
 
-  void _showDetailsBottomSheet(
-      BuildContext context, Future<String?> Function() getAccessToken) {
+  void _showDetailsBottomSheet(BuildContext context) {
     final dateFormatter = DateFormat('d MMMM yyyy, HH:mm', 'ru');
 
     showModalBottomSheet<void>(
@@ -756,19 +744,9 @@ class YandexAfishaTicketCard extends StatelessWidget {
                           width: double.infinity,
                           child: GestureDetector(
                             onTap: () async {
-                              // Проверка авторизации
-                              final token = await getAccessToken();
-                              if (token == null || token.isEmpty) {
-                                // Закрываем текущий bottom sheet
-                                Navigator.of(context).pop();
-                                // Переходим на страницу входа
-                                context.go(AppRouteConstants.SignInPagePath);
-                              } else {
-                                // Открываем WebView с виджетом Яндекс.Афиша
-                                Navigator.of(context).pop();
-                                _showBottomUrl(
-                                    context, ticket.yandexWidgetUrl!);
-                              }
+                              // Открываем WebView с виджетом Яндекс.Афиша
+                              Navigator.of(context).pop();
+                              _showBottomUrl(context, ticket.yandexWidgetUrl!);
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 20.h),

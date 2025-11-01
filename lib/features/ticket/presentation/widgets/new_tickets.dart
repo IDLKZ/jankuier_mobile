@@ -99,7 +99,9 @@ class NewTicketWidgets extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.noActiveTicketsYet),
                 );
               }
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noActiveTicketsYet),
+              );
             }
 
             // Отображаем все билеты
